@@ -4,7 +4,7 @@ const tools = [
   {
     title: "Neuro Note",
     description:
-      "ช่วยจัดทำ clinic note และสรุปข้อมูลจากการคุยกับผู้ป่วย เพื่อให้สามารถคัดลอกและวางต่อใน workflow การทำงานได้รวดเร็วขึ้น",
+      "โปรแกรมช่วยจดบันทึกทางคลินิกสำหรับแพทย์ โดยอาศัยเพียงการพูดคุยระหว่างแพทย์กับผู้ป่วย หรือการพูดออกเสียงสรุปข้อมูลหลังตรวจ ก็สามารถช่วยเรียบเรียงข้อมูลสำคัญและสร้างเป็น OPD card format ที่ดูเป็นระเบียบ สวยงาม และพร้อมนำไปใช้ต่อใน workflow การทำงานได้รวดเร็วขึ้น",
   },
   {
     title: "NeuroCoach",
@@ -53,6 +53,8 @@ export default function AiToolsPage() {
           <p className="hero-text narrow">
             ระบบเครื่องมือ AI สำหรับประสาทแพทย์ ครอบคลุมตั้งแต่งานเขียนบันทึก
             การช่วยคิดวินิจฉัย การอ่านผลเฉพาะทาง และการเรียนรู้สำหรับแพทย์ประจำบ้าน
+            โดยออกแบบมาเพื่อลดภาระงานซ้ำซ้อน เพิ่มความเร็วในการทำงาน
+            และทำให้การดูแลผู้ป่วยมีระบบมากขึ้น
           </p>
           <div className="hero-actions">
             <a href={registerUrl} className="btn btn-dark big">
@@ -68,12 +70,16 @@ export default function AiToolsPage() {
             {tools.map((tool, i) => (
               <div key={i} className="card">
                 <h3>{tool.title}</h3>
-
-                {/* badge */}
-                <p style={{ marginTop: "8px", fontSize: "0.9rem", color: "#2563eb", fontWeight: 600 }}>
+                <p
+                  style={{
+                    marginTop: "8px",
+                    fontSize: "0.9rem",
+                    color: "#2563eb",
+                    fontWeight: 600,
+                  }}
+                >
                   อยู่ในขั้นการพัฒนา
                 </p>
-
                 <p style={{ marginTop: "12px" }}>{tool.description}</p>
               </div>
             ))}
