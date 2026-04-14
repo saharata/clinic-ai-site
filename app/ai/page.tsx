@@ -1,15 +1,58 @@
 const registerUrl = "/ai/register";
 
+const tools = [
+  {
+    title: "Neuro Note",
+    description:
+      "ช่วยจัดทำ clinic note และสรุปข้อมูลจากการคุยกับผู้ป่วย เพื่อให้สามารถคัดลอกและวางต่อใน workflow การทำงานได้รวดเร็วขึ้น",
+  },
+  {
+    title: "NeuroCoach",
+    description:
+      "เครื่องมือช่วยคิดวินิจฉัยโรคยาก ช่วยจัดระบบการคิดแยกโรค การประเมินสาเหตุ และแนวทางพิจารณาต่อ",
+  },
+  {
+    title: "AI EEG",
+    description:
+      "เครื่องมือช่วยอ่าน EEG อัตโนมัติ เพื่อสนับสนุนการทำงานของแพทย์และช่วยลดเวลาในการคัดกรองเคส",
+  },
+  {
+    title: "Neuro Residence (MCQ / MEQ)",
+    description:
+      "ระบบฝึกทำข้อสอบสำหรับแพทย์ประจำบ้าน ช่วยทบทวนความรู้ ฝึก clinical reasoning และเตรียมตัวสอบบอร์ดอย่างเป็นระบบ",
+  },
+  {
+    title: "MS Lesion Tracking",
+    description:
+      "ช่วยติดตามการเปลี่ยนแปลงของ lesion จาก MRI ในผู้ป่วย multiple sclerosis เพื่อให้การประเมินโรคและการติดตามผลทำได้รวดเร็วและเป็นระบบมากขึ้น",
+  },
+  {
+    title: "Stroke Assistant",
+    description:
+      "เครื่องมือช่วยประเมินผู้ป่วย stroke แบบรวดเร็ว ช่วยเรียบเรียง timeline ของอาการ และสนับสนุนการตัดสินใจในภาวะฉุกเฉิน",
+  },
+  {
+    title: "Headache Triage",
+    description:
+      "ช่วยคัดกรองผู้ป่วยปวดศีรษะ แยก red flag และจัดลำดับความสำคัญของการตรวจเพิ่มเติม",
+  },
+  {
+    title: "Dizziness Pathway",
+    description:
+      "ช่วยจัดระบบการประเมินผู้ป่วยเวียนศีรษะ แยกสาเหตุระหว่าง peripheral และ central และช่วยวางแนวทางการตรวจต่อ",
+  },
+];
+
 export default function AiToolsPage() {
   return (
     <main>
       <section className="hero small">
         <div className="container">
           <p className="eyebrow">AI Tools for Neurologists</p>
-          <h1 className="hero-title">เครื่องมือ AI สำหรับประสาทแพทย์</h1>
+          <h1 className="hero-title">Neurology AI Ecosystem</h1>
           <p className="hero-text narrow">
-            สำหรับประสาทแพทย์ เรามีเครื่องมือที่สามารถลงทะเบียนและใช้งานได้เพื่อช่วยประหยัดเวลา
-            ทั้งในงานตรวจผู้ป่วย งานเขียนบันทึก และการช่วยอ่านผลเฉพาะทาง
+            ระบบเครื่องมือ AI สำหรับประสาทแพทย์ ครอบคลุมตั้งแต่งานเขียนบันทึก
+            การช่วยคิดวินิจฉัย การอ่านผลเฉพาะทาง และการเรียนรู้สำหรับแพทย์ประจำบ้าน
           </p>
           <div className="hero-actions">
             <a href={registerUrl} className="btn btn-dark big">
@@ -22,43 +65,26 @@ export default function AiToolsPage() {
       <section className="section">
         <div className="container">
           <div className="cards two">
-            <div className="card">
-              <h3>Neuro Note</h3>
-              <p>
-                ช่วยจัดทำ clinic note และสรุปข้อมูลจากการคุยกับผู้ป่วย
-                เพื่อให้สามารถคัดลอกและวางต่อใน workflow การทำงานได้รวดเร็วขึ้น
-              </p>
-            </div>
+            {tools.map((tool, i) => (
+              <div key={i} className="card">
+                <h3>{tool.title}</h3>
 
-            <div className="card">
-              <h3>NeuroCoach</h3>
-              <p>
-                เครื่องมือช่วยคิดวินิจฉัยโรคยาก ช่วยจัดระบบการคิดแยกโรค
-                การประเมินสาเหตุ และแนวทางพิจารณาต่อ
-              </p>
-            </div>
+                {/* badge */}
+                <p style={{ marginTop: "8px", fontSize: "0.9rem", color: "#2563eb", fontWeight: 600 }}>
+                  อยู่ในขั้นการพัฒนา
+                </p>
 
-            <div className="card">
-              <h3>AI EEG</h3>
-              <p>
-                เครื่องมือช่วยอ่าน EEG อัตโนมัติ เพื่อสนับสนุนการทำงานของแพทย์และช่วยลดเวลาในการคัดกรองเคส
-              </p>
-            </div>
-
-            <div className="card">
-              <h3>ออกแบบเพื่อประหยัดเวลา</h3>
-              <p>
-                ทุกเครื่องมือออกแบบมาเพื่อช่วยลดภาระงานซ้ำซ้อน เพิ่มความเร็วในการทำงาน
-                และทำให้การดูแลผู้ป่วยมีระบบมากขึ้น
-              </p>
-            </div>
+                <p style={{ marginTop: "12px" }}>{tool.description}</p>
+              </div>
+            ))}
           </div>
 
           <div className="cta-box top-gap">
             <div>
               <h2>เริ่มต้นใช้งาน</h2>
               <p>
-                หากต้องการใช้งานเครื่องมือ AI สำหรับประสาทแพทย์ สามารถลงทะเบียนเพื่อเริ่มใช้งานได้จากลิงก์ด้านล่าง
+                ขณะนี้ระบบอยู่ในช่วงพัฒนา หากสนใจใช้งานสามารถลงทะเบียนเพื่อรับสิทธิ์ทดลองใช้
+                และติดตามการเปิดใช้งานของแต่ละเครื่องมือได้
               </p>
             </div>
             <div className="cta-actions">
