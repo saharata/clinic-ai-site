@@ -5,9 +5,7 @@ export default function RegisterSuccessPage() {
         <div className="cta-box" style={{ padding: 32, textAlign: "center" }}>
           <p className="eyebrow">Registration</p>
 
-          <h1 style={{ marginBottom: 16 }}>
-            ลงทะเบียนเรียบร้อยแล้ว 🎉
-          </h1>
+          <h1 style={{ marginBottom: 16 }}>ลงทะเบียนเรียบร้อยแล้ว 🎉</h1>
 
           <p style={{ marginBottom: 16 }}>
             กรุณาตรวจสอบอีเมลของคุณ แล้วกดลิงก์ยืนยันบัญชี
@@ -17,13 +15,28 @@ export default function RegisterSuccessPage() {
             หากไม่พบอีเมล กรุณาตรวจสอบใน Spam หรือ Junk Mail
           </p>
 
-          <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 12,
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
             <a href="/ai" className="btn btn-line big">
               กลับไปหน้า AI Tools
             </a>
 
-            <a href="/ai/register" className="btn btn-outline">
-              สมัครใหม่
+            <a
+              href="/ai/login"
+              className="btn big"
+              style={{
+                background: "#ffffff",
+                color: "#0f172a",
+                border: "1px solid #d1d5db",
+              }}
+            >
+              ไปหน้า Login
             </a>
           </div>
         </div>

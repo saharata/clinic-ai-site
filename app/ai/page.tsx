@@ -1,4 +1,5 @@
 const registerUrl = "/ai/register";
+const loginUrl = "/ai/login";
 
 const tools = [
   {
@@ -65,9 +66,25 @@ export default function AiToolsPage() {
             โดยออกแบบมาเพื่อลดภาระงานซ้ำซ้อน เพิ่มความเร็วในการทำงาน
             และทำให้การดูแลผู้ป่วยมีระบบมากขึ้น
           </p>
-          <div className="hero-actions">
+
+          <div
+            className="hero-actions"
+            style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
+          >
             <a href={registerUrl} className="btn btn-dark big">
               ลงทะเบียนใช้งาน
+            </a>
+
+            <a
+              href={loginUrl}
+              className="btn big"
+              style={{
+                background: "#ffffff",
+                color: "#0f172a",
+                border: "1px solid #d1d5db",
+              }}
+            >
+              เข้าสู่ระบบ
             </a>
           </div>
         </div>
@@ -135,9 +152,25 @@ export default function AiToolsPage() {
                 และติดตามการเปิดใช้งานของแต่ละเครื่องมือได้
               </p>
             </div>
-            <div className="cta-actions">
+
+            <div
+              className="cta-actions"
+              style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
+            >
               <a href={registerUrl} className="btn btn-dark big">
                 Register
+              </a>
+
+              <a
+                href={loginUrl}
+                className="btn big"
+                style={{
+                  background: "#ffffff",
+                  color: "#0f172a",
+                  border: "1px solid #d1d5db",
+                }}
+              >
+                Login
               </a>
             </div>
           </div>
