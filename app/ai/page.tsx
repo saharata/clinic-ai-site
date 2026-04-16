@@ -27,11 +27,12 @@ const tools = [
     status: "developing",
   },
   {
-    title: "Neuro Residence (MCQ / MEQ)",
-    description:
-      "ระบบฝึกทำข้อสอบสำหรับแพทย์ประจำบ้าน ช่วยทบทวนความรู้ ฝึก clinical reasoning และเตรียมตัวสอบบอร์ดอย่างเป็นระบบ",
-    status: "developing",
-  },
+  title: "Neuro Residence (MCQ / MEQ)",
+  description:
+    "ระบบฝึกทำข้อสอบสำหรับแพทย์ประจำบ้าน ช่วยทบทวนความรู้ ฝึก clinical reasoning และเตรียมตัวสอบบอร์ดอย่างเป็นระบบ",
+  status: "live",
+  url: "https://neuro-mcq-meq.onrender.com/",
+},
   {
     title: "MS Lesion Tracking",
     description:
