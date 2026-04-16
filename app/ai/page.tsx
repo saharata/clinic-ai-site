@@ -6,7 +6,12 @@ import { createClient, User } from "@supabase/supabase-js";
 const registerUrl = "/ai/register";
 const loginUrl = "/ai/login";
 
-const tools = [
+const tools: {
+  title: string;
+  description: string;
+  status: "live" | "developing";
+  url?: string;
+}[] = [
   {
     title: "Neuro Note",
     description:
@@ -27,12 +32,12 @@ const tools = [
     status: "developing",
   },
   {
-  title: "Neuro Residence (MCQ / MEQ)",
-  description:
-    "ระบบฝึกทำข้อสอบสำหรับแพทย์ประจำบ้าน ช่วยทบทวนความรู้ ฝึก clinical reasoning และเตรียมตัวสอบบอร์ดอย่างเป็นระบบ",
-  status: "live",
-  url: "https://neuro-mcq-meq.onrender.com/",
-},
+    title: "Neuro Residence (MCQ / MEQ)",
+    description:
+      "ระบบฝึกทำข้อสอบสำหรับแพทย์ประจำบ้าน ช่วยทบทวนความรู้ ฝึก clinical reasoning และเตรียมตัวสอบบอร์ดอย่างเป็นระบบ",
+    status: "live",
+    url: "https://neuro-mcq-meq.onrender.com/",
+  },
   {
     title: "MS Lesion Tracking",
     description:
@@ -57,7 +62,7 @@ const tools = [
       "ช่วยจัดระบบการประเมินผู้ป่วยเวียนศีรษะ แยกสาเหตุระหว่าง peripheral และ central และช่วยวางแนวทางการตรวจต่อ",
     status: "developing",
   },
-] as const;
+];
 
 type Tool = (typeof tools)[number];
 
@@ -429,7 +434,6 @@ function ToolCard({
           fontWeight: 600,
         }}
       >
-        {tool.status === "live" ? "● " : ""}
         {badgeText}
       </p>
       <p style={{ marginTop: "12px" }}>{tool.description}</p>
