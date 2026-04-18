@@ -6,25 +6,21 @@ import { createClient, User } from "@supabase/supabase-js";
 const registerUrl = "/ai/register";
 const loginUrl = "/ai/login";
 
-const tools: {
+type Tool = {
   title: string;
   description: string;
   status: "live" | "developing";
   url?: string;
-}[] = [
+  guideUrl?: string;
+};
+
+const tools: Tool[] = [
   {
     title: "Neuro Note",
     description:
       "โปรแกรมช่วยจดบันทึกทางคลินิกสำหรับแพทย์ โดยอาศัยเพียงการพูดคุยระหว่างแพทย์กับผู้ป่วย หรือการพูดออกเสียงสรุปข้อมูลหลังตรวจ ก็สามารถช่วยเรียบเรียงข้อมูลสำคัญและสร้างเป็น OPD card format ที่ดูเป็นระเบียบ สวยงาม และพร้อมนำไปใช้ต่อใน workflow การทำงานได้รวดเร็วขึ้น",
     status: "live",
     url: "https://neuronote.sahawanclinic.clinic",
-  },
-  {
-    title: "Super Vertigo AI",
-    description:
-      "ผู้ช่วยประเมินผู้ป่วยเวียนศีรษะตามแนวคิด vestibular syndrome และหลัก TiTrATE ช่วยแยก true spinning / presyncope / disequilibrium / non-specific dizziness พร้อมช่วยจัด localization, DDx และแนวทางตรวจต่ออย่างเป็นระบบ",
-    status: "live",
-    url: "https://super-vertigo.onrender.com",
   },
   {
     title: "NeuroCoach",
@@ -39,6 +35,7 @@ const tools: {
       "เครื่องมือช่วยอ่าน EEG อัตโนมัติ เพื่อสนับสนุนการทำงานของแพทย์และช่วยลดเวลาในการคัดกรองเคส",
     status: "live",
     url: "https://eeg-seizure-reader.onrender.com",
+    guideUrl: "/EEG_Seizure_Guide.docx",
   },
   {
     title: "Neuro Residence (MCQ / MEQ)",
@@ -73,8 +70,6 @@ const tools: {
   },
 ];
 
-type Tool = (typeof tools)[number];
-
 export default function AiToolsPage() {
   const supabase = useMemo(() => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -104,6 +99,7 @@ export default function AiToolsPage() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
       setUser(session?.user ?? null);
       setLoadingUser(false);
     });
@@ -140,22 +136,21 @@ export default function AiToolsPage() {
 
           <p className="hero-text narrow">
             {loadingUser
-              ? "ระบบเครื่องมือ AI สำหรับประสาทแพทย์ ครอบคลุมตั้งแต่งานเขียนบันทึก การช่วยคิดวินิจฉัย การอ่านผลเฉพาะทาง และการเรียนรู้สำหรับแพทย์ประจำบ้าน โดยออกแบบมาเพื่อลดภาระงานซ้ำซ้อน เพิ่มความเร็วในการทำงาน และทำให้การดูแลผู้ป่วยมีระบบมากขึ้น"
+              ? "ระบบเครื่องมือ AI สำหรับประสาทแพทย์ ครอบคลุมตั้งแต่งานเขียนบันทึก การช่วยคิดวินิจฉัย การอ่านผลเฉพาะทาง และการเรียนรู้สำหรับแพทย์ประจำบ้าน"
               : isLoggedIn
-              ? "คุณเข้าสู่ระบบแล้ว สามารถเลือกใช้งานเครื่องมือที่พร้อมใช้งานได้ทันที และติดตามเครื่องมืออื่น ๆ ที่กำลังอยู่ระหว่างพัฒนา"
-              : "ระบบเครื่องมือ AI สำหรับประสาทแพทย์ ครอบคลุมตั้งแต่งานเขียนบันทึก การช่วยคิดวินิจฉัย การอ่านผลเฉพาะทาง และการเรียนรู้สำหรับแพทย์ประจำบ้าน โดยออกแบบมาเพื่อลดภาระงานซ้ำซ้อน เพิ่มความเร็วในการทำงาน และทำให้การดูแลผู้ป่วยมีระบบมากขึ้น"}
+              ? "คุณเข้าสู่ระบบแล้ว สามารถเลือกใช้งานเครื่องมือที่พร้อมใช้งานได้ทันที"
+              : "ระบบเครื่องมือ AI สำหรับประสาทแพทย์ ครอบคลุมตั้งแต่งานเขียนบันทึก การช่วยคิดวินิจฉัย การอ่านผลเฉพาะทาง และการเรียนรู้สำหรับแพทย์ประจำบ้าน"}
           </p>
 
           <div
             className="hero-actions"
             style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
           >
-            {!loadingUser && !isLoggedIn ? (
+            {!loadingUser && !isLoggedIn && (
               <>
                 <a href={registerUrl} className="btn btn-dark big">
                   ลงทะเบียนใช้งาน
                 </a>
-
                 <a
                   href={loginUrl}
                   className="btn big"
@@ -168,9 +163,9 @@ export default function AiToolsPage() {
                   เข้าสู่ระบบ
                 </a>
               </>
-            ) : null}
+            )}
 
-            {!loadingUser && isLoggedIn ? (
+            {!loadingUser && isLoggedIn && (
               <>
                 <a
                   href="https://neuronote.sahawanclinic.clinic"
@@ -180,7 +175,6 @@ export default function AiToolsPage() {
                 >
                   เข้า Neuro Note
                 </a>
-
                 <button
                   type="button"
                   onClick={handleLogout}
@@ -195,14 +189,14 @@ export default function AiToolsPage() {
                   ออกจากระบบ
                 </button>
               </>
-            ) : null}
+            )}
           </div>
         </div>
       </section>
 
       <section className="section">
         <div className="container">
-          {!loadingUser && !isLoggedIn ? (
+          {!loadingUser && !isLoggedIn && (
             <div
               className="cta-box"
               style={{
@@ -217,100 +211,18 @@ export default function AiToolsPage() {
                   เครื่องมือที่พร้อมใช้งานจะเปิดให้เข้าใช้หลังจากลงทะเบียนหรือเข้าสู่ระบบเรียบร้อยแล้ว
                 </p>
               </div>
-              <div
-                className="cta-actions"
-                style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
-              >
-                <a href={registerUrl} className="btn btn-dark big">
-                  Register
-                </a>
-                <a
-                  href={loginUrl}
-                  className="btn big"
-                  style={{
-                    background: "#ffffff",
-                    color: "#0f172a",
-                    border: "1px solid #d1d5db",
-                  }}
-                >
-                  Login
-                </a>
-              </div>
             </div>
-          ) : null}
+          )}
 
           <div className="cards two">
-            {tools.map((tool, i) => (
+            {tools.map((tool) => (
               <ToolCard
-                key={i}
+                key={tool.title}
                 tool={tool}
                 isLoggedIn={isLoggedIn}
                 loadingUser={loadingUser}
               />
             ))}
-          </div>
-
-          <div className="cta-box top-gap">
-            <div>
-              <h2>{isLoggedIn ? "พร้อมเริ่มใช้งาน" : "เริ่มต้นใช้งาน"}</h2>
-              <p>
-                {isLoggedIn
-                  ? "ขณะนี้คุณเข้าสู่ระบบแล้ว สามารถเริ่มใช้งานเครื่องมือที่พร้อมใช้งานได้ทันที และติดตามการอัปเดตเครื่องมืออื่น ๆ ต่อไป"
-                  : "ขณะนี้ระบบอยู่ในช่วงพัฒนา หากสนใจใช้งานสามารถลงทะเบียนเพื่อรับสิทธิ์ทดลองใช้ และติดตามการเปิดใช้งานของแต่ละเครื่องมือได้"}
-              </p>
-            </div>
-
-            <div
-              className="cta-actions"
-              style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
-            >
-              {!loadingUser && !isLoggedIn ? (
-                <>
-                  <a href={registerUrl} className="btn btn-dark big">
-                    Register
-                  </a>
-
-                  <a
-                    href={loginUrl}
-                    className="btn big"
-                    style={{
-                      background: "#ffffff",
-                      color: "#0f172a",
-                      border: "1px solid #d1d5db",
-                    }}
-                  >
-                    Login
-                  </a>
-                </>
-              ) : null}
-
-              {!loadingUser && isLoggedIn ? (
-                <>
-                  <a
-                    href="https://neuronote.sahawanclinic.clinic"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-dark big"
-                  >
-                    เปิด Neuro Note
-                  </a>
-
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="btn big"
-                    style={{
-                      background: "#ffffff",
-                      color: "#0f172a",
-                      border: "1px solid #d1d5db",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : null}
-            </div>
           </div>
         </div>
       </section>
@@ -330,81 +242,51 @@ function ToolCard({
   const badgeText = tool.status === "live" ? "Live" : "อยู่ในขั้นการพัฒนา";
   const badgeColor = tool.status === "live" ? "#15803d" : "#2563eb";
 
-  if (tool.status === "live" && tool.url) {
-    if (loadingUser) {
-      return (
-        <div className="card">
-          <h3>{tool.title}</h3>
-          <p
-            style={{
-              marginTop: "8px",
-              fontSize: "0.9rem",
-              color: badgeColor,
-              fontWeight: 600,
-            }}
-          >
-            ● {badgeText}
-          </p>
-          <p style={{ marginTop: "12px" }}>{tool.description}</p>
-        </div>
-      );
-    }
-
-    if (!isLoggedIn) {
-      return (
-        <div className="card">
-          <h3>{tool.title}</h3>
-          <p
-            style={{
-              marginTop: "8px",
-              fontSize: "0.9rem",
-              color: badgeColor,
-              fontWeight: 600,
-            }}
-          >
-            ● {badgeText}
-          </p>
-          <p style={{ marginTop: "12px" }}>{tool.description}</p>
-
-          <div
-            style={{
-              marginTop: 16,
-              padding: 12,
-              borderRadius: 12,
-              background: "#fef2f2",
-              color: "#991b1b",
-              fontSize: "0.95rem",
-              fontWeight: 600,
-            }}
-          >
-            กรุณาเข้าสู่ระบบก่อนใช้งาน
-          </div>
-
-          <div style={{ marginTop: 16 }}>
-            <a href={loginUrl} className="btn btn-dark">
-              ไปหน้า Login
-            </a>
-          </div>
-        </div>
-      );
-    }
-
+  if (loadingUser) {
     return (
-      <a
-        href={tool.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="card"
-        style={{
-          display: "block",
-          textDecoration: "none",
-          color: "inherit",
-        }}
-      >
+      <div className="card">
         <h3>{tool.title}</h3>
         <p
           style={{
-            marginTop: "8px",
+            marginTop: 8,
+            fontSize: "0.9rem",
+            color: badgeColor,
+            fontWeight: 600,
+          }}
+        >
+          {tool.status === "live" ? `● ${badgeText}` : badgeText}
+        </p>
+        <p style={{ marginTop: 12 }}>{tool.description}</p>
+      </div>
+    );
+  }
+
+  if (tool.status !== "live" || !tool.url) {
+    return (
+      <div className="card">
+        <h3>{tool.title}</h3>
+        <p
+          style={{
+            marginTop: 8,
+            fontSize: "0.9rem",
+            color: badgeColor,
+            fontWeight: 600,
+          }}
+        >
+          {badgeText}
+        </p>
+        <p style={{ marginTop: 12 }}>{tool.description}</p>
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="card">
+        <h3>{tool.title}</h3>
+        <p
+          style={{
+            marginTop: 8,
             fontSize: "0.9rem",
             color: badgeColor,
             fontWeight: 600,
@@ -412,23 +294,51 @@ function ToolCard({
         >
           ● {badgeText}
         </p>
-        <p style={{ marginTop: "12px" }}>{tool.description}</p>
+        <p style={{ marginTop: 12 }}>{tool.description}</p>
 
         <div
           style={{
             marginTop: 16,
-            display: "inline-block",
-            padding: "10px 14px",
-            borderRadius: 999,
-            background: "#dcfce7",
-            color: "#166534",
-            fontWeight: 700,
+            padding: 12,
+            borderRadius: 12,
+            background: "#fef2f2",
+            color: "#991b1b",
             fontSize: "0.95rem",
+            fontWeight: 600,
           }}
         >
-          เข้าใช้งานได้
+          กรุณาเข้าสู่ระบบก่อนใช้งาน
         </div>
-      </a>
+
+        <div
+          style={{
+            marginTop: 16,
+            display: "flex",
+            gap: 10,
+            flexWrap: "wrap",
+          }}
+        >
+          <a href={loginUrl} className="btn btn-dark">
+            ไปหน้า Login
+          </a>
+
+          {tool.guideUrl && (
+            <a
+              href={tool.guideUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn"
+              style={{
+                background: "#ffffff",
+                color: "#0f172a",
+                border: "1px solid #d1d5db",
+              }}
+            >
+              📄 คู่มือ
+            </a>
+          )}
+        </div>
+      </div>
     );
   }
 
@@ -437,15 +347,49 @@ function ToolCard({
       <h3>{tool.title}</h3>
       <p
         style={{
-          marginTop: "8px",
+          marginTop: 8,
           fontSize: "0.9rem",
           color: badgeColor,
           fontWeight: 600,
         }}
       >
-        {badgeText}
+        ● {badgeText}
       </p>
-      <p style={{ marginTop: "12px" }}>{tool.description}</p>
+      <p style={{ marginTop: 12 }}>{tool.description}</p>
+
+      <div
+        style={{
+          marginTop: 16,
+          display: "flex",
+          gap: 10,
+          flexWrap: "wrap",
+        }}
+      >
+        <a
+          href={tool.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-dark"
+        >
+          เข้าใช้งานได้
+        </a>
+
+        {tool.guideUrl && (
+          <a
+            href={tool.guideUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn"
+            style={{
+              background: "#ffffff",
+              color: "#0f172a",
+              border: "1px solid #d1d5db",
+            }}
+          >
+            📄 คู่มือ
+          </a>
+        )}
+      </div>
     </div>
   );
 }
