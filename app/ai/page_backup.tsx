@@ -20,25 +20,16 @@ const tools: {
     url: "https://neuronote.sahawanclinic.clinic",
   },
   {
-    title: "Super Vertigo AI",
-    description:
-      "ผู้ช่วยประเมินผู้ป่วยเวียนศีรษะตามแนวคิด vestibular syndrome และหลัก TiTrATE ช่วยแยก true spinning / presyncope / disequilibrium / non-specific dizziness พร้อมช่วยจัด localization, DDx และแนวทางตรวจต่ออย่างเป็นระบบ",
-    status: "live",
-    url: "https://super-vertigo.onrender.com",
-  },
-  {
     title: "NeuroCoach",
     description:
-      "เครื่องมือช่วยจัดโครงสร้าง Hx / Exam / DDx พร้อม Coach วิเคราะห์ red flags, missing key items และ suggested questions เพื่อเสริม clinical reasoning ให้แม่นยำขึ้น",
-    status: "live",
-    url: "https://neurocoach-product.onrender.com/step2",
+      "เครื่องมือช่วยคิดวินิจฉัยโรคยาก ช่วยจัดระบบการคิดแยกโรค การประเมินสาเหตุ และแนวทางพิจารณาต่อ",
+    status: "developing",
   },
   {
     title: "AI EEG",
     description:
       "เครื่องมือช่วยอ่าน EEG อัตโนมัติ เพื่อสนับสนุนการทำงานของแพทย์และช่วยลดเวลาในการคัดกรองเคส",
-    status: "live",
-    url: "https://eeg-seizure-reader.onrender.com",
+    status: "developing",
   },
   {
     title: "Neuro Residence (MCQ / MEQ)",
