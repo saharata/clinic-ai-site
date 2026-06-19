@@ -1,10 +1,64 @@
 import Image from "next/image";
 import Link from "next/link";
+
 const lineUrl = "https://lin.ee/7Y8onWN";
 const facebookUrl = "https://facebook.com/saharat.aungsumart.52";
+const phoneDisplay = "065-480-8771";
+const phoneTel = "tel:0654808771";
+
+// พิกัดคลินิก (จาก Google Maps) — TODO: อาจารย์ใส่ที่อยู่เต็มเป็นข้อความได้ทีหลัง
+const clinicLat = "13.872989003444337";
+const clinicLng = "100.53161461121242";
+const clinicAddress = "สหวรรณคลินิก จ.นนทบุรี";
+const mapsDirectionsUrl = `https://www.google.com/maps/search/?api=1&query=${clinicLat},${clinicLng}`;
+const mapEmbedSrc = `https://www.google.com/maps?q=${clinicLat},${clinicLng}&z=16&hl=th&output=embed`;
+
+const clinicJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  name: "สหวรรณคลินิก — คลินิกเวชกรรมเด็กและระบบประสาท",
+  url: "https://www.sahawanclinic.clinic",
+  image: "https://www.sahawanclinic.clinic/place.jpg",
+  telephone: "+66654808771",
+  medicalSpecialty: ["Neurology", "Pediatric"],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "นนทบุรี",
+    addressCountry: "TH",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: clinicLat,
+    longitude: clinicLng,
+  },
+  hasMap: mapsDirectionsUrl,
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Saturday"],
+      opens: "17:00",
+      closes: "20:00",
+      description: "คลินิกเด็ก (กุมารเวช)",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Wednesday", "Friday"],
+      opens: "17:00",
+      closes: "20:00",
+      description: "คลินิกระบบประสาท (ผู้ใหญ่)",
+    },
+  ],
+  sameAs: [facebookUrl],
+};
+
 export default function HomePage() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }}
+      />
+
       <header className="navbar">
         <div className="container nav-inner">
           <div className="brand">
@@ -17,17 +71,18 @@ export default function HomePage() {
 
           <nav className="nav-links">
             <a href="#services">บริการ</a>
+            <a href="#hours">เวลาทำการ</a>
             <a href="#doctors">แพทย์</a>
             <a href="#location">สถานที่</a>
             <a href="#contact">ติดต่อ</a>
             <Link href="/ai" className="btn btn-outline">
               AI Tools
             </Link>
+            <a href={phoneTel} className="btn btn-call">
+              โทร {phoneDisplay}
+            </a>
             <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
               แอด LINE
-            </a>
-            <a href={facebookUrl} target="_blank" rel="noreferrer" className="btn btn-facebook">
-              Facebook
             </a>
           </nav>
         </div>
@@ -37,9 +92,7 @@ export default function HomePage() {
         <div className="container hero-grid">
           <div>
             <p className="eyebrow">ดูแลโดยแพทย์ พร้อมระบบติดตามต่อเนื่อง</p>
-            <h1 className="hero-title">
-              คลินิกเวชกรรมเด็กและระบบประสาท
-            </h1>
+            <h1 className="hero-title">คลินิกเวชกรรมเด็กและระบบประสาท</h1>
             <p className="hero-text">
               ดูแลสุขภาพเด็กทั่วไปและปัญหาระบบประสาท เช่น ปวดศีรษะ เวียนศีรษะ ชัก ชา
               อ่อนแรง และการติดตามอาการอย่างต่อเนื่องผ่าน LINE และระบบ AI
@@ -49,18 +102,18 @@ export default function HomePage() {
               <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line big">
                 ปรึกษา / นัดตรวจผ่าน LINE
               </a>
-              <a href={facebookUrl} target="_blank" rel="noreferrer" className="btn btn-facebook big">
-                Facebook คลินิก
+              <a href={phoneTel} className="btn btn-call big">
+                โทร {phoneDisplay}
               </a>
             </div>
 
             <div className="hero-actions secondary">
+              <a href="#hours" className="btn btn-outline big">
+                ดูเวลาทำการ
+              </a>
               <a href="#services" className="btn btn-outline big">
                 ดูบริการคลินิก
               </a>
-              <Link href="/ai" className="btn btn-dark big">
-                ดูเครื่องมือ AI สำหรับแพทย์
-              </Link>
             </div>
           </div>
 
@@ -106,9 +159,13 @@ export default function HomePage() {
                 ดูแลสุขภาพเด็กทั่วไป เช่น ไข้ ไอ ท้องเสีย วัคซีน การเจริญเติบโต
                 และพัฒนาการเด็ก
               </p>
+              <p className="card-hours">เปิดทำการ จันทร์ &amp; เสาร์ 17:00–20:00 น.</p>
               <div className="card-actions">
                 <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
                   นัดหมายผ่าน LINE
+                </a>
+                <a href={phoneTel} className="btn btn-outline">
+                  โทรนัด
                 </a>
               </div>
             </div>
@@ -119,9 +176,13 @@ export default function HomePage() {
                 ดูแลอาการทางระบบประสาท เช่น ปวดศีรษะ ไมเกรน เวียนศีรษะ ชัก ชา
                 อ่อนแรง Parkinson&apos;s และภาวะสมองเสื่อม
               </p>
+              <p className="card-hours">เปิดทำการ พุธ &amp; ศุกร์ 17:00–20:00 น.</p>
               <div className="card-actions">
                 <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
                   นัดหมายผ่าน LINE
+                </a>
+                <a href={phoneTel} className="btn btn-outline">
+                  โทรนัด
                 </a>
               </div>
             </div>
@@ -129,7 +190,57 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="doctors" className="section alt">
+      <section id="hours" className="section alt">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow">เวลาทำการ</p>
+            <h2>เปิดทำการ</h2>
+            <p>แนะนำให้นัดหมายล่วงหน้าผ่าน LINE หรือโทร เพื่อความสะดวกและลดเวลารอ</p>
+          </div>
+
+          <div className="cards two">
+            <div className="hours-card">
+              <h3>คลินิกเด็ก (กุมารเวช)</h3>
+              <ul className="hours-list">
+                <li>
+                  <span>จันทร์</span>
+                  <span>17:00–20:00 น.</span>
+                </li>
+                <li>
+                  <span>เสาร์</span>
+                  <span>17:00–20:00 น.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="hours-card">
+              <h3>คลินิกระบบประสาท (ผู้ใหญ่)</h3>
+              <p className="hours-doctor">โดย นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+              <ul className="hours-list">
+                <li>
+                  <span>พุธ</span>
+                  <span>17:00–20:00 น.</span>
+                </li>
+                <li>
+                  <span>ศุกร์</span>
+                  <span>17:00–20:00 น.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="hours-actions">
+            <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line big">
+              นัดหมายผ่าน LINE
+            </a>
+            <a href={phoneTel} className="btn btn-call big">
+              โทร {phoneDisplay}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="doctors" className="section">
         <div className="container">
           <div className="section-head">
             <p className="eyebrow">Our Doctors</p>
@@ -142,18 +253,18 @@ export default function HomePage() {
               <div className="doctor-image-wrap">
                 <Image
                   src="/doctor1.jpg"
-                  alt="คุณหมอ สหรัฐ อังศุมาศ"
+                  alt="นพ. สหรัฐ อังศุมาศ ประสาทแพทย์"
                   width={500}
                   height={650}
                   className="doctor-image"
                 />
               </div>
               <div className="doctor-content">
-                <h3>คุณหมอ สหรัฐ อังศุมาศ</h3>
-                <p className="doctor-role">แพทย์อายุรกรรมโรคระบบประสาท</p>
+                <h3>นพ. สหรัฐ อังศุมาศ</h3>
+                <p className="doctor-role">ประสาทแพทย์ (อายุรกรรมโรคระบบประสาท)</p>
                 <p>
-                  ดูแลผู้ป่วยที่มีอาการทางระบบประสาท เช่น ปวดศีรษะ เวียนศีรษะ ชัก ชา
-                  อ่อนแรง และโรคระบบประสาทที่ต้องติดตามต่อเนื่อง
+                  ดูแลผู้ป่วยที่มีอาการทางระบบประสาท เช่น ปวดศีรษะ ไมเกรน เวียนศีรษะ
+                  ชัก ชา อ่อนแรง และโรคระบบประสาทที่ต้องติดตามต่อเนื่อง
                 </p>
               </div>
             </div>
@@ -162,15 +273,15 @@ export default function HomePage() {
               <div className="doctor-image-wrap">
                 <Image
                   src="/doctor2.jpg"
-                  alt="คุณหมอ วรรณวรา อังศุมาศ"
+                  alt="พญ. วรรณวรา อังศุมาศ กุมารแพทย์"
                   width={500}
                   height={650}
                   className="doctor-image"
                 />
               </div>
               <div className="doctor-content">
-                <h3>คุณหมอ วรรณวรา อังศุมาศ</h3>
-                <p className="doctor-role">แพทย์กุมารเวชศาสตร์</p>
+                <h3>พญ. วรรณวรา อังศุมาศ</h3>
+                <p className="doctor-role">กุมารแพทย์</p>
                 <p>
                   ดูแลสุขภาพเด็กทั่วไป การเจริญเติบโต พัฒนาการ วัคซีน
                   และอาการเจ็บป่วยทั่วไปของเด็กในทุกช่วงวัย
@@ -181,22 +292,59 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="location" className="section">
+      <section id="location" className="section alt">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">Clinic Place</p>
-            <h2>บรรยากาศและสถานที่</h2>
+            <p className="eyebrow">Location</p>
+            <h2>สถานที่และการเดินทาง</h2>
             <p>คลินิกออกแบบให้สะอาด สงบ และเหมาะกับการดูแลผู้ป่วยและครอบครัว</p>
           </div>
 
-          <div className="place-card">
-            <Image
-              src="/place.jpg"
-              alt="สถานที่คลินิก"
-              width={1400}
-              height={900}
-              className="place-image"
-            />
+          <div className="location-grid">
+            <div className="place-card">
+              {mapEmbedSrc ? (
+                <iframe
+                  src={mapEmbedSrc}
+                  className="map-frame"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="แผนที่คลินิก"
+                  allowFullScreen
+                />
+              ) : (
+                <Image
+                  src="/place.jpg"
+                  alt="สถานที่คลินิก"
+                  width={1400}
+                  height={900}
+                  className="place-image"
+                />
+              )}
+            </div>
+
+            <div className="location-info hero-card">
+              <h3>ที่อยู่คลินิก</h3>
+              <p>{clinicAddress}</p>
+              <ul>
+                <li>โทร {phoneDisplay}</li>
+                <li>คลินิกเด็ก: จันทร์ &amp; เสาร์ 17:00–20:00 น.</li>
+                <li>คลินิกประสาท: พุธ &amp; ศุกร์ 17:00–20:00 น.</li>
+              </ul>
+              <div className="card-actions top-gap">
+                <a
+                  href={mapsDirectionsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-dark"
+                >
+                  ขอเส้นทางใน Google Maps
+                </a>
+                <a href={phoneTel} className="btn btn-call">
+                  โทร {phoneDisplay}
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -223,11 +371,15 @@ export default function HomePage() {
           <div>
             <h3>คลินิกเวชกรรมเด็กและระบบประสาท</h3>
             <p>ดูแลโดยแพทย์ พร้อมระบบติดตามอาการต่อเนื่องผ่าน LINE และ AI</p>
+            <p>{clinicAddress}</p>
           </div>
 
           <div>
             <h4>ช่องทางติดต่อ</h4>
             <ul className="footer-links">
+              <li>
+                <a href={phoneTel}>โทร {phoneDisplay}</a>
+              </li>
               <li>
                 <a href={lineUrl} target="_blank" rel="noreferrer">
                   LINE Official
@@ -242,6 +394,23 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      <div className="mobile-bar">
+        <a href={phoneTel} className="mobile-bar-btn call">
+          โทร
+        </a>
+        <a
+          href={lineUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="mobile-bar-btn line"
+        >
+          แอด LINE
+        </a>
+        <a href="#hours" className="mobile-bar-btn hours">
+          เวลาทำการ
+        </a>
+      </div>
     </main>
   );
 }
