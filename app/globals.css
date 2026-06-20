@@ -355,6 +355,176 @@ a {
   line-height: 1.9;
 }
 
+/* ===== Vaccine price page ===== */
+.vaccine-hero {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: white;
+  padding: 48px 0 40px;
+  text-align: center;
+}
+
+.vaccine-eyebrow {
+  font-weight: 700;
+  margin: 0 0 8px;
+  opacity: 0.95;
+}
+
+.vaccine-title {
+  font-size: clamp(26px, 4vw, 40px);
+  margin: 0 0 12px;
+}
+
+.vaccine-sub {
+  margin: 0 auto 18px;
+  max-width: 680px;
+  line-height: 1.7;
+  opacity: 0.97;
+}
+
+.vaccine-legend {
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.vaccine-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.dot.core {
+  background: #0f172a;
+}
+
+.dot.optional {
+  background: #f97316;
+}
+
+.vaccine-hero .dot.core {
+  background: #ffffff;
+}
+
+.vaccine-hero .dot.optional {
+  background: #fde68a;
+}
+
+.vaccine-section {
+  padding-top: 36px;
+}
+
+.vaccine-table {
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  background: white;
+}
+
+.vaccine-row {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+}
+
+.vaccine-row + .vaccine-row {
+  border-top: 1px solid #e2e8f0;
+}
+
+.vaccine-head {
+  background: #f97316;
+  color: white;
+  font-weight: 700;
+}
+
+.vaccine-age {
+  padding: 16px 14px;
+  font-weight: 700;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  background: #fffbeb;
+}
+
+.vaccine-head .vaccine-age {
+  border-right-color: rgba(255, 255, 255, 0.4);
+  background: transparent;
+}
+
+.vaccine-items {
+  padding: 8px 16px;
+}
+
+.vaccine-head .vaccine-items {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.vaccine-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 0;
+  line-height: 1.55;
+}
+
+.vaccine-line + .vaccine-line {
+  border-top: 1px dashed #e5e7eb;
+}
+
+.vaccine-name {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+  color: #1f2937;
+}
+
+.vaccine-line-price {
+  font-weight: 700;
+  color: #b45309;
+  white-space: nowrap;
+}
+
+.vaccine-note {
+  margin: 18px 2px 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@media (max-width: 640px) {
+  .vaccine-row {
+    grid-template-columns: 84px 1fr;
+  }
+
+  .vaccine-age {
+    padding: 12px 10px;
+    font-size: 15px;
+  }
+
+  .vaccine-items {
+    padding: 6px 12px;
+  }
+
+  .vaccine-line {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .vaccine-line-price {
+    padding-left: 20px;
+  }
+}
+
 /* ===== FAQ ===== */
 .faq-list {
   display: grid;

@@ -125,6 +125,7 @@ export default function HomePage() {
           <nav className="nav-links">
             <a href="#services">บริการ</a>
             <a href="#hours">เวลาทำการ</a>
+            <Link href="/vaccine">ราคาวัคซีนเด็ก</Link>
             <a href="#doctors">แพทย์</a>
             <a href="#location">สถานที่</a>
             <a href="#faq">คำถามที่พบบ่อย</a>
@@ -215,11 +216,11 @@ export default function HomePage() {
               </p>
               <p className="card-hours">เปิดทำการ จันทร์ &amp; เสาร์ 17:00–20:00 น.</p>
               <div className="card-actions">
+                <Link href="/vaccine" className="btn btn-dark">
+                  ดูราคาวัคซีนเด็ก
+                </Link>
                 <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
                   นัดหมายผ่าน LINE
-                </a>
-                <a href={phoneTel} className="btn btn-outline">
-                  โทรนัด
                 </a>
               </div>
             </div>

@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 .vercel
 .claude
+
+# generated social poster (not source)
+vaccine_poster*.png
