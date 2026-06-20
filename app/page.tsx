@@ -9,7 +9,8 @@ const phoneTel = "tel:0654808771";
 // พิกัดคลินิก (จาก Google Maps) — TODO: อาจารย์ใส่ที่อยู่เต็มเป็นข้อความได้ทีหลัง
 const clinicLat = "13.872989003444337";
 const clinicLng = "100.53161461121242";
-const clinicAddress = "สหวรรณคลินิก จ.นนทบุรี";
+const clinicAddress =
+  "101 หมู่บ้านประชานิเวศน์ 3 ถนนประชานิเวศน์ ต.ท่าทราย อ.เมืองนนทบุรี จ.นนทบุรี 11000";
 const mapsDirectionsUrl = `https://www.google.com/maps/search/?api=1&query=${clinicLat},${clinicLng}`;
 const mapEmbedSrc = `https://www.google.com/maps?q=${clinicLat},${clinicLng}&z=16&hl=th&output=embed`;
 
@@ -23,7 +24,10 @@ const clinicJsonLd = {
   medicalSpecialty: ["Neurology", "Pediatric"],
   address: {
     "@type": "PostalAddress",
-    addressLocality: "นนทบุรี",
+    streetAddress: "101 หมู่บ้านประชานิเวศน์ 3 ถนนประชานิเวศน์ ตำบลท่าทราย",
+    addressLocality: "อำเภอเมืองนนทบุรี",
+    addressRegion: "นนทบุรี",
+    postalCode: "11000",
     addressCountry: "TH",
   },
   geo: {
@@ -51,12 +55,61 @@ const clinicJsonLd = {
   sameAs: [facebookUrl],
 };
 
+const faqs = [
+  {
+    q: "คลินิกเปิดทำการวันไหน เวลาอะไรบ้าง",
+    a: "คลินิกเด็ก (กุมารเวช) เปิดวันจันทร์และวันเสาร์ เวลา 17:00–20:00 น. ส่วนคลินิกระบบประสาทสำหรับผู้ใหญ่ โดย นพ. สหรัฐ อังศุมาศ เปิดวันพุธและวันศุกร์ เวลา 17:00–20:00 น. แนะนำให้นัดหมายล่วงหน้าผ่าน LINE หรือโทร 065-480-8771 เพื่อลดเวลารอ",
+  },
+  {
+    q: "คลินิกอยู่ที่ไหน เดินทางอย่างไร",
+    a: "คลินิกตั้งอยู่เลขที่ 101 หมู่บ้านประชานิเวศน์ 3 ถนนประชานิเวศน์ ตำบลท่าทราย อำเภอเมืองนนทบุรี จังหวัดนนทบุรี 11000 สามารถกดปุ่ม “ขอเส้นทางใน Google Maps” บนหน้าเว็บเพื่อนำทางได้ทันที",
+  },
+  {
+    q: "นัดหมายเข้าตรวจอย่างไร",
+    a: "นัดหมายได้ 2 ช่องทาง คือ แอด LINE ของคลินิกเพื่อสอบถามและจองเวลา หรือโทรนัดที่เบอร์ 065-480-8771 ในเวลาทำการ",
+  },
+  {
+    q: "อาการแบบไหนควรพบประสาทแพทย์",
+    a: "อาการที่ควรปรึกษาประสาทแพทย์ เช่น ปวดศีรษะเรื้อรังหรือปวดศีรษะรุนแรงผิดปกติ ไมเกรน เวียนศีรษะ มือเท้าชาหรืออ่อนแรง ชัก เกร็งกระตุก มือสั่น เดินเซ หลงลืมผิดปกติ หากมีอาการเฉียบพลัน เช่น แขนขาอ่อนแรงครึ่งซีก ปากเบี้ยว พูดไม่ชัด ควรไปห้องฉุกเฉินทันที",
+  },
+  {
+    q: "ปวดศีรษะหรือไมเกรนแบบไหนที่ควรมาตรวจ",
+    a: "ควรมาตรวจเมื่อปวดศีรษะบ่อยขึ้นหรือรุนแรงขึ้นกว่าเดิม ปวดจนรบกวนการใช้ชีวิตหรือการทำงาน ใช้ยาแก้ปวดบ่อยแต่ไม่ดีขึ้น หรือมีอาการร่วม เช่น ตามัว อาเจียนพุ่ง ชา อ่อนแรง ประสาทแพทย์จะช่วยวินิจฉัยชนิดของอาการปวดศีรษะและวางแผนการดูแลที่เหมาะสม",
+  },
+  {
+    q: "พาเด็กมาตรวจสุขภาพและฉีดวัคซีนได้ไหม",
+    a: "ได้ คลินิกเด็กดูแลสุขภาพเด็กทั่วไป เช่น ไข้ ไอ ท้องเสีย ตรวจการเจริญเติบโตและพัฒนาการ รวมถึงให้คำปรึกษาและบริการวัคซีนตามช่วงวัย โดยกุมารแพทย์",
+  },
+  {
+    q: "มีระบบติดตามอาการต่อเนื่องหรือไม่",
+    a: "มี คลินิกมีระบบติดตามอาการต่อเนื่องผ่าน LINE และระบบช่วยจัดการข้อมูล เหมาะสำหรับผู้ป่วยโรคทางระบบประสาทที่ต้องดูแลและติดตามอาการในระยะยาว",
+  },
+  {
+    q: "ควรเตรียมอะไรมาบ้างก่อนพบแพทย์",
+    a: "แนะนำให้นำบัตรประชาชน ยาหรือรายการยาที่ใช้อยู่ ผลตรวจหรือเอกสารทางการแพทย์เดิม (ถ้ามี) และจดบันทึกอาการ เช่น เริ่มเป็นเมื่อไร ความถี่ และสิ่งกระตุ้น มาด้วย เพื่อให้แพทย์ประเมินได้ครบถ้วน",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function HomePage() {
   return (
     <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       <header className="navbar">
@@ -74,6 +127,7 @@ export default function HomePage() {
             <a href="#hours">เวลาทำการ</a>
             <a href="#doctors">แพทย์</a>
             <a href="#location">สถานที่</a>
+            <a href="#faq">คำถามที่พบบ่อย</a>
             <a href="#contact">ติดต่อ</a>
             <Link href="/ai" className="btn btn-outline">
               AI Tools
@@ -362,6 +416,34 @@ export default function HomePage() {
             <Link href="/ai" className="btn btn-dark big">
               เข้าสู่หน้า AI Tools
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className="section alt">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow">FAQ</p>
+            <h2>คำถามที่พบบ่อย</h2>
+            <p>รวมคำถามที่ผู้ป่วยและผู้ปกครองสอบถามบ่อย หากต้องการสอบถามเพิ่มเติม ทักผ่าน LINE หรือโทรได้เลย</p>
+          </div>
+
+          <div className="faq-list">
+            {faqs.map((f) => (
+              <details key={f.q} className="faq-item">
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+
+          <div className="hours-actions">
+            <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line big">
+              สอบถามผ่าน LINE
+            </a>
+            <a href={phoneTel} className="btn btn-call big">
+              โทร {phoneDisplay}
+            </a>
           </div>
         </div>
       </section>
