@@ -7,12 +7,37 @@ const facebookUrl = "https://facebook.com/saharat.aungsumart.52";
 const phoneDisplay = "065-480-8771";
 const phoneTel = "tel:0654808771";
 
+const vaccineTitle = "ราคาวัคซีนเด็กตามช่วงอายุ 2026 | สหวรรณคลินิก";
+const vaccineDesc =
+  "ตารางราคาวัคซีนเด็กตามช่วงอายุ (2 เดือน - 12 ปี) ของสหวรรณคลินิก จ.นนทบุรี " +
+  "ราคารวมค่าแพทย์และค่าบริการแล้ว ฉีดและประเมินพัฒนาการโดยกุมารแพทย์ นัดหมายโทร 065-480-8771";
+
 export const metadata: Metadata = {
   title: "ราคาวัคซีนเด็กตามช่วงอายุ 2026",
-  description:
-    "ตารางราคาวัคซีนเด็กตามช่วงอายุ (2 เดือน - 12 ปี) ของสหวรรณคลินิก จ.นนทบุรี " +
-    "ราคารวมค่าแพทย์และค่าบริการแล้ว ฉีดและประเมินพัฒนาการโดยกุมารแพทย์ นัดหมายโทร 065-480-8771",
+  description: vaccineDesc,
   alternates: { canonical: "https://www.sahawanclinic.clinic/vaccine" },
+  openGraph: {
+    type: "website",
+    locale: "th_TH",
+    url: "https://www.sahawanclinic.clinic/vaccine",
+    siteName: "สหวรรณคลินิก",
+    title: vaccineTitle,
+    description: vaccineDesc,
+    images: [
+      {
+        url: "/og-vaccine.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ราคาวัคซีนเด็กตามช่วงอายุ สหวรรณคลินิก",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: vaccineTitle,
+    description: vaccineDesc,
+    images: ["/og-vaccine.jpg"],
+  },
 };
 
 export default function VaccinePage() {
