@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { symptoms } from "./symptomsData";
+import { symptoms, shorts } from "./symptomsData";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
 const phoneDisplay = "065-480-8771";
@@ -24,20 +24,33 @@ export const metadata: Metadata = {
   },
 };
 
+const publisher = {
+  "@type": "Organization",
+  name: "นพ. สหรัฐ อังศุมาศ · สหวรรณคลินิก",
+};
+
 const videoJsonLd = {
   "@context": "https://schema.org",
-  "@graph": symptoms.map((s) => ({
-    "@type": "VideoObject",
-    name: s.videoTitle,
-    description: s.blurb,
-    thumbnailUrl: `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg`,
-    contentUrl: `https://www.youtube.com/watch?v=${s.videoId}`,
-    embedUrl: `https://www.youtube.com/embed/${s.videoId}`,
-    publisher: {
-      "@type": "Organization",
-      name: "นพ. สหรัฐ อังศุมาศ · สหวรรณคลินิก",
-    },
-  })),
+  "@graph": [
+    ...symptoms.map((s) => ({
+      "@type": "VideoObject",
+      name: s.videoTitle,
+      description: s.blurb,
+      thumbnailUrl: `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg`,
+      contentUrl: `https://www.youtube.com/watch?v=${s.videoId}`,
+      embedUrl: `https://www.youtube.com/embed/${s.videoId}`,
+      publisher,
+    })),
+    ...shorts.map((s) => ({
+      "@type": "VideoObject",
+      name: s.title,
+      description: s.title,
+      thumbnailUrl: `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg`,
+      contentUrl: `https://www.youtube.com/watch?v=${s.videoId}`,
+      embedUrl: `https://www.youtube.com/embed/${s.videoId}`,
+      publisher,
+    })),
+  ],
 };
 
 export default function SymptomsPage() {
@@ -120,6 +133,31 @@ export default function SymptomsPage() {
             * ข้อมูลนี้เพื่อความเข้าใจเบื้องต้น ไม่ใช่การวินิจฉัยหรือทดแทนการพบแพทย์
             การวินิจฉัยและการรักษาขึ้นกับการตรวจประเมินรายบุคคลโดยแพทย์ · หากมีอาการเฉียบพลันรุนแรง ควรไปห้องฉุกเฉินทันที
           </p>
+
+          <div className="shorts-block top-gap">
+            <div className="section-head">
+              <p className="eyebrow">คลิปสั้น 1 นาที</p>
+              <h2>ถามหมอประสาท</h2>
+              <p>คำถามที่พบบ่อย ตอบสั้น ๆ เข้าใจง่ายโดยประสาทแพทย์</p>
+            </div>
+            <div className="shorts-row">
+              {shorts.map((s) => (
+                <div className="short-card" key={s.videoId}>
+                  <div className="short-video">
+                    <iframe
+                      src={`https://www.youtube-nocookie.com/embed/${s.videoId}`}
+                      title={s.title}
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
+                  </div>
+                  <p className="short-title">{s.title}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
           <div className="cta-box top-gap">
             <div>

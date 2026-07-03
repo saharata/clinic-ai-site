@@ -8,6 +8,19 @@ export type Symptom = {
   redFlag: string; // ควรพบแพทย์เมื่อไร
 };
 
+export type ShortClip = {
+  videoId: string;
+  title: string;
+};
+
+// คลิปสั้น (YouTube Shorts แนวตั้ง) หัวข้อเพิ่มเติม
+export const shorts: ShortClip[] = [
+  { videoId: "JTG9iiK5tU8", title: "มือสั่น ใช่พาร์กินสันไหม?" },
+  { videoId: "_fWEZuATMLY", title: "นอนไม่หลับเรื้อรัง อันตรายไหม?" },
+  { videoId: "-6FdERlyqJY", title: "กินยาแก้ปวดหัวบ่อย ยิ่งกินยิ่งปวด?" },
+  { videoId: "ud6jgVw4FcM", title: "ความเครียด ทำให้ไมเกรนจริงไหม?" },
+];
+
 // วิดีโอจริงจากช่อง นพ. สหรัฐ อังศุมาศ (UC2KVTCXdIsKcxMOztzfTiuQ)
 export const symptoms: Symptom[] = [
   {
