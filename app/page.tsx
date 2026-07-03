@@ -126,6 +126,7 @@ export default function HomePage() {
             <a href="#services">บริการ</a>
             <a href="#hours">เวลาทำการ</a>
             <a href="#vaccine">ราคาวัคซีนเด็ก</a>
+            <Link href="/symptoms">อาการที่พบบ่อย</Link>
             <a href="#doctors">แพทย์</a>
             <a href="#location">สถานที่</a>
             <a href="#faq">คำถามที่พบบ่อย</a>
