@@ -263,7 +263,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="hours" className="section">
+      <section id="symptoms-teaser" className="section">
+        <div className="container cta-box">
+          <div>
+            <p className="eyebrow">ความรู้จากประสาทแพทย์</p>
+            <h2>อาการทางระบบประสาทที่พบบ่อย</h2>
+            <p>
+              ปวดศีรษะ เวียนศีรษะบ้านหมุน มือชา ลมชัก หูอื้อ กล้ามเนื้อกระตุก —
+              อาการแบบไหนอันตราย ควรพบแพทย์เมื่อไร ดูวิดีโอที่ นพ. สหรัฐ อธิบายเอง
+            </p>
+          </div>
+          <div className="cta-actions">
+            <Link href="/symptoms" className="btn btn-dark big">
+              ดูอาการที่พบบ่อย
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="hours" className="section alt">
         <div className="container">
           <div className="section-head">
             <p className="eyebrow">เวลาทำการ</p>
