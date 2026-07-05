@@ -53,6 +53,11 @@ const clinicJsonLd = {
     },
   ],
   sameAs: [facebookUrl],
+  identifier: {
+    "@type": "PropertyValue",
+    name: "ใบอนุญาตประกอบกิจการสถานพยาบาล",
+    value: "12102000863",
+  },
 };
 
 const faqs = [
@@ -488,9 +493,10 @@ export default function HomePage() {
       <footer id="contact" className="footer">
         <div className="container footer-grid">
           <div>
-            <h3>คลินิกเวชกรรมเด็กและระบบประสาท</h3>
+            <h3>สหวรรณคลินิก — คลินิกเวชกรรมเด็กและระบบประสาท</h3>
             <p>ดูแลโดยแพทย์ พร้อมระบบติดตามอาการต่อเนื่องผ่าน LINE และ AI</p>
             <p>{clinicAddress}</p>
+            <p>ใบอนุญาตประกอบกิจการสถานพยาบาลเลขที่ 12102000863</p>
           </div>
 
           <div>
