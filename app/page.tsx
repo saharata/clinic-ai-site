@@ -117,8 +117,8 @@ export default function HomePage() {
           <div className="brand">
             <div className="brand-badge">N</div>
             <div>
-              <div className="brand-title">คลินิกเวชกรรมเด็กและระบบประสาท</div>
-              <div className="brand-subtitle">Pediatrics • Neurology • AI Care</div>
+              <div className="brand-title">สหวรรณคลินิก</div>
+              <div className="brand-subtitle">คลินิกเวชกรรมเด็กและระบบประสาท</div>
             </div>
           </div>
 
@@ -147,7 +147,7 @@ export default function HomePage() {
       <section className="hero">
         <div className="container hero-grid">
           <div>
-            <p className="eyebrow">ดูแลโดยแพทย์ พร้อมระบบติดตามต่อเนื่อง</p>
+            <p className="eyebrow">สหวรรณคลินิก · ดูแลโดยแพทย์ พร้อมระบบติดตามต่อเนื่อง</p>
             <h1 className="hero-title">คลินิกเวชกรรมเด็กและระบบประสาท</h1>
             <p className="hero-text">
               ดูแลสุขภาพเด็กทั่วไปและปัญหาระบบประสาท เช่น ปวดศีรษะ เวียนศีรษะ ชัก ชา

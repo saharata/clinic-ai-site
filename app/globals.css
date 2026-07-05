@@ -770,6 +770,27 @@ a {
     justify-content: flex-start;
   }
 }
+
+/* มือถือ: ซ่อนลิงก์ข้อความในเมนู เหลือปุ่มโทร + LINE (แถบลอยล่างมีทางไปส่วนอื่นอยู่แล้ว) */
+@media (max-width: 720px) {
+  .nav-inner {
+    align-items: center;
+  }
+
+  .nav-links a:not(.btn) {
+    display: none;
+  }
+
+  .nav-links .btn-outline {
+    display: none;
+  }
+
+  .nav-links .btn {
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+}
 .hero-side {
   display: grid;
   gap: 20px;
