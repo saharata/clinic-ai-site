@@ -442,6 +442,21 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          <div className="gallery-block top-gap">
+            <h3 className="gallery-title">บรรยากาศภายในคลินิก</h3>
+            <div className="gallery-grid">
+              <Image src="/gallery/g-reception.jpg" alt="จุดต้อนรับของคลินิก" width={1200} height={675} className="gallery-img" />
+              <Image src="/gallery/g-kids-corner.jpg" alt="มุมเด็กและที่นั่งรอ" width={1200} height={675} className="gallery-img" />
+              <Image src="/gallery/g-pediatric.jpg" alt="การตรวจสุขภาพเด็ก" width={1200} height={675} className="gallery-img" />
+              <Image src="/gallery/g-neurology.jpg" alt="การตรวจระบบประสาทผู้ใหญ่" width={1200} height={675} className="gallery-img" />
+              <Image src="/gallery/g-vaccine.jpg" alt="การให้คำปรึกษาวัคซีนและพัฒนาการ" width={1200} height={675} className="gallery-img" />
+              <Image src="/gallery/g-family.jpg" alt="ครอบครัวผู้รับบริการ" width={1200} height={675} className="gallery-img" />
+            </div>
+            <p className="vaccine-note">
+              * ภาพประกอบสร้างด้วย AI โดยอ้างอิงจากบรรยากาศสถานที่จริงของคลินิก
+            </p>
+          </div>
         </div>
       </section>
 
