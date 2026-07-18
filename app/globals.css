@@ -918,3 +918,41 @@ a {
     height: 300px;
   }
 }
+/* ===== EEG demo (/ai/eeg) ===== */
+.eeg-back { display:inline-flex; align-items:center; gap:6px; color:#2563eb; font-weight:600; font-size:.95rem; margin-bottom:8px; }
+.eeg-badge { display:inline-flex; align-items:center; gap:8px; font-size:.85rem; color:#0f766e; background:#ecfdf5; border:1px solid #a7f3d0; padding:6px 14px; border-radius:999px; }
+.eeg-tasks { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:8px; }
+.eeg-task .tag { display:inline-block; font-weight:700; font-size:.75rem; color:#fff; background:linear-gradient(135deg,#1d4ed8,#0f766e); padding:3px 10px; border-radius:6px; margin-bottom:10px; }
+.eeg-task .mdl { margin-top:12px; font-size:.78rem; color:#64748b; font-family:ui-monospace,monospace; }
+.eeg-demo { border:1px solid #e2e8f0; background:#fff; border-radius:18px; padding:28px; box-shadow:0 6px 24px rgba(15,23,42,.05); }
+.eeg-phi { display:flex; gap:10px; background:#fef2f2; border:1px solid #fecaca; color:#991b1b; border-radius:12px; padding:13px 16px; font-size:.9rem; margin-bottom:20px; }
+.eeg-drop { border:2px dashed #cbd5e1; border-radius:14px; padding:32px 18px; text-align:center; cursor:pointer; transition:.15s; background:#f8fafc; }
+.eeg-drop:hover,.eeg-drop.over { border-color:#1d4ed8; background:#eff6ff; }
+.eeg-drop .ico { font-size:2rem; }
+.eeg-drop .big { font-weight:600; margin-top:8px; color:#0f172a; }
+.eeg-drop .small { color:#94a3b8; font-size:.85rem; margin-top:4px; }
+.eeg-samples { margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:.9rem; color:#64748b; }
+.eeg-btn-sample { background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; border-radius:999px; padding:8px 16px; font-size:.9rem; font-weight:600; cursor:pointer; transition:.15s; }
+.eeg-btn-sample:hover { background:#dbeafe; }
+.eeg-controls { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:20px; }
+.eeg-controls select { font-family:inherit; border:1px solid #cbd5e1; border-radius:10px; padding:9px 12px; font-size:.95rem; background:#fff; color:#0f172a; }
+.eeg-status { margin-top:18px; font-size:.93rem; color:#475569; }
+.eeg-spin { display:inline-block; width:14px; height:14px; border:2px solid #e2e8f0; border-top-color:#1d4ed8; border-radius:50%; animation:eegspin .8s linear infinite; vertical-align:-2px; margin-right:7px; }
+@keyframes eegspin { to { transform:rotate(360deg); } }
+.eeg-results { margin-top:22px; }
+.eeg-rmeta { font-size:.85rem; color:#94a3b8; font-family:ui-monospace,monospace; margin-bottom:16px; }
+.eeg-tcard { border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-bottom:14px; background:#f8fafc; }
+.eeg-th { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.eeg-th h4 { margin:0; font-size:1.05rem; }
+.eeg-th .mdl { font-size:.76rem; color:#94a3b8; font-family:ui-monospace,monospace; }
+.eeg-bar { height:24px; border-radius:7px; overflow:hidden; display:flex; background:#e2e8f0; margin-bottom:8px; }
+.eeg-bar span { display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; color:#fff; white-space:nowrap; }
+.eeg-legend { font-size:.8rem; color:#64748b; }
+.eeg-flag { display:inline-flex; align-items:center; gap:6px; background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:8px; padding:5px 10px; margin:6px 6px 0 0; font-size:.82rem; }
+.eeg-clean { color:#15803d; font-size:.92rem; margin-top:8px; font-weight:600; }
+.eeg-err { color:#dc2626; font-weight:600; }
+.eeg-disc { border:1px solid #fde68a; border-left:4px solid #f59e0b; background:#fffbeb; border-radius:12px; padding:22px 24px; }
+.eeg-disc h3 { color:#92400e; margin:0 0 10px; }
+.eeg-disc ul { margin:0; padding-left:20px; color:#78350f; font-size:.94rem; }
+.eeg-disc li { margin-bottom:8px; }
+@media (max-width:760px){ .eeg-tasks{ grid-template-columns:1fr; } }

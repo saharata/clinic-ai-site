@@ -32,9 +32,9 @@ const tools: Tool[] = [
   {
     title: "AI EEG",
     description:
-      "เครื่องมือช่วยอ่าน EEG อัตโนมัติ เพื่อสนับสนุนการทำงานของแพทย์และช่วยลดเวลาในการคัดกรองเคส",
+      "เครื่องมือช่วยอ่าน EEG อัตโนมัติ คัดกรองคลื่นชัก (seizure) และคลื่น epileptiform (IED/sharp wave) พร้อมทดลองใช้งานกับไฟล์ตัวอย่างได้ทันที เพื่อสนับสนุนการทำงานของแพทย์และช่วยลดเวลาในการคัดกรองเคส",
     status: "live",
-    url: "https://eeg-seizure-reader.onrender.com",
+    url: "/ai/eeg",
     guideUrl: "/EEG_Seizure_Guide.docx",
   },
   {
