@@ -41,7 +41,7 @@ export default function EegDemoPage() {
   function warmup() {
     if (warmed.current) return;
     warmed.current = true;
-    fetch("/api/eeg/health").catch(() => {});
+    fetch(`${FULL_APP_URL}/api/health`).catch(() => {});
   }
 
   function pickFile(f: File | null) {
@@ -67,7 +67,7 @@ export default function EegDemoPage() {
     try {
       const fd = new FormData();
       fd.append("file", theFile);
-      const r = await fetch(`/api/eeg/analyze?tasks=${encodeURIComponent(tasks)}`, {
+      const r = await fetch(`${FULL_APP_URL}/api/analyze?tasks=${encodeURIComponent(tasks)}`, {
         method: "POST",
         body: fd,
       });
