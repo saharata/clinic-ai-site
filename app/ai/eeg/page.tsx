@@ -44,6 +44,25 @@ export default function EegDemoPage() {
     fetch(`${FULL_APP_URL}/api/health`).catch(() => {});
   }
 
+  // Poll health until the (possibly sleeping) Render server is awake, so the analyze
+  // POST never hits a cold-start response without CORS headers ("Failed to fetch").
+  async function ensureAwake(maxMs = 150000): Promise<boolean> {
+    const deadline = Date.now() + maxMs;
+    while (Date.now() < deadline) {
+      try {
+        const c = new AbortController();
+        const t = setTimeout(() => c.abort(), 12000);
+        const r = await fetch(`${FULL_APP_URL}/api/health`, { signal: c.signal });
+        clearTimeout(t);
+        if (r.ok) return true;
+      } catch {
+        /* server still waking — retry */
+      }
+      await new Promise((res) => setTimeout(res, 3000));
+    }
+    return false;
+  }
+
   function pickFile(f: File | null) {
     if (!f) return;
     if (!/\.edf$/i.test(f.name)) {
@@ -65,6 +84,7 @@ export default function EegDemoPage() {
       "กำลังส่งไฟล์ไปยังโมเดล… เซิร์ฟเวอร์วิจัยอาจกำลังตื่นจาก sleep (ครั้งแรกอาจถึง ~60 วินาที) โปรดรอสักครู่"
     );
     try {
+      await ensureAwake();
       const fd = new FormData();
       fd.append("file", theFile);
       const r = await fetch(`${FULL_APP_URL}/api/analyze?tasks=${encodeURIComponent(tasks)}`, {
