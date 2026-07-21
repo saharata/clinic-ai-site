@@ -12,6 +12,8 @@ type Tool = {
   status: "live" | "developing";
   url?: string;
   guideUrl?: string;
+  public?: boolean;
+  cta?: string;
 };
 
 const tools: Tool[] = [
@@ -47,8 +49,11 @@ const tools: Tool[] = [
   {
     title: "MS Lesion Tracking",
     description:
-      "ช่วยติดตามการเปลี่ยนแปลงของ lesion จาก MRI ในผู้ป่วย multiple sclerosis เพื่อให้การประเมินโรคและการติดตามผลทำได้รวดเร็วและเป็นระบบมากขึ้น",
-    status: "developing",
+      "ติดตามการฝ่อของสมองและการเปลี่ยนแปลงของ lesion จาก MRI ในผู้ป่วย multiple sclerosis เชิงปริมาณข้ามปี ช่วยให้เห็นทิศทางของโรคที่การอ่านทีละครั้งจับไม่ได้ (ประมวลผลในเครื่อง ข้อมูลไม่ออกจากคลินิก)",
+    status: "live",
+    url: "/ai/mri",
+    public: true,
+    cta: "ดูตัวอย่างผลลัพธ์",
   },
   {
     title: "Stroke Assistant",
@@ -276,6 +281,31 @@ function ToolCard({
           {badgeText}
         </p>
         <p style={{ marginTop: 12 }}>{tool.description}</p>
+      </div>
+    );
+  }
+
+  if (tool.public && tool.url) {
+    return (
+      <div className="card">
+        <h3>{tool.title}</h3>
+        <p
+          style={{
+            marginTop: 8,
+            fontSize: "0.9rem",
+            color: badgeColor,
+            fontWeight: 600,
+          }}
+        >
+          ● {badgeText}
+        </p>
+        <p style={{ marginTop: 12 }}>{tool.description}</p>
+
+        <div style={{ marginTop: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <a href={tool.url} className="btn btn-dark">
+            {tool.cta || "เข้าใช้งานได้"}
+          </a>
+        </div>
       </div>
     );
   }
