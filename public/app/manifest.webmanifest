@@ -1,0 +1,17 @@
+{
+  "name": "Sahawan Clinic",
+  "short_name": "Sahawan",
+  "description": "บันทึกสุขภาพ สะสมแต้ม สหวรรณคลินิก — ความดัน น้ำตาล น้ำหนัก ผลแล็บ",
+  "lang": "th",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F9F6",
+  "theme_color": "#F4F9F6",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

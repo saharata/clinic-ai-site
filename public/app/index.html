@@ -1,0 +1,1146 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sahawan Clinic</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F4F9F6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sahawan Clinic">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="64x64" href="icons/icon-64.png">
+<style>
+  :root{
+    --ground:#F4F9F6;
+    --card:#FFFFFF;
+    --ink:#12403A;
+    --muted:#5E7A73;
+    --line:#DCEAE3;
+    --accent:#E8618C;
+    --accent-soft:#FDEDF3;
+    --gold:#F5B841;
+    --gold-soft:#FEF5E2;
+    --ok:#2FA36B;
+    --ok-soft:#E6F5EC;
+    --warn:#E9A13B;
+    --warn-soft:#FCF1DC;
+    --high:#E05B4B;
+    --high-soft:#FBE7E4;
+    --crit:#C22F45;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Sukhumvit Set","Thonburi",-apple-system,"Segoe UI",sans-serif;
+    background:var(--ground);
+    color:var(--ink);
+    display:flex;justify-content:center;
+    line-height:1.55;
+  }
+  .phone{
+    width:100%;max-width:420px;min-height:100dvh;
+    display:flex;flex-direction:column;
+    background:var(--ground);
+    position:relative;
+  }
+  /* ---------- header ---------- */
+  .top{
+    padding:18px 20px 10px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
+  .top .brand{display:flex;align-items:center;gap:10px}
+  .appicon{
+    width:44px;height:44px;border-radius:11px;flex:none;
+    box-shadow:0 1px 4px rgba(18,64,58,.15);
+  }
+  .clinic{
+    font-size:12px;letter-spacing:.08em;color:var(--muted);
+    text-transform:uppercase;
+  }
+  .appname{font-size:18px;font-weight:700;line-height:1.2;white-space:nowrap}
+  .appname .pin{color:var(--accent)}
+  .pointpill{
+    display:flex;align-items:center;gap:6px;
+    background:var(--gold-soft);border:1px solid #F3DCA6;
+    border-radius:999px;padding:6px 12px;
+    font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;
+  }
+  .pointpill svg{flex:none}
+  /* ---------- screens ---------- */
+  main{flex:1;overflow-y:auto;padding:6px 16px 96px}
+  .screen{display:none;flex-direction:column;gap:14px}
+  .screen.active{display:flex}
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:18px;
+  }
+  h2{font-size:17px;font-weight:700;margin-bottom:4px}
+  .sub{font-size:13px;color:var(--muted)}
+  /* ---------- mascot ---------- */
+  .hero{
+    background:linear-gradient(160deg,#FFFFFF 55%,#FDF0F5 100%);
+    border:1px solid var(--line);border-radius:24px;
+    padding:20px 18px 16px;display:flex;gap:14px;align-items:center;
+  }
+  .mascot{flex:none;width:104px;height:104px}
+  @media (prefers-reduced-motion: no-preference){
+    .mascot .bob{animation:bob 3s ease-in-out infinite}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  }
+  .bubble{
+    background:var(--accent-soft);border-radius:16px;border-top-left-radius:4px;
+    padding:10px 14px;font-size:14.5px;
+  }
+  .bubble b{color:var(--accent)}
+  .mascotname{font-size:12px;color:var(--muted);margin-top:6px}
+  /* ---------- streak ---------- */
+  .streakrow{display:flex;gap:10px}
+  .streakrow .card{flex:1;display:flex;flex-direction:column;gap:2px;padding:14px 16px}
+  .bignum{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+  .bignum small{font-size:13px;font-weight:600;color:var(--muted)}
+  .lbl{font-size:12px;color:var(--muted)}
+  /* ---------- reward ---------- */
+  .rwtop{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .rwtop span{font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  .bar{height:10px;background:#E7F1EB;border-radius:5px;overflow:hidden;margin:10px 0 8px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--accent));border-radius:5px;transition:width .4s ease}
+  .coupon{
+    border:2px dashed var(--accent);background:var(--accent-soft);
+    border-radius:16px;padding:14px;margin-top:12px;text-align:center;
+  }
+  .coupon .ct{font-size:14px;font-weight:700;color:var(--accent)}
+  .coupon .code{font-size:23px;font-weight:800;letter-spacing:.12em;font-variant-numeric:tabular-nums;margin:2px 0}
+  .coupon .cd{font-size:12px;color:var(--muted)}
+  .coupon button{
+    margin-top:8px;border:1.5px solid var(--accent);background:#fff;color:var(--accent);
+    font-family:inherit;font-weight:700;font-size:13px;border-radius:999px;
+    padding:6px 16px;cursor:pointer;
+  }
+  /* ---------- buttons ---------- */
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    border:none;border-radius:16px;padding:15px 16px;width:100%;
+    font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;
+    color:#fff;background:var(--ink);
+    transition:transform .08s ease, filter .15s ease;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .btn.pink{background:var(--accent)}
+  .btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+  .btn.gold{background:var(--gold);color:#4A3506}
+  .btn[disabled]{filter:grayscale(.5);opacity:.55;cursor:default}
+  /* ---------- segmented control ---------- */
+  .seg{display:flex;background:#E7F1EB;border-radius:14px;padding:4px;gap:4px}
+  .seg button{
+    flex:1;border:none;background:none;font-family:inherit;font-weight:700;
+    font-size:14px;color:var(--muted);padding:9px 4px;border-radius:11px;cursor:pointer;
+  }
+  .seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(18,64,58,.14)}
+  .seg button:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+  .subpanel{display:none;flex-direction:column;gap:14px}
+  .subpanel.on{display:flex}
+  /* ---------- log dials ---------- */
+  .dialgrid{display:flex;flex-direction:column;gap:12px}
+  .dial{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 16px;display:flex;align-items:center;gap:12px;
+  }
+  .dial .info{flex:1}
+  .dial .name{font-size:14px;font-weight:700}
+  .dial .unit{font-size:12px;color:var(--muted)}
+  .dial .val{
+    font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;
+    width:86px;text-align:center;
+  }
+  .stepbtn{
+    width:48px;height:48px;flex:none;border-radius:14px;border:1.5px solid var(--line);
+    background:var(--ground);color:var(--ink);font-size:24px;font-weight:700;
+    font-family:inherit;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .08s ease;
+  }
+  .stepbtn:active{transform:scale(.92)}
+  .stepbtn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .chiprow{display:flex;gap:8px}
+  .selchip{
+    flex:1;border:1.5px solid var(--line);background:var(--card);border-radius:12px;
+    font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);
+    padding:11px 8px;cursor:pointer;
+  }
+  .selchip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .selchip:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .zonecard{
+    border-radius:var(--radius);padding:16px 18px;display:none;
+    border:1px solid transparent;
+  }
+  .zonecard.show{display:block}
+  .zonecard .zt{font-size:17px;font-weight:800}
+  .zonecard .zd{font-size:14px;margin-top:2px}
+  .zonecard.ok{background:var(--ok-soft);color:#175E3C;border-color:#BCE3CC}
+  .zonecard.warn{background:var(--warn-soft);color:#7A5310;border-color:#F0D9AC}
+  .zonecard.high{background:var(--high-soft);color:#8A2A1F;border-color:#F2C4BD}
+  .zonecard.crit{background:#F9E0E5;color:var(--crit);border-color:#EDB6C0}
+  /* ---------- lab form ---------- */
+  .labgroup h3{font-size:13.5px;font-weight:800;color:var(--muted);margin:4px 0 8px;letter-spacing:.02em}
+  .labgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .labfield label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px;line-height:1.3}
+  .labfield input{
+    width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;
+    font-family:inherit;font-size:17px;font-weight:700;color:var(--ink);
+    font-variant-numeric:tabular-nums;background:var(--card);
+  }
+  .labfield input:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+  .labfield .u{font-size:10.5px;color:var(--muted);font-weight:400}
+  /* ---------- lab result chips ---------- */
+  .labchips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .labchip{
+    border:1px solid var(--line);border-radius:12px;padding:8px 10px;
+    display:flex;flex-direction:column;gap:1px;background:var(--ground);
+  }
+  .labchip .ln{font-size:11px;color:var(--muted);line-height:1.3}
+  .labchip .lv{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+  .flag{font-size:10px;font-weight:700;padding:1px 7px;border-radius:999px}
+  .flag.ok{background:var(--ok-soft);color:#175E3C}
+  .flag.warn{background:var(--warn-soft);color:#7A5310}
+  .flag.high{background:var(--high-soft);color:#8A2A1F}
+  /* ---------- quiz ---------- */
+  .qprog{display:flex;gap:5px;margin-bottom:4px}
+  .qprog span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+  .qprog span.done{background:var(--accent)}
+  .qtext{font-size:17px;font-weight:700;text-wrap:balance;margin:8px 0 14px}
+  .choices{display:flex;flex-direction:column;gap:10px}
+  .choice{
+    text-align:left;border:1.5px solid var(--line);border-radius:14px;
+    background:var(--card);padding:13px 15px;font-family:inherit;font-size:15px;
+    color:var(--ink);cursor:pointer;transition:transform .08s ease;
+  }
+  .choice:active{transform:scale(.98)}
+  .choice:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .choice.correct{background:var(--ok-soft);border-color:var(--ok);font-weight:700}
+  .choice.wrong{background:var(--high-soft);border-color:var(--high)}
+  .qfeedback{font-size:14px;margin-top:12px;padding:12px 14px;border-radius:12px;display:none}
+  .qfeedback.show{display:block}
+  .qfeedback.good{background:var(--ok-soft);color:#175E3C}
+  .qfeedback.bad{background:var(--warn-soft);color:#7A5310}
+  .qscore{font-size:13px;color:var(--muted)}
+  /* ---------- history ---------- */
+  canvas.chart{width:100%;height:190px;display:block}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:8px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .histlist{display:flex;flex-direction:column;gap:8px}
+  .histrow{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:11px 14px;font-size:14px;
+  }
+  .histrow .d{color:var(--muted);font-size:12.5px}
+  .histrow .v{font-weight:800;font-variant-numeric:tabular-nums;font-size:16px}
+  .chip{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px}
+  .chip.ok{background:var(--ok-soft);color:#175E3C}
+  .chip.warn{background:var(--warn-soft);color:#7A5310}
+  .chip.high{background:var(--high-soft);color:#8A2A1F}
+  .chip.crit{background:#F9E0E5;color:var(--crit)}
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+    width:100%;max-width:420px;
+    background:rgba(255,255,255,.96);backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);
+    display:flex;padding:6px 8px calc(10px + env(safe-area-inset-bottom));
+  }
+  nav button{
+    flex:1;background:none;border:none;font-family:inherit;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    font-size:11.5px;color:var(--muted);padding:7px 0;border-radius:14px;
+  }
+  nav button.active{color:var(--accent);font-weight:700;background:var(--accent-soft)}
+  nav button:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+  nav svg{width:23px;height:23px}
+  /* ---------- toast ---------- */
+  .toast{
+    position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;font-weight:700;font-size:14.5px;
+    padding:11px 20px;border-radius:999px;opacity:0;pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;white-space:nowrap;z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
+  .disclaimer{
+    font-size:11.5px;color:var(--muted);text-align:center;
+    padding:4px 18px 8px;text-wrap:balance;
+  }
+  .cite{margin-top:6px;text-align:left}
+  .cite summary{cursor:pointer;text-align:center;color:var(--muted);font-weight:600}
+  .cite ul{margin:6px 0 2px;padding-left:18px}
+  .cite li{margin-bottom:4px}
+  .cite a{color:var(--ink)}
+  .tipcard{background:var(--gold-soft);border:1px solid #F3DCA6}
+  .tipcard h2{color:#7A5310}
+  .tipcard p{font-size:14px;color:#5C440F}
+</style>
+
+<div class="phone">
+  <div class="top">
+    <div class="brand">
+      <img class="appicon" alt="ไอคอนแอป น้องสมอง" src="data:image/png;base64,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">
+      <div>
+        <div class="clinic">สหวรรณคลินิก</div>
+        <div class="appname">Sahawan Clinic <span class="pin">♥</span></div>
+      </div>
+    </div>
+    <div class="pointpill" id="pointPill">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#F5B841"/><path d="M12 6.5l1.6 3.4 3.7.5-2.7 2.6.7 3.7L12 15l-3.3 1.7.7-3.7-2.7-2.6 3.7-.5L12 6.5z" fill="#fff"/></svg>
+      <span id="pointVal">0</span> แต้ม
+    </div>
+  </div>
+
+  <main>
+    <!-- ============ HOME ============ -->
+    <section class="screen active" id="scr-home">
+      <div class="hero">
+        <svg class="mascot" viewBox="0 0 120 120" role="img" aria-label="น้องสมอง มาสคอตของแอป">
+          <g class="bob">
+            <ellipse cx="60" cy="106" rx="30" ry="6" fill="#E4EFE8"/>
+            <path d="M60 14c-20 0-34 13-34 32 0 8 3 14 7 19-1 6 1 13 8 16 5 9 13 13 19 13s14-4 19-13c7-3 9-10 8-16 4-5 7-11 7-19 0-19-14-32-34-32z" fill="#F5A8C2"/>
+            <path d="M60 20c-16 0-27 10-27 26 0 6 2 11 5 15M60 20c16 0 27 10 27 26 0 6-2 11-5 15M42 34c4-3 9-4 13-2m10 2c4-3 9-4 13-2M38 52c5-2 9 0 11 3m22-3c5-2 9 0 11 3"
+              stroke="#E8618C" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <circle cx="48" cy="66" r="4.5" fill="#12403A"/>
+            <circle cx="72" cy="66" r="4.5" fill="#12403A"/>
+            <circle cx="49.6" cy="64.4" r="1.5" fill="#fff"/>
+            <circle cx="73.6" cy="64.4" r="1.5" fill="#fff"/>
+            <path id="mouth" d="M52 78q8 7 16 0" stroke="#12403A" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+            <circle cx="40" cy="74" r="5" fill="#F27FA5" opacity=".55"/>
+            <circle cx="80" cy="74" r="5" fill="#F27FA5" opacity=".55"/>
+          </g>
+        </svg>
+        <div>
+          <div class="bubble" id="mascotSay">สวัสดีครับ! วันนี้วัดความดันหรือยัง? <b>คุมความดันดี = ดูแลสมอง</b> นะครับ</div>
+          <div class="mascotname">น้องสมอง · เพื่อนดูแลสุขภาพของคุณ</div>
+        </div>
+      </div>
+
+      <div class="streakrow">
+        <div class="card">
+          <span class="bignum" id="streakVal">0 <small>วันติด</small></span>
+          <span class="lbl">บันทึกต่อเนื่อง</span>
+        </div>
+        <div class="card">
+          <span class="bignum" id="lastBP">–</span>
+          <span class="lbl">ความดันล่าสุด (มม.ปรอท)</span>
+        </div>
+      </div>
+
+      <!-- reward -->
+      <div class="card">
+        <div class="rwtop">
+          <h2>รางวัลสะสมแต้ม</h2>
+          <span id="rwCount">0 / 5,000</span>
+        </div>
+        <div class="bar"><i id="rwBar"></i></div>
+        <p class="sub">ครบ 5,000 แต้ม แลกเป็น<b>ส่วนลดวัคซีน 50 บาท</b> ใช้ได้ในครั้งถัดไปที่คลินิก</p>
+        <div style="height:10px"></div>
+        <button class="btn pink" id="redeemBtn" disabled>สะสมแต้มต่ออีกนิดนะครับ</button>
+        <div id="couponBox"></div>
+      </div>
+
+      <button class="btn pink" data-go="log">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.8-9.5-9C1 8.5 3 5 6.5 5c2.2 0 4 1.3 5.5 3 1.5-1.7 3.3-3 5.5-3C21 5 23 8.5 21.5 12c-2 4.2-9.5 9-9.5 9z" fill="#fff"/></svg>
+        บันทึกความดัน · น้ำตาล · รูปร่าง · แล็บ
+      </button>
+      <button class="btn gold" data-go="quiz">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5h8a4 4 0 014 4v2a8 8 0 11-16 0V9a4 4 0 014-4z" fill="#4A3506" opacity=".9"/><circle cx="9.5" cy="11" r="1.4" fill="#F5B841"/><circle cx="14.5" cy="11" r="1.4" fill="#F5B841"/></svg>
+        เล่นเกมรอหมอ · สะสมแต้ม
+      </button>
+      <button class="btn ghost" id="checkinBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5.2 5 9.2 5 14.5 12 22 12 22s7-7.5 7-12.8C19 5.2 16 2 12 2z" stroke="#12403A" stroke-width="2"/><circle cx="12" cy="9.5" r="2.6" fill="#E8618C"/></svg>
+        เช็คอินที่คลินิกวันนี้ +20 แต้ม
+      </button>
+
+      <div class="card tipcard">
+        <h2>เกร็ดวันนี้</h2>
+        <p id="tipText">นั่งพัก 5 นาทีก่อนวัดความดัน และวัดเวลาเดิมทุกวัน ค่าที่ได้จะเชื่อถือได้มากขึ้น</p>
+      </div>
+    </section>
+
+    <!-- ============ LOG ============ -->
+    <section class="screen" id="scr-log">
+      <div class="seg" role="tablist" aria-label="เลือกสิ่งที่จะบันทึก">
+        <button class="on" data-seg="bp">ความดัน</button>
+        <button data-seg="dtx">น้ำตาล</button>
+        <button data-seg="body">รูปร่าง</button>
+        <button data-seg="lab">ผลแล็บ</button>
+      </div>
+
+      <!-- BP -->
+      <div class="subpanel on" id="sub-bp">
+        <div>
+          <h2>บันทึกความดันวันนี้</h2>
+          <p class="sub">กด + / − ปรับตามหน้าจอเครื่องวัด แล้วกดบันทึก (กดค้างเพื่อเลื่อนเร็ว)</p>
+        </div>
+        <div class="dialgrid">
+          <div class="dial">
+            <div class="info"><div class="name">ตัวบน (SYS)</div><div class="unit">มม.ปรอท</div></div>
+            <button class="stepbtn" data-t="sys" data-d="-1" aria-label="ลดค่าตัวบน">−</button>
+            <div class="val" id="v-sys">120</div>
+            <button class="stepbtn" data-t="sys" data-d="1" aria-label="เพิ่มค่าตัวบน">+</button>
+          </div>
+          <div class="dial">
+            <div class="info"><div class="name">ตัวล่าง (DIA)</div><div class="unit">มม.ปรอท</div></div>
+            <button class="stepbtn" data-t="dia" data-d="-1" aria-label="ลดค่าตัวล่าง">−</button>
+            <div class="val" id="v-dia">78</div>
+            <button class="stepbtn" data-t="dia" data-d="1" aria-label="เพิ่มค่าตัวล่าง">+</button>
+          </div>
+          <div class="dial">
+            <div class="info"><div class="name">ชีพจร</div><div class="unit">ครั้ง/นาที</div></div>
+            <button class="stepbtn" data-t="pul" data-d="-1" aria-label="ลดค่าชีพจร">−</button>
+            <div class="val" id="v-pul">72</div>
+            <button class="stepbtn" data-t="pul" data-d="1" aria-label="เพิ่มค่าชีพจร">+</button>
+          </div>
+        </div>
+        <button class="btn pink" id="saveBP">บันทึกความดัน +10 แต้ม</button>
+        <div class="zonecard" id="zoneCard">
+          <div class="zt" id="zoneTitle"></div>
+          <div class="zd" id="zoneDesc"></div>
+        </div>
+      </div>
+
+      <!-- DTX -->
+      <div class="subpanel" id="sub-dtx">
+        <div>
+          <h2>น้ำตาลปลายนิ้ว (DTX)</h2>
+          <p class="sub">เจาะที่คลินิกหรือวัดเองที่บ้าน บันทึกได้เหมือนกันครับ</p>
+        </div>
+        <div class="chiprow">
+          <button class="selchip on" id="chip-fast">อดอาหาร ≥ 8 ชม.</button>
+          <button class="selchip" id="chip-fed">หลังอาหาร</button>
+        </div>
+        <div class="dial">
+          <div class="info"><div class="name">ระดับน้ำตาล</div><div class="unit">mg/dL</div></div>
+          <button class="stepbtn" data-t="dtx" data-d="-1" aria-label="ลดค่าน้ำตาล">−</button>
+          <div class="val" id="v-dtx">98</div>
+          <button class="stepbtn" data-t="dtx" data-d="1" aria-label="เพิ่มค่าน้ำตาล">+</button>
+        </div>
+        <button class="btn pink" id="saveDTX">บันทึกน้ำตาล +20 แต้ม</button>
+        <div class="zonecard" id="dtxZoneCard">
+          <div class="zt" id="dtxZoneTitle"></div>
+          <div class="zd" id="dtxZoneDesc"></div>
+        </div>
+      </div>
+
+      <!-- BODY (น้ำหนัก/ส่วนสูง/BMI) -->
+      <div class="subpanel" id="sub-body">
+        <div>
+          <h2>น้ำหนัก · ส่วนสูง</h2>
+          <p class="sub">ชั่งน้ำหนักที่คลินิกแล้วบันทึกได้เลย · แอปคำนวณ BMI ให้อัตโนมัติ</p>
+        </div>
+        <div class="dial">
+          <div class="info"><div class="name">น้ำหนัก</div><div class="unit">กิโลกรัม</div></div>
+          <button class="stepbtn" data-t="wt" data-d="-1" aria-label="ลดน้ำหนัก">−</button>
+          <div class="val" id="v-wt">65</div>
+          <button class="stepbtn" data-t="wt" data-d="1" aria-label="เพิ่มน้ำหนัก">+</button>
+        </div>
+        <div class="dial">
+          <div class="info"><div class="name">ส่วนสูง</div><div class="unit">เซนติเมตร</div></div>
+          <button class="stepbtn" data-t="ht" data-d="-1" aria-label="ลดส่วนสูง">−</button>
+          <div class="val" id="v-ht">165</div>
+          <button class="stepbtn" data-t="ht" data-d="1" aria-label="เพิ่มส่วนสูง">+</button>
+        </div>
+        <button class="btn pink" id="saveBody">บันทึกน้ำหนัก/ส่วนสูง +10 แต้ม</button>
+        <div class="zonecard" id="bodyZoneCard">
+          <div class="zt" id="bodyZoneTitle"></div>
+          <div class="zd" id="bodyZoneDesc"></div>
+        </div>
+      </div>
+
+      <!-- LAB -->
+      <div class="subpanel" id="sub-lab">
+        <div>
+          <h2>บันทึกผลแล็บ 16 รายการ</h2>
+          <p class="sub">กรอกตามใบผลแล็บ ช่องไหนไม่ได้ตรวจเว้นว่างได้ · บันทึกครบชุดรับ +200 แต้ม</p>
+        </div>
+        <div class="card labgroup" id="labForm"></div>
+        <button class="btn pink" id="saveLab">บันทึกผลแล็บ +200 แต้ม</button>
+        <div class="zonecard" id="labSavedCard">
+          <div class="zt">บันทึกผลแล็บแล้ว</div>
+          <div class="zd">ดูสรุปพร้อมช่วงอ้างอิงได้ที่หน้า "ประวัติ" และโชว์คุณหมอได้เลยครับ</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="screen" id="scr-quiz">
+      <div>
+        <h2>เกมรอหมอ · ทายใจน้องสมอง</h2>
+        <p class="sub">ตอบถูกได้ข้อละ 5 แต้ม รู้ไว้ใช้ดูแลตัวเองได้จริง</p>
+      </div>
+      <div class="card">
+        <div class="qprog" id="qProg"></div>
+        <div class="qscore" id="qScore">ข้อ 1 · ตอบถูก 0 ข้อ</div>
+        <div class="qtext" id="qText"></div>
+        <div class="choices" id="qChoices"></div>
+        <div class="qfeedback" id="qFeedback"></div>
+      </div>
+      <button class="btn" id="qNext" style="display:none">ข้อถัดไป</button>
+      <div class="card" id="qDone" style="display:none;text-align:center">
+        <h2 id="qDoneTitle">เก่งมาก!</h2>
+        <p class="sub" id="qDoneDesc"></p>
+        <div style="height:12px"></div>
+        <button class="btn gold" id="qRestart">เล่นอีกรอบ</button>
+      </div>
+    </section>
+
+    <!-- ============ HISTORY ============ -->
+    <section class="screen" id="scr-hist">
+      <div>
+        <h2>ประวัติสุขภาพของคุณ</h2>
+        <p class="sub">โชว์หน้าจอนี้ให้คุณหมอดูได้เลยตอนเข้าตรวจ</p>
+      </div>
+      <div class="card">
+        <canvas class="chart" id="chart" aria-label="กราฟความดันย้อนหลัง" role="img"></canvas>
+        <div class="legend">
+          <span><i style="background:var(--accent)"></i>ตัวบน (SYS)</span>
+          <span><i style="background:#8AB8A8"></i>ตัวล่าง (DIA)</span>
+          <span><i style="background:var(--ok-soft);border:1px solid var(--ok)"></i>ช่วงเหมาะสม</span>
+        </div>
+      </div>
+      <div class="histlist" id="histList"></div>
+      <div>
+        <h2>น้ำตาลปลายนิ้วล่าสุด</h2>
+      </div>
+      <div class="histlist" id="dtxList"></div>
+      <div>
+        <h2>น้ำหนัก · BMI ล่าสุด</h2>
+      </div>
+      <div class="histlist" id="bodyList"></div>
+      <div class="card" id="labCard">
+        <h2>ผลแล็บล่าสุด</h2>
+        <p class="sub" id="labDate">ยังไม่มีผลแล็บที่บันทึกไว้</p>
+        <div class="labchips" id="labChips"></div>
+        <p class="sub" style="margin-top:10px">ช่วงอ้างอิงเป็นค่าทั่วไป อาจต่างจากแล็บของแต่ละแห่ง โปรดฟังคำอธิบายจากแพทย์</p>
+      </div>
+    </section>
+  </main>
+
+  <nav aria-label="เมนูหลัก">
+    <button class="active" data-go="home" id="nav-home">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1h-5v-6h-4v6H5a1 1 0 01-1-1v-9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      หน้าแรก
+    </button>
+    <button data-go="log" id="nav-log">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.8-9.5-9C1 8.5 3 5 6.5 5c2.2 0 4 1.3 5.5 3 1.5-1.7 3.3-3 5.5-3C21 5 23 8.5 21.5 12c-2 4.2-9.5 9-9.5 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 12h3l1.5-3 2 5L15 12h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      บันทึก
+    </button>
+    <button data-go="quiz" id="nav-quiz">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="6" width="16" height="12" rx="4" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></svg>
+      เกม
+    </button>
+    <button data-go="hist" id="nav-hist">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 19h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 15l4-5 3 3 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      ประวัติ
+    </button>
+  </nav>
+
+  <div class="disclaimer">แอปนี้ช่วยบันทึกค่าเพื่อประกอบการดูแล ไม่ใช้แทนคำวินิจฉัยของแพทย์ · ข้อมูลเก็บในเครื่องของคุณเท่านั้น
+    <details class="cite">
+      <summary>ⓘ แหล่งอ้างอิงเกณฑ์ค่าต่างๆ</summary>
+      <ul>
+        <li>ความดันโลหิต — <a href="https://www.thaihypertension.org/guideline.html" target="_blank" rel="noopener">สมาคมความดันโลหิตสูงแห่งประเทศไทย</a> · <a href="https://www.who.int/news-room/fact-sheets/detail/hypertension" target="_blank" rel="noopener">WHO Hypertension Fact sheet</a></li>
+        <li>น้ำตาลในเลือด — <a href="https://www.dmthai.org/" target="_blank" rel="noopener">สมาคมโรคเบาหวานแห่งประเทศไทย</a> · <a href="https://diabetesjournals.org/care/issue" target="_blank" rel="noopener">ADA Standards of Care in Diabetes</a></li>
+        <li>BMI เกณฑ์เอเชีย — <a href="https://iris.who.int/handle/10665/206936" target="_blank" rel="noopener">WHO Asia-Pacific perspective</a></li>
+        <li>ผลแล็บ — ช่วงอ้างอิงตามใบรายงานผลของห้องปฏิบัติการที่ตรวจ · <a href="https://www.rcpt.org/" target="_blank" rel="noopener">ราชวิทยาลัยอายุรแพทย์แห่งประเทศไทย</a></li>
+      </ul>
+    </details>
+  </div>
+  <div class="toast" id="toast"></div>
+  <canvas class="confetti" id="confetti"></canvas>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var LS = "wadjai_demo_v3";
+  var REDEEM_COST = 5000;
+
+  /* ---------- แล็บ 19 รายการ (จากใบผลจริงของคลินิก · ช่วงอ้างอิงตามใบ) ---------- */
+  var LABS = [
+    {k:"TP",   g:"โปรตีน",  n:"โปรตีนรวม (TP)",        u:"g/dL",  lo:6.5,  hi:8.5},
+    {k:"ALB",  g:"โปรตีน",  n:"อัลบูมิน (ALB)",        u:"g/dL",  lo:4,    hi:5.5},
+    {k:"GLO",  g:"โปรตีน",  n:"โกลบูลิน (GLO)",        u:"g/dL",  lo:2,    hi:4},
+    {k:"AG",   g:"โปรตีน",  n:"อัตราส่วน A/G",         u:"ratio", lo:1.2,  hi:2.4},
+    {k:"TBIL", g:"ดีซ่าน",  n:"บิลิรูบินรวม (TBIL)",   u:"mg/dL", lo:0.2,  hi:1.17},
+    {k:"DBIL", g:"ดีซ่าน",  n:"บิลิรูบินตรง (DBIL)",   u:"mg/dL", lo:0,    hi:0.35},
+    {k:"IBIL", g:"ดีซ่าน",  n:"บิลิรูบินอ้อม (IBIL)",  u:"mg/dL", lo:0,    hi:1},
+    {k:"ALT",  g:"ตับ",     n:"ค่าตับ ALT (SGPT)",     u:"U/L",   lo:9,    hi:50},
+    {k:"AST",  g:"ตับ",     n:"ค่าตับ AST (SGOT)",     u:"U/L",   lo:15,   hi:40},
+    {k:"GGT",  g:"ตับ",     n:"ค่าตับ GGT",            u:"U/L",   lo:10,   hi:60},
+    {k:"ALP",  g:"ตับ",     n:"ค่าตับ ALP",            u:"U/L",   lo:45,   hi:125},
+    {k:"TG",   g:"ไขมัน",   n:"ไตรกลีเซอไรด์ (TG)",    u:"mg/dL", lo:0,    hi:150},
+    {k:"CHOL", g:"ไขมัน",   n:"คอเลสเตอรอลรวม",        u:"mg/dL", lo:0,    hi:201},
+    {k:"HDL",  g:"ไขมัน",   n:"ไขมันดี (HDL-C)",       u:"mg/dL", lo:44.6, hi:54.6},
+    {k:"LDL",  g:"ไขมัน",   n:"ไขมันไม่ดี (LDL-C)",    u:"mg/dL", lo:0,    hi:120},
+    {k:"GLU",  g:"น้ำตาล",  n:"น้ำตาลในเลือด (GLU)",   u:"mg/dL", lo:70,   hi:110},
+    {k:"CRE",  g:"ไต",      n:"ครีอะตินีน (Cre)",      u:"mg/dL", lo:0.61, hi:1.23},
+    {k:"UREA", g:"ไต",      n:"ยูเรีย (Urea)",         u:"mg/dL", lo:17.4, hi:49.2},
+    {k:"UA",   g:"ไต",      n:"กรดยูริก (UA)",         u:"mg/dL", lo:3.5,  hi:7.2},
+    // ตรวจเพิ่มจากเครื่องอื่น — ช่วงอ้างอิงมาตรฐานทั่วไป (รอยืนยันจากใบจริง)
+    {k:"HBA1C",g:"น้ำตาลสะสม",     n:"น้ำตาลสะสม (HbA1c)",     u:"%",        lo:4,   hi:5.6},
+    {k:"WBC",  g:"เม็ดเลือด (CBC)", n:"เม็ดเลือดขาว (WBC)",     u:"×10³/µL", lo:4,   hi:10},
+    {k:"HB",   g:"เม็ดเลือด (CBC)", n:"ฮีโมโกลบิน (Hb)",        u:"g/dL",    lo:12,  hi:17},
+    {k:"HCT",  g:"เม็ดเลือด (CBC)", n:"ความเข้มข้นเลือด (Hct)", u:"%",       lo:36,  hi:50},
+    {k:"MCV",  g:"เม็ดเลือด (CBC)", n:"ขนาดเม็ดเลือดแดง (MCV)", u:"fL",      lo:80,  hi:100},
+    {k:"PLT",  g:"เม็ดเลือด (CBC)", n:"เกล็ดเลือด (Platelet)",  u:"×10³/µL", lo:150, hi:450},
+    {k:"TSH",  g:"ไทรอยด์", n:"ไทรอยด์ (TSH)",         u:"mIU/L",   lo:0.4, hi:4},
+    {k:"FT4",  g:"ไทรอยด์", n:"ไทรอยด์อิสระ (FT4)",    u:"ng/dL",   lo:0.9, hi:1.7}
+  ];
+
+  /* โหมด demo (?demo=1) = ข้อมูลตัวอย่างไว้โชว์/สอนพนักงาน · ไม่บันทึกทับของจริง */
+  var DEMO = /[?&]demo\b/.test(location.search);
+
+  var state = load();
+
+  function load(){
+    if(DEMO) return demoState();
+    try{ var s = JSON.parse(localStorage.getItem(LS)); if(s && s.entries) return s; }catch(e){}
+    return {
+      points: 0, streak: 0,
+      entries: [], dtx: [], body: [], labs: [], coupons: [],
+      lastLogDay: "", lastCheckin: "", lastLabDay: ""
+    };
+  }
+  function demoState(){
+    var base = Date.now() - 6*864e5;
+    var demo = [[128,82,74],[124,80,70],[131,84,76],[122,79,71],[118,76,69],[126,81,73]];
+    var seed = demo.map(function(d,i){ return {t: base + i*864e5, sys:d[0], dia:d[1], pul:d[2]}; });
+    return {
+      points: 4860, streak: 3,
+      entries: seed,
+      dtx: [
+        {t: Date.now()-5*864e5, v:102, fast:true},
+        {t: Date.now()-3*864e5, v:96,  fast:true},
+        {t: Date.now()-1*864e5, v:134, fast:false}
+      ],
+      body: [
+        {t: Date.now()-14*864e5, wt:72, ht:170},
+        {t: Date.now()-7*864e5,  wt:71, ht:170}
+      ],
+      labs: [{t: Date.now()-10*864e5, v:{TP:6.11, ALB:4.35, GLO:1.76, AG:2.5, TBIL:1.9, DBIL:1.14, IBIL:0.76, ALT:36, AST:39, GGT:64, ALP:226, TG:109, CHOL:144, HDL:47.5, LDL:74.7, GLU:117, CRE:1.37, UREA:47.7, UA:6.06}}],
+      coupons: [],
+      lastLogDay: dayKey(Date.now()-864e5), lastCheckin: "", lastLabDay: ""
+    };
+  }
+  function save(){ if(DEMO) return; try{ localStorage.setItem(LS, JSON.stringify(state)); }catch(e){} }
+  function dayKey(t){ var d = new Date(t); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+  function thDate(t){
+    var d = new Date(t);
+    var m = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+    return d.getDate()+" "+m[d.getMonth()];
+  }
+  function fmt(n){ return n.toLocaleString("th-TH"); }
+
+  /* ---------- zone logic (แนวทางทั่วไป ไม่ใช่การวินิจฉัย) ---------- */
+  function zone(sys, dia){
+    if(sys >= 180 || dia >= 110) return {k:"crit", t:"ค่าสูงมาก", d:"กรุณาแจ้งเจ้าหน้าที่หรือคุณหมอทันทีนะครับ"};
+    if(sys >= 140 || dia >= 90)  return {k:"high", t:"ค่าอยู่ในช่วงสูง", d:"บันทึกไว้แล้ว อย่าลืมเล่าให้คุณหมอฟังตอนเข้าตรวจครับ"};
+    if(sys >= 120 || dia >= 80)  return {k:"warn", t:"ค่าเริ่มขยับขึ้น", d:"ยังพอไหว! ลดเค็ม ขยับกายสม่ำเสมอ แล้ววัดต่อเนื่องนะครับ"};
+    return {k:"ok", t:"ค่าอยู่ในช่วงเหมาะสม", d:"เยี่ยมมาก! น้องสมองยิ้มกว้างเลย รักษาแบบนี้ไว้นะครับ"};
+  }
+  // BMI เกณฑ์เอเชีย (ใช้ในคลินิกไทย)
+  function bmiZone(wt, ht){
+    var m = ht/100, bmi = wt/(m*m);
+    var r = Math.round(bmi*10)/10;
+    if(bmi < 18.5) return {k:"warn", t:"ค่อนข้างผอม (BMI "+r+")", d:"กินให้ครบหมู่ เพิ่มโปรตีน แล้วปรึกษาคุณหมอได้ครับ"};
+    if(bmi < 23)   return {k:"ok",   t:"สมส่วน (BMI "+r+")",      d:"เยี่ยมมาก! รักษาน้ำหนักแบบนี้ไว้นะครับ"};
+    if(bmi < 25)   return {k:"warn", t:"น้ำหนักเกิน (BMI "+r+")", d:"เริ่มขยับขึ้น ลดหวานมัน เดินหลังอาหารช่วยได้มากครับ"};
+    if(bmi < 30)   return {k:"high", t:"อ้วนระดับ 1 (BMI "+r+")", d:"บันทึกไว้แล้ว คุมอาหาร+ออกกำลัง อย่าลืมปรึกษาคุณหมอครับ"};
+    return {k:"crit", t:"อ้วนระดับ 2 (BMI "+r+")", d:"ควรปรึกษาคุณหมอเรื่องแผนลดน้ำหนักนะครับ"};
+  }
+  function dtxZone(v, fast){
+    if(v < 70) return {k:"crit", t:"น้ำตาลต่ำ", d:"ถ้ามีอาการใจสั่น เหงื่อแตก มึนงง กรุณาแจ้งเจ้าหน้าที่ทันทีครับ"};
+    if(fast){
+      if(v >= 250) return {k:"crit", t:"ค่าสูงมาก", d:"กรุณาแจ้งเจ้าหน้าที่หรือคุณหมอทันทีนะครับ"};
+      if(v >= 126) return {k:"high", t:"ค่าอยู่ในช่วงสูง", d:"บันทึกไว้แล้ว อย่าลืมปรึกษาคุณหมอตอนเข้าตรวจครับ"};
+      if(v >= 100) return {k:"warn", t:"ค่าเริ่มขยับขึ้น", d:"ลดหวาน ลดแป้งขัดสี เดินหลังอาหาร แล้ววัดซ้ำนะครับ"};
+      return {k:"ok", t:"ค่าอยู่ในช่วงเหมาะสม", d:"เยี่ยมมาก! รักษาแบบนี้ไว้นะครับ"};
+    }
+    if(v >= 300) return {k:"crit", t:"ค่าสูงมาก", d:"กรุณาแจ้งเจ้าหน้าที่หรือคุณหมอทันทีนะครับ"};
+    if(v >= 200) return {k:"high", t:"ค่าอยู่ในช่วงสูง", d:"บันทึกไว้แล้ว อย่าลืมปรึกษาคุณหมอตอนเข้าตรวจครับ"};
+    if(v >= 140) return {k:"warn", t:"ค่าเริ่มขยับขึ้น", d:"หลังอาหารขึ้นได้บ้าง ลองลดหวานมื้อถัดไปนะครับ"};
+    return {k:"ok", t:"ค่าอยู่ในช่วงเหมาะสม", d:"เยี่ยมมาก! รักษาแบบนี้ไว้นะครับ"};
+  }
+  function labFlag(def, v){
+    if(v < def.lo) return def.hi === null
+      ? {k:"warn", t:"ต่ำ"}
+      : {k:"warn", t:"ต่ำ"};
+    if(def.hi !== null && v > def.hi) return {k:"high", t:"สูง"};
+    return {k:"ok", t:"ปกติ"};
+  }
+
+  /* ---------- navigation ---------- */
+  var screens = {home:"scr-home", log:"scr-log", quiz:"scr-quiz", hist:"scr-hist"};
+  function go(name){
+    Object.keys(screens).forEach(function(k){
+      document.getElementById(screens[k]).classList.toggle("active", k===name);
+      var nb = document.getElementById("nav-"+k);
+      if(nb) nb.classList.toggle("active", k===name);
+    });
+    if(name==="hist") drawChart();
+    document.querySelector("main").scrollTop = 0;
+  }
+  document.querySelectorAll("[data-go]").forEach(function(el){
+    el.addEventListener("click", function(){ go(el.getAttribute("data-go")); });
+  });
+
+  /* ---------- segmented control ---------- */
+  document.querySelectorAll(".seg button").forEach(function(b){
+    b.addEventListener("click", function(){
+      document.querySelectorAll(".seg button").forEach(function(x){ x.classList.toggle("on", x===b); });
+      ["bp","dtx","body","lab"].forEach(function(k){
+        document.getElementById("sub-"+k).classList.toggle("on", k===b.getAttribute("data-seg"));
+      });
+    });
+  });
+
+  /* ---------- points / toast / confetti ---------- */
+  function toast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(t._h); t._h = setTimeout(function(){ t.classList.remove("show"); }, 2200);
+  }
+  function addPoints(n, msg){
+    state.points += n; save(); renderTop();
+    toast(msg || ("+"+n+" แต้ม"));
+  }
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function confetti(){
+    if(reduceMotion) return;
+    var c = document.getElementById("confetti"), x = c.getContext("2d");
+    var dpr = window.devicePixelRatio||1;
+    c.width = innerWidth*dpr; c.height = innerHeight*dpr; x.scale(dpr,dpr);
+    var cols = ["#E8618C","#F5B841","#2FA36B","#8AB8A8","#F5A8C2"];
+    var ps = [];
+    for(var i=0;i<70;i++) ps.push({
+      x: innerWidth/2 + (Math.sin(i*7)*60), y: innerHeight*0.45,
+      vx: Math.sin(i*13)*4.5, vy: -4 - (i%5), r: 3+(i%4),
+      col: cols[i%cols.length], rot: i*23, vr: (i%2? 6:-6)
+    });
+    var frames = 0;
+    (function tick(){
+      x.clearRect(0,0,innerWidth,innerHeight);
+      ps.forEach(function(p){
+        p.x+=p.vx; p.y+=p.vy; p.vy+=0.22; p.rot+=p.vr;
+        x.save(); x.translate(p.x,p.y); x.rotate(p.rot*Math.PI/180);
+        x.fillStyle=p.col; x.fillRect(-p.r,-p.r/1.6,p.r*2,p.r*1.25); x.restore();
+      });
+      if(++frames<90) requestAnimationFrame(tick);
+      else x.clearRect(0,0,innerWidth,innerHeight);
+    })();
+  }
+
+  /* ---------- reward ---------- */
+  function renderReward(){
+    var p = state.points;
+    document.getElementById("rwCount").textContent = fmt(p)+" / "+fmt(REDEEM_COST);
+    document.getElementById("rwBar").style.width = Math.min(100, p/REDEEM_COST*100)+"%";
+    var btn = document.getElementById("redeemBtn");
+    if(p >= REDEEM_COST){
+      btn.disabled = false;
+      btn.textContent = "แลกส่วนลดวัคซีน 50 บาท (ใช้ 5,000 แต้ม)";
+    } else {
+      btn.disabled = true;
+      btn.textContent = "สะสมอีก "+fmt(REDEEM_COST-p)+" แต้ม เพื่อแลกส่วนลด";
+    }
+    var box = document.getElementById("couponBox"); box.innerHTML = "";
+    state.coupons.forEach(function(cp, idx){
+      var d = document.createElement("div"); d.className = "coupon";
+      d.innerHTML = '<div class="ct">คูปองส่วนลดวัคซีน 50 บาท</div>'+
+        '<div class="code">'+cp.code+'</div>'+
+        '<div class="cd">ออกเมื่อ '+thDate(cp.t)+' · แสดงหน้านี้กับเจ้าหน้าที่ก่อนชำระเงิน</div>'+
+        '<button data-i="'+idx+'">เจ้าหน้าที่กดยืนยันการใช้คูปอง</button>';
+      d.querySelector("button").addEventListener("click", function(){
+        state.coupons.splice(idx,1); save(); renderReward();
+        toast("ใช้คูปองเรียบร้อย ขอบคุณครับ");
+      });
+      box.appendChild(d);
+    });
+  }
+  document.getElementById("redeemBtn").addEventListener("click", function(){
+    if(state.points < REDEEM_COST) return;
+    state.points -= REDEEM_COST;
+    var code = "SW-"+Date.now().toString(36).toUpperCase().slice(-6);
+    state.coupons.push({code: code, t: Date.now()});
+    save(); renderTop(); confetti();
+    toast("แลกคูปองสำเร็จ!");
+  });
+
+  /* ---------- render top / home ---------- */
+  function renderTop(){
+    document.getElementById("pointVal").textContent = fmt(state.points);
+    document.getElementById("streakVal").innerHTML = state.streak + ' <small>วันติด</small>';
+    var last = state.entries[state.entries.length-1];
+    document.getElementById("lastBP").textContent = last ? (last.sys+"/"+last.dia) : "–";
+    var say = document.getElementById("mascotSay");
+    if(state.lastLogDay === dayKey(Date.now())){
+      say.innerHTML = "วันนี้บันทึกแล้ว เก่งมาก! <b>สะสม "+state.streak+" วันติด</b> ลองเล่นเกมรอหมอต่อไหมครับ?";
+    } else {
+      say.innerHTML = "สวัสดีครับ! วันนี้วัดความดันหรือยัง? <b>คุมความดันดี = ดูแลสมอง</b> นะครับ";
+    }
+    var tips = [
+      "นั่งพัก 5 นาทีก่อนวัดความดัน และวัดเวลาเดิมทุกวัน ค่าที่ได้จะเชื่อถือได้มากขึ้น",
+      "ลดเกลือและน้ำปลาเหลือไม่เกิน 1 ช้อนชาต่อวัน ช่วยให้ความดันค่อย ๆ ลงได้",
+      "เดินเร็ววันละ 30 นาที เป็นยาลดความดันที่ไม่ต้องจ่ายเงินซื้อ",
+      "นอนให้พอ 7-8 ชั่วโมง สมองและหลอดเลือดได้พักไปพร้อมกัน"
+    ];
+    document.getElementById("tipText").textContent = tips[new Date().getDate() % tips.length];
+    var ci = document.getElementById("checkinBtn");
+    if(state.lastCheckin === dayKey(Date.now())){
+      ci.disabled = true; ci.textContent = "เช็คอินวันนี้แล้ว ✓";
+    }
+    renderReward();
+  }
+  document.getElementById("checkinBtn").addEventListener("click", function(){
+    if(state.lastCheckin === dayKey(Date.now())) return;
+    state.lastCheckin = dayKey(Date.now());
+    addPoints(20, "เช็คอินสำเร็จ +20 แต้ม ยินดีต้อนรับครับ");
+    confetti(); renderTop();
+  });
+
+  /* ---------- steppers (BP + DTX) ---------- */
+  var vals = {sys:120, dia:78, pul:72, dtx:98, wt:65, ht:165};
+  var lims = {sys:[70,250], dia:[40,150], pul:[30,200], dtx:[20,600], wt:[25,250], ht:[100,220]};
+  document.querySelectorAll(".stepbtn").forEach(function(b){
+    var t = b.getAttribute("data-t"), d = +b.getAttribute("data-d");
+    var hold, rep;
+    function step(){
+      vals[t] = Math.min(lims[t][1], Math.max(lims[t][0], vals[t]+d));
+      document.getElementById("v-"+t).textContent = vals[t];
+    }
+    b.addEventListener("click", step);
+    b.addEventListener("pointerdown", function(){
+      hold = setTimeout(function(){ rep = setInterval(step, 70); }, 450);
+    });
+    ["pointerup","pointerleave","pointercancel"].forEach(function(ev){
+      b.addEventListener(ev, function(){ clearTimeout(hold); clearInterval(rep); });
+    });
+  });
+  function markLogged(){
+    var today = dayKey(Date.now()), yest = dayKey(Date.now()-864e5);
+    if(state.lastLogDay !== today){
+      state.streak = (state.lastLogDay === yest) ? state.streak+1 : 1;
+      state.lastLogDay = today;
+    }
+  }
+
+  /* ---------- BP save ---------- */
+  document.getElementById("saveBP").addEventListener("click", function(){
+    var z = zone(vals.sys, vals.dia);
+    state.entries.push({t: Date.now(), sys: vals.sys, dia: vals.dia, pul: vals.pul});
+    if(state.entries.length > 60) state.entries.shift();
+    markLogged(); save();
+    var zc = document.getElementById("zoneCard");
+    zc.className = "zonecard show "+z.k;
+    document.getElementById("zoneTitle").textContent = z.t;
+    document.getElementById("zoneDesc").textContent = z.d;
+    addPoints(10, "บันทึกความดันแล้ว +10 แต้ม");
+    if(z.k==="ok") confetti();
+    renderTop(); renderHist();
+  });
+
+  /* ---------- DTX ---------- */
+  var dtxFast = true;
+  document.getElementById("chip-fast").addEventListener("click", function(){ setFast(true); });
+  document.getElementById("chip-fed").addEventListener("click", function(){ setFast(false); });
+  function setFast(f){
+    dtxFast = f;
+    document.getElementById("chip-fast").classList.toggle("on", f);
+    document.getElementById("chip-fed").classList.toggle("on", !f);
+  }
+  document.getElementById("saveDTX").addEventListener("click", function(){
+    var z = dtxZone(vals.dtx, dtxFast);
+    state.dtx.push({t: Date.now(), v: vals.dtx, fast: dtxFast});
+    if(state.dtx.length > 60) state.dtx.shift();
+    markLogged(); save();
+    var zc = document.getElementById("dtxZoneCard");
+    zc.className = "zonecard show "+z.k;
+    document.getElementById("dtxZoneTitle").textContent = z.t;
+    document.getElementById("dtxZoneDesc").textContent = z.d;
+    addPoints(20, "บันทึกน้ำตาลแล้ว +20 แต้ม");
+    if(z.k==="ok") confetti();
+    renderTop(); renderHist();
+  });
+
+  /* ---------- BODY (น้ำหนัก/ส่วนสูง/BMI) ---------- */
+  document.getElementById("saveBody").addEventListener("click", function(){
+    var z = bmiZone(vals.wt, vals.ht);
+    state.body.push({t: Date.now(), wt: vals.wt, ht: vals.ht});
+    if(state.body.length > 60) state.body.shift();
+    markLogged(); save();
+    var zc = document.getElementById("bodyZoneCard");
+    zc.className = "zonecard show "+z.k;
+    document.getElementById("bodyZoneTitle").textContent = z.t;
+    document.getElementById("bodyZoneDesc").textContent = z.d;
+    addPoints(10, "บันทึกน้ำหนัก/ส่วนสูงแล้ว +10 แต้ม");
+    if(z.k==="ok") confetti();
+    renderTop(); renderHist();
+  });
+
+  /* ---------- LAB form ---------- */
+  function buildLabForm(){
+    var wrap = document.getElementById("labForm");
+    wrap.innerHTML = "";
+    var groups = [];
+    LABS.forEach(function(l){ if(groups.indexOf(l.g)<0) groups.push(l.g); });
+    groups.forEach(function(g){
+      var h = document.createElement("h3"); h.textContent = g;
+      wrap.appendChild(h);
+      var grid = document.createElement("div"); grid.className = "labgrid";
+      LABS.filter(function(l){ return l.g===g; }).forEach(function(l){
+        var f = document.createElement("div"); f.className = "labfield";
+        var range = l.hi === null ? ("≥ "+l.lo) : (l.lo+"–"+l.hi);
+        f.innerHTML = '<label for="lab-'+l.k+'">'+l.n+' <span class="u">'+l.u+' · ช่วง '+range+'</span></label>'+
+          '<input id="lab-'+l.k+'" type="number" inputmode="decimal" step="any" placeholder="–">';
+        grid.appendChild(f);
+      });
+      wrap.appendChild(grid);
+      wrap.appendChild(document.createElement("div")).style.height = "12px";
+    });
+  }
+  document.getElementById("saveLab").addEventListener("click", function(){
+    var v = {}, filled = 0;
+    LABS.forEach(function(l){
+      var raw = document.getElementById("lab-"+l.k).value;
+      if(raw !== "" && !isNaN(+raw)){ v[l.k] = +raw; filled++; }
+    });
+    if(!filled){ toast("กรอกผลอย่างน้อย 1 รายการก่อนนะครับ"); return; }
+    state.labs.push({t: Date.now(), v: v});
+    if(state.labs.length > 20) state.labs.shift();
+    var today = dayKey(Date.now());
+    var bonus = state.lastLabDay !== today;
+    state.lastLabDay = today;
+    save();
+    document.getElementById("labSavedCard").className = "zonecard show ok";
+    if(bonus){ addPoints(200, "บันทึกผลแล็บแล้ว +200 แต้ม"); confetti(); }
+    else { toast("บันทึกเพิ่มเรียบร้อย (แต้มแล็บรับได้วันละครั้ง)"); save(); }
+    renderTop(); renderHist();
+    LABS.forEach(function(l){ document.getElementById("lab-"+l.k).value = ""; });
+  });
+
+  /* ---------- quiz ---------- */
+  var QUESTIONS = [
+    {q:"ความดันโลหิตสูงเป็นปัจจัยเสี่ยงอันดับต้น ๆ ของโรคใด?",
+     c:["โรคหลอดเลือดสมอง (สโตรก)","โรคกระเพาะอาหาร","ภูมิแพ้อากาศ","ต้อกระจก"], a:0,
+     e:"ถูกต้อง! คุมความดันดีคือการป้องกันสโตรกที่ทำได้ทุกวัน"},
+    {q:"ก่อนวัดความดันที่บ้าน ควรทำอะไรก่อน?",
+     c:["นั่งพักเงียบ ๆ 5 นาที","ดื่มกาแฟ 1 แก้ว","วิ่งขึ้นบันไดให้ตัวตื่น","กลั้นหายใจตอนวัด"], a:0,
+     e:"นั่งพัก เท้าวางราบ ไม่พูดคุย ค่าที่ได้จะเที่ยงตรงที่สุด"},
+    {q:"อาหารแบบใดช่วยให้ความดันค่อย ๆ ดีขึ้น?",
+     c:["ลดเค็ม เพิ่มผักผลไม้","เพิ่มน้ำปลาพริก","ของหมักดองทุกมื้อ","บะหมี่กึ่งสำเร็จรูปวันละซอง"], a:0,
+     e:"โซเดียมน้อยลง = หลอดเลือดสบายขึ้น สมองก็ปลอดภัยขึ้น"},
+    {q:"สัญญาณเตือนสโตรกที่ต้องรีบมาโรงพยาบาลทันทีคือ?",
+     c:["ปากเบี้ยว แขนขาอ่อนแรง พูดไม่ชัด ทันทีทันใด","ปวดเมื่อยหลังออกกำลังกาย","ง่วงหลังกินข้าว","จามติดกัน 3 ครั้ง"], a:0,
+     e:"จำหลัก F.A.S.T. — Face, Arm, Speech, Time ยิ่งเร็วยิ่งรอด"},
+    {q:"การเดินเร็ววันละ 30 นาที มีผลกับความดันอย่างไร?",
+     c:["ช่วยให้ความดันค่อย ๆ ลดลงได้","ทำให้ความดันพุ่งถาวร","ไม่เกี่ยวกันเลย","ได้ผลเฉพาะคนอายุน้อย"], a:0,
+     e:"ออกกำลังสม่ำเสมอคือยาขนานเอกที่ไม่มีผลข้างเคียง"},
+    {q:"ยาลดความดันควรกินอย่างไร?",
+     c:["กินสม่ำเสมอตามแพทย์สั่ง แม้รู้สึกสบายดี","หยุดเองเมื่อค่าปกติ","กินเฉพาะวันที่เวียนหัว","แบ่งครึ่งเม็ดเองเพื่อประหยัด"], a:0,
+     e:"ความดันสูงมักไม่มีอาการ การกินยาต่อเนื่องคือเกราะของสมอง"},
+    {q:"นอนน้อยกว่า 6 ชั่วโมงเป็นประจำ ส่งผลอย่างไร?",
+     c:["เสี่ยงความดันสูงและปวดหัวมากขึ้น","ทำให้ความจำดีขึ้น","ช่วยลดน้ำหนัก","ไม่มีผลอะไร"], a:0,
+     e:"การนอนคือเวลาซ่อมบำรุงของสมองและหลอดเลือด"},
+    {q:"เครื่องดื่มใดทำให้ความดันขึ้นได้ชั่วคราวก่อนวัด?",
+     c:["กาแฟและเครื่องดื่มชูกำลัง","น้ำเปล่า","นมจืด","น้ำต้มสุกอุ่น ๆ"], a:0,
+     e:"งดกาแฟ ชา บุหรี่ อย่างน้อย 30 นาทีก่อนวัดความดัน"},
+    {q:"น้ำตาลปลายนิ้วตอนอดอาหาร ค่าที่ถือว่ากำลังดีคือ?",
+     c:["70–99 mg/dL","150–180 mg/dL","ยิ่งต่ำยิ่งดี ต่ำกว่า 50 ก็ได้","200 ขึ้นไป"], a:0,
+     e:"70–99 คือช่วงเหมาะสม ต่ำเกินไปก็อันตรายเช่นกัน"},
+    {q:"น้ำตาลในเลือดสูงเรื้อรัง ทำร้ายอวัยวะใดบ้าง?",
+     c:["สมอง เส้นประสาท ไต และตา","เฉพาะฟัน","เฉพาะผิวหนัง","ไม่ทำร้ายอะไรถ้าไม่มีอาการ"], a:0,
+     e:"เบาหวานทำร้ายหลอดเลือดทั่วร่าง รวมถึงเส้นประสาทและสมอง"}
+  ];
+  var qi = 0, qCorrect = 0, qOrder = [];
+  function shuffle(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){ var j = (i*2654435761 + state.points) % (i+1); var t=a[i]; a[i]=a[j]; a[j]=t; }
+    return a;
+  }
+  function startQuiz(){
+    qi = 0; qCorrect = 0; qOrder = shuffle(QUESTIONS).slice(0,5);
+    document.getElementById("qDone").style.display = "none";
+    document.querySelector("#scr-quiz .card").style.display = "block";
+    renderQ();
+  }
+  function renderQ(){
+    var q = qOrder[qi];
+    var prog = document.getElementById("qProg"); prog.innerHTML = "";
+    for(var i=0;i<qOrder.length;i++){
+      var s = document.createElement("span");
+      if(i<qi) s.className = "done";
+      prog.appendChild(s);
+    }
+    document.getElementById("qScore").textContent = "ข้อ "+(qi+1)+" จาก "+qOrder.length+" · ตอบถูก "+qCorrect+" ข้อ";
+    document.getElementById("qText").textContent = q.q;
+    var box = document.getElementById("qChoices"); box.innerHTML = "";
+    var fb = document.getElementById("qFeedback"); fb.className = "qfeedback";
+    document.getElementById("qNext").style.display = "none";
+    var idx = shuffle(q.c.map(function(_,i){return i;}));
+    idx.forEach(function(ci){
+      var b = document.createElement("button");
+      b.className = "choice"; b.textContent = q.c[ci];
+      b.addEventListener("click", function(){ answer(b, ci===q.a, q); });
+      box.appendChild(b);
+    });
+  }
+  function answer(btn, correct, q){
+    var box = document.getElementById("qChoices");
+    Array.prototype.forEach.call(box.children, function(b){ b.disabled = true; });
+    var fb = document.getElementById("qFeedback");
+    if(correct){
+      btn.classList.add("correct"); qCorrect++;
+      fb.textContent = q.e; fb.className = "qfeedback show good";
+      addPoints(5, "ตอบถูก +5 แต้ม");
+    } else {
+      btn.classList.add("wrong");
+      Array.prototype.forEach.call(box.children, function(b){
+        if(b.textContent === q.c[q.a]) b.classList.add("correct");
+      });
+      fb.textContent = "คำตอบคือ: "+q.c[q.a]+" — "+q.e;
+      fb.className = "qfeedback show bad";
+    }
+    document.getElementById("qNext").style.display = "flex";
+    document.getElementById("qNext").textContent = (qi === qOrder.length-1) ? "ดูผลคะแนน" : "ข้อถัดไป";
+  }
+  document.getElementById("qNext").addEventListener("click", function(){
+    if(qi < qOrder.length-1){ qi++; renderQ(); }
+    else {
+      document.querySelector("#scr-quiz .card").style.display = "none";
+      document.getElementById("qNext").style.display = "none";
+      var done = document.getElementById("qDone"); done.style.display = "block";
+      var full = qCorrect === qOrder.length;
+      document.getElementById("qDoneTitle").textContent =
+        full ? "สุดยอด! ครบทุกข้อ" : qCorrect >= 3 ? "เก่งมากครับ!" : "ได้ความรู้เพิ่มแล้ว!";
+      document.getElementById("qDoneDesc").textContent =
+        "ตอบถูก "+qCorrect+" จาก "+qOrder.length+" ข้อ · ความรู้พวกนี้คือเกราะป้องกันสมองของคุณเอง";
+      if(full) confetti();
+    }
+  });
+  document.getElementById("qRestart").addEventListener("click", startQuiz);
+  startQuiz();
+
+  /* ---------- history ---------- */
+  function renderHist(){
+    var list = document.getElementById("histList"); list.innerHTML = "";
+    state.entries.slice(-7).reverse().forEach(function(e){
+      var z = zone(e.sys, e.dia);
+      var row = document.createElement("div"); row.className = "histrow";
+      row.innerHTML = '<div><div class="v">'+e.sys+"/"+e.dia+' <span style="font-weight:400;font-size:12px;color:var(--muted)">ชีพจร '+e.pul+'</span></div>'+
+        '<div class="d">'+thDate(e.t)+'</div></div>'+
+        '<span class="chip '+z.k+'">'+z.t+'</span>';
+      list.appendChild(row);
+    });
+    var dl = document.getElementById("dtxList"); dl.innerHTML = "";
+    if(!state.dtx.length){
+      dl.innerHTML = '<div class="histrow"><span class="d">ยังไม่มีบันทึกน้ำตาลปลายนิ้ว</span></div>';
+    }
+    state.dtx.slice(-5).reverse().forEach(function(e){
+      var z = dtxZone(e.v, e.fast);
+      var row = document.createElement("div"); row.className = "histrow";
+      row.innerHTML = '<div><div class="v">'+e.v+' <span style="font-weight:400;font-size:12px;color:var(--muted)">mg/dL · '+(e.fast?"อดอาหาร":"หลังอาหาร")+'</span></div>'+
+        '<div class="d">'+thDate(e.t)+'</div></div>'+
+        '<span class="chip '+z.k+'">'+z.t+'</span>';
+      dl.appendChild(row);
+    });
+    var bl = document.getElementById("bodyList"); bl.innerHTML = "";
+    if(!state.body.length){
+      bl.innerHTML = '<div class="histrow"><span class="d">ยังไม่มีบันทึกน้ำหนัก</span></div>';
+    }
+    state.body.slice(-5).reverse().forEach(function(e){
+      var z = bmiZone(e.wt, e.ht);
+      var m = e.ht/100, bmi = Math.round(e.wt/(m*m)*10)/10;
+      var row = document.createElement("div"); row.className = "histrow";
+      row.innerHTML = '<div><div class="v">'+e.wt+' <span style="font-weight:400;font-size:12px;color:var(--muted)">กก. · สูง '+e.ht+' ซม. · BMI '+bmi+'</span></div>'+
+        '<div class="d">'+thDate(e.t)+'</div></div>'+
+        '<span class="chip '+z.k+'">'+z.t.split(" (")[0]+'</span>';
+      bl.appendChild(row);
+    });
+    renderLabCard();
+  }
+  function renderLabCard(){
+    var chips = document.getElementById("labChips"); chips.innerHTML = "";
+    var last = state.labs[state.labs.length-1];
+    if(!last){ document.getElementById("labDate").textContent = "ยังไม่มีผลแล็บที่บันทึกไว้"; return; }
+    document.getElementById("labDate").textContent = "บันทึกเมื่อ "+thDate(last.t);
+    LABS.forEach(function(l){
+      if(!(l.k in last.v)) return;
+      var f = labFlag(l, last.v[l.k]);
+      var d = document.createElement("div"); d.className = "labchip";
+      d.innerHTML = '<span class="ln">'+l.n+'</span>'+
+        '<span class="lv">'+last.v[l.k]+' <span class="u" style="font-size:10px;color:var(--muted);font-weight:400">'+l.u+'</span>'+
+        '<span class="flag '+f.k+'">'+f.t+'</span></span>';
+      chips.appendChild(d);
+    });
+  }
+  function drawChart(){
+    var c = document.getElementById("chart"), x = c.getContext("2d");
+    var dpr = window.devicePixelRatio||1;
+    var W = c.clientWidth, H = c.clientHeight;
+    c.width = W*dpr; c.height = H*dpr; x.setTransform(dpr,0,0,dpr,0,0);
+    x.clearRect(0,0,W,H);
+    var data = state.entries.slice(-7);
+    if(!data.length) return;
+    var pad = {l:30,r:8,t:10,b:22};
+    var lo = 55, hi = 165;
+    data.forEach(function(e){ lo = Math.min(lo, e.dia-10); hi = Math.max(hi, e.sys+10); });
+    function X(i){ return pad.l + (W-pad.l-pad.r) * (data.length===1 ? .5 : i/(data.length-1)); }
+    function Y(v){ return pad.t + (H-pad.t-pad.b) * (1-(v-lo)/(hi-lo)); }
+    x.fillStyle = "rgba(47,163,107,.10)";
+    x.fillRect(pad.l, Y(120), W-pad.l-pad.r, Y(80)-Y(120));
+    x.strokeStyle = "#E3EEE8"; x.lineWidth = 1;
+    x.fillStyle = "#5E7A73"; x.font = "10.5px 'Sukhumvit Set',sans-serif"; x.textAlign = "right";
+    [80,100,120,140,160].forEach(function(v){
+      if(v<lo||v>hi) return;
+      x.beginPath(); x.moveTo(pad.l, Y(v)); x.lineTo(W-pad.r, Y(v)); x.stroke();
+      x.fillText(v, pad.l-6, Y(v)+3.5);
+    });
+    function line(key, col){
+      x.strokeStyle = col; x.lineWidth = 2.5; x.lineJoin = "round"; x.beginPath();
+      data.forEach(function(e,i){ i ? x.lineTo(X(i),Y(e[key])) : x.moveTo(X(i),Y(e[key])); });
+      x.stroke();
+      data.forEach(function(e,i){
+        x.fillStyle = col; x.beginPath();
+        x.arc(X(i), Y(e[key]), i===data.length-1 ? 4.5 : 3, 0, 7); x.fill();
+        if(i===data.length-1){
+          x.strokeStyle = "#fff"; x.lineWidth = 1.5; x.stroke();
+        }
+      });
+    }
+    line("dia", "#8AB8A8");
+    line("sys", "#E8618C");
+    x.fillStyle = "#5E7A73"; x.textAlign = "center";
+    data.forEach(function(e,i){ x.fillText(thDate(e.t), X(i), H-6); });
+  }
+  window.addEventListener("resize", function(){
+    if(document.getElementById("scr-hist").classList.contains("active")) drawChart();
+  });
+
+  // เติมค่าน้ำหนัก/ส่วนสูงล่าสุดให้ steppers (ส่วนสูงมักไม่เปลี่ยน)
+  if(state.body.length){
+    var lastBody = state.body[state.body.length-1];
+    vals.wt = lastBody.wt; vals.ht = lastBody.ht;
+    document.getElementById("v-wt").textContent = vals.wt;
+    document.getElementById("v-ht").textContent = vals.ht;
+  }
+
+  buildLabForm();
+  renderTop(); renderHist();
+})();
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+</script>
+</html>
