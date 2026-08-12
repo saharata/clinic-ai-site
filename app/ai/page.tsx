@@ -64,12 +64,6 @@ const tools: Tool[] = [
     public: true,
     cta: "อ่านคู่มือ / ขอรับตัวโปรแกรม",
   },
-  {
-    title: "Headache Triage",
-    description:
-      "ช่วยคัดกรองผู้ป่วยปวดศีรษะ แยก red flag และจัดลำดับความสำคัญของการตรวจเพิ่มเติม",
-    status: "developing",
-  },
 ];
 
 export default function AiToolsPage() {
