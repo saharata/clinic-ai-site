@@ -58,7 +58,94 @@ const clinicJsonLd = {
     name: "ใบอนุญาตประกอบกิจการสถานพยาบาล",
     value: "12102000863",
   },
+  // E-E-A-T: ผูกคลินิกกับแพทย์ผู้เชี่ยวชาญ (Google/AI รู้ว่าใครดูแล + เชี่ยวชาญอะไร)
+  physician: {
+    "@type": "Physician",
+    "@id": "https://www.sahawanclinic.clinic/#physician-saharat",
+    name: "นพ. สหรัฐ อังศุมาศ",
+    honorificPrefix: "นายแพทย์",
+    honorificSuffix: "Ph.D. (Biochemistry), Ph.D. (Health Technology Assessment)",
+    jobTitle: "ประสาทแพทย์ (Neurologist)",
+    medicalSpecialty: "Neurologic",
+    // ORCID: ยืนยันตัวตนนักวิจัย — Google/AI ตรวจสอบ author + publications ได้ (E-E-A-T แข็งสุด)
+    sameAs: ["https://orcid.org/0000-0002-8183-348X"],
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "ORCID",
+      value: "0000-0002-8183-348X",
+      url: "https://orcid.org/0000-0002-8183-348X",
+    },
+    knowsAbout: [
+      "Functional Neurological Disorder (FND)",
+      "ไมเกรนและอาการปวดศีรษะ",
+      "Multiple Sclerosis (MS) โรคปลอกประสาทเสื่อมแข็ง",
+      "Neuromyelitis Optica Spectrum Disorder (NMOSD)",
+      "Neuroimmunology",
+      "โรคลมชัก",
+      "เวียนศีรษะและความผิดปกติของการทรงตัว",
+    ],
+    // E-E-A-T: วุฒิการศึกษาจริง (MD เกียรตินิยม + PhD 2 ใบ) — จุดแข็งที่คลินิกทั่วไปไม่มี
+    hasCredential: [
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "degree",
+        educationalLevel: "MD",
+        name: "แพทยศาสตรบัณฑิต (เกียรตินิยม) — Doctor of Medicine, first-class honors",
+        recognizedBy: { "@type": "CollegeOrUniversity", name: "มหาวิทยาลัยมหิดล (Mahidol University)" },
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "degree",
+        educationalLevel: "PhD",
+        name: "Ph.D. in Biochemistry",
+        recognizedBy: { "@type": "CollegeOrUniversity", name: "มหาวิทยาลัยมหิดล (Mahidol University)" },
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "degree",
+        educationalLevel: "PhD",
+        name: "Ph.D. in Health Technology Assessment",
+        recognizedBy: { "@type": "CollegeOrUniversity", name: "มหาวิทยาลัยมหิดล (Mahidol University)" },
+      },
+    ],
+    alumniOf: [
+      { "@type": "CollegeOrUniversity", name: "คณะแพทยศาสตร์วชิรพยาบาล มหาวิทยาลัยมหิดล" },
+      { "@type": "CollegeOrUniversity", name: "มหาวิทยาลัยมหิดล (Mahidol University)" },
+    ],
+  },
 };
+
+// ผลงานวิชาการตีพิมพ์นานาชาติ (เลือกที่ตรงสาขาคลินิก — MS / NMOSD / neuroimmunology)
+// E-E-A-T "Expertise": หลักฐานความเชี่ยวชาญจริง ผูก author กับ Physician @id
+const publicationsJsonLd = [
+  {
+    title: "Use of disease-modifying therapy to prevent disability progression in multiple sclerosis in Thailand",
+    journal: "Journal of the Medical Association of Thailand",
+    year: "2023",
+  },
+  {
+    title: "Prevalence and predictive factors of painful tonic spasm in neuromyelitis optica spectrum disorder (NMOSD)",
+    journal: "Journal of the Medical Association of Thailand",
+    year: "2020",
+  },
+  {
+    title: "Abnormal level of consciousness predicts outcomes of patients with anti-NMDA receptor encephalitis",
+    journal: "Journal of Clinical Neuroscience",
+    year: "2019",
+  },
+  {
+    title: "Pilot study of GPO cannabis extract for spasticity in multiple sclerosis in Thailand",
+    journal: "Journal of the Medical Association of Thailand",
+    year: "2021",
+  },
+].map((p) => ({
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  headline: p.title,
+  isPartOf: { "@type": "Periodical", name: p.journal },
+  datePublished: p.year,
+  author: { "@id": "https://www.sahawanclinic.clinic/#physician-saharat" },
+}));
 
 const faqs = [
   {
@@ -80,6 +167,14 @@ const faqs = [
   {
     q: "ปวดศีรษะหรือไมเกรนแบบไหนที่ควรมาตรวจ",
     a: "ควรมาตรวจเมื่อปวดศีรษะบ่อยขึ้นหรือรุนแรงขึ้นกว่าเดิม ปวดจนรบกวนการใช้ชีวิตหรือการทำงาน ใช้ยาแก้ปวดบ่อยแต่ไม่ดีขึ้น หรือมีอาการร่วม เช่น ตามัว อาเจียนพุ่ง ชา อ่อนแรง ประสาทแพทย์จะช่วยวินิจฉัยชนิดของอาการปวดศีรษะและวางแผนการดูแลที่เหมาะสม",
+  },
+  {
+    q: "FND หรือโรคทางระบบประสาทที่ทำงานผิดปกติ (Functional Neurological Disorder) คืออะไร",
+    a: "FND คือภาวะที่ระบบประสาททำงานผิดจังหวะ ทั้งที่โครงสร้างสมองและเส้นประสาทไม่ได้เสียหาย เปรียบเหมือนซอฟต์แวร์ทำงานผิดพลาด ไม่ใช่ฮาร์ดแวร์พัง อาการเป็นจริง เช่น อ่อนแรง เดินผิดปกติ สั่น ชา หรือชักที่ไม่ใช่ลมชัก แม้ผลตรวจ MRI หรือเลือดจะปกติก็ไม่ได้แปลว่าไม่มีอะไร การวินิจฉัยอาศัยสัญญาณเฉพาะจากการตรวจร่างกาย และดูแลได้ด้วยความเข้าใจกลไกของโรคร่วมกับทีมสหสาขา ผู้ที่สงสัยว่ามีอาการควรพบประสาทแพทย์เพื่อประเมิน",
+  },
+  {
+    q: "โรค MS (ปลอกประสาทเสื่อมแข็ง) และ NMOSD คืออะไร ต่างกันอย่างไร",
+    a: "MS (Multiple Sclerosis) และ NMOSD (Neuromyelitis Optica Spectrum Disorder) เป็นกลุ่มโรคที่ระบบภูมิคุ้มกันทำลายปลอกประสาทในระบบประสาทส่วนกลาง ทำให้เกิดอาการ เช่น ตามัว ชา อ่อนแรง เดินเซ ทั้งสองโรคมีลักษณะและแนวทางดูแลต่างกัน จึงต้องอาศัยการวินิจฉัยแยกที่แม่นยำโดยประสาทแพทย์ ร่วมกับการตรวจ MRI และการตรวจเลือดเฉพาะ เพราะเป็นโรคเรื้อรังที่ต้องติดตามอาการต่อเนื่องระยะยาว หากมีอาการทางระบบประสาทที่สงสัย ควรปรึกษาแพทย์เพื่อประเมินและวางแผนดูแล",
   },
   {
     q: "พาเด็กมาตรวจสุขภาพและฉีดวัคซีนได้ไหม",
@@ -116,6 +211,13 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      {publicationsJsonLd.map((pub, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(pub) }}
+        />
+      ))}
 
       <header className="navbar">
         <div className="container nav-inner">
