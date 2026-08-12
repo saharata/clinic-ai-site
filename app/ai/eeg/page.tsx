@@ -16,6 +16,7 @@ type TaskResult = {
   model_used: string;
   timeline: Win[];
   summary: Record<string, { count: number; percentage: number }>;
+  ictal_summary?: { side: string; confidence: number; n_ictal_windows: number };
 };
 type AnalyzeResult = {
   filename: string;
@@ -156,23 +157,27 @@ export default function EegDemoPage() {
         <div className="container">
           <div className="section-head">
             <h2>สามงานวิเคราะห์ในโมเดลเดียว</h2>
-            <p>วิเคราะห์ทีละหน้าต่าง 4 วินาที พร้อมค่าความมั่นใจ (confidence)</p>
+            <p>วิเคราะห์ทีละหน้าต่าง พร้อมค่าความมั่นใจ (confidence)</p>
+            <p style={{ color: "#b45309", fontSize: ".9em" }}>⚠️ ทั้งสามงานเป็นรุ่นวิจัย (beta) อยู่ระหว่างพัฒนาและตรวจสอบความแม่นยำ — ผลใช้เพื่อการวิจัย/คัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางคลินิก</p>
           </div>
           <div className="eeg-tasks">
             <div className="card eeg-task">
               <span className="tag">Task A</span>
+              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
               <h3>ตรวจจับคลื่นชัก</h3>
               <p>แยกช่วงปกติ (interictal) ออกจากช่วงที่มีสัญญาณ seizure</p>
               <div className="mdl">model · CNN-BiLSTM</div>
             </div>
             <div className="card eeg-task">
               <span className="tag">Task B</span>
-              <h3>ระบุตำแหน่งจุดเริ่ม</h3>
-              <p>ประเมินโซนที่คลื่นชักน่าจะเริ่ม (5 ภูมิภาค)</p>
+              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
+              <h3>ระบุข้างจุดเริ่ม</h3>
+              <p>ประเมินว่าคลื่นชักเริ่มจากซีกซ้าย ซีกขวา หรือทั่วสมอง (generalized)</p>
               <div className="mdl">model · EEG-Conformer</div>
             </div>
             <div className="card eeg-task">
               <span className="tag">Task C</span>
+              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
               <h3>ตรวจจับ IED / sharp wave</h3>
               <p>หาคลื่น epileptiform ระหว่างชัก เบาะแสสำคัญของโรคลมชัก</p>
               <div className="mdl">model · ShallowConvNet</div>
@@ -287,53 +292,86 @@ export default function EegDemoPage() {
                 {["A", "B", "C"].map((k) => {
                   const t = result.tasks[k];
                   if (!t) return null;
-                  const flags = t.timeline.filter((w) => w.predicted_class !== 0);
                   const summaryKeys = Object.keys(t.summary || {});
+                  const isB = k === "B";
+                  // Task A found no seizure = every window is Interictal (class 0)
+                  const aTask = result.tasks["A"];
+                  const aNegative = !!aTask && aTask.timeline.every((w) => w.predicted_class === 0);
+                  const bMuted = isB && aNegative; // Task B is meaningless without a seizure
+                  // Task B has NO "normal" class → its per-window predictions are not
+                  // "abnormal findings", so never list them as flagged segments.
+                  const flags = isB ? [] : t.timeline.filter((w) => w.predicted_class !== 0);
                   return (
-                    <div className="eeg-tcard" key={k}>
+                    <div className="eeg-tcard" key={k} style={bMuted ? { opacity: 0.55 } : undefined}>
                       <div className="eeg-th">
                         <h4>
                           Task {k} · {t.task_name}
                         </h4>
                         <span className="mdl">{t.model_used}</span>
                       </div>
-                      <div className="eeg-bar">
-                        {summaryKeys.map((cls, i) => {
-                          const pct = t.summary[cls].percentage || 0;
-                          if (pct <= 0) return null;
-                          return (
-                            <span
-                              key={cls}
-                              style={{ width: pct + "%", background: BAR_COLORS[i % BAR_COLORS.length] }}
-                            >
-                              {pct >= 12 ? `${cls} ${pct}%` : `${pct}%`}
-                            </span>
-                          );
-                        })}
-                      </div>
-                      <div className="eeg-legend">
-                        {summaryKeys.map((cls, i) => (
-                          <span key={cls} style={{ marginRight: 14 }}>
-                            <span style={{ color: BAR_COLORS[i % BAR_COLORS.length] }}>■</span> {cls} —{" "}
-                            {t.summary[cls].count} หน้าต่าง
-                          </span>
-                        ))}
-                      </div>
-                      {flags.length > 0 ? (
-                        <div style={{ marginTop: 12 }}>
-                          <b style={{ color: "#92400e" }}>
-                            ช่วงที่โมเดลชี้ว่าผิดปกติ ({flags.length}):
-                          </b>
-                          <br />
-                          {flags.slice(0, 24).map((w, i) => (
-                            <span className="eeg-flag" key={i}>
-                              {w.start_sec}–{w.end_sec} วิ · {w.class_name} ·{" "}
-                              {Math.round((w.confidence || 0) * 100)}%
-                            </span>
-                          ))}
+                      {bMuted ? (
+                        <div style={{ margin: "10px 0", color: "#6b7280" }}>
+                          Task A ไม่พบ seizure ในไฟล์นี้ — <b>ไม่นำผลระบุข้างมาใช้</b>{" "}
+                          (Task B ตีความได้เฉพาะเมื่อ Task A พบ seizure)
                         </div>
+                      ) : isB ? (
+                        t.ictal_summary ? (
+                          <div style={{ margin: "10px 0" }}>
+                            <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#b45309" }}>
+                              🔎 ช่วง seizure น่าจะเริ่ม: {t.ictal_summary.side} ·{" "}
+                              {Math.round(t.ictal_summary.confidence * 100)}%
+                            </div>
+                            <div style={{ fontSize: ".82rem", color: "#6b7280", marginTop: 4 }}>
+                              จาก {t.ictal_summary.n_ictal_windows} ช่วงที่ Task A พบ seizure · เป็นตัวช่วยคร่าวๆ
+                              (Task B เชื่อได้น้อยสุด ตีความโดยแพทย์)
+                            </div>
+                          </div>
+                        ) : (
+                          <div style={{ margin: "10px 0", color: "#6b7280" }}>
+                            ระบุข้างได้เฉพาะเมื่อเลือกวิเคราะห์ Task A ร่วมด้วย
+                          </div>
+                        )
                       ) : (
-                        <div className="eeg-clean">✓ ไม่พบหน้าต่างที่โมเดลจัดว่าผิดปกติในไฟล์นี้</div>
+                        <>
+                          <div className="eeg-bar">
+                            {summaryKeys.map((cls, i) => {
+                              const pct = t.summary[cls].percentage || 0;
+                              if (pct <= 0) return null;
+                              return (
+                                <span
+                                  key={cls}
+                                  style={{ width: pct + "%", background: BAR_COLORS[i % BAR_COLORS.length] }}
+                                >
+                                  {pct >= 12 ? `${cls} ${pct}%` : `${pct}%`}
+                                </span>
+                              );
+                            })}
+                          </div>
+                          <div className="eeg-legend">
+                            {summaryKeys.map((cls, i) => (
+                              <span key={cls} style={{ marginRight: 14 }}>
+                                <span style={{ color: BAR_COLORS[i % BAR_COLORS.length] }}>■</span> {cls} —{" "}
+                                {t.summary[cls].count} หน้าต่าง
+                              </span>
+                            ))}
+                          </div>
+                          {flags.length > 0 ? (
+                            <div style={{ marginTop: 12 }}>
+                              <b style={{ color: "#92400e" }}>
+                                ช่วงที่โมเดลชี้ว่าผิดปกติ ({flags.length}):
+                              </b>
+                              <br />
+                              {flags.slice(0, 24).map((w, i) => (
+                                <span className="eeg-flag" key={i}>
+                                  {w.start_sec}–{w.end_sec} วิ · {w.class_name} ·{" "}
+                                  {Math.round((w.confidence || 0) * 100)}%
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="eeg-clean">✓ ไม่พบหน้าต่างที่โมเดลจัดว่าผิดปกติในไฟล์นี้</div>
+                          )}
+                        </>
                       )}
                     </div>
                   );
