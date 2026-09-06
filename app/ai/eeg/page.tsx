@@ -150,6 +150,12 @@ export default function EegDemoPage() {
           <div style={{ marginTop: 16 }}>
             <span className="eeg-badge">● โมเดลพร้อมใช้งาน · เครื่องมือเพื่อการวิจัย ไม่ใช่เครื่องมือวินิจฉัย</span>
           </div>
+          <p className="hero-text narrow" style={{ marginTop: 12, fontSize: "0.95rem" }}>
+            <a href="/ai/eeg/methods" style={{ textDecoration: "underline" }}>
+              วิธีการและผลการประเมิน (ไทย / English)
+            </a>{" "}
+            — ข้อมูลที่ใช้ วิธีวัด ตัวเลขที่ได้ และข้อจำกัดที่ทราบ
+          </p>
         </div>
       </section>
 
@@ -166,14 +172,14 @@ export default function EegDemoPage() {
               <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
               <h3>ตรวจจับคลื่นชัก</h3>
               <p>แยกช่วงปกติ (interictal) ออกจากช่วงที่มีสัญญาณ seizure</p>
-              <div className="mdl">model · CNN-BiLSTM</div>
+              <div className="mdl">model · ShallowConvNet (ปรับด้วยข้อมูลผู้ป่วยไทย)</div>
             </div>
             <div className="card eeg-task">
               <span className="tag">Task B</span>
               <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
               <h3>ระบุข้างจุดเริ่ม</h3>
               <p>ประเมินว่าคลื่นชักเริ่มจากซีกซ้าย ซีกขวา หรือทั่วสมอง (generalized)</p>
-              <div className="mdl">model · EEG-Conformer</div>
+              <div className="mdl">model · ShallowConvNet</div>
             </div>
             <div className="card eeg-task">
               <span className="tag">Task C</span>
@@ -238,19 +244,23 @@ export default function EegDemoPage() {
                 type="button"
                 className="eeg-btn-sample"
                 disabled={busy}
-                onClick={() => loadSample("/eeg-samples/sample_eeg_ied.edf")}
+                onClick={() => loadSample("/eeg-samples/sample_eeg_seizure.edf")}
               >
-                ▶ ตัวอย่างมี IED
+                ▶ ตัวอย่างคลื่นชัก (40 วินาที)
               </button>
-              <button
-                type="button"
-                className="eeg-btn-sample"
-                disabled={busy}
-                onClick={() => loadSample("/eeg-samples/sample_eeg_focal.edf")}
-              >
-                ▶ ตัวอย่างคลื่นชัก
-              </button>
-              <span style={{ fontSize: ".82rem" }}>EEG จริง · ลบข้อมูลระบุตัวตนแล้ว</span>
+              <span style={{ fontSize: ".82rem" }}>
+                EEG ผู้ป่วยจริง ลบข้อมูลระบุตัวตนแล้ว มาจาก{" "}
+                <a
+                  href="https://physionet.org/content/chbmit/1.0.0/"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ textDecoration: "underline" }}
+                >
+                  CHB-MIT Scalp EEG Database
+                </a>{" "}
+                (PhysioNet, ODC-BY) ซึ่งโมเดลไม่เคยเห็นระหว่างการฝึก · ช่วงชักยาว 40 วินาที
+                อยู่ที่วินาทีที่ 20 ถึง 60 · สำหรับ Task C (IED) อัปโหลดไฟล์ของท่านเองได้
+              </span>
             </div>
 
             <div className="eeg-controls">
