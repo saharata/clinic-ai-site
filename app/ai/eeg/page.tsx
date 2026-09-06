@@ -10,10 +10,14 @@ type Win = {
   predicted_class: number;
   class_name: string;
   confidence: number;
+  probabilities?: Record<string, number>;
+  /** passed the threshold on its own, before short runs were dropped */
+  above_threshold?: boolean;
 };
 type TaskResult = {
   task_name: string;
   model_used: string;
+  class_names?: string[];
   timeline: Win[];
   summary: Record<string, { count: number; percentage: number }>;
   ictal_summary?: { side: string; confidence: number; n_ictal_windows: number };
@@ -311,6 +315,9 @@ export default function EegDemoPage() {
                   // Task B has NO "normal" class → its per-window predictions are not
                   // "abnormal findings", so never list them as flagged segments.
                   const flags = isB ? [] : t.timeline.filter((w) => w.predicted_class !== 0);
+                  // Positive class of a binary task, for reading per-window probabilities
+                  const posName =
+                    !isB && t.class_names && t.class_names.length === 2 ? t.class_names[1] : null;
                   return (
                     <div className="eeg-tcard" key={k} style={bMuted ? { opacity: 0.55 } : undefined}>
                       <div className="eeg-th">
@@ -365,6 +372,54 @@ export default function EegDemoPage() {
                               </span>
                             ))}
                           </div>
+                          {t.timeline.length > 1 && posName && (
+                            <div style={{ marginTop: 14 }}>
+                              <b>ความน่าจะเป็นของแต่ละหน้าต่าง</b>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "flex-end",
+                                  gap: 1,
+                                  height: 60,
+                                  marginTop: 6,
+                                  padding: "4px 3px",
+                                  background: "#f8fafc",
+                                  border: "1px solid #e2e8f0",
+                                  borderRadius: 4,
+                                  overflowX: "auto",
+                                }}
+                              >
+                                {t.timeline.map((w, i) => {
+                                  const pr = w.probabilities?.[posName] ?? 0;
+                                  const reported = w.predicted_class !== 0;
+                                  const nearMiss = !reported && w.above_threshold;
+                                  return (
+                                    <span
+                                      key={i}
+                                      title={`${w.start_sec}–${w.end_sec} วิ · ${Math.round(pr * 100)}%`}
+                                      style={{
+                                        flex: "1 0 3px",
+                                        minWidth: 3,
+                                        height: `${Math.max(2, pr * 100)}%`,
+                                        background: reported
+                                          ? "#dc2626"
+                                          : nearMiss
+                                            ? "#f59e0b"
+                                            : "#94a3b8",
+                                      }}
+                                    />
+                                  );
+                                })}
+                              </div>
+                              <div style={{ fontSize: ".8rem", color: "#6b7280", marginTop: 5 }}>
+                                <span style={{ color: "#dc2626" }}>■</span> รายงานเป็นเหตุการณ์ ·{" "}
+                                <span style={{ color: "#f59e0b" }}>■</span> ผ่านเกณฑ์แต่สั้นเกินไป จึงไม่รายงาน ·{" "}
+                                <span style={{ color: "#94a3b8" }}>■</span> ต่ำกว่าเกณฑ์
+                                <br />
+                                แท่งสูง = โมเดลมั่นใจมาก · ช่วงเวลาไล่จากซ้ายไปขวา
+                              </div>
+                            </div>
+                          )}
                           {flags.length > 0 ? (
                             <div style={{ marginTop: 12 }}>
                               <b style={{ color: "#92400e" }}>
@@ -379,7 +434,11 @@ export default function EegDemoPage() {
                               ))}
                             </div>
                           ) : (
-                            <div className="eeg-clean">✓ ไม่พบหน้าต่างที่โมเดลจัดว่าผิดปกติในไฟล์นี้</div>
+                            <div className="eeg-clean">
+                              {t.timeline.some((w) => w.above_threshold)
+                                ? "ไม่มีช่วงใดยาวพอจะรายงานเป็นเหตุการณ์ — มีหน้าต่างที่ผ่านเกณฑ์อยู่บ้าง (แท่งสีส้ม) แต่สั้นเกินไป โปรดดูกราฟประกอบ"
+                                : "✓ ไม่พบหน้าต่างที่โมเดลจัดว่าผิดปกติในไฟล์นี้"}
+                            </div>
                           )}
                         </>
                       )}
