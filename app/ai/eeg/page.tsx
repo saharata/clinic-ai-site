@@ -250,7 +250,7 @@ export default function EegDemoPage() {
                 disabled={busy}
                 onClick={() => loadSample("/eeg-samples/sample_eeg_seizure.edf")}
               >
-                ▶ ตัวอย่างคลื่นชัก (40 วินาที)
+                ▶ ตัวอย่างคลื่นชัก + IED (80 วินาที)
               </button>
               <span style={{ fontSize: ".82rem" }}>
                 EEG ผู้ป่วยจริง ลบข้อมูลระบุตัวตนแล้ว มาจาก{" "}
@@ -262,8 +262,11 @@ export default function EegDemoPage() {
                 >
                   CHB-MIT Scalp EEG Database
                 </a>{" "}
-                (PhysioNet, ODC-BY) ซึ่งโมเดลไม่เคยเห็นระหว่างการฝึก · ช่วงชักยาว 40 วินาที
-                อยู่ที่วินาทีที่ 20 ถึง 60 · สำหรับ Task C (IED) อัปโหลดไฟล์ของท่านเองได้
+                (PhysioNet, ODC-BY) ซึ่งโมเดลไม่เคยเห็นระหว่างการฝึก
+                <br />
+                <b>Task A</b> ช่วงชักยาว 40 วินาที อยู่ที่วินาทีที่ 20 ถึง 60 — เวลาตามที่ผู้เชี่ยวชาญ
+                ของชุดข้อมูลต้นทางกำกับไว้ · <b>Task C</b> ชุดข้อมูลต้นทางไม่ได้กำกับตำแหน่ง IED ไว้
+                คลื่นที่โมเดลชี้ในคลิปนี้ผ่านการตรวจทานโดย นพ. สหรัฐ อังศุมาศ
               </span>
             </div>
 
