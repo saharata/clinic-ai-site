@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
       { source: "/learn/body/en", destination: "/learn/body/en.html" },
       { source: "/learn/animals", destination: "/learn/animals/th.html" },
       { source: "/learn/animals/en", destination: "/learn/animals/en.html" },
+      { source: "/learn/growth", destination: "/learn/growth/th.html" },
+      { source: "/learn/growth/en", destination: "/learn/growth/en.html" },
     ];
   },
 };
