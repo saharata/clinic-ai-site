@@ -60,6 +60,22 @@ const lessons = [
       "แบบทดสอบ 12 ข้อ",
     ],
   },
+  {
+    key: "animals",
+    th: "/learn/animals",
+    en: "/learn/animals/en",
+    level: "เปรียบเทียบสิ่งมีชีวิต",
+    title: "ร่างกายของพืช ปลา และแมว",
+    enTitle: "Plant, Fish and Cat",
+    text:
+      "สิ่งมีชีวิตทุกชนิดต้องหายใจ หาอาหาร และค้ำตัวเองไว้ แต่แก้โจทย์คนละวิธี เลือกพืช ปลา หรือแมว แล้วเปิดดูทีละระบบ",
+    points: [
+      "3 สิ่งมีชีวิต 9 ระบบ จุดให้แตะ 35 จุด",
+      "ตารางเทียบกับร่างกายของคน",
+      "เกม “ของใครเอ่ย” 12 ป้าย",
+      "แบบทดสอบ 10 ข้อ",
+    ],
+  },
 ];
 
 export default function LearnPage() {
@@ -94,7 +110,7 @@ export default function LearnPage() {
             รู้จักร่างกายตั้งแต่เซลล์เล็กจิ๋ว จนถึงอวัยวะและร่างกายทั้งตัว
           </p>
           <p className="hero-text">
-            บทเรียนแบบกดเล่นได้ 2 บท ต่อกันเป็นเส้นทางเดียว เริ่มจากเซลล์เล็กจิ๋วที่ต้องส่องกล้องถึงจะเห็น
+            บทเรียนแบบกดเล่นได้ 3 บท ต่อกันเป็นเส้นทางเดียว เริ่มจากเซลล์เล็กจิ๋วที่ต้องส่องกล้องถึงจะเห็น
             แล้วค่อยๆ ซูมออกจนถึงร่างกายทั้งตัว มีทั้งภาษาไทยและภาษาอังกฤษ เล่นได้บนมือถือ แท็บเล็ต และคอมพิวเตอร์
           </p>
         </div>
@@ -102,7 +118,7 @@ export default function LearnPage() {
 
       <section className="section">
         <div className="container">
-          <div className="cards two">
+          <div className="cards three">
             {lessons.map((l, i) => (
               <article className="card" key={l.key}>
                 <p className="eyebrow">

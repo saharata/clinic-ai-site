@@ -32,4 +32,5 @@
 ## Body 101 — สื่อการเรียนรู้เรื่องร่างกายสำหรับเด็ก (ใช้ฟรี)
 - บทที่ 1 จากเซลล์สู่ร่างกาย: เซลล์ ออร์แกเนลล์ เซลล์พืชและสัตว์ ห้องทดลองจำลอง ระดับการจัดระบบ — https://www.sahawanclinic.clinic/learn/cells (English: https://www.sahawanclinic.clinic/learn/cells/en)
 - บทที่ 2 ร่างกายของเรา ทีละชั้น: อวัยวะและระบบในร่างกาย 11 ชั้น — https://www.sahawanclinic.clinic/learn/body (English: https://www.sahawanclinic.clinic/learn/body/en)
+- บทที่ 3 ร่างกายของพืช ปลา และแมว: เปรียบเทียบระบบร่างกาย — https://www.sahawanclinic.clinic/learn/animals (English: https://www.sahawanclinic.clinic/learn/animals/en)
 - หน้ารวม Body 101: https://www.sahawanclinic.clinic/learn
