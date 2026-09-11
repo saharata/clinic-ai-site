@@ -234,6 +234,7 @@ export default function HomePage() {
             <a href="#hours">เวลาทำการ</a>
             <a href="#vaccine">ราคาวัคซีนเด็ก</a>
             <Link href="/symptoms">อาการที่พบบ่อย</Link>
+            <Link href="/learn">Body 101</Link>
             <a href="#doctors">แพทย์</a>
             <a href="#location">สถานที่</a>
             <a href="#faq">คำถามที่พบบ่อย</a>
@@ -383,6 +384,24 @@ export default function HomePage() {
           <div className="cta-actions">
             <Link href="/symptoms" className="btn btn-dark big">
               ดูอาการที่พบบ่อย
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="learn-teaser" className="section">
+        <div className="container cta-box">
+          <div>
+            <p className="eyebrow">สื่อการเรียนรู้สำหรับเด็กประถม</p>
+            <h2>Body 101 รู้จักร่างกายตั้งแต่เซลล์จนถึงอวัยวะ</h2>
+            <p>
+              ส่องกล้องจุลทรรศน์ ดูข้างในเซลล์ ทดลองจำลอง แล้วสำรวจร่างกายทีละชั้น
+              มีทั้งภาษาไทยและอังกฤษ ใช้ฟรี ไม่ต้องสมัคร เรียบเรียงโดยประสาทแพทย์
+            </p>
+          </div>
+          <div className="cta-actions">
+            <Link href="/learn" className="btn btn-dark big">
+              เปิด Body 101
             </Link>
           </div>
         </div>
