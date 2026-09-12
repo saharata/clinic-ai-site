@@ -95,7 +95,7 @@ const lessons = [
   {
     key: "senses",
     th: "/learn/senses",
-    en: null,
+    en: "/learn/senses/en",
     level: "ประสาทสัมผัสและสมอง",
     title: "ห้าสัมผัส หน้าต่างของสมอง",
     enTitle: "Five Senses, Windows to the Brain",
@@ -112,7 +112,7 @@ const lessons = [
   {
     key: "virus",
     th: "/learn/virus",
-    en: null,
+    en: "/learn/virus/en",
     level: "ไวรัสและเชื้อโรค",
     title: "ไวรัส สิ่งที่เล็กที่สุดที่ทำให้เราป่วย",
     enTitle: "Viruses and Germs",
@@ -129,7 +129,7 @@ const lessons = [
   {
     key: "life",
     th: "/learn/life",
-    en: null,
+    en: "/learn/life/en",
     level: "ต้นไม้แห่งชีวิต",
     title: "กำแพงแห่งชีวิต",
     enTitle: "The Wall of Life",
