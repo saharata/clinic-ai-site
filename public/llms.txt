@@ -37,4 +37,5 @@
 - บทที่ 5 ห้าสัมผัส หน้าต่างของสมอง: ตา หู จมูก ลิ้น ผิวหนัง และสัมผัสที่เกินห้า — https://www.sahawanclinic.clinic/learn/senses
 - บทที่ 6 ไวรัสและเชื้อโรค: โครงสร้างไวรัส วงจรการเพิ่มจำนวน โรคที่พบบ่อย และการระบาด — https://www.sahawanclinic.clinic/learn/virus
 - บทที่ 7 กำแพงแห่งชีวิต: แบคทีเรีย อาร์เคีย โปรทิสต์ ฟังไจ พืช และสัตว์ — https://www.sahawanclinic.clinic/learn/life
+- สนามแข่ง Body 101: เกมทบทวน 140 คำถามจากทั้ง 7 บท 4 โหมด — https://www.sahawanclinic.clinic/learn/play (English: https://www.sahawanclinic.clinic/learn/play/en)
 - หน้ารวม Body 101: https://www.sahawanclinic.clinic/learn

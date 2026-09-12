@@ -184,6 +184,27 @@ export default function LearnPage() {
       </section>
 
       <section className="section">
+        <div className="container cta-box">
+          <div>
+            <p className="eyebrow">ใหม่ · โหมดเกม</p>
+            <h2 style={{ margin: "0 0 6px" }}>สนามแข่ง Body 101</h2>
+            <p>
+              รวมคำถาม 140 ข้อจากทั้ง 7 บทไว้ที่เดียว มี 4 โหมด แข่งกับเวลา 60 วินาที ปะทะสองคนบนจอเดียว
+              ล้มบอส 3 ตัว และฝึกซ้อมแบบไม่จับเวลา เก็บเลเวล ตรา และสถิติความแม่นยำไว้ในเครื่อง
+            </p>
+          </div>
+          <div className="cta-actions">
+            <a href="/learn/play" className="btn btn-dark big">
+              เข้าสนามแข่ง
+            </a>
+            <a href="/learn/play/en" className="btn btn-outline" lang="en">
+              English
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
         <div className="container">
           <div className="cards three">
             {lessons.map((l, i) => (
