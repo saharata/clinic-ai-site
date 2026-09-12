@@ -131,5 +131,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.4,
     },
+    {
+      url: `${siteUrl}/learn/brain`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/learn/heart`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/learn/dna`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/learn/hormones`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
   ];
 }

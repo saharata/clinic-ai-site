@@ -38,4 +38,8 @@
 - บทที่ 6 ไวรัสและเชื้อโรค: โครงสร้างไวรัส วงจรการเพิ่มจำนวน โรคที่พบบ่อย และการระบาด — https://www.sahawanclinic.clinic/learn/virus
 - บทที่ 7 กำแพงแห่งชีวิต: แบคทีเรีย อาร์เคีย โปรทิสต์ ฟังไจ พืช และสัตว์ — https://www.sahawanclinic.clinic/learn/life
 - สนามแข่ง Body 101: เกมทบทวน 140 คำถามจากทั้ง 7 บท 4 โหมด — https://www.sahawanclinic.clinic/learn/play (English: https://www.sahawanclinic.clinic/learn/play/en)
+- บทที่ 8 สมองและระบบประสาท ฉบับเจาะลึก (อายุ 11-12 ปี) — https://www.sahawanclinic.clinic/learn/brain
+- บทที่ 9 หัวใจ เลือด และปอด ฉบับเจาะลึก (อายุ 11-12 ปี) — https://www.sahawanclinic.clinic/learn/heart
+- บทที่ 10 ดีเอ็นเอ พันธุกรรม และการแบ่งเซลล์ (อายุ 11-12 ปี) — https://www.sahawanclinic.clinic/learn/dna
+- บทที่ 11 ฮอร์โมนและร่างกายวัยรุ่น (อายุ 11-12 ปี) — https://www.sahawanclinic.clinic/learn/hormones
 - หน้ารวม Body 101: https://www.sahawanclinic.clinic/learn

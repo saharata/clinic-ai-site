@@ -26,6 +26,10 @@ const nextConfig: NextConfig = {
       { source: "/learn/life/en", destination: "/learn/life/en.html" },
       { source: "/learn/play", destination: "/learn/play/th.html" },
       { source: "/learn/play/en", destination: "/learn/play/en.html" },
+      { source: "/learn/brain", destination: "/learn/brain/th.html" },
+      { source: "/learn/heart", destination: "/learn/heart/th.html" },
+      { source: "/learn/dna", destination: "/learn/dna/th.html" },
+      { source: "/learn/hormones", destination: "/learn/hormones/th.html" },
     ];
   },
 };
