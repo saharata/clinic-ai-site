@@ -30,6 +30,7 @@ const nextConfig: NextConfig = {
       { source: "/learn/heart", destination: "/learn/heart/th.html" },
       { source: "/learn/dna", destination: "/learn/dna/th.html" },
       { source: "/learn/hormones", destination: "/learn/hormones/th.html" },
+      { source: "/learn/mind", destination: "/learn/mind/th.html" },
     ];
   },
 };
