@@ -34,4 +34,7 @@
 - บทที่ 2 ร่างกายของเรา ทีละชั้น: อวัยวะและระบบในร่างกาย 11 ชั้น — https://www.sahawanclinic.clinic/learn/body (English: https://www.sahawanclinic.clinic/learn/body/en)
 - บทที่ 3 ร่างกายของพืช ปลา และแมว: เปรียบเทียบระบบร่างกาย — https://www.sahawanclinic.clinic/learn/animals (English: https://www.sahawanclinic.clinic/learn/animals/en)
 - บทที่ 4 โตขึ้นทุกวัน ดูแลตัวเองเป็น: การเติบโต การนอน จานสุขภาพ ล้างมือ ภูมิคุ้มกัน — https://www.sahawanclinic.clinic/learn/growth (English: https://www.sahawanclinic.clinic/learn/growth/en)
+- บทที่ 5 ห้าสัมผัส หน้าต่างของสมอง: ตา หู จมูก ลิ้น ผิวหนัง และสัมผัสที่เกินห้า — https://www.sahawanclinic.clinic/learn/senses
+- บทที่ 6 ไวรัสและเชื้อโรค: โครงสร้างไวรัส วงจรการเพิ่มจำนวน โรคที่พบบ่อย และการระบาด — https://www.sahawanclinic.clinic/learn/virus
+- บทที่ 7 กำแพงแห่งชีวิต: แบคทีเรีย อาร์เคีย โปรทิสต์ ฟังไจ พืช และสัตว์ — https://www.sahawanclinic.clinic/learn/life
 - หน้ารวม Body 101: https://www.sahawanclinic.clinic/learn
