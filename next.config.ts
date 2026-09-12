@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
       { source: "/learn/senses", destination: "/learn/senses/th.html" },
       { source: "/learn/virus", destination: "/learn/virus/th.html" },
       { source: "/learn/life", destination: "/learn/life/th.html" },
+      { source: "/learn/senses/en", destination: "/learn/senses/en.html" },
+      { source: "/learn/virus/en", destination: "/learn/virus/en.html" },
+      { source: "/learn/life/en", destination: "/learn/life/en.html" },
     ];
   },
 };
