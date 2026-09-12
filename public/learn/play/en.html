@@ -740,6 +740,12 @@
 
   /* ---------- topics ---------- */
   var topics = LESSONS.map(function(l){ return l.k; });
+  try {
+    var want = (new URLSearchParams(location.search).get("topic") || "").split(",").filter(function(k){
+      return LESSONS.some(function(l){ return l.k === k; });
+    });
+    if (want.length) topics = want;
+  } catch (e) {}
   function drawChips(){
     var box = $("#topicChips");
     box.innerHTML = "";
