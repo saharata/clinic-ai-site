@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>Body 101 Arena · a quiz game across all 7 lessons | Sahawan Clinic</title>
-<meta name="description" content="A revision game for Body 101: 140 questions from all 7 lessons in 4 modes, race the clock, two-player duel, beat the boss and practice, with levels and badges.">
+<meta name="description" content="A revision game for Body 101: 140 questions from all 7 lessons in 5 modes, race the clock, two-player duel, team mode, beat the boss and practice, with levels and badges.">
 <link rel="canonical" href="https://www.sahawanclinic.clinic/learn/play/en">
 <link rel="alternate" hreflang="th" href="https://www.sahawanclinic.clinic/learn/play">
 <link rel="alternate" hreflang="en" href="https://www.sahawanclinic.clinic/learn/play/en">
@@ -14,7 +14,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://www.sahawanclinic.clinic/learn/play/en">
 <meta property="og:title" content="Body 101 Arena · a quiz game across all 7 lessons">
-<meta property="og:description" content="A revision game for Body 101: 140 questions from all 7 lessons in 4 modes, race the clock, two-player duel, beat the boss and practice, with levels and badges.">
+<meta property="og:description" content="A revision game for Body 101: 140 questions from all 7 lessons in 5 modes, race the clock, two-player duel, team mode, beat the boss and practice, with levels and badges.">
 <link rel="icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -552,7 +552,7 @@
   .toprow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
   @media (max-width:640px){.qcard{font-size:19px}.duel2{grid-template-columns:1fr}.accrow{grid-template-columns:96px 1fr 54px}}
 </style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Body 101 Arena · a quiz game across all 7 lessons", "description": "A revision game for Body 101: 140 questions from all 7 lessons in 4 modes, race the clock, two-player duel, beat the boss and practice, with levels and badges.", "url": "https://www.sahawanclinic.clinic/learn/play/en", "inLanguage": "en", "educationalLevel": "Primary school", "learningResourceType": "Interactive resource", "isAccessibleForFree": true, "author": {"@type": "Person", "name": "Dr. Saharat Aungsumart", "jobTitle": "Neurologist"}, "publisher": {"@type": "MedicalClinic", "name": "สหวรรณคลินิก", "url": "https://www.sahawanclinic.clinic"}, "isPartOf": {"@type": "Course", "name": "Body 101", "url": "https://www.sahawanclinic.clinic/learn"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Body 101 Arena · a quiz game across all 7 lessons", "description": "A revision game for Body 101: 140 questions from all 7 lessons in 5 modes, race the clock, two-player duel, team mode, beat the boss and practice, with levels and badges.", "url": "https://www.sahawanclinic.clinic/learn/play/en", "inLanguage": "en", "educationalLevel": "Primary school", "learningResourceType": "Interactive resource", "isAccessibleForFree": true, "author": {"@type": "Person", "name": "Dr. Saharat Aungsumart", "jobTitle": "Neurologist"}, "publisher": {"@type": "MedicalClinic", "name": "สหวรรณคลินิก", "url": "https://www.sahawanclinic.clinic"}, "isPartOf": {"@type": "Course", "name": "Body 101", "url": "https://www.sahawanclinic.clinic/learn"}}</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
@@ -592,6 +592,11 @@
         <span class="em">⚔️</span><span class="nm">Two-player duel</span>
         <span class="d">Take turns, 5 questions each on one screen. Get one wrong and the other player can steal it for half the points.</span>
         <span class="best" id="bestDuel"></span>
+      </button>
+      <button class="mode" type="button" data-mode="coop">
+        <span class="em">🤝</span><span class="nm">Work together</span>
+        <span class="d">A team mode with nobody competing. Get 20 questions right together, sharing 5 hearts. You win or lose as one.</span>
+        <span class="best" id="bestCoop"></span>
       </button>
       <button class="mode" type="button" data-mode="boss">
         <span class="em">👾</span><span class="nm">Beat the boss</span>
@@ -699,7 +704,7 @@
 
   /* ---------- saved progress ---------- */
   var KEY = "body101_play_v1";
-  var DEF = { xp:0, correct:0, answered:0, streakBest:0, bestRapid:0, bestDuel:0, bossCleared:0,
+  var DEF = { xp:0, correct:0, answered:0, streakBest:0, bestRapid:0, bestDuel:0, bestCoop:0, bossCleared:0, coopWin:false,
               modes:{}, lesson:{}, badges:[], sound:true };
   var S = load();
   function load(){
@@ -780,13 +785,14 @@
   function setHud(){
     $("#hudScore").textContent = G.score;
     $("#hudCombo").textContent = "×" + G.mult.toFixed(1).replace(".0", "");
-    $("#hudHearts").textContent = G.hearts != null ? "💚".repeat(G.hearts) + "🖤".repeat(3 - G.hearts) : "";
+    $("#hudHearts").textContent = G.hearts != null ? "💚".repeat(G.hearts) + "🖤".repeat((G.maxHearts || 3) - G.hearts) : "";
     $("#hudTime").textContent = G.left != null ? Math.ceil(G.left) : "∞";
   }
 
   var MODES = {
     rapid:{ n:"Race the clock", total:60, per:null, hearts:null },
     duel:{ n:"Two-player duel", total:null, per:12, hearts:null },
+    coop:{ n:"Work together", total:null, per:15, hearts:5 },
     boss:{ n:"Beat the boss", total:null, per:12, hearts:3 },
     practice:{ n:"Practice", total:null, per:null, hearts:null }
   };
@@ -801,6 +807,7 @@
     if (p.length < 5) { $("#fbText").textContent = "Switch on a few more topics first"; return; }
     G = { mode:mode, deck:shuffle(p), i:0, score:0, streak:0, mult:1, correct:0, answered:0,
           left:MODES[mode].total, hearts:MODES[mode].hearts, per:MODES[mode].per, perLeft:0,
+          maxHearts:MODES[mode].hearts || 3, goal:mode === "coop" ? 20 : 0,
           duelTurn:0, duelScore:[0, 0], duelRound:0, steal:false, bossN:0, bossHp:BOSSES[0].hp, locked:false, t0:0 };
     S.modes[mode] = (S.modes[mode] || 0) + 1; persist();
     $("#modeName").textContent = MODES[mode].n;
@@ -878,7 +885,7 @@
     G.locked = true;
     lockOpts(q.a, -1);
     beep("bad");
-    if (G.mode === "boss") {
+    if (G.mode === "boss" || G.mode === "coop") {
       G.hearts--; setHud();
       $("#fbText").className = "fb2 bad";
       $("#fbText").textContent = "Out of time, that costs a heart · " + q.e;
@@ -954,6 +961,10 @@
       pop("+" + pts + (G.mult > 1 ? " ×" + G.mult : ""));
       fb.className = "fb2 good";
       fb.textContent = "Correct · " + q.e;
+      if (G.mode === "coop") {
+        fb.textContent = "Right so far: " + G.correct + " of " + G.goal + " questions · " + q.e;
+        if (G.correct >= G.goal) return setTimeout(finish, 900);
+      }
       if (G.mode === "boss") {
         var fast = Math.max(0, 1 - (Date.now() - G.t0) / (G.per * 1000));
         var dmg = 8 + Math.round(fast * 14);
@@ -977,7 +988,7 @@
       fb.className = "fb2 bad";
       fb.textContent = "The answer is " + q.o[q.a] + " · " + q.e;
       if (G.mode === "rapid") { G.left = Math.max(0, G.left - 3); fb.textContent = "3 seconds lost · " + fb.textContent; }
-      if (G.mode === "boss") {
+      if (G.mode === "boss" || G.mode === "coop") {
         G.hearts--; setHud();
         if (G.hearts <= 0) return setTimeout(finish, 1000);
       }
@@ -996,10 +1007,11 @@
   }
 
   var BADGES = [
-    { k:"first", e:"🎯", n:"Played all four modes", ok:function(){ return Object.keys(S.modes).length >= 4; } },
+    { k:"first", e:"🎯", n:"Played all five modes", ok:function(){ return Object.keys(S.modes).length >= 5; } },
     { k:"streak", e:"🔥", n:"10 right in a row", ok:function(){ return S.streakBest >= 10; } },
     { k:"rapid", e:"⚡", n:"300 in race the clock", ok:function(){ return S.bestRapid >= 300; } },
     { k:"boss1", e:"👾", n:"Beat the first boss", ok:function(){ return S.bossCleared >= 1; } },
+    { k:"coop", e:"🤝", n:"20 right as a team", ok:function(){ return !!S.coopWin; } },
     { k:"boss3", e:"🏆", n:"Beat all 3 bosses", ok:function(){ return S.bossCleared >= 3; } },
     { k:"hundred", e:"💯", n:"100 right answers", ok:function(){ return S.correct >= 100; } },
     { k:"allsub", e:"🌍", n:"Right in all 7 topics", ok:function(){ return LESSONS.every(function(l){ return (S.lesson[l.k] || {}).c > 0; }); } },
@@ -1029,6 +1041,14 @@
       title = cleared >= BOSSES.length ? "All bosses down" : G.hearts <= 0 ? "Out of hearts" : "Game over";
       sub = "Bosses beaten: " + cleared + " · Correct " + G.correct + " of " + G.answered + " questions";
       gained = G.score + cleared * 40;
+    } else if (mode === "coop") {
+      var won = G.correct >= G.goal;
+      score = G.correct;
+      title = won ? "Done it. 20 right, together" : "Out of hearts. Have another go";
+      sub = "Hearts left: " + G.hearts + " · Correct " + G.correct + " of " + G.answered + " questions";
+      if (won) S.coopWin = true;
+      if (G.correct > S.bestCoop) S.bestCoop = G.correct;
+      gained = G.correct * 5 + (won ? 40 : 0);
     } else if (mode === "rapid") {
       if (score > S.bestRapid) { S.bestRapid = score; sub = "A new record too"; }
       else sub = "Your old record was " + S.bestRapid + " points";
@@ -1057,6 +1077,7 @@
     $("#xpText").textContent = L.into + " / " + L.need + " points";
     $("#bestRapid").textContent = S.bestRapid ? "Record " + S.bestRapid + " points" : "";
     $("#bestDuel").textContent = S.bestDuel ? "Record " + S.bestDuel + " points" : "";
+    $("#bestCoop").textContent = S.bestCoop ? "Best together: " + S.bestCoop + " questions" : "";
     $("#bestBoss").textContent = S.bossCleared ? "Bosses beaten: " + S.bossCleared + "" : "";
     $("#bestPractice").textContent = S.answered ? "Answered so far: " + S.answered + " questions" : "";
     var acc = S.answered ? Math.round(S.correct / S.answered * 100) : 0;
