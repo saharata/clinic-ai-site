@@ -956,3 +956,68 @@ a {
 .eeg-disc ul { margin:0; padding-left:20px; color:#78350f; font-size:.94rem; }
 .eeg-disc li { margin-bottom:8px; }
 @media (max-width:760px){ .eeg-tasks{ grid-template-columns:1fr; } }
+
+/* ---------- Body 101 hub polish ---------- */
+.learn-page .hero.small {
+  background: linear-gradient(135deg, #ede9fe 0%, #fce7f3 45%, #e0f2fe 100%);
+  border-radius: 0 0 36px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.learn-page .hero.small::after {
+  content: "";
+  position: absolute;
+  right: -80px;
+  top: -90px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  filter: blur(40px);
+}
+.learn-page .hero.small > * { position: relative; }
+.learn-page .hero-title { font-size: clamp(38px, 7vw, 64px); letter-spacing: -0.02em; }
+.learn-page .card {
+  border-radius: 22px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  display: flex;
+  flex-direction: column;
+}
+.learn-page .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  border-color: #99f6e4;
+}
+.learn-page .card .card-actions { margin-top: auto; }
+.learn-page .card .eyebrow {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #0f766e;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-weight: 700;
+}
+.learn-page .section-head h2 { position: relative; display: inline-block; }
+.learn-page .section-head h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 4px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #0f766e, transparent);
+}
+.learn-page .cta-box {
+  background: linear-gradient(135deg, #0f766e 0%, #155e75 100%);
+  color: #f8fafc;
+  border-radius: 26px;
+  border: none;
+}
+.learn-page .cta-box h2, .learn-page .cta-box p { color: #f8fafc; }
+.learn-page .cta-box .eyebrow { background: rgba(255, 255, 255, 0.16); color: #ccfbf1; }
+.learn-page .cta-box .btn-dark { background: #f8fafc; color: #0f172a; }
+.learn-page .cta-box .btn-outline { border-color: rgba(248, 250, 252, 0.6); color: #f8fafc; }
+@media (prefers-reduced-motion: reduce) {
+  .learn-page .card:hover { transform: none; }
+}
