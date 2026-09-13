@@ -148,7 +148,7 @@ const lessonsL2 = [
   {
     key: "brain",
     th: "/learn/brain",
-    en: null,
+    en: "/learn/brain/en",
     level: "เซลล์ประสาท ไซแนปส์ สมอง",
     title: "สมองและระบบประสาท ฉบับเจาะลึก",
     enTitle: "The Brain and Nervous System, in depth",
@@ -164,7 +164,7 @@ const lessonsL2 = [
   {
     key: "heart",
     th: "/learn/heart",
-    en: null,
+    en: "/learn/heart/en",
     level: "วงจรเลือด ไฟฟ้าหัวใจ ปอด",
     title: "หัวใจ เลือด และปอด ฉบับเจาะลึก",
     enTitle: "Heart, Blood and Lungs, in depth",
@@ -180,7 +180,7 @@ const lessonsL2 = [
   {
     key: "dna",
     th: "/learn/dna",
-    en: null,
+    en: "/learn/dna/en",
     level: "ดีเอ็นเอ ยีน การแบ่งเซลล์",
     title: "ดีเอ็นเอ พันธุกรรม และการแบ่งเซลล์",
     enTitle: "DNA, Genetics and Cell Division",
@@ -196,7 +196,7 @@ const lessonsL2 = [
   {
     key: "hormones",
     th: "/learn/hormones",
-    en: null,
+    en: "/learn/hormones/en",
     level: "ต่อมไร้ท่อ วัยแรกรุ่น การนอน",
     title: "ฮอร์โมนและร่างกายวัยรุ่น",
     enTitle: "Hormones and the Teenage Body",
@@ -212,7 +212,7 @@ const lessonsL2 = [
   {
     key: "mind",
     th: "/learn/mind",
-    en: null,
+    en: "/learn/mind/en",
     level: "การเรียนรู้ อารมณ์ และโรคทางสมอง",
     title: "สมองกับการเรียนรู้ อารมณ์ และการดูแลสมอง",
     enTitle: "The Brain: Learning, Emotion and Brain Care",
@@ -332,7 +332,7 @@ export default function LearnPage() {
             <h2>ระดับสอง · อายุ 11 ถึง 12 ปี</h2>
             <p>
               สำหรับเด็กโตที่อยากรู้ลึกกว่าเดิม ลงถึงระดับเซลล์ประสาท คลื่นไฟฟ้าหัวใจ รหัสพันธุกรรม และฮอร์โมนวัยรุ่น
-              ทุกบทมีปุ่มอ่านออกเสียงให้ฟังได้ด้วย
+              ทุกบทมีปุ่มอ่านออกเสียงให้ฟังได้ และมีภาษาอังกฤษครบทุกบทแล้ว
             </p>
           </div>
           <div className="cards two">
@@ -355,6 +355,11 @@ export default function LearnPage() {
                   <a href={l.th} className="btn btn-dark big">
                     เปิดบทเรียน (ภาษาไทย)
                   </a>
+                  {l.en ? (
+                    <a href={l.en} className="btn btn-outline" lang="en">
+                      English
+                    </a>
+                  ) : null}
                 </div>
               </article>
             ))}

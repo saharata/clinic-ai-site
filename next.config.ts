@@ -31,6 +31,11 @@ const nextConfig: NextConfig = {
       { source: "/learn/dna", destination: "/learn/dna/th.html" },
       { source: "/learn/hormones", destination: "/learn/hormones/th.html" },
       { source: "/learn/mind", destination: "/learn/mind/th.html" },
+      { source: "/learn/brain/en", destination: "/learn/brain/en.html" },
+      { source: "/learn/heart/en", destination: "/learn/heart/en.html" },
+      { source: "/learn/dna/en", destination: "/learn/dna/en.html" },
+      { source: "/learn/hormones/en", destination: "/learn/hormones/en.html" },
+      { source: "/learn/mind/en", destination: "/learn/mind/en.html" },
     ];
   },
 };
