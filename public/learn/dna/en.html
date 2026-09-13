@@ -1,0 +1,1462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>DNA, Genetics and Cell Division · Body 101 Lesson 10 | Sahawan Clinic</title>
+<meta name="description" content="Ages 11 to 12: base pairing, the full 64-codon genetic code, 23 pairs of chromosomes, mitosis versus meiosis and a Punnett square.">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/learn/dna/en">
+<link rel="alternate" hreflang="th" href="https://www.sahawanclinic.clinic/learn/dna">
+<link rel="alternate" hreflang="en" href="https://www.sahawanclinic.clinic/learn/dna/en">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/learn/dna/en">
+<meta property="og:title" content="DNA, Genetics and Cell Division · Body 101 Lesson 10">
+<meta property="og:description" content="Ages 11 to 12: base pairing, the full 64-codon genetic code, 23 pairs of chromosomes, mitosis versus meiosis and a Punnett square.">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+  .sw-bar{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;padding:6px 20px;min-height:48px;
+    background:#ffffff;border-bottom:1px solid #e2e8f0;font:600 15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .sw-bar a{color:#0f766e;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
+  .sw-bar a:hover{text-decoration:underline}
+  .sw-bar .sw-brand{color:#0f172a;font-weight:700}
+  .sw-bar .sw-sep{color:#94a3b8}
+  .sw-bar .sw-lang{margin-left:auto;border:1.5px solid #cbd5e1;border-radius:999px;padding:0 14px}
+  @media (max-width:480px){.sw-bar .sw-brand,.sw-bar .sw-sep{display:none}.sw-bar{padding:4px 14px}}
+  @media (prefers-color-scheme: dark){
+    .sw-bar{background:#0b1220;border-bottom-color:#1e293b}
+    .sw-bar a{color:#5eead4}
+    .sw-bar .sw-brand{color:#e2e8f0}
+    .sw-bar .sw-lang{border-color:#334155}
+  }
+</style>
+<style>
+  /* ============ tokens ============
+     light = bright-field microscopy: stains on slide glass
+     dark  = fluorescence microscopy: dyes glowing on black      */
+  :root{
+    --glass:#EDF1F4;
+    --panel:#FBFCFD;
+    --panel-2:#E5EBF0;
+    --ink:#1B2133;
+    --ink-2:#586176;
+    --line:#D2D9E2;
+    --accent:#5A3E9E;
+    --accent-ink:#FFFFFF;
+    --accent-wash:#E8E2F5;
+    --pink:#C9476F;
+    --good:#1F7C55;
+    --good-wash:#DDF0E6;
+    --bad:#B53F2C;
+    --bad-wash:#F7E0DB;
+    --shadow:0 1px 2px rgba(27,33,51,.06), 0 10px 30px rgba(27,33,51,.08);
+    --glow:none;
+
+    --o-membrane:#C9476F;
+    --o-cyto:#F6DFE7;
+    --o-nucleus:#5A3E9E;
+    --o-nucleolus:#35226F;
+    --o-mito:#DD6630;
+    --o-ribo:#2C3150;
+    --o-er:#3A74BA;
+    --o-ser:#5E97D6;
+    --o-golgi:#C08A1E;
+    --o-lyso:#6A8C22;
+    --o-vac:#5FAAD2;
+    --o-centri:#8656C2;
+    --o-chloro:#35904A;
+    --o-wall:#9B7A38;
+
+    --f-display:"Mali","IBM Plex Sans Thai Looped",system-ui,sans-serif;
+    --f-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+    --r:16px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --glass:#0A0E19;
+      --panel:#121A2B;
+      --panel-2:#1A2438;
+      --ink:#E8ECF7;
+      --ink-2:#9BA7C1;
+      --line:#27324B;
+      --accent:#AD93FF;
+      --accent-ink:#150E29;
+      --accent-wash:#231B40;
+      --pink:#FF73B6;
+      --good:#52D39A;
+      --good-wash:#12352A;
+      --bad:#FF8A78;
+      --bad-wash:#3A1C19;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+      --glow:drop-shadow(0 0 5px rgba(190,210,255,.28));
+
+      --o-membrane:#FF5FAE;
+      --o-cyto:#1F1830;
+      --o-nucleus:#7E93FF;
+      --o-nucleolus:#C3CCFF;
+      --o-mito:#FF9E48;
+      --o-ribo:#DCE1F7;
+      --o-er:#4FC6FF;
+      --o-ser:#8AD9FF;
+      --o-golgi:#FFD35A;
+      --o-lyso:#BDE95A;
+      --o-vac:#56C8F2;
+      --o-centri:#C59CFF;
+      --o-chloro:#5EE282;
+      --o-wall:#D9B46C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --glass:#0A0E19;
+    --panel:#121A2B;
+    --panel-2:#1A2438;
+    --ink:#E8ECF7;
+    --ink-2:#9BA7C1;
+    --line:#27324B;
+    --accent:#AD93FF;
+    --accent-ink:#150E29;
+    --accent-wash:#231B40;
+    --pink:#FF73B6;
+    --good:#52D39A;
+    --good-wash:#12352A;
+    --bad:#FF8A78;
+    --bad-wash:#3A1C19;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+    --glow:drop-shadow(0 0 5px rgba(190,210,255,.28));
+
+    --o-membrane:#FF5FAE;
+    --o-cyto:#1F1830;
+    --o-nucleus:#7E93FF;
+    --o-nucleolus:#C3CCFF;
+    --o-mito:#FF9E48;
+    --o-ribo:#DCE1F7;
+    --o-er:#4FC6FF;
+    --o-ser:#8AD9FF;
+    --o-golgi:#FFD35A;
+    --o-lyso:#BDE95A;
+    --o-vac:#56C8F2;
+    --o-centri:#C59CFF;
+    --o-chloro:#5EE282;
+    --o-wall:#D9B46C;
+  }
+
+  /* ============ base ============ */
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--glass);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.62;
+       -webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:var(--f-display);font-weight:600;line-height:1.3;margin:0;text-wrap:balance}
+  p{margin:0}
+  button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+  a{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+  .mono{font-family:var(--f-mono)}
+
+  /* ============ shell + level rail ============ */
+  .shell{display:grid;grid-template-columns:218px minmax(0,1fr);gap:44px;max-width:1180px;margin:0 auto;padding:30px 24px 90px}
+  .rail{position:sticky;top:20px;align-self:start;max-height:calc(100vh - 40px);overflow:auto;padding-right:4px}
+  .rail-title{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin:6px 0 12px}
+  .rail ol{list-style:none;margin:0;padding:0;position:relative}
+  .rail ol::before{content:"";position:absolute;left:9px;top:10px;bottom:10px;width:2px;background:var(--line)}
+  .lvl{position:relative;padding:0 0 12px 30px}
+  .lvl::before{content:"";position:absolute;left:3px;top:7px;width:14px;height:14px;border-radius:50%;
+    background:var(--glass);border:2.5px solid var(--line);transition:border-color .2s,background .2s}
+  .lvl.on::before{border-color:var(--accent);background:var(--accent)}
+  .lvl-name{font-family:var(--f-display);font-weight:600;font-size:15.5px;line-height:1.35}
+  .lvl.on .lvl-name{color:var(--accent)}
+  .lvl-size{font-family:var(--f-mono);font-size:11px;color:var(--ink-2)}
+  .lvl a{display:block;font-size:13.5px;color:var(--ink-2);text-decoration:none;padding:2px 0 2px 0;line-height:1.45}
+  .lvl a:hover{color:var(--ink)}
+  .lvl a.on{color:var(--ink);font-weight:600}
+  .rail-badges{margin-top:14px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1.5px solid var(--line);font-size:13px}
+  .rail-badges b{font-family:var(--f-mono);color:var(--accent)}
+
+  /* ============ chapters ============ */
+  .ch{padding:64px 0 8px;scroll-margin-top:16px}
+  .ch + .ch{border-top:2px dashed var(--line);margin-top:40px}
+  .ch-head{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;max-width:66ch}
+  .ch-meta{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .ch-num{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
+  .level-tag{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);border:1.5px solid var(--line);border-radius:999px;padding:2px 10px}
+  .ch h2{font-size:clamp(28px,4vw,38px)}
+  .lede{color:var(--ink-2);font-size:17.5px}
+  .lede b{color:var(--ink)}
+  .remember{display:flex;gap:12px;align-items:flex-start;background:var(--accent-wash);border-radius:14px;
+    padding:14px 18px;margin-top:22px;font-size:16px;max-width:70ch}
+  .remember b{font-family:var(--f-display);color:var(--accent);white-space:nowrap}
+  .card{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+  .pad{padding:22px 24px}
+  .note{font-size:14.5px;color:var(--ink-2)}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .stack{display:flex;flex-direction:column;gap:12px}
+  .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+
+  .btn{background:var(--accent);color:var(--accent-ink);border:none;border-radius:12px;padding:11px 20px;
+    font-family:var(--f-display);font-weight:600;font-size:16px;transition:filter .15s,transform .1s}
+  .btn:hover{filter:brightness(1.08)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-family:var(--f-body);font-weight:600;font-size:15px}
+  .btn.ghost:hover{border-color:var(--accent)}
+  .seg{display:inline-flex;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+  .seg button{border:none;background:transparent;padding:8px 14px;font-weight:600;font-size:14.5px;color:var(--ink-2)}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+  input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+  .readout{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:14px}
+  .readout b{color:var(--ink);font-weight:600}
+  .big-num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-weight:600;font-size:30px;color:var(--accent);line-height:1.1}
+
+  /* ============ hero ============ */
+  .hero{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+  .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}
+  h1{font-size:clamp(34px,5.4vw,56px);font-weight:700;letter-spacing:-.005em;max-width:16ch}
+  h1 em{font-style:normal;color:var(--pink);white-space:nowrap}
+  .hero .lede{max-width:56ch;font-size:18.5px}
+
+  /* ============ microscope ============ */
+  .scope{display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);gap:26px;align-items:center;margin-top:26px;
+    padding:26px;border-radius:22px;background:#15161B;color:#E9E9EE;box-shadow:0 18px 50px rgba(10,12,20,.28)}
+  .eyepiece{position:relative;aspect-ratio:1;border-radius:50%;background:#050506;padding:16px;
+    box-shadow:inset 0 0 0 5px #2A2B31, inset 0 0 0 11px #0C0C0E, 0 0 0 1px #33343B}
+  .eyepiece canvas{display:block;width:100%;height:100%;border-radius:50%;cursor:grab;touch-action:none;transition:filter .18s}
+  .eyepiece canvas:active{cursor:grabbing}
+  .eyepiece .pointer{position:absolute;left:50%;top:16px;bottom:50%;width:2px;background:rgba(10,10,10,.55);pointer-events:none}
+  .scope-panel{display:flex;flex-direction:column;gap:18px}
+  .scope-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9B9DAA;margin-bottom:8px}
+  .samples{display:flex;flex-wrap:wrap;gap:8px}
+  .sample{background:#23252D;border:1.5px solid #34363F;color:#E9E9EE;border-radius:12px;padding:8px 13px;font-size:14.5px;font-weight:600;
+    display:flex;align-items:center;gap:8px}
+  .sample .dot{width:12px;height:12px;border-radius:50%}
+  .sample[aria-pressed="true"]{border-color:#E9E9EE;background:#2F3140}
+  .objectives{display:flex;gap:10px;align-items:flex-end}
+  .obj{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;color:#E9E9EE;padding:0}
+  .obj .barrel{width:38px;border-radius:6px 6px 10px 10px;background:linear-gradient(90deg,#9A9CA6,#E2E3E8 45%,#8C8E98);
+    position:relative;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25);transition:transform .15s}
+  .obj .band{position:absolute;left:0;right:0;height:6px}
+  .obj .tip{width:18px;height:8px;margin:0 auto;background:#55575F;border-radius:0 0 5px 5px}
+  .obj span.m{font-family:var(--f-mono);font-size:13px;font-weight:600;color:#B9BBC6}
+  .obj[aria-pressed="true"] .barrel{transform:translateY(6px)}
+  .obj[aria-pressed="true"] span.m{color:#FFFFFF}
+  .knob-row{display:flex;align-items:center;gap:12px}
+  .knob-row input{accent-color:#E9E9EE}
+  .scale{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:13.5px;color:#D6D7DE}
+  .scale .bar{height:6px;background:#E9E9EE;border-radius:3px;position:relative}
+  .scale .bar::before,.scale .bar::after{content:"";position:absolute;top:-4px;width:2px;height:14px;background:#E9E9EE}
+  .scale .bar::before{left:0}.scale .bar::after{right:0}
+  .scope-read{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-family:var(--f-mono);font-size:13.5px;color:#B9BBC6}
+  .scope-read b{color:#FFFFFF;font-weight:600}
+  .scope-note{font-size:15px;line-height:1.7;color:#D6D7DE;background:#1E2027;border-radius:12px;padding:12px 14px}
+  .scope-note b{color:#FFFFFF;font-family:var(--f-display);font-weight:600}
+  .focus-hint{font-size:13.5px;color:#FFCF7A;min-height:1.5em}
+
+  /* ============ size ruler ============ */
+  .ruler{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px;align-items:center}
+  .ruler-stage{aspect-ratio:1.25;border-radius:18px;background:var(--panel-2);display:grid;place-items:center;position:relative;overflow:hidden}
+  .ruler-stage svg{width:72%;height:72%;filter:var(--glow)}
+  .ruler-stage .tool{position:absolute;left:14px;top:14px;font-size:13px;font-weight:600;background:var(--panel);
+    border:1.5px solid var(--line);border-radius:999px;padding:3px 12px}
+  .ruler-name{font-family:var(--f-display);font-size:28px;font-weight:600}
+  .ruler-size{font-family:var(--f-mono);font-size:20px;font-weight:600;color:var(--accent)}
+  .ruler-track{position:relative;height:46px;margin-top:6px}
+  .ruler-ticks{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:11px;color:var(--ink-2)}
+  .ruler-bands{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:6px 0 2px}
+  .ruler-bands span{height:100%}
+
+  /* ============ cell diagrams ============ */
+  .diagram{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+  .cellbox{padding:14px;position:relative}
+  .cellsvg{width:100%;height:auto;display:block}
+  .cellsvg .org{cursor:pointer;transition:opacity .25s;filter:var(--glow)}
+  .cellsvg.dim .org{opacity:.28}
+  .cellsvg.dim .org.on{opacity:1}
+  .cellsvg .org:hover{opacity:.85}
+  .cellsvg .pin{cursor:pointer}
+  .cellsvg .pin circle{fill:var(--panel);stroke:var(--ink);stroke-width:2}
+  .cellsvg .pin text{font-family:var(--f-mono);font-size:12px;font-weight:600;fill:var(--ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+  .cellsvg .pin.on circle{fill:var(--ink)}
+  .cellsvg .pin.on text{fill:var(--panel)}
+  .cellsvg.nopins .pin{display:none}
+  .wobble{animation:wob 5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  .wobble.b{animation-duration:6.5s;animation-delay:-2s}
+  @keyframes wob{0%,100%{transform:rotate(0) translate(0,0)}50%{transform:rotate(3deg) translate(1px,-1px)}}
+  .tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .legend{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px}
+  .legend button{display:flex;align-items:center;gap:8px;background:transparent;border:1.5px solid transparent;border-radius:10px;
+    padding:6px 8px;text-align:left;font-size:14.5px;font-weight:600;line-height:1.35}
+  .legend button:hover{border-color:var(--line)}
+  .legend button[aria-pressed="true"]{background:var(--panel-2);border-color:var(--line)}
+  .legend .n{font-family:var(--f-mono);font-size:11.5px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+    border:1.5px solid var(--ink);flex:none}
+  .legend .sw{width:12px;height:12px;border-radius:4px;flex:none}
+  .infocard{margin-top:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;border-left:6px solid var(--hue,var(--accent))}
+  .infocard .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+  .infocard h3{font-size:24px}
+  .infocard .latin{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2);margin-top:-8px}
+  .infocard .city{display:flex;gap:10px;align-items:flex-start;background:var(--panel-2);border-radius:12px;padding:10px 12px;font-size:15px}
+  .infocard .city b{font-family:var(--f-display);color:var(--hue,var(--accent));white-space:nowrap}
+  .infocard .wow{font-size:14.5px;color:var(--ink-2)}
+  .infocard .wow b{color:var(--ink)}
+  .where{display:inline-flex;gap:6px;flex-wrap:wrap}
+  .where span{font-size:12.5px;font-weight:600;border-radius:999px;padding:1px 10px;border:1.5px solid var(--line)}
+
+  /* ============ compare + sort ============ */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cmp figure{margin:0;padding:12px 12px 8px}
+  .cmp figcaption{font-family:var(--f-display);font-weight:600;text-align:center;font-size:17px;margin-top:4px}
+  .cmp .cellsvg .pin{display:none}
+  .cmp .cellsvg .org{cursor:default}
+  .cmp.diff .cellsvg .org:not(.unique){opacity:.18}
+  .cmptable{width:100%;border-collapse:collapse;font-size:15px}
+  .cmptable th,.cmptable td{padding:10px 12px;text-align:left;border-bottom:1.5px solid var(--line);vertical-align:top}
+  .cmptable th{font-family:var(--f-display);font-weight:600;font-size:15px;color:var(--ink-2)}
+  .cmptable td:first-child{font-weight:600}
+  .tablewrap{overflow-x:auto}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;min-height:48px}
+  .chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14.5px;font-weight:600;
+    transition:transform .12s,border-color .15s,background .15s}
+  .chip:hover{border-color:var(--accent)}
+  .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);transform:translateY(-2px)}
+  .chip.placed{cursor:default}
+  .chip.ok{background:var(--good-wash);border-color:var(--good);color:var(--ink)}
+  .bins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+  .bin{border:2px dashed var(--line);border-radius:16px;padding:12px;min-height:150px;background:transparent;text-align:left;
+    display:flex;flex-direction:column;gap:8px;transition:border-color .15s,background .15s}
+  .bin:hover{border-color:var(--accent)}
+  .bin.armed{border-color:var(--accent);background:var(--accent-wash)}
+  .bin h4{font-size:17px}
+  .bin .binlist{display:flex;flex-wrap:wrap;gap:6px}
+  .msg{min-height:1.7em;font-size:15.5px}
+  .msg.good{color:var(--good)}
+  .msg.bad{color:var(--bad)}
+
+  /* ============ sims ============ */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .tab{background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:9px 16px;font-weight:600;font-size:15px;
+    display:flex;align-items:center;gap:8px}
+  .tab[aria-selected="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+  .tab .tick{font-family:var(--f-mono);font-size:12px;color:var(--good)}
+  .simpanel[hidden]{display:none}
+  .sim{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:center}
+  .sim canvas,.sim svg.simsvg{width:100%;height:auto;display:block;border-radius:14px;background:var(--panel-2)}
+  .ticks{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);margin-top:-4px}
+  .state{font-family:var(--f-display);font-weight:600;font-size:22px}
+  .life{background:var(--panel-2);border-radius:12px;padding:12px 14px;font-size:15px}
+  .life b{font-family:var(--f-display)}
+  .eq{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:15px;font-weight:600}
+  .eq span{background:var(--panel-2);border-radius:10px;padding:4px 10px}
+  .eq i{font-style:normal;color:var(--ink-2);font-family:var(--f-mono)}
+  .acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .act{background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:10px 6px;font-weight:600;font-size:14.5px}
+  .act[aria-pressed="true"]{background:var(--o-mito);border-color:var(--o-mito);color:#fff}
+  .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+  .stats div{background:var(--panel);padding:10px 12px}
+  .stats .v{font-family:var(--f-mono);font-weight:600;font-size:19px;font-variant-numeric:tabular-nums}
+  .stats .k{font-size:12.5px;color:var(--ink-2);line-height:1.4}
+  .dots{display:flex;gap:6px;justify-content:center;margin-top:8px}
+  .dots button{width:24px;height:24px;border:none;background:transparent;padding:0;position:relative}
+  .dots button::after{content:"";position:absolute;inset:6px;border-radius:50%;border:2px solid var(--ink-2)}
+  .dots button[aria-current="true"]::after{background:var(--ink);border-color:var(--ink)}
+  .dblfield{display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;min-height:92px;padding:10px;background:var(--panel-2);border-radius:12px}
+  .dblfield i{width:9px;height:9px;border-radius:50%;background:var(--o-nucleus);display:block;animation:pop .35s ease-out}
+  @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+
+  /* ============ special cells ============ */
+  .cells-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .ccard{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:8px;
+    transition:border-color .15s,transform .15s}
+  .ccard:hover{transform:translateY(-2px)}
+  .ccard[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+  .ccard.done{border-color:var(--good);cursor:default}
+  .ccard .art{aspect-ratio:1.3;background:var(--panel-2);border-radius:12px;display:grid;place-items:center}
+  .ccard .art svg{width:88%;height:88%;filter:var(--glow)}
+  .ccard .nm{font-family:var(--f-display);font-weight:600;font-size:16px;line-height:1.3}
+  .ccard .why{font-size:13.5px;color:var(--ink-2);line-height:1.6}
+  .ccard .job{font-size:13px;font-weight:600;color:var(--good)}
+  .jobs{display:flex;flex-wrap:wrap;gap:8px}
+  .jobbtn{background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:8px 13px;font-size:14.5px;font-weight:600}
+  .jobbtn:hover{border-color:var(--accent)}
+  .jobbtn[disabled]{opacity:.35;cursor:default}
+  .wbcwrap canvas{width:100%;height:230px;display:block;border-radius:14px;background:var(--panel-2);cursor:crosshair;touch-action:manipulation}
+  .tissues{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .tissue{padding:14px;display:flex;flex-direction:column;gap:8px}
+  .tissue svg{width:100%;height:auto;border-radius:10px;background:var(--panel-2)}
+  .tissue h4{font-size:16.5px}
+  .tissue p{font-size:14px;color:var(--ink-2);line-height:1.6}
+
+  /* ============ ladder ============ */
+  .ladder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center}
+  .ladder-stage{aspect-ratio:1.1;border-radius:18px;background:var(--panel-2);display:grid;place-items:center;overflow:hidden}
+  .ladder-stage svg{width:86%;height:86%;filter:var(--glow)}
+  .ladder-stage .in{animation:zoomout .6s cubic-bezier(.2,.7,.2,1)}
+  @keyframes zoomout{from{transform:scale(1.9);opacity:0}to{transform:scale(1);opacity:1}}
+  .steps{display:flex;gap:6px;margin:6px 0 2px;flex-wrap:wrap}
+  .step{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2);background:transparent;border:none;padding:4px 6px;border-radius:8px}
+  .step .d{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-family:var(--f-mono);font-size:11.5px}
+  .step[aria-current="true"]{color:var(--ink)}
+  .step[aria-current="true"] .d{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .step.past .d{border-color:var(--accent);color:var(--accent)}
+  .step-arrow{color:var(--line);font-family:var(--f-mono)}
+
+  /* ============ body systems ============ */
+  .systems{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .sys{padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+  .sys h4{font-size:17px;display:flex;align-items:center;gap:8px}
+  .sys h4 i{width:12px;height:12px;border-radius:4px;display:inline-block}
+  .sys p{font-size:14px;color:var(--ink-2);line-height:1.6}
+  .sys .star{font-size:13px;font-weight:600;color:var(--ink)}
+  .tally{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1.5px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px}
+  .tally div{background:var(--panel);padding:16px}
+  .tally .v{font-family:var(--f-mono);font-weight:600;font-size:24px;color:var(--accent);font-variant-numeric:tabular-nums}
+  .tally .k{font-size:13.5px;color:var(--ink-2)}
+  .cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:16px;padding:20px 24px;
+    border-radius:18px;background:var(--ink);color:var(--panel)}
+  .cta h3{font-size:22px}
+  .cta p{font-size:15px;opacity:.8}
+  .cta a{background:var(--panel);color:var(--ink);text-decoration:none;border-radius:12px;padding:12px 20px;font-family:var(--f-display);font-weight:600}
+
+  /* ============ quiz + badges ============ */
+  .quiz-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+  .qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+  .q{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px}
+  .q .qn{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--ink-2)}
+  .q .qt{font-family:var(--f-display);font-weight:600;font-size:17px;line-height:1.45}
+  .opts{display:flex;flex-direction:column;gap:7px}
+  .opt{background:var(--panel);border:1.5px solid var(--line);border-radius:10px;padding:9px 13px;text-align:left;font-size:15px;line-height:1.5}
+  .opt:hover:not(:disabled){border-color:var(--accent)}
+  .opt:disabled{cursor:default}
+  .opt.right{border-color:var(--good);background:var(--good-wash);font-weight:600}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-wash);text-decoration:line-through}
+  .fb{font-size:14.5px;color:var(--ink-2);min-height:1.4em}
+  .shelf{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+  .badge{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:12px 6px;border-radius:14px;
+    background:var(--panel);border:1.5px dashed var(--line);font-size:12.5px;font-weight:600;color:var(--ink-2);line-height:1.35}
+  .badge svg{width:46px;height:46px;opacity:.28;transition:opacity .3s,transform .3s}
+  .badge.got{border-style:solid;border-color:var(--accent);color:var(--ink)}
+  .badge.got svg{opacity:1;transform:rotate(-8deg)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);background:var(--ink);color:var(--panel);
+    padding:12px 20px;border-radius:14px;font-weight:600;box-shadow:var(--shadow);transition:transform .35s cubic-bezier(.2,.8,.2,1);z-index:20}
+  .toast.show{transform:translate(-50%,0)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:2px dashed var(--line);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    color:var(--ink-2);font-size:14px}
+  footer b{font-family:var(--f-display);font-weight:600;color:var(--ink)}
+
+  /* ============ responsive ============ */
+  @media (max-width:1060px){
+    .shell{grid-template-columns:1fr;gap:0;padding-top:0}
+    .rail{position:sticky;top:0;z-index:10;max-height:none;overflow-x:auto;overflow-y:hidden;background:var(--glass);
+      margin:0 -24px;padding:10px 24px;border-bottom:1.5px solid var(--line)}
+    .rail-title,.rail-badges,.lvl a,.lvl-size{display:none}
+    .rail ol{display:flex;gap:8px}
+    .rail ol::before{display:none}
+    .lvl{padding:0}
+    .lvl::before{display:none}
+    .lvl-name{white-space:nowrap;font-size:13.5px;padding:4px 12px;border-radius:999px;border:1.5px solid var(--line)}
+    .lvl.on .lvl-name{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  }
+  @media (max-width:880px){
+    .scope,.ruler,.diagram,.sim,.ladder,.grid2,.cmp{grid-template-columns:1fr}
+    .cells-grid,.tissues{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .systems{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .shelf{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .tally{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .bins{grid-template-columns:1fr}
+    .scope{padding:18px}
+  }
+  @media (max-width:520px){
+    .systems,.legend{grid-template-columns:1fr}
+    .acts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  }
+  /* ============ lesson 5: the five senses ============ */
+  .wrap3{max-width:1120px;margin:0 auto;padding:30px 24px 90px}
+  .wrap3 h1{max-width:24ch}
+  .ch-art{margin:0 0 24px;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:1024/380;background:var(--panel-2)}
+  .ch-art img{display:block;width:100%;height:100%;object-fit:cover}
+  .sens{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:22px;align-items:start}
+  .sens svg.fig{width:100%;height:auto;display:block;background:var(--panel-2);border-radius:16px}
+  .sens .hot{cursor:pointer}
+  .sens .hot circle.dot{fill:var(--accent);stroke:var(--panel);stroke-width:2.5}
+  .sens .hot text{font-family:var(--f-mono);font-size:11px;fill:var(--accent-ink);font-weight:600}
+  .sens .hot.on circle.dot{fill:var(--ink)}
+  .lab{font-family:var(--f-mono);font-size:11.5px;fill:var(--ink-2)}
+  .demo{border:1.5px solid var(--line);border-radius:16px;padding:16px;background:var(--panel);display:grid;gap:10px}
+  .demo h3{font-size:19px;margin:0}
+  .demo .how{font-size:14.5px;color:var(--ink-2);line-height:1.55}
+  .blind{position:relative;background:#fff;border-radius:12px;height:170px;border:1.5px solid var(--line);overflow:hidden}
+  .blind span{position:absolute;top:50%;transform:translate(-50%,-50%);color:#111;font-family:var(--f-mono)}
+  .blind .plus{font-size:30px}
+  .blind .dot{width:26px;height:26px;border-radius:50%;background:#111}
+  .after{height:200px;border-radius:12px;border:1.5px solid var(--line);display:grid;place-items:center;background:#fff;transition:background .2s}
+  .after .fix{width:10px;height:10px;border-radius:50%;background:#111;position:absolute}
+  .after-wrap{position:relative;display:grid;place-items:center}
+  .mixer{display:grid;grid-template-columns:110px 1fr;gap:10px 14px;align-items:center}
+  .mixer .sw{width:110px;height:110px;border-radius:14px;border:1.5px solid var(--line);grid-row:span 3}
+  .mixer input[type=range]{width:100%}
+  .mixer .nm{font-family:var(--f-mono);font-size:12px;color:var(--ink-2)}
+  .tone{display:grid;gap:10px}
+  .tone .big{font-family:var(--f-mono);font-size:34px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+  .wave{height:74px;width:100%;background:var(--panel-2);border-radius:12px}
+  .dbbar{display:grid;gap:5px}
+  .dbrow{display:grid;grid-template-columns:128px 1fr 62px;gap:10px;align-items:center;font-size:14.5px}
+  .dbrow .bar{height:14px;border-radius:7px;background:var(--accent-wash);overflow:hidden}
+  .dbrow .bar i{display:block;height:100%;border-radius:7px;background:var(--accent)}
+  .dbrow.loud .bar i{background:var(--bad)}
+  .dbrow .n{font-family:var(--f-mono);font-size:13px;color:var(--ink-2);text-align:right}
+  .tastes{display:flex;flex-wrap:wrap;gap:8px}
+  .tastes button{background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:9px 14px;font-weight:600;font-size:15px;min-height:44px;display:flex;align-items:center;gap:8px}
+  .tastes button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash)}
+  .tastes .em{font-size:19px}
+  .rt{display:grid;gap:10px;justify-items:center}
+  .rtbox{width:100%;min-height:132px;border-radius:14px;border:2px dashed var(--line);display:grid;place-items:center;text-align:center;padding:14px;
+    font-family:var(--f-display);font-weight:600;font-size:20px;background:var(--panel-2);cursor:pointer;user-select:none}
+  .rtbox.wait{background:var(--panel-2)}
+  .rtbox.go{background:var(--good);color:#fff;border-color:var(--good);border-style:solid}
+  .rtbox.early{background:var(--bad-wash);border-color:var(--bad)}
+  .twop{display:grid;gap:10px}
+  .twop .pins{height:64px;display:flex;align-items:center;justify-content:center;background:#fff;border:1.5px solid var(--line);border-radius:12px;position:relative}
+  .twop .pins i{width:12px;height:12px;border-radius:50%;background:#111;position:absolute;top:50%;transform:translate(-50%,-50%)}
+  .bodyparts{display:grid;gap:4px}
+  .bodyparts .r{display:grid;grid-template-columns:120px 1fr 58px;gap:10px;align-items:center;font-size:14.5px}
+  .bodyparts .r .bar{height:13px;border-radius:7px;background:var(--panel-2)}
+  .bodyparts .r .bar i{display:block;height:100%;border-radius:7px;background:var(--o-nucleus,var(--accent))}
+  .bodyparts .r .n{font-family:var(--f-mono);font-size:13px;color:var(--ink-2);text-align:right}
+  .illus{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .illus svg{width:100%;height:auto;background:var(--panel-2);border-radius:14px}
+  .gwrap{display:grid;gap:12px}
+  .gcard{min-height:120px;border-radius:18px;border:2px solid var(--accent);background:var(--accent-wash);display:grid;place-items:center;text-align:center;
+    padding:18px;font-family:var(--f-display);font-weight:600;font-size:23px;line-height:1.4}
+  .gcard.idle{border-color:var(--line);background:var(--panel-2);color:var(--ink-2);font-size:19px}
+  .gbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px}
+  .gbins button{min-height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);font-weight:600;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:7px}
+  .gbins button:disabled{opacity:.5}
+  .gbins button.right{border-color:var(--good);background:var(--good-wash)}
+  .gbins button.wrong{border-color:var(--bad);background:var(--bad-wash)}
+  .gbins .em{font-size:19px}
+  .gstat{display:flex;gap:8px 18px;flex-wrap:wrap;align-items:center}
+  .gstat .big{font-family:var(--f-mono);font-size:26px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+  .duel{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+  .duel .p{border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;text-align:center}
+  .duel .p.on{border-color:var(--accent);background:var(--accent-wash)}
+  .duel .p b{display:block;font-family:var(--f-mono);font-size:20px}
+  @media (max-width:880px){.sens,.illus{grid-template-columns:1fr}.mixer{grid-template-columns:84px 1fr}.mixer .sw{width:84px;height:84px}
+    .dbrow,.bodyparts .r{grid-template-columns:96px 1fr 54px;font-size:13.5px}}
+  /* ============ lesson 6: viruses and germs ============ */
+  .zoom{display:grid;gap:12px}
+  .zoomstage{height:230px;background:var(--panel-2);border-radius:16px;display:grid;place-items:center;overflow:hidden}
+  .zoomstage svg{max-height:200px;width:auto}
+  .shapes{display:flex;flex-wrap:wrap;gap:8px}
+  .shapes button{min-height:46px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);padding:8px 14px;font-weight:600;font-size:15px}
+  .shapes button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash)}
+  .shapestage{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:18px;align-items:center;margin-top:12px}
+  .shapestage svg{width:100%;max-width:260px;height:auto;margin:0 auto;display:block;background:var(--panel-2);border-radius:16px}
+  .steps6{display:grid;gap:6px}
+  .steps6 button{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:9px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);font-size:15px;min-height:44px}
+  .steps6 button b{font-family:var(--f-mono);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);flex:none;font-size:12px}
+  .steps6 button.on{border-color:var(--accent);background:var(--accent-wash)}
+  .steps6 button.on b{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .vlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+  .vlist button{min-height:52px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);padding:9px 12px;font-weight:600;font-size:15px;text-align:left;line-height:1.35}
+  .vlist button span{display:block;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);font-weight:500}
+  .vlist button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash)}
+  .vfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1.5px solid var(--line);border-radius:14px;overflow:hidden;margin-top:10px}
+  .vfacts div{background:var(--panel);padding:10px 12px}
+  .vfacts .k{font-size:12.5px;color:var(--ink-2)}
+  .vfacts .v{font-weight:600;font-size:15px;line-height:1.4}
+  .cmp6{width:100%;border-collapse:collapse;font-size:15px}
+  .cmp6 th,.cmp6 td{border:1.5px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+  .cmp6 th{background:var(--panel-2);font-family:var(--f-display)}
+  .cmp6 tbody th{width:30%}
+  .simwrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:18px;align-items:start}
+  .simcanvas{width:100%;aspect-ratio:1/.72;background:#fff;border:1.5px solid var(--line);border-radius:16px;display:block}
+  .curve{width:100%;height:120px;background:var(--panel-2);border-radius:12px;display:block}
+  .simstat{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:1px;background:var(--line);border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+  .simstat div{background:var(--panel);padding:8px 10px}
+  .simstat .v{font-family:var(--f-mono);font-weight:600;font-size:20px}
+  .simstat .k{font-size:12px;color:var(--ink-2)}
+  .dotkey{display:flex;gap:14px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-2);align-items:center}
+  .dotkey i{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:-1px}
+    padding:18px;font-family:var(--f-display);font-weight:600;font-size:22px;line-height:1.4}
+  .gbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(142px,1fr));gap:8px}
+  .gbins button{min-height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center;padding:6px 10px}
+  @media (max-width:880px){.sens,.simwrap,.shapestage{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "DNA, Genetics and Cell Division · Body 101 Lesson 10", "description": "Ages 11 to 12: base pairing, the full 64-codon genetic code, 23 pairs of chromosomes, mitosis versus meiosis and a Punnett square.", "url": "https://www.sahawanclinic.clinic/learn/dna/en", "inLanguage": "en", "educationalLevel": "Primary school", "learningResourceType": "Interactive resource", "isAccessibleForFree": true, "author": {"@type": "Person", "name": "Dr. Saharat Aungsumart", "jobTitle": "Neurologist"}, "publisher": {"@type": "MedicalClinic", "name": "สหวรรณคลินิก", "url": "https://www.sahawanclinic.clinic"}, "isPartOf": {"@type": "Course", "name": "Body 101", "url": "https://www.sahawanclinic.clinic/learn"}}</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<nav class="sw-bar" aria-label="Sahawan Clinic">
+  <a class="sw-brand" href="/">Sahawan Clinic</a><span class="sw-sep" aria-hidden="true">/</span>
+  <a href="/learn">Body 101: all lessons</a>
+  <a class="sw-lang" href="/learn/dna" lang="th" hreflang="th">ภาษาไทย</a>
+</nav>
+
+
+<div class="wrap3">
+  <section class="ch hero" id="ch-top" style="padding-top:6px">
+    <div class="eyebrow">Body 101 · Level Two · Lesson 10 · ages 11 to 12</div>
+    <h1>DNA, genes <em>and how cells divide</em></h1>
+    <p class="lede">Almost every cell in your body keeps a complete manual of that body inside it. If you unwound the DNA from a single cell and laid it out end to end, it would be about 2 meters long, and if you joined up the DNA from every cell in your body it would be long enough to reach the Sun and back several times. This lesson looks at what letters the manual is written in, how it is read, and how it passes from parents to their children.</p>
+  </section>
+
+  <section class="ch" id="ch-double">
+    <div class="ch-head">
+      <div class="ch-meta"><span class="ch-num">1 · Structure</span><span class="level-tag">A twisted ladder</span></div>
+      <h2>DNA is written with four letters</h2>
+      <p class="lede">DNA is a double strand twisted into a spiral. The two rails of the ladder are made of sugar and phosphate, and the rungs are four bases that always pair in a fixed way: A with T, and C with G. Tap a dot on the picture to see the details.</p>
+    </div>
+    <div class="card pad">
+      <div class="sens">
+        <svg class="fig" id="dnaSvg" viewBox="0 0 520 320" role="img" aria-label="Diagram of double-stranded DNA showing the sugar-phosphate backbone and the paired bases">
+          <g id="helix"></g>
+          <g class="lab"><text x="16" y="300">Left strand</text><text x="430" y="300">Right strand</text></g>
+          <g class="hots"></g>
+        </svg>
+        <div>
+          <div class="legend" id="dnaList"></div>
+          <div class="card infocard" id="dnaInfo" style="margin-top:12px"></div>
+        </div>
+      </div>
+      <div class="demo" style="margin-top:14px">
+        <h3>Try it: pair the bases correctly</h3>
+        <p class="how">The top strand is the template. Pick the base that pairs correctly, one at a time, to build its partner strand. Just remember the simple rule: A goes with T, and C goes with G.</p>
+        <div class="row" style="font-family:var(--f-mono);font-size:24px;letter-spacing:.24em"><span id="pairTop"></span></div>
+        <div class="row" style="font-family:var(--f-mono);font-size:24px;letter-spacing:.24em;color:var(--accent)"><span id="pairBottom"></span></div>
+        <div class="row" id="pairBtns"></div>
+        <p class="msg" id="pairMsg">Pick the base that pairs with the first one</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch-central">
+    <div class="ch-head">
+      <div class="ch-meta"><span class="ch-num">2 · Reading it</span><span class="level-tag">A gene becomes a protein</span></div>
+      <h2>From code to a real protein</h2>
+      <p class="lede">A gene is a stretch of DNA that holds the recipe for one protein. Using it takes two steps. First the recipe is copied out as RNA. Second, a ribosome reads the RNA three letters at a time and joins amino acids in the order the code gives.</p>
+    </div>
+    <div class="card pad">
+      <div class="sens">
+        <div>
+          <svg class="fig" id="flowSvg" viewBox="0 0 520 260" role="img" aria-label="Diagram of DNA being copied into RNA and then translated into a chain of amino acids">
+            <rect x="24" y="30" width="180" height="54" rx="14" fill="#CFE7F2" stroke="var(--ink)" stroke-width="2.5"/>
+            <text class="lab" x="54" y="62" style="font-size:15px">DNA in the nucleus</text>
+            <rect x="24" y="110" width="180" height="54" rx="14" fill="#F2D9A0" stroke="var(--ink)" stroke-width="2.5"/>
+            <text class="lab" x="68" y="142" style="font-size:15px">RNA</text>
+            <rect x="24" y="190" width="180" height="54" rx="14" fill="#F3CFC0" stroke="var(--ink)" stroke-width="2.5"/>
+            <text class="lab" x="52" y="222" style="font-size:15px">Amino acid chain</text>
+            <g stroke="var(--ink)" stroke-width="3" fill="none" marker-end=""><path d="M114,84 V104"/><path d="M114,164 V184"/></g>
+            <text class="lab" x="124" y="100">Copy</text><text class="lab" x="124" y="180">Translate</text>
+            <ellipse cx="380" cy="132" rx="86" ry="62" fill="#E5D4F2" stroke="var(--ink)" stroke-width="3"/>
+            <ellipse cx="380" cy="150" rx="60" ry="34" fill="#C9A9E8" stroke="var(--ink)" stroke-width="2.5"/>
+            <text class="lab" x="344" y="70" style="font-size:14px">Ribosome</text>
+            <g id="beads"></g>
+          </svg>
+          <div class="row" style="margin-top:8px"><button class="btn" type="button" id="transBtn">Start making a protein</button><span class="readout" id="transMsg">Press to watch</span></div>
+        </div>
+        <div class="demo">
+          <h3>Three-letter code translator</h3>
+          <p class="how">Pick three RNA bases and see which amino acid the code calls for. One set of three letters is called a codon.</p>
+          <div class="row" id="codonPick"></div>
+          <div class="clock4"><div><div class="note">Codon chosen</div><div class="big" id="codonTxt">AUG</div></div><div><div class="note">Translates to</div><div class="big" id="aaTxt" style="font-size:26px;color:var(--ink-2)">Methionine</div></div></div>
+          <p class="how" id="codonNote"></p>
+          <div class="life"><b>One code for the whole planet</b> Bacteria, trees, fish and people all use almost exactly the same code table. This is one of the biggest pieces of evidence that every living thing shares a common ancestor, and it is the reason scientists can put a human gene into bacteria to make insulin.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch-chrom">
+    <div class="ch-head">
+      <div class="ch-meta"><span class="ch-num">3 · Chromosomes</span><span class="level-tag">46 chromosomes, 23 pairs</span></div>
+      <h2>The whole manual is folded into 46 chromosomes</h2>
+      <p class="lede">Two meters of DNA is wound around proteins and coiled up on itself until it becomes 46 chromosomes in a human cell, arranged as 23 pairs, with one chromosome of each pair from your mother and one from your father. Tap to switch and look at pair 23.</p>
+    </div>
+    <div class="card pad">
+      <div class="row">
+        <div class="seg" id="sexSeg" role="group" aria-label="Choose a chromosome set">
+          <button type="button" data-s="xx" aria-pressed="true">Pair 23 is XX</button>
+          <button type="button" data-s="xy" aria-pressed="false">Pair 23 is XY</button>
+        </div>
+      </div>
+      <svg id="karyoSvg" viewBox="0 0 520 240" style="width:100%;height:auto;background:var(--panel-2);border-radius:16px;margin-top:12px" role="img" aria-label="Diagram of 23 pairs of chromosomes"></svg>
+      <p style="font-size:16px" id="karyoTxt"></p>
+      <div class="vfacts">
+        <div><div class="k">Genes in total</div><div class="v">about 20,000 genes</div></div>
+        <div><div class="k">Letters in total</div><div class="v">about 3,200 million base pairs</div></div>
+        <div><div class="k">The part that is really genes</div><div class="v">about 2 percent</div></div>
+        <div><div class="k">Shared between any two people</div><div class="v">about 99.9 percent</div></div>
+      </div>
+      <div class="remember" style="margin-top:12px"><b>The 0.1 percent that differs</b><span>Two people who are not identical twins have DNA that differs in about one letter in a thousand. That sounds tiny, but out of 3,200 million letters it works out to several million positions. That is where all the differences between us come from.</span></div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch-division">
+    <div class="ch-head">
+      <div class="ch-meta"><span class="ch-num">4 · Cell division</span><span class="level-tag">Mitosis and meiosis</span></div>
+      <h2>Dividing to repair yourself, and dividing to make new life</h2>
+      <p class="lede">Our bodies divide cells all the time to repair and to grow. That is called mitosis, and it makes new cells that are the same in every way. But making sex cells uses a different kind of division called meiosis, which halves the number of chromosomes and swaps pieces between them as well. Press to go step by step.</p>
+    </div>
+    <div class="card pad">
+      <div class="seg" id="divSeg" role="group" aria-label="Choose a type of cell division">
+        <button type="button" data-d="mitosis" aria-pressed="true">Mitosis</button>
+        <button type="button" data-d="meiosis" aria-pressed="false">Meiosis</button>
+      </div>
+      <div class="sens" style="margin-top:12px">
+        <svg class="fig" id="divSvg" viewBox="0 0 480 240" role="img" aria-label="Stages of cell division"></svg>
+        <div>
+          <div class="steps6" id="divSteps"></div>
+          <div class="row" style="margin-top:10px"><button class="btn" type="button" id="divPlay">Play the whole process</button><span class="readout" id="divMsg"></span></div>
+        </div>
+      </div>
+      <div style="overflow-x:auto;margin-top:14px"><table class="cmp6">
+        <thead><tr><th>Topic</th><th>Mitosis</th><th>Meiosis</th></tr></thead>
+        <tbody>
+          <tr><th>Where it happens</th><td>Almost every kind of body cell</td><td>Only in the testes and the ovaries</td></tr>
+          <tr><th>New cells made</th><td>2 cells</td><td>4 cells</td></tr>
+          <tr><th>Number of chromosomes</th><td>46, the same as before</td><td>cut down to 23</td></tr>
+          <tr><th>Same as the parent cell?</th><td>Identical in every way</td><td>No, pieces are swapped between the pairs</td></tr>
+          <tr><th>What it is for</th><td>Growing, repairing, replacing old cells</td><td>Making sperm and eggs</td></tr>
+        </tbody>
+      </table></div>
+      <div class="life" style="margin-top:12px"><b>Why brothers and sisters are not alike</b> Because meiosis swaps pieces between paired chromosomes at random, and then deals out which chromosome of each pair goes where at random too. The number of possible combinations from one pair of parents is more than 8 million, before you even count the swapping.</div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch-inherit">
+    <div class="ch-head">
+      <div class="ch-meta"><span class="ch-num">5 · Inheritance</span><span class="level-tag">The Punnett square</span></div>
+      <h2>Predicting the chances for the next generation</h2>
+      <p class="lede">At each gene position we carry two copies, one from our mother and one from our father. If we know which copies the parents have, we can work out the chances for their child. Try it. This example uses thalassemia carriers, which are very common in Thailand.</p>
+    </div>
+    <div class="card pad">
+      <div class="sens">
+        <div class="demo">
+          <h3>Choose the parents' genes</h3>
+          <label class="how" for="momSel">Mother</label>
+          <select id="momSel" style="min-height:44px;border-radius:12px;border:1.5px solid var(--line);padding:8px 12px;font-size:16px">
+            <option value="AA">Normal, no hidden gene</option>
+            <option value="Aa" selected>Carrier, one hidden copy</option>
+            <option value="aa">Has the disease, two copies</option>
+          </select>
+          <label class="how" for="dadSel">Father</label>
+          <select id="dadSel" style="min-height:44px;border-radius:12px;border:1.5px solid var(--line);padding:8px 12px;font-size:16px">
+            <option value="AA">Normal, no hidden gene</option>
+            <option value="Aa" selected>Carrier, one hidden copy</option>
+            <option value="aa">Has the disease, two copies</option>
+          </select>
+          <div id="punnett" style="margin-top:10px"></div>
+          <p class="msg" id="punMsg"></p>
+        </div>
+        <div class="demo">
+          <h3>Thalassemia and Thailand</h3>
+          <p class="how">Thalassemia is the most common inherited blood disorder in Thailand. About 30 to 40 Thai people in every 100 are carriers, meaning they have one hidden copy of the gene but no symptoms. So when two carriers marry, there is a 1 in 4 chance of a child with the disease in every pregnancy.</p>
+          <p class="how">One in four does not mean that exactly one child out of four will have the disease. Each pregnancy is a fresh roll of the dice. Four children might have none, or several.</p>
+          <p class="how">This is why hospitals offer blood tests to couples who plan to have children, so they know ahead of time and can plan. It is not to stop anyone from having children.</p>
+          <div class="remember"><b>What older books often get wrong</b><span>Traits like tongue rolling, earlobes or dimples are often given as easy examples of dominant and recessive genes, but modern research finds that these traits come from many genes working together, not one gene. Better examples are blood groups and inherited diseases such as thalassemia.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch-mutation">
+    <div class="ch-head">
+      <div class="ch-meta"><span class="ch-num">6 · Mutation</span><span class="level-tag">What happens when there is a mistake</span></div>
+      <h2>A mutation does not always mean something bad</h2>
+      <p class="lede">Every time a cell copies its DNA there is a chance of a small typo. Most are repaired right away. Some have no effect at all. Some cause disease. And some turn out to be an advantage. Mutations are the raw material of evolution.</p>
+    </div>
+    <div class="grid2">
+      <div class="card pad stack"><h3 style="font-size:19px">Some change nothing</h3><p>Because several codes translate to the same amino acid, changing a letter at some positions does not change the protein at all. Geneticists call this a silent mutation.</p></div>
+      <div class="card pad stack"><h3 style="font-size:19px">One letter can cause a disease</h3><p>Sickle cell disease comes from changing a single letter in the hemoglobin gene. That changes one amino acid, and the red blood cells change shape until they block the smallest blood vessels.</p></div>
+      <div class="card pad stack"><h3 style="font-size:19px">Sometimes it is an advantage</h3><p>Carriers of thalassemia and of sickle cell get a milder form of malaria. That is why genes like these are common in places where malaria used to be everywhere, including many parts of Thailand.</p></div>
+      <div class="card pad stack"><h3 style="font-size:19px">Genes are not a fate you cannot change</h3><p>Genes set what is possible, but what you eat, how you sleep, how you exercise and the world around you decide how much each gene gets switched on. Two people with the same genes can still end up different.</p></div>
+    </div>
+    <div class="remember" style="margin-top:14px"><b>A word of caution about gene tests</b><span>Advertised gene test kits that claim to tell you how good you will be at sport or at school have no scientific evidence behind them. The gene tests that really do help are tests for clear inherited diseases, and those should be done through a doctor and always come with genetic counseling.</span></div>
+  </section>
+
+  <section class="ch" id="ch-quiz10">
+    <div class="ch-head">
+      <div class="ch-meta"><span class="ch-num">Review</span><span class="level-tag">12 questions</span></div>
+      <h2>Test yourself</h2>
+    </div>
+    <div class="quiz-head"><span class="readout" id="quiz10Score">Correct 0 out of 12</span><button class="btn ghost" type="button" id="quiz10Reset">Start over</button></div>
+    <div class="qgrid" id="quiz10Grid"></div>
+  </section>
+
+  <section class="ch" id="ch-arena-cta"><div class="card pad stack"><h2 style="font-size:23px;margin:0">Fancy a game on this lesson?</h2><p>Every question from this lesson is in the Body 101 arena. Race the clock, duel someone at home, play as a team, beat the bosses, or practise with no timer at all.</p><div class="row"><a class="btn" href="/learn/play/en?topic=dna">Play this topic</a><a class="btn ghost" href="/learn/play/en">The whole arena</a></div></div></section>
+  <footer>
+    <span>Body 101 Lesson 10 · ages 11 to 12 · The pictures are simplified diagrams · For education only, not medical advice. Genetic testing and counseling should be done with a doctor</span>
+    <span>Written by <b>Dr. Saharat Aungsumart</b> · Neurologist</span>
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  "use strict";
+  function $(s, r){ return (r || document).querySelector(s); }
+  function $$(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function keyAct(fn){ return function(e){ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fn(); } }; }
+  var reduce = false;
+  try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  function sched(fn){
+    if (!document.hidden && window.requestAnimationFrame) return requestAnimationFrame(fn);
+    return setTimeout(function(){ fn(performance.now()); }, 16);
+  }
+  function run(ms, step, done){
+    if (reduce) { step(1); if (done) done(); return; }
+    var t0 = performance.now();
+    (function frame(now){
+      var p = Math.min(1, (now - t0) / ms); step(p);
+      if (p < 1) sched(frame); else if (done) done();
+    })(t0);
+  }
+  function buildMap(cfg){
+    var svg = $(cfg.svg), list = $(cfg.list), info = $(cfg.info), hots = $(".hots", svg);
+    function pick(k){
+      var it = cfg.items[k];
+      $$(".hot", hots).forEach(function(g){ g.classList.toggle("on", g.getAttribute("data-k") === k); });
+      $$("button", list).forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.k === k ? "true" : "false"); });
+      info.style.setProperty("--hue", it.c || "var(--accent)");
+      info.innerHTML = "<h3>" + it.n + '</h3><p style="font-size:16px">' + it.t + '</p><div class="city"><b>Did you know</b><span>' + it.w + "</span></div>";
+    }
+    Object.keys(cfg.items).forEach(function(k, i){
+      var it = cfg.items[k], n = i + 1;
+      var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", "hot"); g.setAttribute("data-k", k); g.setAttribute("tabindex", "0");
+      g.setAttribute("role", "button"); g.setAttribute("aria-label", it.n);
+      g.innerHTML = '<circle cx="' + it.x + '" cy="' + it.y + '" r="17" fill="transparent"/>' +
+        '<circle class="dot" cx="' + it.x + '" cy="' + it.y + '" r="12"/>' +
+        '<text x="' + it.x + '" y="' + (it.y + 4) + '" text-anchor="middle">' + n + "</text>";
+      g.addEventListener("click", function(){ pick(k); });
+      g.addEventListener("keydown", keyAct(function(){ pick(k); }));
+      hots.appendChild(g);
+      var b = document.createElement("button");
+      b.type = "button"; b.dataset.k = k;
+      b.innerHTML = '<span class="n">' + n + '</span><span>' + it.n + "</span>";
+      b.addEventListener("click", function(){ pick(k); });
+      list.appendChild(b);
+    });
+    pick(Object.keys(cfg.items)[0]);
+  }
+
+  /* ---------- 1. helix ---------- */
+  var BASE_C = { A:"#DD6630", T:"#5FAAD2", G:"#7FB98F", C:"#C9A9E8" };
+  function drawHelix(){
+    var g = $("#helix"), out = [], pairs = ["AT", "TA", "GC", "CG", "AT", "GC", "TA", "CG", "AT", "GC"];
+    pairs.forEach(function(p, i){
+      var y = 24 + i * 28, w = 150 * Math.sin(i / 10 * Math.PI * 1.6 + .6);
+      var lx = 260 - 110 + w * .12, rx = 260 + 110 - w * .12;
+      out.push('<line x1="' + lx + '" y1="' + y + '" x2="' + rx + '" y2="' + y + '" stroke="var(--line)" stroke-width="3"/>');
+      out.push('<rect x="' + (lx + 26) + '" y="' + (y - 11) + '" width="66" height="22" rx="7" fill="' + BASE_C[p[0]] + '" opacity=".9"/>');
+      out.push('<rect x="' + (rx - 92) + '" y="' + (y - 11) + '" width="66" height="22" rx="7" fill="' + BASE_C[p[1]] + '" opacity=".9"/>');
+      out.push('<text x="' + (lx + 59) + '" y="' + (y + 5) + '" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="14" fill="#fff" font-weight="600">' + p[0] + "</text>");
+      out.push('<text x="' + (rx - 59) + '" y="' + (y + 5) + '" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="14" fill="#fff" font-weight="600">' + p[1] + "</text>");
+      out.push('<circle cx="' + lx + '" cy="' + y + '" r="8" fill="#E8C98F" stroke="var(--ink)" stroke-width="2"/>');
+      out.push('<circle cx="' + rx + '" cy="' + y + '" r="8" fill="#E8C98F" stroke="var(--ink)" stroke-width="2"/>');
+    });
+    g.innerHTML = out.join("");
+  }
+  var DNA = {
+    backbone:{ x:150, y:52, n:"The sugar-phosphate backbone", c:"#E8C98F", t:"Both rails of the ladder are built from deoxyribose sugar alternating with phosphate groups, joined into one long strand. This backbone is strong and exactly the same all the way along, so the information is not in the backbone. It is in the bases.",
+      w:"The two strands lie head to tail, pointing in opposite directions, which is called antiparallel. That is why the enzymes that copy DNA have to work on the two strands in different ways." },
+    pairAT:{ x:254, y:52, n:"A pairs with T", c:"#DD6630", t:"Adenine always joins thymine with two hydrogen bonds. Together the pair is exactly the right size for the width of the ladder.",
+      w:"This pairing rule is what lets DNA copy itself, because if you know one strand you can work out the other one straight away." },
+    pairGC:{ x:254, y:136, n:"G pairs with C", c:"#7FB98F", t:"Guanine joins cytosine with three hydrogen bonds, so it is a little stickier than an A-T pair. Stretches of DNA with a lot of G and C are harder to pull apart.",
+      w:"Labs use this fact to work out the temperature needed for DNA tests, such as looking for germs with PCR." },
+    hbond:{ x:210, y:220, n:"Hydrogen bonds", c:"#8FC7E8", t:"A grip weak enough to come apart easily when the cell wants to read or copy, but tight enough to hold the two strands together the rest of the time. That balance is what makes DNA work in real life.",
+      w:"Pulling DNA strands apart with heat and letting them snap back together is the heart of PCR, the technique used to test for COVID and to test DNA all over the world." },
+    gene:{ x:330, y:220, n:"A gene", c:"#B5397A", t:"A stretch of the DNA strand that holds the recipe for one protein. A single gene may be a few thousand letters long, while the whole set of DNA is 3,200 million letters long.",
+      w:"We have about 20,000 genes, far fewer than scientists once guessed, and close to the number in some roundworms. So complexity is not about how many genes you have." }
+  };
+  function initPair(){
+    var seq = "ATGCCTAG", built = "", comp = { A:"T", T:"A", G:"C", C:"G" };
+    var top = $("#pairTop"), bot = $("#pairBottom"), btns = $("#pairBtns"), msg = $("#pairMsg");
+    function draw(){
+      top.textContent = seq;
+      bot.textContent = built + "_".repeat(seq.length - built.length);
+    }
+    ["A", "T", "G", "C"].forEach(function(b){
+      var el = document.createElement("button");
+      el.type = "button"; el.className = "btn ghost"; el.textContent = b;
+      el.style.fontFamily = "var(--f-mono)"; el.style.fontSize = "18px"; el.style.minWidth = "58px";
+      el.addEventListener("click", function(){
+        if (built.length >= seq.length) return;
+        var need = comp[seq[built.length]];
+        if (b === need) {
+          built += b; draw();
+          if (built.length === seq.length) { msg.className = "msg good"; msg.textContent = "The whole strand is done, and every base is right. This is how a cell copies its DNA before it divides."; }
+          else { msg.className = "msg good"; msg.textContent = "Correct. Next is the partner of " + seq[built.length]; }
+        } else {
+          msg.className = "msg bad";
+          msg.textContent = "Not yet. The base you need to match is " + seq[built.length] + " and it pairs with " + need;
+        }
+      });
+      btns.appendChild(el);
+    });
+    var reset = document.createElement("button");
+    reset.type = "button"; reset.className = "btn ghost"; reset.textContent = "Start over";
+    reset.addEventListener("click", function(){ built = ""; draw(); msg.className = "msg"; msg.textContent = "Pick the base that pairs with the first one"; });
+    btns.appendChild(reset);
+    draw();
+  }
+
+  /* ---------- 2. codon table ---------- */
+  var CODE = "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG";
+  var AA = { F:"Phenylalanine", L:"Leucine", S:"Serine", Y:"Tyrosine", C:"Cysteine", W:"Tryptophan", P:"Proline",
+             H:"Histidine", Q:"Glutamine", R:"Arginine", I:"Isoleucine", M:"Methionine", T:"Threonine",
+             N:"Asparagine", K:"Lysine", V:"Valine", A:"Alanine", D:"Aspartate", E:"Glutamate", G:"Glycine", "*":"Stop codon" };
+  function initCodon(){
+    var pick = ["A", "U", "G"], order = "UCAG";
+    var box = $("#codonPick");
+    function show(){
+      var i = order.indexOf(pick[0]) * 16 + order.indexOf(pick[1]) * 4 + order.indexOf(pick[2]);
+      var letter = CODE[i], name = AA[letter];
+      $("#codonTxt").textContent = pick.join("");
+      $("#aaTxt").textContent = name;
+      $("#codonNote").textContent = letter === "*"
+        ? "This code does not add an amino acid. It is a stop signal, telling the ribosome that the protein is finished."
+        : pick.join("") === "AUG"
+          ? "AUG is both the start codon and the code for methionine, so almost every protein begins with this amino acid."
+          : "20 kinds of amino acid join into a long chain that then folds into a three-dimensional shape. It is that shape that lets a protein do its job.";
+      $$("button", box).forEach(function(b){
+        var p = +b.dataset.pos;
+        b.setAttribute("aria-pressed", pick[p] === b.dataset.b ? "true" : "false");
+      });
+    }
+    [0, 1, 2].forEach(function(pos){
+      var wrap = document.createElement("span");
+      wrap.className = "seg"; wrap.style.marginRight = "6px";
+      "AUGC".split("").forEach(function(b){
+        var el = document.createElement("button");
+        el.type = "button"; el.textContent = b; el.dataset.pos = pos; el.dataset.b = b;
+        el.addEventListener("click", function(){ pick[pos] = b; show(); });
+        wrap.appendChild(el);
+      });
+      box.appendChild(wrap);
+    });
+    show();
+  }
+  function initTranslation(){
+    var beads = $("#beads"), busy = false;
+    $("#transBtn").addEventListener("click", function(){
+      if (busy) return; busy = true;
+      $("#transMsg").textContent = "Copying DNA into RNA";
+      run(1200, function(){}, function(){
+        $("#transMsg").textContent = "The ribosome reads three letters at a time and adds an amino acid";
+        var cols = ["#DD6630", "#7FB98F", "#5FAAD2", "#C9A9E8", "#F2C94C", "#B5397A"];
+        run(2400, function(p){
+          var n = Math.floor(p * 6) + 1, out = [];
+          for (var i = 0; i < n; i++) {
+            out.push('<circle cx="' + (300 + i * 30) + '" cy="' + (214 - Math.sin(i) * 10) + '" r="12" fill="' + cols[i] + '" stroke="var(--ink)" stroke-width="2"/>');
+          }
+          beads.innerHTML = out.join("");
+        }, function(){
+          busy = false;
+          $("#transMsg").textContent = "The amino acid chain is finished. Next it folds itself up into a working protein.";
+        });
+      });
+    });
+  }
+
+  /* ---------- 3. karyotype ---------- */
+  function initKaryo(){
+    var svg = $("#karyoSvg"), sex = "xx";
+    function draw(){
+      var out = [];
+      for (var i = 0; i < 23; i++) {
+        var col = i % 12, row = Math.floor(i / 12);
+        var x = 26 + col * 40, y = 34 + row * 96;
+        var h = i === 22 ? (sex === "xx" ? 46 : 46) : 62 - i * 1.6;
+        var h2 = i === 22 && sex === "xy" ? 28 : h;
+        [0, 1].forEach(function(k){
+          var hh = k === 1 ? h2 : h;
+          out.push('<rect x="' + (x + k * 14) + '" y="' + (y + (62 - hh)) + '" width="10" height="' + hh + '" rx="5" fill="' +
+            (i === 22 ? "#B5397A" : "#7FA8C9") + '" stroke="var(--ink)" stroke-width="1.5"/>');
+        });
+        out.push('<text x="' + (x + 12) + '" y="' + (y + 78) + '" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-2)">' +
+          (i === 22 ? (sex === "xx" ? "XX" : "XY") : (i + 1)) + "</text>");
+      }
+      svg.innerHTML = out.join("");
+      $("#karyoTxt").textContent = sex === "xx"
+        ? "Pair 23 is XX, two chromosomes of the same size. The egg from the mother always gives an X chromosome."
+        : "Pair 23 is XY. The Y chromosome is much shorter and carries fewer genes. The sperm from the father is what decides whether it will be an X or a Y.";
+      $$("button", $("#sexSeg")).forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.s === sex ? "true" : "false"); });
+    }
+    $$("button", $("#sexSeg")).forEach(function(b){ b.addEventListener("click", function(){ sex = b.dataset.s; draw(); }); });
+    draw();
+  }
+
+  /* ---------- 4. mitosis vs meiosis ---------- */
+  var DIV = {
+    mitosis:[
+      { n:"Getting ready", t:"The cell copies all of its DNA so that there are two complete sets. At this point the chromosomes are still long threads spread out, not yet visible as rods." },
+      { n:"Lining up in the middle", t:"The chromosomes shorten until you can see them as rods, then line up in a single row across the middle of the cell. Fibers from the two poles take hold of them." },
+      { n:"Pulled apart", t:"The fibers pull the two copies to opposite poles of the cell, so each pole ends up with exactly the same complete set of information." },
+      { n:"Two cells", t:"The cell membrane pinches in at the middle and splits into two cells. Each one has the same 46 chromosomes as before, and is identical to the parent cell in every way." }
+    ],
+    meiosis:[
+      { n:"Getting ready and pairing up", t:"After the DNA is copied, the matching chromosomes from the father and from the mother pair up tightly against each other, which never happens in mitosis." },
+      { n:"Swapping pieces", t:"The paired chromosomes really do swap pieces with each other, which is called crossing over. It turns every chromosome into a mixture from your grandparents." },
+      { n:"First division", t:"The chromosome pairs are pulled apart to opposite poles, so the number of chromosomes drops from 46 to 23 in each cell." },
+      { n:"Second division, four cells", t:"Each cell divides again without copying any more DNA. In the end there are four sex cells with 23 chromosomes, and no two of them are alike." }
+    ]
+  };
+  function initDivision(){
+    var mode = "mitosis", steps = $("#divSteps"), svg = $("#divSvg"), busy = false, cur = 0;
+    function drawStage(i){
+      var out = ['<ellipse cx="240" cy="120" rx="150" ry="86" fill="#FBEDE3" stroke="var(--ink)" stroke-width="3"/>'];
+      function chrom(x, y, c, w){ return '<rect x="' + x + '" y="' + y + '" width="' + (w || 11) + '" height="42" rx="5" fill="' + c + '" stroke="var(--ink)" stroke-width="2"/>'; }
+      if (mode === "mitosis") {
+        if (i === 0) out.push(chrom(180, 100, "#7FA8C9"), chrom(200, 100, "#7FA8C9"), chrom(270, 100, "#DD6630"), chrom(290, 100, "#DD6630"));
+        if (i === 1) out.push(chrom(226, 60, "#7FA8C9"), chrom(242, 60, "#7FA8C9"), chrom(226, 128, "#DD6630"), chrom(242, 128, "#DD6630"));
+        if (i === 2) out.push(chrom(140, 100, "#7FA8C9"), chrom(160, 100, "#DD6630"), chrom(320, 100, "#7FA8C9"), chrom(340, 100, "#DD6630"));
+        if (i === 3) {
+          out = ['<ellipse cx="140" cy="120" rx="86" ry="70" fill="#FBEDE3" stroke="var(--ink)" stroke-width="3"/>',
+                 '<ellipse cx="340" cy="120" rx="86" ry="70" fill="#FBEDE3" stroke="var(--ink)" stroke-width="3"/>',
+                 chrom(118, 100, "#7FA8C9"), chrom(140, 100, "#DD6630"), chrom(318, 100, "#7FA8C9"), chrom(340, 100, "#DD6630")];
+        }
+      } else {
+        if (i === 0) out.push(chrom(190, 100, "#7FA8C9"), chrom(206, 100, "#DD6630"), chrom(280, 100, "#7FA8C9"), chrom(296, 100, "#DD6630"));
+        if (i === 1) out.push(chrom(226, 100, "#7FA8C9"), chrom(242, 100, "#DD6630"),
+          '<rect x="226" y="100" width="11" height="14" rx="4" fill="#DD6630" stroke="var(--ink)" stroke-width="2"/>',
+          '<rect x="242" y="128" width="11" height="14" rx="4" fill="#7FA8C9" stroke="var(--ink)" stroke-width="2"/>');
+        if (i === 2) {
+          out = ['<ellipse cx="140" cy="120" rx="86" ry="70" fill="#FBEDE3" stroke="var(--ink)" stroke-width="3"/>',
+                 '<ellipse cx="340" cy="120" rx="86" ry="70" fill="#FBEDE3" stroke="var(--ink)" stroke-width="3"/>',
+                 chrom(130, 100, "#7FA8C9"), chrom(330, 100, "#DD6630")];
+        }
+        if (i === 3) {
+          out = [];
+          [[80, 120], [200, 120], [300, 120], [420, 120]].forEach(function(p, k){
+            out.push('<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="52" ry="46" fill="#FBEDE3" stroke="var(--ink)" stroke-width="3"/>');
+            out.push(chrom(p[0] - 6, 100, k % 2 ? "#DD6630" : "#7FA8C9"));
+          });
+        }
+      }
+      svg.innerHTML = out.join("");
+      $$("button", steps).forEach(function(b, k){ b.classList.toggle("on", k === i); });
+      $("#divMsg").textContent = DIV[mode][i].n;
+      cur = i;
+    }
+    function build(){
+      steps.innerHTML = "";
+      DIV[mode].forEach(function(s, i){
+        var b = document.createElement("button");
+        b.type = "button";
+        b.innerHTML = "<b>" + (i + 1) + "</b><span><b style='font-family:var(--f-display)'>" + s.n + "</b> " + s.t + "</span>";
+        b.addEventListener("click", function(){ if (!busy) drawStage(i); });
+        steps.appendChild(b);
+      });
+      drawStage(0);
+    }
+    $$("button", $("#divSeg")).forEach(function(b){
+      b.addEventListener("click", function(){
+        mode = b.dataset.d;
+        $$("button", $("#divSeg")).forEach(function(o){ o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+        build();
+      });
+    });
+    $("#divPlay").addEventListener("click", function(){
+      if (busy) return; busy = true;
+      var i = 0;
+      drawStage(0);
+      (function nxt(){
+        i++;
+        if (i >= DIV[mode].length) { busy = false; return; }
+        setTimeout(function(){ drawStage(i); nxt(); }, 1500);
+      })();
+    });
+    build();
+  }
+
+  /* ---------- 5. punnett ---------- */
+  function initPunnett(){
+    var mom = $("#momSel"), dad = $("#dadSel"), box = $("#punnett"), msg = $("#punMsg");
+    var NAME = { AA:"Normal", Aa:"Carrier", aa:"Has the disease" };
+    function show(){
+      var m = mom.value.split(""), d = dad.value.split(""), counts = { AA:0, Aa:0, aa:0 }, cells = [];
+      m.forEach(function(a){
+        d.forEach(function(b){
+          var g = [a, b].sort().join("");
+          g = g === "aA" ? "Aa" : g;
+          counts[g]++;
+          cells.push({ g:g, label:a + b });
+        });
+      });
+      var html = '<table class="cmp6"><thead><tr><th>Mother\'s genes down · father\'s genes across</th><th>' + d[0] + "</th><th>" + d[1] + "</th></tr></thead><tbody>";
+      [0, 1].forEach(function(i){
+        html += "<tr><th>" + m[i] + "</th>";
+        [0, 1].forEach(function(j){
+          var c = cells[i * 2 + j];
+          var tone = c.g === "aa" ? "var(--bad-wash)" : c.g === "Aa" ? "var(--accent-wash)" : "var(--good-wash)";
+          html += '<td style="background:' + tone + ';font-weight:600">' + c.g + " · " + NAME[c.g] + "</td>";
+        });
+        html += "</tr>";
+      });
+      html += "</tbody></table>";
+      box.innerHTML = html;
+      var pct = function(n){ return Math.round(n / 4 * 100); };
+      msg.className = "msg";
+      msg.textContent = "Chances for each child: normal " + pct(counts.AA) + " percent · carrier " + pct(counts.Aa) +
+        " percent · has the disease " + pct(counts.aa) + " percent" +
+        (counts.aa ? " · every pregnancy is a fresh roll of the dice, not a fixed order" : " · no chance of the disease in this generation, but the hidden gene can still be passed on");
+    }
+    mom.addEventListener("change", show); dad.addEventListener("change", show); show();
+  }
+
+  /* ---------- quiz ---------- */
+  var QUIZ = [
+    { q:"In DNA, which base pairs with adenine?", o:["Thymine","Guanine","Cytosine"], a:0, e:"A goes with T, and G goes with C. This rule is what lets DNA copy itself." },
+    { q:"What is a gene?", o:["A stretch of DNA that holds the recipe for a protein","Another name for a chromosome","A kind of protein"], a:0, e:"We have about 20,000 genes, which is about 2 percent of all our DNA." },
+    { q:"What is a three-letter code on RNA called?", o:["A codon","A chromatid","A nucleotide"], a:0, e:"One codon sets one amino acid, or is a stop signal." },
+    { q:"What is special about the code AUG?", o:["It is a stop codon","It is the start codon and the code for methionine","It means nothing"], a:1, e:"That is why almost every protein starts with methionine." },
+    { q:"How many chromosomes does a human body cell have?", o:["23","46","92"], a:1, e:"They come as 23 pairs, with one of each pair from the father and one from the mother." },
+    { q:"What does mitosis produce?", o:["2 cells identical to the parent cell, with 46 chromosomes","4 cells with 23 chromosomes","2 cells with 23 chromosomes"], a:0, e:"It is used for growing and repairing the body." },
+    { q:"What is the most important way meiosis differs from mitosis?", o:["It halves the number of chromosomes and swaps pieces","It takes longer","It only happens in childhood"], a:0, e:"That is why no two sex cells are ever alike." },
+    { q:"Why do brothers and sisters not look the same?", o:["Because everyone's genes mutate","Because meiosis swaps and deals out chromosomes at random every time","Because they eat different food"], a:1, e:"The number of possible combinations from one pair of parents is more than 8 million, before you even count the swapping." },
+    { q:"If both parents are thalassemia carriers, what is the chance of a child with the disease in each pregnancy?", o:["25 percent","50 percent","100 percent"], a:0, e:"And a 50 percent chance of a carrier and 25 percent normal. Every time is a fresh roll of the dice." },
+    { q:"Who decides whether a child gets an X or a Y chromosome in pair 23?", o:["The egg from the mother","The sperm from the father","It is decided at birth"], a:1, e:"The egg always gives an X, while a sperm may carry either an X or a Y." },
+    { q:"Which of these is true about mutations?", o:["Every mutation causes a disease","Some have no effect, some are harmful, and some are an advantage","They only come from radiation"], a:1, e:"Mutations are the raw material of evolution, and they also happen on their own from copying mistakes." },
+    { q:"How alike is the DNA of two people who are not identical twins?", o:["About 50 percent","About 99.9 percent","About 80 percent"], a:1, e:"The part that differs is about one letter in a thousand, which is still several million positions out of 3,200 million letters." }
+  ];
+  function initQuiz(){
+    var grid = $("#quiz10Grid"), score = $("#quiz10Score"), right = 0;
+    function build(){
+      right = 0; score.textContent = "Correct 0 out of " + QUIZ.length;
+      grid.innerHTML = QUIZ.map(function(it, i){
+        return '<div class="card q"><div class="qn">Question ' + (i + 1) + '</div><div class="qt">' + it.q + '</div><div class="opts">' +
+          it.o.map(function(t, j){ return '<button type="button" class="opt" data-i="' + i + '" data-j="' + j + '">' + t + "</button>"; }).join("") +
+          '</div><div class="fb" id="q10fb' + i + '"></div></div>';
+      }).join("");
+    }
+    grid.addEventListener("click", function(e){
+      var b = e.target.closest(".opt"); if (!b || b.disabled) return;
+      var i = +b.dataset.i, j = +b.dataset.j, it = QUIZ[i];
+      $$(".opt", b.parentNode).forEach(function(o, k){ o.disabled = true; if (k === it.a) o.classList.add("right"); else if (k === j) o.classList.add("wrong"); });
+      if (j === it.a) right++;
+      $("#q10fb" + i).textContent = (j === it.a ? "Correct · " : "The answer is " + it.o[it.a] + " · ") + it.e;
+      score.textContent = "Correct " + right + " out of " + QUIZ.length;
+    });
+    $("#quiz10Reset").addEventListener("click", build);
+    build();
+  }
+
+  [drawHelix,
+   function(){ buildMap({ svg:"#dnaSvg", list:"#dnaList", info:"#dnaInfo", items:DNA }); },
+   initPair, initCodon, initTranslation, initKaryo, initDivision, initPunnett, initQuiz
+  ].forEach(function(fn){ try { fn(); } catch (err) { if (window.console) console.error(err); } });
+})();
+</script>
+
+<style>
+.wrap3{--pg1:#e0f2fe;--pg2:#ede9fe}
+/* Body 101 visual polish — injected into every lesson page by site_build.py.
+   Only decoration: layout, colour tokens and behaviour stay as each lesson defines them. */
+
+/* reading progress ribbon */
+.bp-progress{position:fixed;left:0;top:0;height:3px;width:0;z-index:80;background:linear-gradient(90deg,var(--accent),var(--o-nucleus,var(--accent)));
+  box-shadow:0 0 10px rgba(0,0,0,.12);transition:width .12s linear}
+
+/* top bar: sticky, softly blurred */
+.sw-bar{position:sticky;top:0;z-index:60;backdrop-filter:saturate(1.3) blur(8px);
+  background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,.82))!important;border-bottom:1px solid rgba(15,23,42,.08)!important}
+@media (prefers-color-scheme:dark){
+  .sw-bar{background:linear-gradient(180deg,rgba(11,18,32,.94),rgba(11,18,32,.8))!important;border-bottom-color:rgba(148,163,184,.18)!important}
+}
+
+/* hero: soft gradient field with two blurred blobs */
+.wrap3 .hero{position:relative;padding:34px 26px 30px;border-radius:28px;overflow:hidden;margin-bottom:26px;
+  background:linear-gradient(140deg,var(--pg1,#ede9fe) 0%,var(--pg2,#fce7f3) 58%,transparent 100%)}
+.wrap3 .hero::before,.wrap3 .hero::after{content:"";position:absolute;border-radius:50%;filter:blur(46px);opacity:.55;pointer-events:none}
+.wrap3 .hero::before{width:260px;height:260px;right:-60px;top:-90px;background:var(--pg2,#fbcfe8)}
+.wrap3 .hero::after{width:220px;height:220px;left:-70px;bottom:-120px;background:var(--pg1,#ddd6fe)}
+.wrap3 .hero>*{position:relative}
+.wrap3 .hero h1{letter-spacing:-.01em}
+.wrap3 .hero .lede{max-width:62ch}
+@media (prefers-color-scheme:dark){
+  .wrap3 .hero{background:linear-gradient(140deg,rgba(148,163,184,.14),rgba(148,163,184,.05) 60%,transparent)}
+  .wrap3 .hero::before,.wrap3 .hero::after{opacity:.3}
+}
+@media (max-width:600px){.wrap3 .hero{padding:24px 18px;border-radius:22px}}
+
+/* chapter headings get a coloured rule */
+.ch-head{position:relative}
+.ch-head h2{position:relative;display:inline-block}
+.ch-head h2::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:4px;border-radius:3px;
+  background:linear-gradient(90deg,var(--accent),transparent)}
+.ch-num{background:var(--accent-wash);color:var(--accent);border-radius:999px;padding:3px 12px}
+.level-tag{border-radius:999px}
+
+/* cards lift a little on hover */
+.card{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.card:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(15,23,42,.10)}
+.card.q:hover{border-color:var(--accent)}
+
+/* buttons: gradient primary, springy press */
+.btn{transition:transform .12s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease}
+.btn:not(.ghost){background-image:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 72%,#000 12%));box-shadow:0 6px 18px rgba(15,23,42,.16)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px) scale(.99)}
+.opt,.food,.gal button,.tastes button,.shapes button,.vlist button,.gbins button,.mode{transition:transform .14s ease,border-color .16s ease,background .16s ease}
+.opt:hover:not(:disabled),.gal button:hover,.vlist button:hover,.gbins button:hover:not(:disabled){transform:translateY(-1px)}
+.opt.right{animation:bp-pop .32s ease}
+.opt.wrong{animation:bp-shake .3s ease}
+@keyframes bp-pop{0%{transform:scale(1)}45%{transform:scale(1.035)}100%{transform:scale(1)}}
+@keyframes bp-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* figures and info cards */
+.sens svg.fig,.fig{border-radius:20px;box-shadow:inset 0 0 0 1px rgba(15,23,42,.05)}
+.infocard{box-shadow:0 10px 26px rgba(15,23,42,.07)}
+.remember{border:1.5px solid color-mix(in srgb,var(--accent) 34%,transparent)}
+.life{border-left:5px solid var(--accent)}
+
+/* chapter illustration frames */
+.ch-art{box-shadow:0 18px 40px rgba(15,23,42,.16)}
+.ch-art img{transition:transform .6s cubic-bezier(.2,.7,.3,1)}
+.ch-art:hover img{transform:scale(1.03)}
+
+/* sections rise into view */
+.bp-reveal{opacity:0;transform:translateY(14px)}
+.bp-reveal.bp-in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
+
+/* quiz answers keep their colour but read calmer */
+.qgrid .card{border-radius:18px}
+.fb{line-height:1.55}
+
+/* footer */
+.wrap3 footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);opacity:.9}
+
+@media (prefers-reduced-motion:reduce){
+  .bp-reveal,.bp-reveal.bp-in{opacity:1;transform:none;transition:none}
+  .card:hover,.btn:hover,.ch-art:hover img{transform:none}
+  .opt.right,.opt.wrong{animation:none}
+}
+</style>
+
+<script>
+/* Body 101 visual polish behaviour: reading progress ribbon and gentle section reveal.
+   Injected into every lesson page by site_build.py. */
+(function(){
+  "use strict";
+  var reduce = false;
+  try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+
+  var bar = document.createElement("div");
+  bar.className = "bp-progress";
+  bar.setAttribute("aria-hidden", "true");
+  document.body.appendChild(bar);
+  var ticking = false;
+  function progress(){
+    var h = document.scrollingElement || document.documentElement;
+    var top = h.scrollTop || window.pageYOffset || 0;
+    var max = (h.scrollHeight - (window.innerHeight || h.clientHeight)) || 1;
+    bar.style.width = Math.min(100, Math.max(0, top / max * 100)).toFixed(2) + "%";
+    ticking = false;
+  }
+  window.addEventListener("resize", progress, { passive: true });
+  window.addEventListener("scroll", function(){
+    if (ticking) return;
+    ticking = true;
+    (window.requestAnimationFrame || function(f){ setTimeout(f, 16); })(progress);
+  }, { passive: true });
+  progress();
+
+  if (reduce || !("IntersectionObserver" in window)) return;
+  var blocks = Array.prototype.slice.call(document.querySelectorAll(".wrap3 .ch")).slice(1);
+  if (!blocks.length) return;
+  blocks.forEach(function(el){ el.classList.add("bp-reveal"); });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add("bp-in"); io.unobserve(e.target); }
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: .06 });
+  blocks.forEach(function(el){ io.observe(el); });
+  // safety: anything still hidden after 3 seconds is shown anyway
+  setTimeout(function(){ blocks.forEach(function(el){ el.classList.add("bp-in"); }); }, 3000);
+})();
+</script>
+
+<script>
+/* Body 101 read-aloud bar.
+   Injected into every lesson page by site_build.py. Uses the browser's own
+   speech synthesis, so nothing is sent anywhere and no audio files are needed.
+   Strings follow <html lang>. */
+(function(){
+  "use strict";
+  if (!("speechSynthesis" in window)) return;
+  var LANG = document.documentElement.lang === "en" ? "en" : "th";
+  var T = {
+    th:{ open:"🔊 อ่านออกเสียง", play:"เล่น", pause:"หยุดชั่วคราว", resume:"เล่นต่อ", stop:"หยุด",
+         slower:"ช้าลง", faster:"เร็วขึ้น", close:"ปิด", speed:"ความเร็ว",
+         novoice:"เครื่องนี้ยังไม่มีเสียงภาษาไทยติดตั้งไว้ ลองเปิดในซาฟารีบนไอแพดหรือไอโฟน หรือติดตั้งเสียงไทยเพิ่มในการตั้งค่าเครื่อง",
+         label:"แถบอ่านออกเสียง", from:"อ่านจากหัวข้อที่เห็นอยู่" },
+    en:{ open:"🔊 Read aloud", play:"Play", pause:"Pause", resume:"Resume", stop:"Stop",
+         slower:"Slower", faster:"Faster", close:"Close", speed:"Speed",
+         novoice:"This device has no voice installed for this language. Try Safari on an iPad or iPhone, or add a voice in your system settings.",
+         label:"Read aloud bar", from:"Starts from the heading you are looking at" }
+  }[LANG];
+  var VLANG = LANG === "en" ? "en" : "th";
+
+  var css = document.createElement("style");
+  css.textContent =
+    ".ra-fab{position:fixed;right:16px;bottom:16px;z-index:70;border:none;border-radius:999px;padding:13px 18px;min-height:48px;" +
+    "font:600 15.5px/1 system-ui,-apple-system,sans-serif;background:#0f766e;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.22);cursor:pointer}" +
+    ".ra-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:70;display:none;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;" +
+    "background:#0f172a;color:#fff;border-radius:16px;padding:9px 12px;box-shadow:0 8px 26px rgba(0,0,0,.3);max-width:min(96vw,560px)}" +
+    ".ra-bar.on{display:flex}.ra-fab.hide{display:none}" +
+    ".ra-bar button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;min-height:40px;padding:6px 12px;" +
+    "font:600 14.5px/1 system-ui,-apple-system,sans-serif;cursor:pointer}" +
+    ".ra-bar button:hover{background:rgba(255,255,255,.2)}" +
+    ".ra-bar .ra-rate{font:600 13px/1 ui-monospace,monospace;opacity:.85;min-width:42px;text-align:center}" +
+    ".ra-hint{font:400 12.5px/1.3 system-ui,sans-serif;opacity:.75;flex-basis:100%;text-align:center}" +
+    ".ra-on{background:rgba(15,118,110,.16);box-shadow:0 0 0 3px rgba(15,118,110,.22);border-radius:8px}" +
+    "@media (prefers-color-scheme:dark){.ra-fab{background:#14b8a6;color:#04231f}.ra-on{background:rgba(94,234,212,.16);box-shadow:0 0 0 3px rgba(94,234,212,.24)}}" +
+    "@media print{.ra-fab,.ra-bar{display:none}}";
+  document.head.appendChild(css);
+
+  var fab = document.createElement("button");
+  fab.type = "button"; fab.className = "ra-fab"; fab.textContent = T.open;
+  var bar = document.createElement("div");
+  bar.className = "ra-bar"; bar.setAttribute("role", "group"); bar.setAttribute("aria-label", T.label);
+  function mk(txt){ var b = document.createElement("button"); b.type = "button"; b.textContent = txt; bar.appendChild(b); return b; }
+  var bPlay = mk(T.play), bStop = mk(T.stop), bSlow = mk(T.slower);
+  var rate = document.createElement("span"); rate.className = "ra-rate"; bar.appendChild(rate);
+  var bFast = mk(T.faster), bClose = mk(T.close);
+  var hint = document.createElement("span"); hint.className = "ra-hint"; hint.textContent = T.from; bar.appendChild(hint);
+  document.body.appendChild(fab); document.body.appendChild(bar);
+
+  var blocks = [], idx = 0, chunks = [], ci = 0, speed = 1, playing = false, keep = null, cur = null;
+  function collect(){
+    blocks = Array.prototype.slice.call(document.querySelectorAll(
+      ".wrap3 h1, .wrap3 h2, .wrap3 h3, .wrap3 p, .wrap3 li, .wrap3 .lede, .wrap3 .remember span, .wrap3 .life"))
+      .filter(function(el){
+        if (el.closest("footer") || el.closest(".ra-bar")) return false;
+        if (el.offsetParent === null) return false;
+        var t = (el.textContent || "").trim();
+        return t.length > 1 && !el.querySelector("h1,h2,h3,p,li");
+      });
+  }
+  function firstVisible(){
+    for (var i = 0; i < blocks.length; i++) {
+      var r = blocks[i].getBoundingClientRect();
+      if (r.bottom > 60) return i;
+    }
+    return 0;
+  }
+  function pickVoice(){
+    var vs = window.speechSynthesis.getVoices() || [];
+    var m = vs.filter(function(v){ return (v.lang || "").toLowerCase().indexOf(VLANG) === 0; });
+    return m[0] || null;
+  }
+  function splitText(s){
+    s = (s || "").replace(/\s+/g, " ").trim();
+    var out = [], buf = "";
+    s.split(" ").forEach(function(w){
+      while (w.length > 170) { if (buf) { out.push(buf); buf = ""; } out.push(w.slice(0, 170)); w = w.slice(170); }
+      if ((buf + " " + w).length > 170) { if (buf) out.push(buf); buf = w; }
+      else buf = buf ? buf + " " + w : w;
+    });
+    if (buf) out.push(buf);
+    return out.length ? out : [s];
+  }
+  function highlight(el){
+    if (cur) cur.classList.remove("ra-on");
+    cur = el || null;
+    if (cur) {
+      cur.classList.add("ra-on");
+      try { cur.scrollIntoView({ block:"center", behavior:"smooth" }); } catch (e) { cur.scrollIntoView(); }
+    }
+  }
+  function speakChunk(){
+    if (!playing || idx >= blocks.length) { if (idx >= blocks.length) stop(); return; }
+    if (ci >= chunks.length) { idx++; ci = 0; return nextBlock(); }
+    var u = new SpeechSynthesisUtterance(chunks[ci]);
+    var v = pickVoice();
+    if (v) u.voice = v;
+    u.lang = v ? v.lang : (VLANG === "th" ? "th-TH" : "en-GB");
+    u.rate = speed; u.pitch = 1;
+    u.onend = function(){ ci++; speakChunk(); };
+    u.onerror = function(){ ci++; speakChunk(); };
+    window.speechSynthesis.speak(u);
+  }
+  function nextBlock(){
+    if (!playing || idx >= blocks.length) { if (idx >= blocks.length) stop(); return; }
+    highlight(blocks[idx]);
+    chunks = splitText(blocks[idx].textContent || ""); ci = 0;
+    speakChunk();
+  }
+  function play(){
+    collect();
+    if (!blocks.length) return;
+    if (!pickVoice() && (window.speechSynthesis.getVoices() || []).length) hint.textContent = T.novoice;
+    playing = true; bPlay.textContent = T.pause;
+    if (!chunks.length || idx >= blocks.length) { idx = firstVisible(); nextBlock(); }
+    else speakChunk();
+    clearInterval(keep);
+    keep = setInterval(function(){
+      if (playing && window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause(); window.speechSynthesis.resume();
+      }
+    }, 9000);
+  }
+  function pause(){
+    playing = false; bPlay.textContent = T.resume;
+    window.speechSynthesis.pause();
+    clearInterval(keep);
+  }
+  function stop(){
+    playing = false; bPlay.textContent = T.play;
+    window.speechSynthesis.cancel();
+    clearInterval(keep);
+    highlight(null); chunks = []; ci = 0;
+  }
+  bPlay.addEventListener("click", function(){
+    if (playing) return pause();
+    if (window.speechSynthesis.paused && chunks.length) {
+      playing = true; bPlay.textContent = T.pause; window.speechSynthesis.resume();
+      clearInterval(keep);
+      keep = setInterval(function(){
+        if (playing && window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+          window.speechSynthesis.pause(); window.speechSynthesis.resume();
+        }
+      }, 9000);
+      return;
+    }
+    play();
+  });
+  bStop.addEventListener("click", stop);
+  function setRate(v){
+    speed = Math.min(1.4, Math.max(.6, Math.round(v * 10) / 10));
+    rate.textContent = "×" + speed.toFixed(1);
+    try { localStorage.setItem("body101_ra_rate", String(speed)); } catch (e) {}
+    if (playing) { window.speechSynthesis.cancel(); speakChunk(); }
+  }
+  bSlow.addEventListener("click", function(){ setRate(speed - .1); });
+  bFast.addEventListener("click", function(){ setRate(speed + .1); });
+  bClose.addEventListener("click", function(){ stop(); bar.classList.remove("on"); fab.classList.remove("hide"); });
+  fab.addEventListener("click", function(){
+    bar.classList.add("on"); fab.classList.add("hide");
+    play();
+  });
+  window.addEventListener("beforeunload", function(){ try { window.speechSynthesis.cancel(); } catch (e) {} });
+  try { var r = parseFloat(localStorage.getItem("body101_ra_rate")); if (r) speed = r; } catch (e) {}
+  setRate(speed);
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = function(){ if (!playing) hint.textContent = T.from; };
+  }
+})();
+</script>
+
+</body>
+</html>
