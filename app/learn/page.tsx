@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     siteName: "สหวรรณคลินิก",
     title: `${learnTitle} | สหวรรณคลินิก`,
     description: learnDesc,
+    images: [{ url: `${pageUrl}/og-learn.jpg`, width: 1200, height: 630, alt: "Body 101 สื่อการเรียนรู้เรื่องร่างกายสำหรับเด็ก" }],
   },
 };
 
@@ -228,6 +229,56 @@ const lessonsL2 = [
   },
 ];
 
+const img = (key: string) => `/learn/img/${key}.webp`;
+
+const heroAlt =
+  "ร่างกายมนุษย์โปร่งแสงเรืองแสงสีฟ้า เห็นอวัยวะภายใน มีเซลล์ ดีเอ็นเอ สมอง หัวใจ ไวรัส ใบไม้ และปลาทองลอยโคจรอยู่รอบตัว";
+const level1Alt =
+  "โต๊ะเรียนวิทยาศาสตร์ยามค่ำ มีกล้องจุลทรรศน์ทองเหลือง ขวดแก้วต้นถั่วงอกที่เห็นราก โหลปลาทอง แว่นขยาย และหุ่นโครงกระดูกไม้ ใต้แสงโคมไฟ";
+const level2Alt =
+  "สมอง หัวใจพร้อมหลอดเลือด เกลียวดีเอ็นเอ และขวดแก้วเรืองแสง ลอยเรียงกันเหนือโต๊ะทดลอง เชื่อมกันด้วยเส้นแสงสีทอง";
+const arenaAlt =
+  "ถ้วยรางวัลสีทองบนแท่นหินกลางสนามที่สาดแสงสีน้ำเงิน มีนาฬิกาจับเวลาและจอยเกมสองอันวางด้านหน้า พื้นเป็นแผ่นหกเหลี่ยมเรืองแสง";
+const parentsAlt =
+  "หนังสือวิทยาศาสตร์เปิดอยู่ข้างแท็บเล็ตที่หน้าจอแสดงภาพเซลล์ มีถ้วยชา แว่นอ่านหนังสือ และกระถางต้นไม้เล็ก บนโต๊ะไม้ใต้แสงโคม";
+
+type Lesson = (typeof lessonsL1)[number];
+
+function LessonCard({ l, n }: { l: Lesson; n: number }) {
+  return (
+    <article className="card lp-card" key={l.key}>
+      <div className="lp-thumb-wrap">
+        <img className="lp-thumb" src={img(l.key)} alt="" width={960} height={540} loading="lazy" decoding="async" />
+      </div>
+      <div className="lp-card-body">
+        <p className="eyebrow">
+          บทที่ {n} · {l.level}
+        </p>
+        <h3 className="lp-card-title">{l.title}</h3>
+        <p lang="en" className="lp-card-en">
+          {l.enTitle}
+        </p>
+        <p>{l.text}</p>
+        <ul className="lp-points">
+          {l.points.map((pt) => (
+            <li key={pt}>{pt}</li>
+          ))}
+        </ul>
+        <div className="card-actions">
+          <a href={l.th} className="btn btn-dark big">
+            เปิดบทเรียน (ภาษาไทย)
+          </a>
+          {l.en ? (
+            <a href={l.en} className="btn btn-outline" lang="en">
+              English
+            </a>
+          ) : null}
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function LearnPage() {
   return (
     <main className="learn-page">
@@ -252,133 +303,128 @@ export default function LearnPage() {
         </div>
       </header>
 
-      <section className="hero small">
-        <div className="container">
-          <p className="eyebrow">สื่อการเรียนรู้สำหรับเด็กประถม · ใช้ฟรี</p>
-          <h1 className="hero-title">Body 101</h1>
-          <p className="hero-text" style={{ fontWeight: 700, color: "#0f172a", marginTop: 0 }}>
-            รู้จักร่างกายตั้งแต่เซลล์เล็กจิ๋ว จนถึงอวัยวะและร่างกายทั้งตัว
-          </p>
-          <p className="hero-text">
-            บทเรียนแบบกดเล่นได้ 12 บท แบ่งเป็นสองระดับ ระดับหนึ่งสำหรับ ป.3 ถึง ป.6 เริ่มจากเซลล์เล็กจิ๋ว
-            ไปจนถึงกำแพงแห่งชีวิต ส่วนระดับสองสำหรับอายุ 11 ถึง 12 ปี ลงลึกถึงเซลล์ประสาท คลื่นไฟฟ้าหัวใจ
-            รหัสพันธุกรรม และฮอร์โมนวัยรุ่น ทุกบทมีปุ่มอ่านออกเสียง มีทั้งภาษาไทยและภาษาอังกฤษ เล่นได้บนมือถือ แท็บเล็ต และคอมพิวเตอร์
-          </p>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container cta-box">
-          <div>
-            <p className="eyebrow">ใหม่ · โหมดเกม</p>
-            <h2 style={{ margin: "0 0 6px" }}>สนามแข่ง Body 101</h2>
-            <p>
-              รวมคำถาม 200 ข้อจากทุกบทไว้ที่เดียว มี 5 โหมด แข่งกับเวลา 60 วินาที ปะทะสองคนบนจอเดียว
-              ช่วยกันเป็นทีมโดยใช้หัวใจร่วมกัน ล้มบอส 3 ตัว และฝึกซ้อมแบบไม่จับเวลา เก็บเลเวล ตรา และสถิติความแม่นยำไว้ในเครื่อง
+      <section className="lp-hero" aria-labelledby="lp-title">
+        <img
+          className="lp-hero-img"
+          src={img("hero")}
+          alt={heroAlt}
+          width={1600}
+          height={900}
+          fetchPriority="high"
+          decoding="async"
+        />
+        <div className="container lp-hero-inner">
+          <div className="lp-hero-copy">
+            <p className="eyebrow lp-eyebrow">สื่อการเรียนรู้สำหรับเด็ก ป.3 ถึง ม.1 · ใช้ฟรี ไม่ต้องสมัคร</p>
+            <h1 id="lp-title" className="lp-title">
+              Body 101
+            </h1>
+            <p className="lp-tagline">รู้จักร่างกายตั้งแต่เซลล์เล็กจิ๋ว จนถึงอวัยวะและร่างกายทั้งตัว แบบกดแล้วเห็น</p>
+            <p className="lp-lead">
+              บทเรียนแบบกดเล่นได้ 12 บท สองระดับ ส่องกล้องจุลทรรศน์ เปิดร่างกายทีละชั้น ทดลองการระบาดของไวรัส
+              แปลรหัสดีเอ็นเอ ดูคลื่นไฟฟ้าหัวใจวิ่งจริง ทุกบทมีปุ่มอ่านออกเสียง มีทั้งภาษาไทยและภาษาอังกฤษ
             </p>
-          </div>
-          <div className="cta-actions">
-            <a href="/learn/play" className="btn btn-dark big">
-              เข้าสนามแข่ง
-            </a>
-            <a href="/learn/play/en" className="btn btn-outline" lang="en">
-              English
-            </a>
+            <div className="lp-hero-actions">
+              <a href="/learn/cells" className="btn big lp-btn-light">
+                เริ่มบทที่ 1
+              </a>
+              <a href="/learn/play" className="btn big lp-btn-ghost">
+                เข้าสนามแข่ง
+              </a>
+            </div>
+            <ul className="lp-stats" aria-label="สรุปเนื้อหา">
+              <li>12 บท</li>
+              <li>ไทย + อังกฤษ</li>
+              <li>คำถาม 200 ข้อ</li>
+              <li>อ่านออกเสียงได้</li>
+              <li>มือถือ แท็บเล็ต คอม</li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section" aria-labelledby="l1-title">
         <div className="container">
-          <div className="section-head">
-            <h2>ระดับหนึ่ง · ป.3 ถึง ป.6</h2>
-            <p>เริ่มจากเซลล์เล็กจิ๋ว ไปจนถึงกำแพงแห่งชีวิตทั้งกำแพง เล่นได้ตั้งแต่อ่านออกเขียนได้</p>
+          <div className="lp-band">
+            <img src={img("level1")} alt={level1Alt} width={1200} height={675} loading="lazy" decoding="async" />
+            <div className="lp-band-copy">
+              <p className="eyebrow lp-eyebrow">ระดับหนึ่ง · 7 บท</p>
+              <h2 id="l1-title">ป.3 ถึง ป.6</h2>
+              <p>
+                เริ่มจากเซลล์เล็กจิ๋ว ไปจนถึงกำแพงแห่งชีวิตทั้งกำแพง เล่นได้ตั้งแต่อ่านออกเขียนได้
+                แต่ละบทมีของเล่นให้ทดลอง เกม และแบบทดสอบท้ายบท
+              </p>
+            </div>
           </div>
-          <div className="cards three">
+          <div className="cards three lp-grid">
             {lessonsL1.map((l, i) => (
-              <article className="card" key={l.key}>
-                <p className="eyebrow">
-                  บทที่ {i + 1} · {l.level}
-                </p>
-                <h2 style={{ margin: "0 0 4px" }}>{l.title}</h2>
-                <p lang="en" style={{ marginTop: 0, color: "#64748b" }}>
-                  {l.enTitle}
-                </p>
-                <p>{l.text}</p>
-                <ul style={{ color: "#475569", lineHeight: 1.8, paddingLeft: 20 }}>
-                  {l.points.map((pt) => (
-                    <li key={pt}>{pt}</li>
-                  ))}
-                </ul>
-                <div className="card-actions">
-                  <a href={l.th} className="btn btn-dark big">
-                    เปิดบทเรียน (ภาษาไทย)
-                  </a>
-                  {l.en ? (
-                    <a href={l.en} className="btn btn-outline" lang="en">
-                      English
-                    </a>
-                  ) : null}
-                </div>
-              </article>
+              <LessonCard l={l} n={i + 1} key={l.key} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section alt">
+      <section className="section alt" aria-labelledby="l2-title">
         <div className="container">
-          <div className="section-head">
-            <h2>ระดับสอง · อายุ 11 ถึง 12 ปี</h2>
-            <p>
-              สำหรับเด็กโตที่อยากรู้ลึกกว่าเดิม ลงถึงระดับเซลล์ประสาท คลื่นไฟฟ้าหัวใจ รหัสพันธุกรรม และฮอร์โมนวัยรุ่น
-              ทุกบทมีปุ่มอ่านออกเสียงให้ฟังได้ และมีภาษาอังกฤษครบทุกบทแล้ว
-            </p>
+          <div className="lp-band">
+            <img src={img("level2")} alt={level2Alt} width={1200} height={675} loading="lazy" decoding="async" />
+            <div className="lp-band-copy">
+              <p className="eyebrow lp-eyebrow">ระดับสอง · 5 บท</p>
+              <h2 id="l2-title">อายุ 11 ถึง 12 ปี</h2>
+              <p>
+                สำหรับเด็กโตที่อยากรู้ลึกกว่าเดิม ลงถึงระดับเซลล์ประสาท คลื่นไฟฟ้าหัวใจ รหัสพันธุกรรม
+                ฮอร์โมนวัยรุ่น และวิธีใช้สมองให้เรียนรู้ได้ดีขึ้น
+              </p>
+            </div>
           </div>
-          <div className="cards two">
+          <div className="cards two lp-grid">
             {lessonsL2.map((l, i) => (
-              <article className="card" key={l.key}>
-                <p className="eyebrow">
-                  บทที่ {i + 8} · {l.level}
-                </p>
-                <h2 style={{ margin: "0 0 4px" }}>{l.title}</h2>
-                <p lang="en" style={{ marginTop: 0, color: "#64748b" }}>
-                  {l.enTitle}
-                </p>
-                <p>{l.text}</p>
-                <ul style={{ color: "#475569", lineHeight: 1.8, paddingLeft: 20 }}>
-                  {l.points.map((pt) => (
-                    <li key={pt}>{pt}</li>
-                  ))}
-                </ul>
-                <div className="card-actions">
-                  <a href={l.th} className="btn btn-dark big">
-                    เปิดบทเรียน (ภาษาไทย)
-                  </a>
-                  {l.en ? (
-                    <a href={l.en} className="btn btn-outline" lang="en">
-                      English
-                    </a>
-                  ) : null}
-                </div>
-              </article>
+              <LessonCard l={l} n={i + 8} key={l.key} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section alt">
+      <section className="section" aria-labelledby="arena-title">
         <div className="container">
-          <div className="section-head">
-            <h2>สำหรับคุณพ่อคุณแม่และคุณครู</h2>
-            <p>ใช้เป็นสื่อเสริมในห้องเรียนหรือให้เด็กเล่นเองที่บ้านได้</p>
+          <div className="lp-arena">
+            <img src={img("arena")} alt={arenaAlt} width={1200} height={675} loading="lazy" decoding="async" />
+            <div className="lp-arena-copy">
+              <p className="eyebrow lp-eyebrow">โหมดเกม</p>
+              <h2 id="arena-title">สนามแข่ง Body 101</h2>
+              <p>
+                รวมคำถาม 200 ข้อจากทุกบทไว้ที่เดียว มี 5 โหมด แข่งกับเวลา 60 วินาที ปะทะสองคนบนจอเดียว
+                ช่วยกันเป็นทีมโดยใช้หัวใจร่วมกัน ล้มบอส 3 ตัว และฝึกซ้อมแบบไม่จับเวลา เก็บเลเวล ตรา
+                และสถิติความแม่นยำไว้ในเครื่อง
+              </p>
+              <div className="lp-hero-actions">
+                <a href="/learn/play" className="btn big lp-btn-light">
+                  เข้าสนามแข่ง
+                </a>
+                <a href="/learn/play/en" className="btn big lp-btn-ghost" lang="en">
+                  English
+                </a>
+              </div>
+            </div>
           </div>
-          <ul style={{ color: "#334155", lineHeight: 1.9, paddingLeft: 20, maxWidth: 760 }}>
-            <li>เนื้อหาครอบคลุมเรื่องเซลล์ ระดับการจัดระบบของสิ่งมีชีวิต และระบบอวัยวะ เหมาะกับช่วงชั้น ป.3 ถึง ม.1</li>
-            <li>ไม่ต้องสมัครสมาชิก ไม่ต้องติดตั้ง ความคืบหน้าและตราที่สะสมเก็บไว้ในเครื่องของผู้ใช้เท่านั้น</li>
-            <li>แผนภาพเป็นภาพอย่างง่ายเพื่อการเรียนรู้ สีที่ใช้แต่งขึ้นให้ดูง่าย ภาพประกอบหัวบทบางภาพสร้างด้วย AI เพื่อความสวยงาม</li>
-            <li>เรียบเรียงโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ · สื่อนี้เพื่อการศึกษา ไม่ใช่คำแนะนำทางการแพทย์</li>
-          </ul>
+        </div>
+      </section>
+
+      <section className="section alt" aria-labelledby="parents-title">
+        <div className="container lp-parents">
+          <img src={img("parents")} alt={parentsAlt} width={1200} height={675} loading="lazy" decoding="async" />
+          <div>
+            <div className="section-head">
+              <h2 id="parents-title">สำหรับคุณพ่อคุณแม่และคุณครู</h2>
+              <p>ใช้เป็นสื่อเสริมในห้องเรียนหรือให้เด็กเล่นเองที่บ้านได้</p>
+            </div>
+            <ul className="lp-points lp-points-lg">
+              <li>เนื้อหาครอบคลุมเรื่องเซลล์ ระดับการจัดระบบของสิ่งมีชีวิต และระบบอวัยวะ เหมาะกับช่วงชั้น ป.3 ถึง ม.1</li>
+              <li>ไม่ต้องสมัครสมาชิก ไม่ต้องติดตั้ง ความคืบหน้าและตราที่สะสมเก็บไว้ในเครื่องของผู้ใช้เท่านั้น</li>
+              <li>แผนภาพที่กดได้วาดขึ้นอย่างง่ายเพื่อการเรียนรู้ ส่วนภาพประกอบหัวบทสร้างด้วย AI เพื่อความสวยงาม ไม่ใช่ภาพกายวิภาคเพื่ออ้างอิง</li>
+              <li>เรียบเรียงโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ · สื่อนี้เพื่อการศึกษา ไม่ใช่คำแนะนำทางการแพทย์</li>
+            </ul>
+          </div>
         </div>
       </section>
 
