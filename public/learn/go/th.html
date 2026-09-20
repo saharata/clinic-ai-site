@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>หมากล้อม (โกะ) เล่นกับคอมพิวเตอร์ | สหวรรณคลินิก</title>
+<meta name="description" content="กระดานหมากล้อมเล่นกับคอมพิวเตอร์ในเบราว์เซอร์ เลือกกระดาน 9x9 13x13 19x19 ปรับระดับ AI ได้ 3 ระดับ เล่นด้วยเมาส์หรือแป้นพิมพ์ ไม่ต้องสมัคร ไม่ต้องติดตั้ง">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/learn/go">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/learn/go">
+<meta property="og:title" content="หมากล้อม (โกะ) เล่นกับคอมพิวเตอร์">
+<meta property="og:description" content="กระดานหมากล้อมเล่นกับคอมพิวเตอร์ในเบราว์เซอร์ เลือกขนาดกระดานและระดับ AI ได้ เล่นด้วยเมาส์หรือแป้นพิมพ์">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&family=Shippori+Mincho:wght@600&display=swap">
+<style>
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+  .sw-bar{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;padding:6px 20px;min-height:48px;
+    background:#ffffff;border-bottom:1px solid #e2e8f0;font:600 15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .sw-bar a{color:#0f766e;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
+  .sw-bar a:hover{text-decoration:underline}
+  .sw-bar .sw-brand{color:#0f172a;font-weight:700}
+  .sw-bar .sw-sep{color:#94a3b8}
+  @media (max-width:480px){.sw-bar .sw-brand,.sw-bar .sw-sep{display:none}.sw-bar{padding:4px 14px}}
+  @media (prefers-color-scheme: dark){
+    .sw-bar{background:#0b1220;border-bottom-color:#1e293b}
+    .sw-bar a{color:#5eead4}
+    .sw-bar .sw-brand{color:#e2e8f0}
+  }
+</style>
+<style>
+/* ===== tokens: goban คายะ (light = ไม้ในแสงกลางวัน · dark = ไม้ใต้โคมตอนค่ำ) ===== */
+:root{
+  --ground:#E9DFCC; --panel:#F6EFE2; --panel-2:#EDE3D2; --edge:#CBBBA0;
+  --ink:#241E17; --muted:#6F5E4A;
+  --board-hi:#DCB273; --board-lo:#C39450; --board-rim:#8A6234; --line:#4E3419;
+  --stone-b:#191920; --stone-b-hi:#55555f; --stone-w:#FBF8F1; --stone-w-lo:#CFC6B4;
+  --seal:#9C3022; --shadow:rgba(60,40,20,.22);
+  --f-display:"Mali","IBM Plex Sans Thai Looped",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#13121A; --panel:#1C1A23; --panel-2:#23202B; --edge:#353140;
+    --ink:#EFE7D9; --muted:#A2937E;
+    --board-hi:#926535; --board-lo:#6D4A26; --board-rim:#3A2615; --line:#261608;
+    --stone-b:#0C0C11; --stone-b-hi:#41414E; --stone-w:#F3EEE3; --stone-w-lo:#B4AA96;
+    --seal:#E0725B; --shadow:rgba(0,0,0,.55);
+  }
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 44px;display:flex;flex-direction:column;gap:18px}
+
+header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  border-bottom:1px solid var(--edge);padding-bottom:12px}
+.mark{display:flex;align-items:baseline;gap:10px}
+.mark .kanji{font-family:"Shippori Mincho",serif;font-size:27px;color:var(--seal)}
+.mark h1{font-family:var(--f-display);font-weight:700;font-size:24px;margin:0}
+.mark .sub{font-size:12.5px;color:var(--muted);letter-spacing:.05em}
+.rules-line{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rules-line b{color:var(--ink);font-weight:600}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:20px;align-items:start}
+@media (max-width:860px){.main{grid-template-columns:minmax(0,1fr)}}
+
+.boardwrap{background:var(--panel);border:1px solid var(--edge);border-radius:4px;padding:14px;
+  box-shadow:0 16px 36px -24px var(--shadow)}
+canvas{display:block;width:100%;height:auto;border-radius:3px;touch-action:manipulation;cursor:pointer}
+canvas:focus-visible{outline:3px solid var(--seal);outline-offset:3px}
+.hintline{font-size:12.5px;color:var(--muted);margin:8px 2px 0}
+
+.rail{display:flex;flex-direction:column;gap:12px;min-width:0}
+.turn{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--edge);
+  border-left:4px solid var(--seal);border-radius:3px;padding:12px 14px}
+.disc{width:28px;height:28px;border-radius:50%;flex:none;box-shadow:0 2px 5px -1px var(--shadow)}
+.disc.b{background:radial-gradient(circle at 34% 30%,var(--stone-b-hi),var(--stone-b) 62%)}
+.disc.w{background:radial-gradient(circle at 34% 30%,#fff,var(--stone-w-lo) 88%);border:1px solid var(--stone-w-lo)}
+.turn .who{font-family:var(--f-display);font-weight:700;font-size:16px;line-height:1.3}
+.turn .note{font-size:13px;color:var(--muted)}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:3px;overflow:hidden}
+.stat{background:var(--panel);padding:9px 12px}
+.stat .k{font-size:11.5px;letter-spacing:.05em;color:var(--muted)}
+.stat .v{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.3}
+
+.think{background:var(--panel);border:1px solid var(--edge);border-radius:3px;padding:10px 12px}
+.think .row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--muted);gap:8px}
+.think .row b{font-size:15px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.bar{height:7px;background:var(--panel-2);border:1px solid var(--edge);border-radius:99px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--seal);width:50%;transition:width .25s ease}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button{font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink);background:var(--panel);
+  border:1.5px solid var(--edge);border-radius:3px;min-height:44px;padding:9px 10px;cursor:pointer;
+  transition:background .15s,border-color .15s}
+button:hover:not(:disabled){background:var(--panel-2);border-color:var(--muted)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible{outline:3px solid var(--seal);outline-offset:2px}
+button.seal{color:var(--seal);border-color:var(--seal)}
+
+.setup{background:var(--panel);border:1px solid var(--edge);border-radius:3px;padding:12px}
+.setup h2{font-family:var(--f-display);font-size:15px;font-weight:700;margin:0 0 10px}
+.field{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.field:last-child{margin-bottom:0}
+.field .lbl{font-size:13px;color:var(--muted)}
+.seg{display:flex;border:1.5px solid var(--edge);border-radius:3px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:5px 10px;min-height:40px;font-size:13.5px;background:var(--panel)}
+.seg button+button{border-left:1.5px solid var(--edge)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+
+.kifu{background:var(--panel);border:1px solid var(--edge);border-radius:3px;padding:10px 12px}
+.kifu h2{font-family:var(--f-display);font-size:15px;font-weight:700;margin:0 0 8px}
+.kifu .list{max-height:180px;overflow-y:auto;font-size:13.5px;font-variant-numeric:tabular-nums;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px}
+.kifu .mv{display:flex;gap:7px;align-items:center}
+.kifu .mv i{width:10px;height:10px;border-radius:50%;flex:none}
+.kifu .mv i.b{background:var(--stone-b)}
+.kifu .mv i.w{background:var(--stone-w);border:1px solid var(--stone-w-lo)}
+.kifu .mv u{text-decoration:none;color:var(--muted);width:24px;text-align:right}
+.kifu .empty{color:var(--muted);font-size:13px}
+
+.verdict{background:var(--panel);border:1.5px solid var(--seal);border-radius:3px;padding:12px 14px}
+.verdict h2{font-family:var(--f-display);font-size:18px;margin:0 0 4px;color:var(--seal)}
+.verdict p{margin:0;font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;
+  border-top:1px solid var(--edge);padding-top:16px}
+.howto section h3{font-family:var(--f-display);font-size:15px;margin:0 0 4px}
+.howto section p{margin:0;font-size:13.5px;color:var(--muted)}
+footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edge);padding-top:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<nav class="sw-bar" aria-label="สหวรรณคลินิก">
+  <a class="sw-brand" href="/">สหวรรณคลินิก</a><span class="sw-sep" aria-hidden="true">/</span>
+  <a href="/learn">Body 101 ทุกบท</a>
+  <a href="/learn/play">สนามแข่ง</a>
+</nav>
+
+<div class="wrap">
+  <header class="top">
+    <div class="mark">
+      <span class="kanji" aria-hidden="true">囲碁</span>
+      <div>
+        <h1>หมากล้อม เล่นกับคอมพิวเตอร์</h1>
+        <div class="sub">goban · เครื่องยนต์ MCTS ทำงานในเครื่องของคุณ</div>
+      </div>
+    </div>
+    <div class="rules-line">นับพื้นที่แบบจีน · โคมิ <b id="komiLine">6.5</b> แต้ม · ห้ามฆ่าตัวตาย · กฎโค</div>
+  </header>
+
+  <div class="main">
+    <div class="boardwrap">
+      <canvas id="bd" tabindex="0" role="application"
+        aria-label="กระดานหมากล้อม ใช้ปุ่มลูกศรเลื่อนตำแหน่ง กด Enter เพื่อวางหมาก"></canvas>
+      <p class="hintline">คลิกจุดตัดเพื่อวางหมาก · หรือใช้แป้นพิมพ์ ลูกศรเลื่อน Enter วาง P ผ่าน U ย้อนกลับ</p>
+      <p class="sr" id="live" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="rail">
+      <div class="turn">
+        <span class="disc b" id="turnDisc" aria-hidden="true"></span>
+        <div>
+          <div class="who" id="turnWho">ตาของคุณ</div>
+          <div class="note" id="turnNote">วางหมากได้เลย</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">ดำจับได้</div><div class="v" id="capB">0</div></div>
+        <div class="stat"><div class="k">ขาวจับได้</div><div class="v" id="capW">0</div></div>
+        <div class="stat"><div class="k">ตาที่</div><div class="v" id="moveNo">0</div></div>
+        <div class="stat"><div class="k">หมากล่าสุด</div><div class="v" id="lastMv">—</div></div>
+      </div>
+
+      <div class="think">
+        <div class="row"><span>คอมพิวเตอร์ประเมินโอกาสชนะของตัวเอง</span><b id="winPct">—</b></div>
+        <div class="bar"><i id="winBar" style="width:50%"></i></div>
+        <div class="row" style="margin-top:6px"><span>จำนวนเกมที่จำลอง</span><b id="playouts">0</b></div>
+      </div>
+
+      <div class="controls">
+        <button id="btnPass">ผ่าน</button>
+        <button id="btnUndo">ย้อนกลับ</button>
+        <button id="btnResign" class="seal">ยอมแพ้</button>
+        <button id="btnNew">เริ่มเกมใหม่</button>
+      </div>
+
+      <div class="setup">
+        <h2>ตั้งค่าเกมใหม่</h2>
+        <div class="field">
+          <span class="lbl" id="lblSize">ขนาดกระดาน</span>
+          <div class="seg" id="segSize" role="group" aria-labelledby="lblSize">
+            <button type="button" data-v="9" aria-pressed="true">9×9</button>
+            <button type="button" data-v="13" aria-pressed="false">13×13</button>
+            <button type="button" data-v="19" aria-pressed="false">19×19</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl" id="lblLevel">ระดับคอมพิวเตอร์</span>
+          <div class="seg" id="segLevel" role="group" aria-labelledby="lblLevel">
+            <button type="button" data-v="0" aria-pressed="false">ง่าย</button>
+            <button type="button" data-v="1" aria-pressed="true">ปานกลาง</button>
+            <button type="button" data-v="2" aria-pressed="false">เก่ง</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl" id="lblColor">คุณเล่นสี</span>
+          <div class="seg" id="segColor" role="group" aria-labelledby="lblColor">
+            <button type="button" data-v="1" aria-pressed="true">ดำ (เดินก่อน)</button>
+            <button type="button" data-v="2" aria-pressed="false">ขาว</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="verdict" id="verdict" hidden>
+        <h2 id="vTitle">จบเกม</h2>
+        <p id="vBody"></p>
+      </div>
+
+      <div class="kifu">
+        <h2>บันทึกหมาก</h2>
+        <div class="list" id="kifu"><span class="empty">ยังไม่มีหมากบนกระดาน</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="howto">
+    <section>
+      <h3>กติกาสั้นที่สุด</h3>
+      <p>ผลัดกันวางหมากบนจุดตัด หมากกลุ่มที่ถูกล้อมจนไม่เหลือช่องว่างติดกัน (ลมหายใจ) จะถูกจับออกจากกระดาน ใครล้อมพื้นที่ได้มากกว่าเป็นฝ่ายชนะ</p>
+    </section>
+    <section>
+      <h3>กฎโคและโคมิ</h3>
+      <p>กฎโคห้ามจับคืนทันทีจนกระดานวนซ้ำ ส่วนโคมิคือแต้มชดเชยให้ฝ่ายขาวเพราะเป็นฝ่ายเดินทีหลัง กระดาน 9×9 ใช้ 6.5 แต้ม กระดานใหญ่ใช้ 7.5 แต้ม</p>
+    </section>
+    <section>
+      <h3>คอมพิวเตอร์คิดอย่างไร</h3>
+      <p>ใช้วิธี Monte-Carlo Tree Search คือสุ่มเล่นเกมต่อจากตำแหน่งปัจจุบันจนจบหลายพันครั้ง แล้วเลือกตาที่ชนะบ่อยที่สุด แถบสีคือโอกาสชนะที่มันประเมินตัวเอง</p>
+    </section>
+  </div>
+
+  <footer class="credit">
+    เกมนี้ทำงานในเบราว์เซอร์ของคุณทั้งหมด ไม่ส่งข้อมูลออกไปไหน ไม่ต้องสมัครสมาชิก ·
+    สื่อเพื่อการเรียนรู้และฝึกสมาธิ ไม่ใช่การรักษาหรือคำแนะนำทางการแพทย์ ·
+    จัดทำโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ · สหวรรณคลินิก
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var N=9, KOMI=6.5, NN=81;
+var nbrs=[], diags=[], onEdge=[], mark=null, stackBuf=null, markGen=0, gStones=[], scratch=null;
+var LETTERS="ABCDEFGHJKLMNOPQRST";
+
+function initTopo(n){
+  N=n; NN=n*n; nbrs=[]; diags=[]; onEdge=[];
+  for(var y=0;y<n;y++)for(var x=0;x<n;x++){
+    var p=y*n+x, nb=[], dg=[];
+    if(x>0)nb.push(p-1); if(x<n-1)nb.push(p+1);
+    if(y>0)nb.push(p-n); if(y<n-1)nb.push(p+n);
+    if(x>0&&y>0)dg.push(p-n-1);
+    if(x<n-1&&y>0)dg.push(p-n+1);
+    if(x>0&&y<n-1)dg.push(p+n-1);
+    if(x<n-1&&y<n-1)dg.push(p+n+1);
+    nbrs.push(nb); diags.push(dg); onEdge.push(nb.length<4);
+  }
+  mark=new Int32Array(NN); stackBuf=new Int32Array(NN); scratch=new Int8Array(NN); markGen=0;
+}
+function coordOf(p){ return LETTERS[p%N] + (N - Math.floor(p/N)); }
+function hoshi(){
+  if(N===9) return [[2,2],[6,2],[4,4],[2,6],[6,6]];
+  if(N===13) return [[3,3],[9,3],[6,6],[3,9],[9,9]];
+  var a=[3,9,15], out=[], i, j; for(i=0;i<3;i++)for(j=0;j<3;j++)out.push([a[j],a[i]]); return out;
+}
+
+function groupLibs(b,p){
+  var color=b[p], sp=0, libs=0; markGen++; gStones.length=0;
+  stackBuf[sp++]=p; mark[p]=markGen;
+  while(sp>0){
+    var q=stackBuf[--sp]; gStones.push(q); var nb=nbrs[q];
+    for(var i=0;i<nb.length;i++){
+      var r=nb[i]; if(mark[r]===markGen) continue;
+      mark[r]=markGen;
+      var v=b[r];
+      if(v===0) libs++;
+      else if(v===color) stackBuf[sp++]=r;
+    }
+  }
+  return libs;
+}
+var RESULT={n:0, ko:-1};
+function tryPlay(b,p,color,ko){
+  if(b[p]!==0 || p===ko) return null;
+  var opp=3-color, nb=nbrs[p], i, j, taken=0, lastTaken=-1, freeNbr=false;
+  for(i=0;i<nb.length;i++) if(b[nb[i]]===0){ freeNbr=true; break; }
+  b[p]=color;
+  for(i=0;i<nb.length;i++){
+    var r=nb[i];
+    if(b[r]===opp && groupLibs(b,r)===0){
+      for(j=0;j<gStones.length;j++){ b[gStones[j]]=0; lastTaken=gStones[j]; taken++; }
+    }
+  }
+  /* มีช่องว่างติดกัน = มีลมหายใจแน่นอน ข้ามการตรวจฆ่าตัวตายได้ */
+  if(taken===0 && !freeNbr && groupLibs(b,p)===0){ b[p]=0; return null; }
+  var newKo=-1;
+  if(taken===1){
+    var l=groupLibs(b,p);
+    if(gStones.length===1 && l===1) newKo=lastTaken;
+  }
+  RESULT.n=taken; RESULT.ko=newKo;
+  return RESULT;
+}
+function isEyeFill(b,p,color){
+  var nb=nbrs[p], i;
+  for(i=0;i<nb.length;i++) if(b[nb[i]]!==color) return false;
+  var dg=diags[p], bad=0, allow=onEdge[p]?0:1;
+  for(i=0;i<dg.length;i++) if(b[dg[i]]===3-color) bad++;
+  return bad<=allow;
+}
+function areaScore(b){
+  var bl=0, wh=0, p, i;
+  markGen++;
+  for(p=0;p<NN;p++){
+    if(b[p]===1){bl++;continue;}
+    if(b[p]===2){wh++;continue;}
+    if(mark[p]===markGen) continue;
+    var sp=0, size=0, tb=false, tw=false;
+    stackBuf[sp++]=p; mark[p]=markGen;
+    while(sp>0){
+      var q=stackBuf[--sp]; size++; var nb=nbrs[q];
+      for(i=0;i<nb.length;i++){
+        var r=nb[i], v=b[r];
+        if(v===0){ if(mark[r]!==markGen){ mark[r]=markGen; stackBuf[sp++]=r; } }
+        else if(v===1) tb=true; else tw=true;
+      }
+    }
+    if(tb&&!tw) bl+=size; else if(tw&&!tb) wh+=size;
+  }
+  return bl-wh;
+}
+function territoryMap(b){
+  var own=new Int8Array(NN), p, i;
+  markGen++;
+  for(p=0;p<NN;p++){
+    if(b[p]!==0 || mark[p]===markGen) continue;
+    var sp=0, region=[], tb=false, tw=false;
+    stackBuf[sp++]=p; mark[p]=markGen;
+    while(sp>0){
+      var q=stackBuf[--sp]; region.push(q); var nb=nbrs[q];
+      for(i=0;i<nb.length;i++){
+        var r=nb[i], v=b[r];
+        if(v===0){ if(mark[r]!==markGen){ mark[r]=markGen; stackBuf[sp++]=r; } }
+        else if(v===1) tb=true; else tw=true;
+      }
+    }
+    var o=(tb&&!tw)?1:((tw&&!tb)?2:0);
+    if(o) for(i=0;i<region.length;i++) own[region[i]]=o;
+  }
+  return own;
+}
+
+function randomMove(b,color,ko){
+  var start=(Math.random()*NN)|0, i, p;
+  for(i=0;i<NN;i++){
+    p=(start+i*7)%NN;
+    if(b[p]!==0 || p===ko) continue;
+    if(isEyeFill(b,p,color)) continue;
+    var r=tryPlay(b,p,color,ko);
+    if(r) return r;
+  }
+  return null;
+}
+function playout(b,color,ko){
+  var passes=0, maxM=NN*2+40;
+  for(var m=0;m<maxM && passes<2;m++){
+    var r=randomMove(b,color,ko);
+    if(!r){ passes++; ko=-1; } else { ko=r.ko; passes=0; }
+    color=3-color;
+  }
+  return areaScore(b);
+}
+var C_UCT=1.15, EXPAND_AT=3;
+function newNode(mv){ return {move:mv, children:null, n:0, w:0}; }
+function selectUCT(node){
+  var kids=node.children, best=null, bestV=-1e9, logN=Math.log(Math.max(2,node.n));
+  for(var i=0;i<kids.length;i++){
+    var c=kids[i];
+    var v = c.n===0 ? 1e6+Math.random() : (c.w/c.n) + C_UCT*Math.sqrt(logN/c.n);
+    if(v>bestV){ bestV=v; best=c; }
+  }
+  return best;
+}
+function expand(node,b,color,ko){
+  var kids=[], p;
+  for(p=0;p<NN;p++){
+    if(b[p]!==0 || p===ko) continue;
+    if(isEyeFill(b,p,color)) continue;
+    scratch.set(b);
+    if(tryPlay(scratch,p,color,ko)) kids.push(newNode(p));
+  }
+  kids.push(newNode(-1));
+  node.children=kids;
+}
+function oneIteration(st){
+  var b=st.work; b.set(st.board);
+  var ko=st.ko, color=st.color, node=st.root, path=st.path, r;
+  path.length=0; path.push(node);
+  while(node.children){
+    var c=selectUCT(node);
+    if(c.move>=0){ r=tryPlay(b,c.move,color,ko); ko=r?r.ko:-1; } else ko=-1;
+    color=3-color; node=c; path.push(node);
+  }
+  if(node.n>=EXPAND_AT){
+    expand(node,b,color,ko);
+    var k=node.children[(Math.random()*node.children.length)|0];
+    if(k.move>=0){ r=tryPlay(b,k.move,color,ko); ko=r?r.ko:-1; } else ko=-1;
+    color=3-color; node=k; path.push(node);
+  }
+  var diff=playout(b,color,ko);
+  var blackWin=(diff-KOMI)>0;
+  for(var i=0;i<path.length;i++){
+    var nd=path[i]; nd.n++;
+    if(i>0){
+      var mover=(i%2===1)?st.color:(3-st.color);
+      var won=(mover===1)?blackWin:!blackWin;
+      if(won) nd.w++;
+    }
+  }
+}
+function bestChild(root){
+  if(!root.children) return null;
+  var best=null;
+  for(var i=0;i<root.children.length;i++){
+    var c=root.children[i];
+    if(!best || c.n>best.n) best=c;
+  }
+  return best;
+}
+
+/* ---------- game state ---------- */
+var LEVELS=[{ms:500,cap:2500},{ms:2400,cap:30000},{ms:6000,cap:150000}];
+var board=null, toMove=1, koPoint=-1, caps={1:0,2:0}, passes=0, moveNum=0, lastMove=-1;
+var humanColor=1, aiColor=2, level=1, size=9;
+var history=[], kifu=[], gameOver=false, thinking=false, aiState=null, territory=null;
+var hover=-1, cursor=-1, usingKeys=false;
+
+var cv=document.getElementById("bd"), ctx=cv.getContext("2d"), px=1, cell=0, pad=0;
+function say(msg){ document.getElementById("live").textContent=msg; }
+
+function newGame(){
+  initTopo(size|0);
+  KOMI = size===9 ? 6.5 : 7.5;
+  board=new Int8Array(NN); toMove=1; koPoint=-1; caps={1:0,2:0}; passes=0; moveNum=0; lastMove=-1;
+  history=[]; kifu=[]; gameOver=false; thinking=false; aiState=null; territory=null;
+  hover=-1; cursor=((N*N)-1)/2|0;
+  aiColor=3-humanColor;
+  document.getElementById("komiLine").textContent=KOMI.toFixed(1);
+  document.getElementById("verdict").hidden=true;
+  document.getElementById("winPct").textContent="—";
+  document.getElementById("playouts").textContent="0";
+  document.getElementById("winBar").style.width="50%";
+  layout(); draw(); updateUI();
+  say("เริ่มเกมใหม่ กระดาน "+N+" คูณ "+N);
+  if(toMove===aiColor) setTimeout(startAI,260);
+}
+function snapshot(){
+  history.push({b:board.slice(), ko:koPoint, tm:toMove, cb:caps[1], cw:caps[2],
+                ps:passes, mn:moveNum, last:lastMove, kifu:kifu.slice()});
+  if(history.length>500) history.shift();
+}
+function applyMove(p,color){
+  var r=tryPlay(board,p,color,koPoint);
+  if(!r) return false;
+  caps[color]+=r.n;
+  koPoint=r.ko; passes=0; moveNum++; lastMove=p;
+  kifu.push({n:moveNum,c:color,t:coordOf(p)});
+  toMove=3-color;
+  return true;
+}
+function applyPass(color){
+  koPoint=-1; passes++; moveNum++; lastMove=-1;
+  kifu.push({n:moveNum,c:color,t:"ผ่าน"});
+  toMove=3-color;
+  if(passes>=2) endGame("count");
+}
+function endGame(reason,resigner){
+  gameOver=true; thinking=false; aiState=null;
+  var net=areaScore(board)-KOMI;
+  territory=territoryMap(board);
+  var v=document.getElementById("verdict");
+  var t=document.getElementById("vTitle"), bdy=document.getElementById("vBody");
+  if(reason==="resign"){
+    var winner = resigner===1 ? "ขาว" : "ดำ";
+    t.textContent = (resigner===humanColor) ? "คุณยอมแพ้" : "คอมพิวเตอร์ขอยอมแพ้";
+    bdy.textContent = winner+"ชนะโดยการยอมแพ้ · นับพื้นที่ขณะนี้ "+(net>0?"ดำนำ ":"ขาวนำ ")+Math.abs(net).toFixed(1)+" แต้ม";
+  } else {
+    t.textContent = net>0 ? "ดำชนะ "+net.toFixed(1)+" แต้ม" : "ขาวชนะ "+Math.abs(net).toFixed(1)+" แต้ม";
+    bdy.textContent = "นับพื้นที่แบบจีน คือหมากบนกระดานบวกพื้นที่ที่ล้อมได้ แล้วหักโคมิ "+KOMI.toFixed(1)+" แต้มให้ขาว";
+  }
+  v.hidden=false;
+  say(t.textContent);
+  draw(); updateUI();
+}
+
+function startAI(){
+  if(gameOver) return;
+  thinking=true; updateUI();
+  var st={ root:newNode(-2), board:board.slice(), work:new Int8Array(NN), path:[],
+           ko:koPoint, color:aiColor, end:performance.now()+LEVELS[level].ms,
+           cap:LEVELS[level].cap, done:0 };
+  aiState=st;
+  step();
+  function step(){
+    if(aiState!==st) return;
+    var slice=performance.now()+45;
+    while(performance.now()<slice && performance.now()<st.end && st.done<st.cap){
+      oneIteration(st); st.done++;
+    }
+    reportThinking(st);
+    if(performance.now()<st.end && st.done<st.cap) setTimeout(step,0);
+    else finishAI(st);
+  }
+}
+function reportThinking(st){
+  var b=bestChild(st.root);
+  document.getElementById("playouts").textContent=st.done.toLocaleString("en-US");
+  if(b && b.n>0){
+    var wr=Math.round(100*b.w/b.n);
+    document.getElementById("winPct").textContent=wr+"%";
+    document.getElementById("winBar").style.width=wr+"%";
+  }
+}
+function finishAI(st){
+  if(aiState!==st || gameOver) return;
+  thinking=false; aiState=null;
+  var b=bestChild(st.root);
+  var wr=(b&&b.n>0)?b.w/b.n:0.5;
+  if(b && b.n>20 && wr<0.09 && moveNum>N){ endGame("resign",aiColor); return; }
+  snapshot();
+  if(!b || b.move<0){ applyPass(aiColor); say("คอมพิวเตอร์ผ่าน"); }
+  else if(!applyMove(b.move,aiColor)){ applyPass(aiColor); say("คอมพิวเตอร์ผ่าน"); }
+  else say("คอมพิวเตอร์วางที่ "+coordOf(b.move));
+  draw(); updateUI();
+}
+
+/* ---------- rendering ---------- */
+function layout(){
+  var w=cv.parentNode.clientWidth-28;
+  w=Math.max(260,Math.min(w,620));
+  px=window.devicePixelRatio||1;
+  cv.style.width=w+"px"; cv.style.height=w+"px";
+  cv.width=Math.round(w*px); cv.height=Math.round(w*px);
+  cell=w/(N+1.2); pad=(w-cell*(N-1))/2;
+}
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+function draw(){
+  var w=cv.width/px, i;
+  ctx.setTransform(px,0,0,px,0,0);
+  ctx.clearRect(0,0,w,w);
+
+  var g=ctx.createLinearGradient(0,0,w,w);
+  g.addColorStop(0,cssVar("--board-hi")); g.addColorStop(1,cssVar("--board-lo"));
+  ctx.fillStyle=g; ctx.fillRect(0,0,w,w);
+
+  ctx.save(); ctx.globalAlpha=.10; ctx.strokeStyle=cssVar("--board-rim"); ctx.lineWidth=1;
+  for(i=0;i<26;i++){
+    var gx=(i*w/26)+((i%3)*2.4);
+    ctx.beginPath(); ctx.moveTo(gx,0);
+    ctx.bezierCurveTo(gx+5,w*0.33,gx-5,w*0.68,gx+2,w);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  ctx.strokeStyle=cssVar("--board-rim"); ctx.lineWidth=2; ctx.globalAlpha=.55;
+  ctx.strokeRect(1,1,w-2,w-2); ctx.globalAlpha=1;
+
+  var line=cssVar("--line");
+  ctx.strokeStyle=line; ctx.lineWidth=Math.max(.7,cell*0.022);
+  for(i=0;i<N;i++){
+    var c=pad+i*cell;
+    ctx.beginPath(); ctx.moveTo(pad,c); ctx.lineTo(pad+(N-1)*cell,c); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(c,pad); ctx.lineTo(c,pad+(N-1)*cell); ctx.stroke();
+  }
+
+  ctx.fillStyle=line;
+  var hs=hoshi();
+  for(i=0;i<hs.length;i++){
+    ctx.beginPath();
+    ctx.arc(pad+hs[i][0]*cell, pad+hs[i][1]*cell, Math.max(2,cell*0.075), 0, 6.2832);
+    ctx.fill();
+  }
+
+  ctx.globalAlpha=.6; ctx.fillStyle=cssVar("--board-rim");
+  ctx.font="600 "+Math.max(8,cell*0.30)+"px 'IBM Plex Sans Thai Looped', sans-serif";
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  for(i=0;i<N;i++){
+    ctx.fillText(LETTERS[i], pad+i*cell, pad-cell*0.62);
+    ctx.fillText(String(N-i), pad-cell*0.62, pad+i*cell);
+  }
+  ctx.globalAlpha=1;
+
+  if(territory){
+    for(i=0;i<NN;i++){
+      if(!territory[i]) continue;
+      var tx=pad+(i%N)*cell, ty=pad+Math.floor(i/N)*cell, s=cell*0.26;
+      ctx.globalAlpha=.72;
+      ctx.fillStyle = territory[i]===1 ? cssVar("--stone-b") : cssVar("--stone-w");
+      ctx.fillRect(tx-s/2,ty-s/2,s,s);
+      ctx.globalAlpha=1;
+    }
+  }
+
+  for(i=0;i<NN;i++) if(board[i]) drawStone(i,board[i],1);
+
+  var ghost = usingKeys ? cursor : hover;
+  if(ghost>=0 && !thinking && !gameOver && board[ghost]===0 && toMove===humanColor)
+    drawStone(ghost,humanColor,.38);
+
+  if(usingKeys && cursor>=0){
+    var kx=pad+(cursor%N)*cell, ky=pad+Math.floor(cursor/N)*cell;
+    ctx.strokeStyle=cssVar("--seal"); ctx.lineWidth=Math.max(1.6,cell*0.07);
+    ctx.strokeRect(kx-cell*0.42,ky-cell*0.42,cell*0.84,cell*0.84);
+  }
+
+  if(lastMove>=0 && board[lastMove]){
+    var lx=pad+(lastMove%N)*cell, ly=pad+Math.floor(lastMove/N)*cell;
+    ctx.strokeStyle=cssVar("--seal"); ctx.lineWidth=Math.max(1.5,cell*0.06);
+    ctx.beginPath(); ctx.arc(lx,ly,cell*0.20,0,6.2832); ctx.stroke();
+  }
+}
+function drawStone(p,color,alpha){
+  var x=pad+(p%N)*cell, y=pad+Math.floor(p/N)*cell, r=cell*0.47;
+  ctx.save(); ctx.globalAlpha=alpha;
+  ctx.beginPath(); ctx.arc(x+cell*0.05,y+cell*0.07,r,0,6.2832);
+  ctx.fillStyle="rgba(40,24,8,0.28)"; ctx.fill();
+  var g=ctx.createRadialGradient(x-r*0.34,y-r*0.38,r*0.12,x,y,r);
+  if(color===1){ g.addColorStop(0,cssVar("--stone-b-hi")); g.addColorStop(.55,cssVar("--stone-b")); g.addColorStop(1,"#000"); }
+  else { g.addColorStop(0,"#fff"); g.addColorStop(.5,cssVar("--stone-w")); g.addColorStop(1,cssVar("--stone-w-lo")); }
+  ctx.beginPath(); ctx.arc(x,y,r,0,6.2832); ctx.fillStyle=g; ctx.fill();
+  ctx.restore();
+}
+
+/* ---------- UI ---------- */
+function updateUI(){
+  document.getElementById("capB").textContent=caps[1];
+  document.getElementById("capW").textContent=caps[2];
+  document.getElementById("moveNo").textContent=moveNum;
+  document.getElementById("lastMv").textContent = kifu.length?kifu[kifu.length-1].t:"—";
+
+  var disc=document.getElementById("turnDisc"), who=document.getElementById("turnWho"), note=document.getElementById("turnNote");
+  disc.className="disc "+(toMove===1?"b":"w");
+  if(gameOver){ who.textContent="จบเกมแล้ว"; note.textContent="กดเริ่มเกมใหม่เพื่อเล่นอีกครั้ง"; }
+  else if(thinking){ who.textContent="คอมพิวเตอร์กำลังคิด"; note.textContent="จำลองเกมจนจบหลายพันครั้ง"; }
+  else if(toMove===humanColor){ who.textContent="ตาของคุณ"; note.textContent=(koPoint>=0?"จุด "+coordOf(koPoint)+" ติดกฎโคในตานี้":"วางหมากได้เลย"); }
+  else { who.textContent="ตาของคอมพิวเตอร์"; note.textContent="รอสักครู่"; }
+
+  document.getElementById("btnPass").disabled = gameOver||thinking||toMove!==humanColor;
+  document.getElementById("btnUndo").disabled = gameOver||thinking||history.length===0;
+  document.getElementById("btnResign").disabled = gameOver;
+
+  var el=document.getElementById("kifu");
+  if(!kifu.length){ el.innerHTML='<span class="empty">ยังไม่มีหมากบนกระดาน</span>'; return; }
+  var html="";
+  for(var i=Math.max(0,kifu.length-40);i<kifu.length;i++){
+    var m=kifu[i];
+    html+='<span class="mv"><u>'+m.n+'</u><i class="'+(m.c===1?"b":"w")+'"></i>'+m.t+'</span>';
+  }
+  el.innerHTML=html;
+  el.scrollTop=el.scrollHeight;
+}
+function pointAt(ev){
+  var rect=cv.getBoundingClientRect();
+  var x=(ev.clientX-rect.left), y=(ev.clientY-rect.top);
+  var gx=Math.round((x-pad)/cell), gy=Math.round((y-pad)/cell);
+  if(gx<0||gy<0||gx>=N||gy>=N) return -1;
+  if(Math.abs(x-(pad+gx*cell))>cell*0.52||Math.abs(y-(pad+gy*cell))>cell*0.52) return -1;
+  return gy*N+gx;
+}
+function humanPlay(p){
+  if(gameOver||thinking||toMove!==humanColor||p<0) return;
+  scratch.set(board);
+  if(!tryPlay(scratch,p,humanColor,koPoint)) { say("วางตรงนั้นไม่ได้"); return; }
+  snapshot();
+  applyMove(p,humanColor);
+  hover=-1; draw(); updateUI();
+  say("คุณวางที่ "+coordOf(p));
+  if(!gameOver) setTimeout(startAI,140);
+}
+function humanPass(){
+  if(gameOver||thinking||toMove!==humanColor) return;
+  snapshot(); applyPass(humanColor); draw(); updateUI();
+  say("คุณผ่าน");
+  if(!gameOver) setTimeout(startAI,140);
+}
+function undo(){
+  if(thinking||gameOver||!history.length) return;
+  var steps=history.length>=2?2:1, s=null;
+  for(var i=0;i<steps;i++) s=history.pop();
+  board=s.b; koPoint=s.ko; toMove=s.tm; caps[1]=s.cb; caps[2]=s.cw;
+  passes=s.ps; moveNum=s.mn; lastMove=s.last; kifu=s.kifu; territory=null;
+  draw(); updateUI(); say("ย้อนกลับแล้ว");
+}
+
+cv.addEventListener("mousemove",function(e){
+  var p=pointAt(e);
+  if(p!==hover){ hover=p; usingKeys=false; draw(); }
+});
+cv.addEventListener("mouseleave",function(){ if(hover!==-1){ hover=-1; draw(); } });
+cv.addEventListener("click",function(e){ usingKeys=false; humanPlay(pointAt(e)); });
+cv.addEventListener("keydown",function(e){
+  var k=e.key, x=cursor%N, y=Math.floor(cursor/N), moved=false;
+  if(k==="ArrowLeft"){ x=Math.max(0,x-1); moved=true; }
+  else if(k==="ArrowRight"){ x=Math.min(N-1,x+1); moved=true; }
+  else if(k==="ArrowUp"){ y=Math.max(0,y-1); moved=true; }
+  else if(k==="ArrowDown"){ y=Math.min(N-1,y+1); moved=true; }
+  else if(k==="Enter"||k===" "){ e.preventDefault(); usingKeys=true; humanPlay(cursor); return; }
+  else if(k==="p"||k==="P"){ humanPass(); return; }
+  else if(k==="u"||k==="U"){ undo(); return; }
+  else return;
+  if(moved){
+    e.preventDefault(); usingKeys=true; cursor=y*N+x; draw();
+    say(coordOf(cursor)+(board[cursor]?(board[cursor]===1?" มีหมากดำ":" มีหมากขาว"):" ว่าง"));
+  }
+});
+cv.addEventListener("focus",function(){ usingKeys=true; draw(); });
+
+document.getElementById("btnPass").addEventListener("click",humanPass);
+document.getElementById("btnUndo").addEventListener("click",undo);
+document.getElementById("btnResign").addEventListener("click",function(){
+  if(gameOver) return;
+  aiState=null; thinking=false; endGame("resign",humanColor);
+});
+document.getElementById("btnNew").addEventListener("click",function(){ aiState=null; newGame(); });
+
+function seg(id,cb){
+  var el=document.getElementById(id);
+  el.addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b) return;
+    var kids=el.querySelectorAll("button");
+    for(var i=0;i<kids.length;i++) kids[i].setAttribute("aria-pressed", kids[i]===b?"true":"false");
+    cb(parseInt(b.getAttribute("data-v"),10));
+  });
+}
+seg("segSize",function(v){ size=v; aiState=null; newGame(); });
+seg("segLevel",function(v){ level=v; });
+seg("segColor",function(v){ humanColor=v; aiState=null; newGame(); });
+
+window.addEventListener("resize",function(){ layout(); draw(); });
+if(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").addEventListener)
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){ draw(); });
+
+newGame();
+})();
+</script>
+</body>
+</html>

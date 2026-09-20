@@ -331,6 +331,9 @@ export default function LearnPage() {
               <a href="/learn/play" className="btn big lp-btn-ghost">
                 เข้าสนามแข่ง
               </a>
+              <a href="/learn/go" className="btn big lp-btn-ghost">
+                เล่นหมากล้อม
+              </a>
             </div>
             <ul className="lp-stats" aria-label="สรุปเนื้อหา">
               <li>12 บท</li>
@@ -406,6 +409,25 @@ export default function LearnPage() {
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section" aria-labelledby="go-title">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow lp-eyebrow">เกมฝึกคิด</p>
+            <h2 id="go-title">หมากล้อม เล่นกับคอมพิวเตอร์</h2>
+            <p>
+              กระดานโกะเต็มรูปแบบที่ทำงานอยู่ในเบราว์เซอร์ เลือกกระดาน 9×9 13×13 หรือ 19×19
+              ปรับความเก่งของคอมพิวเตอร์ได้สามระดับ วางหมากด้วยการคลิกหรือใช้แป้นพิมพ์ก็ได้
+              เกมจับหมาก นับพื้นที่ และตัดสินผลให้อัตโนมัติ
+            </p>
+          </div>
+          <div className="lp-hero-actions">
+            <a href="/learn/go" className="btn big btn-dark">
+              เปิดกระดานหมากล้อม
+            </a>
           </div>
         </div>
       </section>
