@@ -403,6 +403,9 @@ export default function HomePage() {
             <Link href="/learn" className="btn btn-dark big">
               เปิด Body 101
             </Link>
+            <a href="/learn/go" className="btn big">
+              เล่นหมากล้อมกับคอมพิวเตอร์
+            </a>
           </div>
         </div>
       </section>
