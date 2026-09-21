@@ -217,7 +217,7 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
 
       <p class="tip"><b>โหมดโค้ช</b> — วงประสีแดงคือกลุ่มของคุณที่เหลือลมหายใจเดียว คือกำลังจะถูกกิน
         วงประสีเขียวคือกลุ่มของคอมพิวเตอร์ที่คุณกินได้ · ปุ่มแนะนำตาเดินจะให้เครื่องคิดจากฝั่งของคุณราวหนึ่งวินาทีครึ่ง
-        แล้วชี้จุดพร้อมบอกเหตุผล แต่ไม่เดินให้ คุณตัดสินใจเอง · ปิดโหมดนี้ได้ถ้าอยากเล่นเงียบ ๆ</p>
+        แล้วชี้จุดพร้อมบอกเหตุผล แต่ไม่เดินให้ คุณตัดสินใจเอง · ถ้าเลื่อนไปชี้จุดที่จะเสียหมากฟรี จะขึ้นกากบาทสีแดงเตือนก่อนคลิก · ปิดโหมดนี้ได้ถ้าอยากเล่นเงียบ ๆ</p>
 
       <div class="stats">
         <div class="stat"><div class="k">ดำจับได้</div><div class="v" id="capB">0</div></div>
@@ -664,7 +664,8 @@ function finishAI(st){
 }
 
 /* ---------- โหมดโค้ช: บอกสถานการณ์ + แนะนำตาเดิน ---------- */
-var coachOn=true, atariList=[], hintMove=-2, hintWhy="", hinting=false, hintState=null;
+var coachOn=true, atariList=[], coachBase=[], hintMove=-2, hintWhy="", hinting=false, hintState=null;
+var hoverWarn="", riskyPoint=-1;
 var lastWinRate=-1, lastAICaps=0;
 
 function allGroups(b){
@@ -690,57 +691,120 @@ function groupName(g){
   for(i=1;i<g.stones.length;i++) if(g.stones[i]<best) best=g.stones[i];
   return coordOf(best);
 }
-function clearHint(){ hintState=null; hinting=false; hintMove=-2; hintWhy=""; }
+function clearHint(){ hintState=null; hinting=false; hintMove=-2; hintWhy=""; hoverWarn=""; riskyPoint=-1; }
 
-function updateCoach(){
+function eyeCount(b,g){
+  var lp=libsOf(b,g.stones), c=g.color, n=0, i, j;
+  for(i=0;i<lp.length;i++){
+    var nb=nbrs[lp[i]], ok=true;
+    for(j=0;j<nb.length;j++) if(b[nb[j]]!==c){ ok=false; break; }
+    if(ok) n++;
+  }
+  return n;
+}
+function emptyCount(b){ var n=0,i; for(i=0;i<NN;i++) if(!b[i]) n++; return n; }
+
+/* คำนวณสถานการณ์จากกระดาน เรียกเมื่อกระดานเปลี่ยน */
+function computeCoachLines(){
+  atariList=[]; coachBase=[];
+  if(!coachOn) return;
+  var gs=allGroups(board), i, mine=[], theirs=[], weak=[], eyeless=[];
+  for(i=0;i<gs.length;i++){
+    var g=gs[i];
+    if(g.libs===1){
+      atariList.push(g);
+      if(g.color===humanColor) mine.push(g); else theirs.push(g);
+    } else if(g.color===humanColor && g.libs===2 && g.stones.length>=2){
+      weak.push(g);
+    } else if(g.color===humanColor && g.stones.length>=5 && g.libs<=5 && eyeCount(board,g)<2){
+      eyeless.push(g);
+    }
+  }
+  var lines=[];
+  if(gameOver){
+    coachBase=["เกมจบแล้ว จุดสี่เหลี่ยมบนกระดานคือพื้นที่ของแต่ละฝ่ายตอนนับแต้ม"];
+    return;
+  }
+  if(lastAICaps>0 && toMove===humanColor)
+    lines.push("คอมพิวเตอร์เพิ่งกินหมากของคุณไป "+lastAICaps+" เม็ด");
+  if(mine.length){
+    var g1=mine[0], lp=libsOf(board,g1.stones);
+    lines.push("กลุ่มของคุณที่ "+groupName(g1)+" ("+g1.stones.length+" เม็ด) เหลือลมหายใจเดียว ตาหน้าจะถูกกิน "+
+      (lp.length ? "ทางแก้คือวางที่ "+coordOf(lp[0])+" หรือปล่อยทิ้งแล้วไปเล่นจุดที่ใหญ่กว่า"
+                 : "ไม่มีจุดต่อแล้ว ปล่อยไปเล่นที่อื่นดีกว่า"));
+  } else if(weak.length){
+    var g2=weak[0], lp2=libsOf(board,g2.stones);
+    lines.push("กลุ่มของคุณที่ "+groupName(g2)+" ("+g2.stones.length+" เม็ด) เหลือลมหายใจสองช่อง กำลังถูกไล่ "+
+      (lp2.length ? "ถ้าจะสู้ต้องรีบขยายออกทาง "+coordOf(lp2[0]) : ""));
+  }
+  if(eyeless.length){
+    var g3=eyeless[0];
+    lines.push("กลุ่มใหญ่ของคุณที่ "+groupName(g3)+" ("+g3.stones.length+" เม็ด) ยังไม่มีสองตา "+
+      "กลุ่มที่ไม่มีสองตาจะตายทั้งกลุ่มเมื่อถูกปิดรอบ ต้องรีบเจาะออกไปข้างนอก หรือทำช่องว่างสองช่องในกลุ่มให้ได้");
+  }
+  if(theirs.length){
+    var t=theirs[0], tp=libsOf(board,t.stones);
+    lines.push("กลุ่มของคอมพิวเตอร์ที่ "+groupName(t)+" ("+t.stones.length+" เม็ด) เหลือลมหายใจเดียว"+
+      (tp.length ? " วางที่ "+coordOf(tp[0])+" กินได้ทันที" : ""));
+  }
+
+  /* สถานะแต้มคร่าว ๆ จากการนับพื้นที่ ณ ตอนนี้ */
+  var est=areaScore(board)-KOMI;
+  var net = humanColor===1 ? est : -est;
+  var gap = Math.abs(net).toFixed(1);
+  var openPts = emptyCount(board);
+  if(!mine.length && !weak.length && !eyeless.length && !theirs.length && moveNum<4)
+    lines.push("ช่วงเปิดเกม วางใกล้มุมกับขอบก่อน เพราะล้อมพื้นที่ได้ด้วยหมากน้อยกว่ากลางกระดาน");
+
+  if(moveNum<6){ coachBase=lines.slice(0,4); return; }   /* ต้นเกมยังนับแต้มไม่มีความหมาย */
+  if(net <= -20)
+    lines.push("ถ้านับพื้นที่ตอนนี้ คุณตามหลังราว "+gap+" แต้ม ซึ่งบนกระดาน "+N+"×"+N+" ถือว่าพลิกยากแล้ว "+
+      "จะเล่นให้จบเพื่อดูการนับแต้มก็ได้ หรือกดเริ่มเกมใหม่ แล้วลดระดับคอมพิวเตอร์เป็นง่ายเพื่อซ้อมให้สนุกขึ้น");
+  else if(net <= -8)
+    lines.push("ถ้านับพื้นที่ตอนนี้ คุณตามหลังราว "+gap+" แต้ม ต้องหาที่บุกเข้าไปในพื้นที่ของขาว หรือไล่กินกลุ่มที่ยังไม่มีสองตา");
+  else if(net >= 20)
+    lines.push("ถ้านับพื้นที่ตอนนี้ คุณนำอยู่ราว "+gap+" แต้ม ตอนนำให้เล่นปลอดภัยไว้ก่อน ปิดจุดอ่อนของตัวเองดีกว่าบุกเพิ่ม");
+  else
+    lines.push("ถ้านับพื้นที่ตอนนี้ "+(net>=0?"คุณนำอยู่ราว ":"คุณตามหลังราว ")+gap+" แต้ม ยังสูสี");
+
+  if(openPts <= Math.max(6, NN*0.12))
+    lines.push("กระดานเกือบเต็มแล้ว ถ้าไม่มีจุดไหนได้แต้มเพิ่ม กดผ่านได้เลย ผ่านสองครั้งติดกันคือจบเกมแล้วนับแต้ม");
+
+  coachBase=lines.slice(0,4);
+}
+
+/* วาดข้อความโค้ช เรียกได้บ่อย ไม่คำนวณกระดานใหม่ */
+function renderCoach(){
   var body=document.getElementById("coachBody"), btn=document.getElementById("btnHint");
   var tog=document.getElementById("btnCoach");
   body.hidden=!coachOn;
   tog.textContent = coachOn ? "ปิด" : "เปิด";
   tog.setAttribute("aria-expanded", coachOn?"true":"false");
   if(!coachOn){ atariList=[]; hintMove=-2; draw(); return; }
-
-  var gs=allGroups(board), mine=[], theirs=[], i;
-  atariList=[];
-  for(i=0;i<gs.length;i++){
-    if(gs[i].libs===1){
-      atariList.push(gs[i]);
-      if(gs[i].color===humanColor) mine.push(gs[i]); else theirs.push(gs[i]);
-    }
-  }
-  var lines=[];
-  if(gameOver){
-    lines.push("เกมจบแล้ว จุดสี่เหลี่ยมบนกระดานคือพื้นที่ของแต่ละฝ่ายตอนนับแต้ม");
-  } else {
-    if(lastAICaps>0 && toMove===humanColor)
-      lines.push("คอมพิวเตอร์เพิ่งกินหมากของคุณไป "+lastAICaps+" เม็ด");
-    if(mine.length){
-      var g=mine[0], lp=libsOf(board,g.stones);
-      lines.push("กลุ่มของคุณที่ "+groupName(g)+" ("+g.stones.length+" เม็ด) เหลือลมหายใจเดียว ตาหน้าจะถูกกิน "+
-        (lp.length ? "ทางแก้คือวางที่ "+coordOf(lp[0])+" เพื่อต่อลมหายใจ หรือปล่อยทิ้งแล้วไปเล่นจุดที่ใหญ่กว่า"
-                   : "ไม่มีจุดต่อแล้ว ปล่อยไปเล่นที่อื่นดีกว่า"));
-    }
-    if(theirs.length){
-      var t=theirs[0], tp=libsOf(board,t.stones);
-      lines.push("กลุ่มของคอมพิวเตอร์ที่ "+groupName(t)+" ("+t.stones.length+" เม็ด) เหลือลมหายใจเดียว"+
-        (tp.length ? " วางที่ "+coordOf(tp[0])+" กินได้ทันที" : ""));
-    }
-    if(!mine.length && !theirs.length)
-      lines.push(moveNum<4
-        ? "ช่วงเปิดเกม วางใกล้มุมกับขอบก่อน เพราะล้อมพื้นที่ได้ด้วยหมากน้อยกว่ากลางกระดาน"
-        : "ยังไม่มีกลุ่มไหนถูกล้อมจนอันตราย ช่วงนี้คือการขยายพื้นที่ของตัวเองและกันไม่ให้อีกฝ่ายขยาย");
-    if(lastWinRate>=0)
-      lines.push("คอมพิวเตอร์ประเมินว่าตัวเองมีโอกาสชนะราว "+Math.round(lastWinRate*100)+
-        " เปอร์เซ็นต์ ถ้าต่ำกว่าห้าสิบแปลว่าคุณกำลังนำ");
-  }
+  var lines=coachBase.slice();
   if(hinting) lines.unshift("กำลังคิดว่าตาไหนดีที่สุดสำหรับคุณ รอสักครู่");
   else if(hintWhy) lines.unshift(hintWhy);
-
+  if(hoverWarn) lines.unshift(hoverWarn);
   var html="", k;
   for(k=0;k<lines.length;k++) html+="<span>"+lines[k]+"</span>";
   document.getElementById("coachText").innerHTML=html;
   btn.disabled = gameOver||thinking||hinting||toMove!==humanColor;
   draw();
+}
+function updateCoach(){ computeCoachLines(); renderCoach(); }
+
+/* จุดที่ชี้อยู่จะทำให้หมากตัวเองเหลือลมหายใจเดียวหรือไม่ */
+function checkHoverRisk(p){
+  var warn="", risky=-1;
+  if(coachOn && !gameOver && !thinking && toMove===humanColor && p>=0 && board[p]===0){
+    scratch.set(board);
+    var r=tryPlay(scratch,p,humanColor,koPoint);
+    if(r && r.n===0 && groupLibs(scratch,p)===1){
+      risky=p;
+      warn="จุด "+coordOf(p)+" ที่ชี้อยู่จะทำให้หมากกลุ่มนั้นเหลือลมหายใจเดียวทันที คือยกให้เขากินฟรี ลองจุดอื่นก่อน";
+    }
+  }
+  if(warn!==hoverWarn || risky!==riskyPoint){ hoverWarn=warn; riskyPoint=risky; renderCoach(); }
 }
 
 function explainMove(p){
@@ -862,8 +926,17 @@ function draw(){
   for(i=0;i<NN;i++) if(board[i]) drawStone(i,board[i],1);
 
   var ghost = usingKeys ? cursor : hover;
-  if(ghost>=0 && !thinking && !gameOver && board[ghost]===0 && toMove===humanColor)
+  if(ghost>=0 && !thinking && !gameOver && board[ghost]===0 && toMove===humanColor){
     drawStone(ghost,humanColor,.38);
+    if(ghost===riskyPoint){
+      var rx=pad+(ghost%N)*cell, ry=pad+Math.floor(ghost/N)*cell, rr=cell*0.30;
+      ctx.save();
+      ctx.strokeStyle=cssVar("--seal"); ctx.lineWidth=Math.max(2,cell*0.09); ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(rx-rr,ry-rr); ctx.lineTo(rx+rr,ry+rr);
+      ctx.moveTo(rx+rr,ry-rr); ctx.lineTo(rx-rr,ry+rr); ctx.stroke();
+      ctx.restore();
+    }
+  }
 
   if(usingKeys && cursor>=0){
     var kx=pad+(cursor%N)*cell, ky=pad+Math.floor(cursor/N)*cell;
@@ -980,9 +1053,9 @@ function undo(){
 
 cv.addEventListener("mousemove",function(e){
   var p=pointAt(e);
-  if(p!==hover){ hover=p; usingKeys=false; draw(); }
+  if(p!==hover){ hover=p; usingKeys=false; draw(); checkHoverRisk(p); }
 });
-cv.addEventListener("mouseleave",function(){ if(hover!==-1){ hover=-1; draw(); } });
+cv.addEventListener("mouseleave",function(){ if(hover!==-1){ hover=-1; draw(); checkHoverRisk(-1); } });
 cv.addEventListener("click",function(e){ usingKeys=false; humanPlay(pointAt(e)); });
 cv.addEventListener("keydown",function(e){
   var k=e.key, x=cursor%N, y=Math.floor(cursor/N), moved=false;
@@ -995,7 +1068,7 @@ cv.addEventListener("keydown",function(e){
   else if(k==="u"||k==="U"){ undo(); return; }
   else return;
   if(moved){
-    e.preventDefault(); usingKeys=true; cursor=y*N+x; draw();
+    e.preventDefault(); usingKeys=true; cursor=y*N+x; draw(); checkHoverRisk(cursor);
     say(coordOf(cursor)+(board[cursor]?(board[cursor]===1?" มีหมากดำ":" มีหมากขาว"):" ว่าง"));
   }
 });
