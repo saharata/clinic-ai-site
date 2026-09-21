@@ -534,6 +534,54 @@ function negamax(b,color,depth,alpha,beta){
   if(!any) return inCheck(b,color) ? -90000+ (10-depth) : 0;   /* ฆาต หรือ อับ (เสมอ) */
   return alpha;
 }
+/* ค้นหาพร้อมเก็บแนวการเล่นหลัก ใช้ให้โค้ชอธิบายได้ว่าอีกสองสามตาจะเป็นอย่างไร */
+function negamaxPV(b,color,depth,alpha,beta,pv,ply){
+  pv.length=0;
+  if(timeUp()) return alpha;
+  if(depth<=0) return quiesce(b,color,alpha,beta);
+  var ms=genMoves(b,color,[]), any=false, child=[], i, j;
+  orderMoves(ms,null);
+  for(i=0;i<ms.length;i++){
+    makeMove(b,ms[i]);
+    if(inCheck(b,color)){ unmakeMove(b,ms[i]); continue; }
+    any=true;
+    var sc=-negamaxPV(b,3-color,depth-1,-beta,-alpha,child,ply+1);
+    unmakeMove(b,ms[i]);
+    if(timeUp()) return alpha;
+    if(sc>=beta) return beta;
+    if(sc>alpha){
+      alpha=sc;
+      pv.length=0; pv.push(ms[i]);
+      for(j=0;j<child.length;j++) pv.push(child[j]);
+    }
+  }
+  if(!any) return inCheck(b,color) ? -(90000-ply) : 0;      /* ฆาตเร็วมีค่ามากกว่า */
+  return alpha;
+}
+function searchPV(b,color,depth){
+  var ms=legalMoves(b,color), best=null, alpha=-1e9, pv=[], child=[], i, j;
+  orderMoves(ms,null);
+  for(i=0;i<ms.length;i++){
+    makeMove(b,ms[i]);
+    var sc=-negamaxPV(b,3-color,depth-1,-1e9,-alpha,child,1);
+    unmakeMove(b,ms[i]);
+    if(searchAbort) break;
+    if(best===null || sc>alpha){
+      alpha=sc; best=ms[i];
+      pv.length=0; pv.push(ms[i]);
+      for(j=0;j<child.length;j++) pv.push(child[j]);
+    }
+  }
+  return best ? {move:best, score:alpha, pv:pv.slice()} : null;
+}
+function mateDistance(score){ return Math.ceil((90000-Math.abs(score)+1)/2); }
+function pvText(pv,firstMover,maxPlies){
+  var out=[], i;
+  for(i=0;i<pv.length && i<maxPlies;i++)
+    out.push((((i%2===0)===(firstMover===humanColor)) ? "คุณ" : "เขา")+" "+moveText(pv[i]));
+  return out.join(" แล้ว ");
+}
+
 function searchRoot(b,color,depth,prev){
   var ms=legalMoves(b,color), i, best=null, alpha=-1e9;
   if(!ms.length) return null;
@@ -703,8 +751,30 @@ function finishAI(best,id){
   snapshot();
   applyMove(best);
   say("คอมพิวเตอร์เดิน "+moveText(best));
-  draw(); updateUI();
+  draw(); updateUI(); refreshDeep();
 }
+
+/* ===== วิเคราะห์ลึกสองถึงสามตา ทำงานเบื้องหลังหลังถึงตาของผู้เล่น ===== */
+var deep=null, deepId=0, deepBusy=false;
+function startDeepAnalysis(){
+  deep=null;
+  if(!coachOn || gameOver || thinking || toMove!==humanColor){ deepBusy=false; return; }
+  var id=++deepId;
+  deepBusy=true; renderCoach();
+  setTimeout(function(){
+    if(id!==deepId) return;
+    var res={};
+    searchDeadline=performance.now()+600; searchAbort=false; nodeCount=0;
+    res.mine=searchPV(board,humanColor,4);                 /* ตาที่ดีที่สุดของเราและแนวที่ตามมา */
+    if(id!==deepId) return;
+    searchDeadline=performance.now()+500; searchAbort=false; nodeCount=0;
+    res.theirs=searchPV(board,aiColor,3);                  /* ถ้าเราปล่อยไว้ เขาจะทำอะไรได้ */
+    if(id!==deepId) return;
+    deep=res; deepBusy=false;
+    computeCoachLines(); renderCoach();
+  },40);
+}
+function refreshDeep(){ deepId++; deep=null; deepBusy=false; startDeepAnalysis(); }
 
 /* ===================== โหมดโค้ช ===================== */
 function attackersOf(b,sq,by){
@@ -779,6 +849,9 @@ function computeCoachLines(){
   if(myTurn){
     var mate=mateIn1(board,humanColor);
     if(mate) lines.push("คุณรุกฆาตได้ทันทีด้วย "+moveText(mate)+" จบเกมตานี้เลย");
+    else if(deep && deep.mine && deep.mine.score>80000)
+      lines.push("คุณมีทางรุกฆาตภายใน "+mateDistance(deep.mine.score)+" ตา เริ่มด้วย "+
+        moveText(deep.mine.move)+" แล้วไล่ต่อไม่ให้ขุนเขาหลุด");
   }
   if(inCheck(board,humanColor) && myTurn){
     var k=kingSq(board,humanColor), atk=attackersOf(board,k,aiColor);
@@ -790,11 +863,18 @@ function computeCoachLines(){
     if(theirMate)
       lines.push("ระวัง ถ้าปล่อยไว้ ตาหน้าคอมพิวเตอร์รุกฆาตได้ด้วย "+moveText(theirMate)+
         " ต้องปิดทางนั้นหรือย้ายขุนหนีตานี้");
+    else if(deep && deep.theirs && deep.theirs.score>80000){
+      lines.push("อันตราย ถ้าปล่อยไว้เขารุกฆาตได้ภายใน "+mateDistance(deep.theirs.score)+" ตา แนวของเขาคือ "+
+        pvText(deep.theirs.pv, aiColor, 3)+" ตานี้ต้องปิดทางนั้นก่อน");
+    }
     else {
       var threat=bestCapture(board,aiColor);
       if(threat) lines.push("ถ้าคุณไม่ทำอะไร ตาหน้าเขาจะกิน"+NAMES[typeOf(threat.move.cap)]+"ที่ "+
         sqName(threat.move.to)+" ด้วย"+NAMES[typeOf(threat.move.piece)]+"จาก "+sqName(threat.move.from)+
         " แลกกันแล้วคุณเสียราว "+pts(threat.gain)+" แต้มหมาก");
+      else if(deep && deep.theirs && deep.theirs.score>130)
+        lines.push("ยังไม่มีตัวไหนถูกจ่อตรง ๆ แต่ถ้าปล่อยไว้สามตา เขาได้เปรียบราว "+pts(deep.theirs.score)+
+          " แต้ม โดยเล่น "+pvText(deep.theirs.pv, aiColor, 3));
     }
   }
   if(myTurn && lines.length<4){
@@ -818,12 +898,37 @@ function computeCoachLines(){
   coachBase=lines.slice(0,4);
 }
 
-/* ช่องปลายทางที่เดินไปแล้วเสียหมากโดยไม่คุ้ม */
+/* ช่องปลายทางที่เดินไปแล้วเสียหมากโดยไม่คุ้ม — รอบแรกคิดเร็วด้วยการแลกหมาก */
 function computeRisky(){
   riskySquares=[];
   if(!coachOn || sel<0) return;
   var i;
   for(i=0;i<selMoves.length;i++) if(moveLoss(selMoves[i]) > 60) riskySquares.push(selMoves[i].to);
+}
+/* รอบสอง มองต่ออีกสองสามตาแล้วเติมช่องที่แพ้ในแนวยาว เช่น โดนจ่อสองตัวในตาถัดไป */
+var riskyDeepId=0;
+function computeRiskyDeep(){
+  var id=++riskyDeepId;
+  if(!coachOn || sel<0 || gameOver || thinking) return;
+  setTimeout(function(){
+    if(id!==riskyDeepId || sel<0) return;
+    searchDeadline=performance.now()+450; searchAbort=false; nodeCount=0;
+    var scores=[], i, bestScore=-1e9, child=[];
+    for(i=0;i<selMoves.length;i++){
+      makeMove(board,selMoves[i]);
+      var sc=-negamaxPV(board,aiColor,2,-1e9,1e9,child,1);
+      unmakeMove(board,selMoves[i]);
+      scores.push(sc);
+      if(sc>bestScore) bestScore=sc;
+      if(searchAbort) break;
+    }
+    if(id!==riskyDeepId || sel<0) return;
+    var out=[];
+    for(i=0;i<scores.length;i++)
+      if(bestScore-scores[i] >= 140 || moveLoss(selMoves[i]) > 60) out.push(selMoves[i].to);
+    riskySquares=out;
+    draw();
+  },10);
 }
 function explainMove(m){
   if(!m) return "";
@@ -859,6 +964,7 @@ function renderCoach(){
   tog.setAttribute("aria-expanded", coachOn?"true":"false");
   if(!coachOn){ riskySquares=[]; hintMove=null; draw(); return; }
   var lines=coachBase.slice();
+  if(deepBusy && !hinting) lines.push("กำลังอ่านต่ออีกสองสามตา เดี๋ยวจะบอกว่ามีอะไรรออยู่");
   if(hinting) lines.unshift("กำลังคิดว่าตาไหนดีที่สุดสำหรับคุณ รอสักครู่");
   else if(hintWhy) lines.unshift(hintWhy);
   var html="", i;
@@ -875,10 +981,12 @@ function startHint(){
   var conf=LEVELS[level];
   searchDeadline=performance.now()+Math.min(1800,conf.ms); searchAbort=false; nodeCount=0;
   setTimeout(function(){
-    var best=searchRoot(board,humanColor,Math.min(4,conf.maxDepth),null);
+    var res=(deep && deep.mine) ? deep.mine : searchPV(board,humanColor,Math.min(4,conf.maxDepth));
     hinting=false;
-    hintMove=best;
-    hintWhy=explainMove(best);
+    hintMove = res ? res.move : null;
+    hintWhy = explainMove(hintMove);
+    if(res && res.pv && res.pv.length>1)
+      hintWhy += " · แนวที่น่าจะเดินต่อคือ "+pvText(res.pv, humanColor, 3);
     if(hintWhy) say(hintWhy);
     renderCoach();
   },20);
@@ -1106,7 +1214,7 @@ function selectSquare(sq){
     if(sel>=0){
       var all=legalMoves(board,humanColor);
       for(i=0;i<all.length;i++) if(all[i].from===sel) selMoves.push(all[i]);
-      computeRisky();
+      computeRisky(); computeRiskyDeep();
       say("เลือก"+NAMES[typeOf(p)]+"ที่ "+sqName(sq)+" เดินได้ "+selMoves.length+" ช่อง");
     } else { riskySquares=[]; }
   } else {
