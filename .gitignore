@@ -44,3 +44,6 @@ next-env.d.ts
 
 # generated social poster (not source)
 vaccine_poster*.png
+
+# ภาพต้นฉบับหมากรุก (ไฟล์ใหญ่ ไม่ต้องขึ้น git)
+makruk_art/_incoming/
