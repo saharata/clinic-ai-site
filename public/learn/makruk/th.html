@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>หมากรุกไทย เล่นกับคอมพิวเตอร์ | สหวรรณคลินิก</title>
+<meta name="description" content="กระดานหมากรุกไทย (หมากรุก) เล่นกับคอมพิวเตอร์ในเบราว์เซอร์ ครบทั้งเบี้ยหงาย โคน เม็ด และกฎนับศักดิ์ มีโหมดโค้ชบอกว่าตัวไหนกำลังถูกจ่อ ไม่ต้องสมัคร ไม่ต้องติดตั้ง">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/learn/makruk">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/learn/makruk">
+<meta property="og:title" content="หมากรุกไทย เล่นกับคอมพิวเตอร์">
+<meta property="og:description" content="กระดานหมากรุกไทยครบกติกา เบี้ยหงาย โคน เม็ด และกฎนับศักดิ์ พร้อมโหมดโค้ชที่บอกว่าตัวไหนกำลังถูกจ่อ">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&display=swap">
+<style>
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+  .sw-bar{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;padding:6px 20px;min-height:48px;
+    background:#ffffff;border-bottom:1px solid #e2e8f0;font:600 15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .sw-bar a{color:#0f766e;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
+  .sw-bar a:hover{text-decoration:underline}
+  .sw-bar .sw-brand{color:#0f172a;font-weight:700}
+  .sw-bar .sw-sep{color:#94a3b8}
+  @media (max-width:480px){.sw-bar .sw-brand,.sw-bar .sw-sep{display:none}.sw-bar{padding:4px 14px}}
+  @media (prefers-color-scheme: dark){
+    .sw-bar{background:#0b1220;border-bottom-color:#1e293b}
+    .sw-bar a{color:#5eead4}
+    .sw-bar .sw-brand{color:#e2e8f0}
+  }
+</style>
+<style>
+/* ===== tokens: กระดานไม้หมากรุกไทย ไม่มีช่องสลับสีแบบสากล ===== */
+:root{
+  --ground:#E9DFCC; --panel:#F6EFE2; --panel-2:#EDE3D2; --edge:#CBBBA0;
+  --ink:#241E17; --muted:#6F5E4A;
+  --board-hi:#D9AF72; --board-lo:#BE8F4D; --board-rim:#87602F; --line:#4E3419;
+  --white-p:#FAF4E6; --white-p-lo:#D6C7A8; --white-ink:#3A2A14;
+  --black-p:#2A2118; --black-p-hi:#5A4A36; --black-ink:#F2E6D2;
+  --seal:#9C3022; --good:#2E7150; --pick:#C8901F;
+  --shadow:rgba(60,40,20,.22);
+  --f-display:"Mali","IBM Plex Sans Thai Looped",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#13121A; --panel:#1C1A23; --panel-2:#23202B; --edge:#353140;
+    --ink:#EFE7D9; --muted:#A2937E;
+    --board-hi:#8E6234; --board-lo:#6A4825; --board-rim:#3A2615; --line:#261608;
+    --white-p:#EFE6D2; --white-p-lo:#B6A783; --white-ink:#2A1E0E;
+    --black-p:#1A150F; --black-p-hi:#43382A; --black-ink:#E7D9BF;
+    --seal:#E0725B; --good:#79B894; --pick:#E0AE4A;
+    --shadow:rgba(0,0,0,.55);
+  }
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 44px;display:flex;flex-direction:column;gap:18px}
+
+header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  border-bottom:1px solid var(--edge);padding-bottom:12px}
+.mark h1{font-family:var(--f-display);font-weight:700;font-size:24px;margin:0}
+.mark .sub{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.topmeta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rules-line{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rules-line b{color:var(--ink);font-weight:600}
+#btnHelp{min-height:38px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
+#btnHelp[aria-expanded="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+
+.tip{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0;
+  border-left:3px solid var(--seal);padding:2px 0 2px 9px}
+.tip b{color:var(--ink);font-weight:600}
+body:not(.help-on) .tip{display:none}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+@media (max-width:880px){.main{grid-template-columns:minmax(0,1fr)}}
+
+.boardwrap{background:var(--panel);border:1px solid var(--edge);border-radius:4px;padding:14px;
+  box-shadow:0 16px 36px -24px var(--shadow)}
+canvas{display:block;width:100%;height:auto;border-radius:3px;touch-action:manipulation;cursor:pointer}
+canvas:focus-visible{outline:3px solid var(--seal);outline-offset:3px}
+
+.rail{display:flex;flex-direction:column;gap:12px;min-width:0}
+.turn{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--edge);
+  border-left:4px solid var(--seal);border-radius:3px;padding:12px 14px}
+.disc{width:28px;height:28px;border-radius:50%;flex:none;box-shadow:0 2px 5px -1px var(--shadow)}
+.disc.w{background:radial-gradient(circle at 34% 30%,#fff,var(--white-p-lo) 88%);border:1px solid var(--white-p-lo)}
+.disc.b{background:radial-gradient(circle at 34% 30%,var(--black-p-hi),var(--black-p) 62%)}
+.turn .who{font-family:var(--f-display);font-weight:700;font-size:16px;line-height:1.3}
+.turn .note{font-size:13px;color:var(--muted)}
+
+.coach{background:var(--panel);border:1px solid var(--edge);border-left:4px solid var(--good);
+  border-radius:3px;padding:10px 12px}
+.coach-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.coach-head .k{font-family:var(--f-display);font-size:15px;font-weight:700}
+.coach-head button{min-height:34px;padding:4px 12px;font-size:12.5px}
+.coach-text{display:flex;flex-direction:column;gap:7px;margin:9px 0 0;font-size:13px;line-height:1.55}
+.coach-text span{border-left:3px solid var(--good);padding-left:9px;color:var(--muted)}
+.coach-text span:first-child{color:var(--ink);font-weight:600;border-left-color:var(--seal)}
+#btnHint{width:100%;margin-top:10px}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:3px;overflow:hidden}
+.stat{background:var(--panel);padding:9px 12px}
+.stat .k{font-size:11.5px;letter-spacing:.05em;color:var(--muted)}
+.stat .v{font-size:18px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.3}
+.stat .v small{font-size:12px;color:var(--muted);font-weight:400}
+
+.think{background:var(--panel);border:1px solid var(--edge);border-radius:3px;padding:10px 12px}
+.think .row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--muted);gap:8px}
+.think .row b{font-size:15px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button{font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink);background:var(--panel);
+  border:1.5px solid var(--edge);border-radius:3px;min-height:44px;padding:9px 10px;cursor:pointer;
+  transition:background .15s,border-color .15s}
+button:hover:not(:disabled){background:var(--panel-2);border-color:var(--muted)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible{outline:3px solid var(--seal);outline-offset:2px}
+button.seal{color:var(--seal);border-color:var(--seal)}
+
+.setup{background:var(--panel);border:1px solid var(--edge);border-radius:3px;padding:12px}
+.setup h2{font-family:var(--f-display);font-size:15px;font-weight:700;margin:0 0 10px}
+.field{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.field:last-child{margin-bottom:0}
+.field .lbl{font-size:13px;color:var(--muted)}
+.seg{display:flex;border:1.5px solid var(--edge);border-radius:3px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:5px 10px;min-height:40px;font-size:13.5px;background:var(--panel)}
+.seg button+button{border-left:1.5px solid var(--edge)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+
+.kifu{background:var(--panel);border:1px solid var(--edge);border-radius:3px;padding:10px 12px}
+.kifu h2{font-family:var(--f-display);font-size:15px;font-weight:700;margin:0 0 8px}
+.kifu .list{max-height:190px;overflow-y:auto;font-size:13px;font-variant-numeric:tabular-nums;
+  display:flex;flex-direction:column;gap:3px}
+.kifu .mv{display:flex;gap:8px;align-items:baseline}
+.kifu .mv u{text-decoration:none;color:var(--muted);width:24px;text-align:right;flex:none}
+.kifu .empty{color:var(--muted);font-size:13px}
+
+.verdict{background:var(--panel);border:1.5px solid var(--seal);border-radius:3px;padding:12px 14px}
+.verdict h2{font-family:var(--f-display);font-size:18px;margin:0 0 4px;color:var(--seal)}
+.verdict p{margin:0;font-size:13.5px;color:var(--muted)}
+
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;
+  border-top:1px solid var(--edge);padding-top:16px}
+.howto section h3{font-family:var(--f-display);font-size:15px;margin:0 0 4px}
+.howto section p{margin:0;font-size:13.5px;color:var(--muted)}
+.howto table{border-collapse:collapse;font-size:13px;width:100%}
+.howto td{padding:3px 8px 3px 0;vertical-align:top;color:var(--muted)}
+.howto td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
+footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edge);padding-top:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<nav class="sw-bar" aria-label="สหวรรณคลินิก">
+  <a class="sw-brand" href="/">สหวรรณคลินิก</a><span class="sw-sep" aria-hidden="true">/</span>
+  <a href="/learn">Body 101 ทุกบท</a>
+  <a href="/learn/go">หมากล้อม</a>
+</nav>
+
+<div class="wrap">
+  <header class="top">
+    <div class="mark">
+      <h1>หมากรุกไทย เล่นกับคอมพิวเตอร์</h1>
+      <div class="sub">makruk · เครื่องยนต์ค้นหาแบบอัลฟาบีตา ทำงานในเครื่องของคุณ</div>
+    </div>
+    <div class="topmeta">
+      <span class="rules-line">เบี้ยอยู่แถวสาม · หงายเบี้ยที่แถวหก · มีกฎนับศักดิ์</span>
+      <button type="button" id="btnHelp" aria-expanded="true" aria-controls="tipBoard">ซ่อนคำแนะนำ</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="boardwrap">
+      <canvas id="bd" tabindex="0" role="application"
+        aria-label="กระดานหมากรุกไทย ใช้ปุ่มลูกศรเลื่อน กด Enter เลือกตัวและวางตัว"></canvas>
+      <p class="tip" id="tipBoard"><b>กระดาน</b> — คลิกตัวหมากของคุณหนึ่งครั้งเพื่อเลือก จุดเขียวคือช่องที่ไปได้
+        วงเขียวคือช่องที่กินได้ คลิกอีกครั้งเพื่อเดิน คลิกตัวเดิมซ้ำเพื่อยกเลิก · แป้นพิมพ์ก็ได้ ลูกศรเลื่อน Enter เลือกและวาง
+        U ย้อนกลับ · กระดานหมากรุกไทยไม่มีช่องสลับสีเหมือนหมากรุกสากล</p>
+      <p class="sr" id="live" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="rail">
+      <div class="turn">
+        <span class="disc w" id="turnDisc" aria-hidden="true"></span>
+        <div>
+          <div class="who" id="turnWho">ตาของคุณ</div>
+          <div class="note" id="turnNote">เลือกตัวที่จะเดิน</div>
+        </div>
+      </div>
+
+      <div class="coach" id="coach">
+        <div class="coach-head">
+          <span class="k">โหมดโค้ช</span>
+          <button type="button" id="btnCoach" aria-expanded="true" aria-controls="coachBody">ปิด</button>
+        </div>
+        <div id="coachBody">
+          <div class="coach-text" id="coachText"></div>
+          <button type="button" id="btnHint">แนะนำตาเดินให้หน่อย</button>
+        </div>
+      </div>
+
+      <p class="tip"><b>โหมดโค้ช</b> — บอกว่ากำลังถูกรุกไหม ตัวไหนของคุณกำลังถูกจ่อแล้วยังไม่มีใครคุ้ม
+        และคุณกินอะไรได้ฟรีบ้าง · เมื่อเลือกตัวแล้ว ช่องที่กากบาทแดงคือช่องที่เดินไปแล้วจะโดนกินโดยไม่คุ้ม
+        · ปุ่มแนะนำตาเดินให้เครื่องคิดจากฝั่งคุณแล้วชี้ให้ พร้อมเหตุผล แต่ไม่เดินให้</p>
+
+      <div class="stats">
+        <div class="stat"><div class="k">แต้มหมากของคุณ</div><div class="v" id="matMe">0</div></div>
+        <div class="stat"><div class="k">แต้มหมากคอมพิวเตอร์</div><div class="v" id="matAi">0</div></div>
+        <div class="stat"><div class="k">ตาที่</div><div class="v" id="moveNo">0</div></div>
+        <div class="stat"><div class="k">ตาล่าสุด</div><div class="v" id="lastMv">—</div></div>
+      </div>
+
+      <div class="think">
+        <div class="row"><span id="thinkLabel">คอมพิวเตอร์ประเมินกระดาน</span><b id="evalTxt">—</b></div>
+        <div class="row" style="margin-top:6px"><span>ความลึกที่คิดได้</span><b id="depthTxt">—</b></div>
+        <div class="row" style="margin-top:6px"><span id="countLabel">การนับศักดิ์</span><b id="countTxt">ยังไม่เริ่มนับ</b></div>
+      </div>
+
+      <div class="controls">
+        <button id="btnUndo">ย้อนกลับ</button>
+        <button id="btnFlip">สลับข้างกระดาน</button>
+        <button id="btnResign" class="seal">ยอมแพ้</button>
+        <button id="btnNew">เริ่มเกมใหม่</button>
+      </div>
+
+      <div class="setup">
+        <h2>ตั้งค่าเกมใหม่</h2>
+        <div class="field">
+          <span class="lbl" id="lblLevel">ระดับคอมพิวเตอร์</span>
+          <div class="seg" id="segLevel" role="group" aria-labelledby="lblLevel">
+            <button type="button" data-v="0" aria-pressed="false">ง่าย</button>
+            <button type="button" data-v="1" aria-pressed="true">ปานกลาง</button>
+            <button type="button" data-v="2" aria-pressed="false">เก่ง</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl" id="lblColor">คุณเล่นฝ่าย</span>
+          <div class="seg" id="segColor" role="group" aria-labelledby="lblColor">
+            <button type="button" data-v="1" aria-pressed="true">ขาว (เดินก่อน)</button>
+            <button type="button" data-v="2" aria-pressed="false">ดำ</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="verdict" id="verdict" hidden>
+        <h2 id="vTitle">จบเกม</h2>
+        <p id="vBody"></p>
+      </div>
+
+      <div class="kifu">
+        <h2>บันทึกตาเดิน</h2>
+        <div class="list" id="kifu"><span class="empty">ยังไม่เริ่มเดิน</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="howto">
+    <section>
+      <h3>ตัวหมากเดินอย่างไร</h3>
+      <table>
+        <tr><td>ขุน</td><td>หนึ่งช่องทุกทิศ เหมือนคิงของหมากรุกสากล</td></tr>
+        <tr><td>เม็ด</td><td>หนึ่งช่องทางทแยงเท่านั้น สี่ทิศ</td></tr>
+        <tr><td>โคน</td><td>หนึ่งช่องทางทแยงสี่ทิศ บวกตรงไปข้างหน้าอีกหนึ่งช่อง</td></tr>
+        <tr><td>ม้า</td><td>รูปตัวแอลเหมือนไนต์ ข้ามตัวอื่นได้</td></tr>
+        <tr><td>เรือ</td><td>แนวตรงกี่ช่องก็ได้ เหมือนรุกของสากล</td></tr>
+        <tr><td>เบี้ย</td><td>เดินตรงหน้าหนึ่งช่อง กินทางทแยงหน้า ไม่มีเดินสองช่องตาแรก</td></tr>
+        <tr><td>เบี้ยหงาย</td><td>เบี้ยที่ถึงแถวหกจะหงายเป็นเบี้ยหงาย เดินเหมือนเม็ด</td></tr>
+      </table>
+    </section>
+    <section>
+      <h3>ต่างจากหมากรุกสากลตรงไหน</h3>
+      <p>เบี้ยเริ่มที่แถวสามไม่ใช่แถวสอง กระดานไม่มีช่องสลับสี ไม่มีการเข้าป้อม ไม่มีกินผ่าน
+        เม็ดอ่อนกว่าควีนมาก และเบี้ยหงายได้แค่เป็นเม็ดเท่านั้น เกมจึงช้ากว่าและจบด้วยตัวหมากน้อย ๆ บ่อย</p>
+    </section>
+    <section>
+      <h3>กฎนับศักดิ์</h3>
+      <p>เมื่อทั้งสองฝ่ายไม่เหลือเบี้ย ฝ่ายได้เปรียบต้องรุกฆาตภายในหกสิบสี่ตา ไม่งั้นเสมอ
+        และถ้าฝ่ายเสียเปรียบเหลือแต่ขุน จำนวนตาจะสั้นลงตามหมากที่ฝ่ายได้เปรียบเหลืออยู่
+        เช่น เรือสองลำเหลือแปดตา เรือลำเดียวสิบหกตา โคนสองตัวยี่สิบสองตา เกมนี้นับให้อัตโนมัติแบบย่อและแสดงไว้ในแผงด้านขวา โดยให้ฝ่ายเสียเปรียบเป็นผู้นับ ไม่มีตัวเลือกหยุดนับหรือเริ่มนับใหม่เองเหมือนเวลาเล่นบนกระดานจริง</p>
+    </section>
+  </div>
+
+  <footer class="credit">
+    เกมนี้ทำงานในเบราว์เซอร์ของคุณทั้งหมด ไม่ส่งข้อมูลออกไปไหน ไม่ต้องสมัครสมาชิก ·
+    สื่อเพื่อการเรียนรู้และฝึกสมาธิ ไม่ใช่การรักษาหรือคำแนะนำทางการแพทย์ ·
+    จัดทำโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ · สหวรรณคลินิก
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ===================== กติกาหมากรุกไทย =====================
+   ช่อง 0..63 โดย 0 = a8 (มุมบนซ้ายของฝ่ายขาว) และ 56 = a1
+   หมาก: type 1 เบี้ย · 2 เบี้ยหงาย · 3 เม็ด · 4 โคน · 5 ม้า · 6 เรือ · 7 ขุน
+   ขาว = type เดิม (1..7) · ดำ = type + 8 (9..15)                          */
+var BIA=1, NGAI=2, MET=3, KHON=4, MA=5, RUEA=6, KHUN=7;
+var NAMES={1:"เบี้ย",2:"หงาย",3:"เม็ด",4:"โคน",5:"ม้า",6:"เรือ",7:"ขุน"};
+var VAL={1:100, 2:170, 3:170, 4:260, 5:300, 6:550, 7:0};
+var FILES="abcdefgh";
+
+function colorOf(p){ return p===0 ? 0 : (p>8 ? 2 : 1); }
+function typeOf(p){ return p & 7; }
+function make(type,color){ return color===2 ? type+8 : type; }
+function sqName(sq){ return FILES[sq&7] + (8-(sq>>3)); }
+function onBoard(r,f){ return r>=0 && r<8 && f>=0 && f<8; }
+var FWD={1:-1, 2:1};            /* ขาวเดินขึ้น (r ลด) · ดำเดินลง */
+var PROMO_ROW={1:2, 2:5};       /* แถวหกของแต่ละฝ่าย */
+
+var KNIGHT=[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+var DIAG=[[-1,-1],[-1,1],[1,-1],[1,1]];
+var ORTHO=[[-1,0],[1,0],[0,-1],[0,1]];
+var ALL8=DIAG.concat(ORTHO);
+
+function startBoard(){
+  var b=new Int8Array(64), f;
+  var back=[RUEA,MA,KHON,KHUN,MET,KHON,MA,RUEA];        /* ขาว แถว 1 */
+  var backB=[RUEA,MA,KHON,MET,KHUN,KHON,MA,RUEA];       /* ดำ แถว 8 */
+  for(f=0;f<8;f++){
+    b[0*8+f]=make(backB[f],2);
+    b[2*8+f]=make(BIA,2);
+    b[5*8+f]=make(BIA,1);
+    b[7*8+f]=make(back[f],1);
+  }
+  return b;
+}
+
+function genMoves(b,color,out){
+  out.length=0;
+  var sq, r, f, i, tr, tf, t, p, ty, d;
+  for(sq=0;sq<64;sq++){
+    p=b[sq];
+    if(p===0 || colorOf(p)!==color) continue;
+    ty=typeOf(p); r=sq>>3; f=sq&7;
+    if(ty===BIA){
+      d=FWD[color];
+      tr=r+d;
+      if(onBoard(tr,f) && b[tr*8+f]===0) push(out,b,sq,tr*8+f,color,tr===PROMO_ROW[color]);
+      for(i=-1;i<=1;i+=2){
+        tf=f+i;
+        if(onBoard(tr,tf)){
+          t=b[tr*8+tf];
+          if(t!==0 && colorOf(t)!==color) push(out,b,sq,tr*8+tf,color,tr===PROMO_ROW[color]);
+        }
+      }
+    } else if(ty===NGAI || ty===MET){
+      for(i=0;i<4;i++) step(out,b,sq,r+DIAG[i][0],f+DIAG[i][1],color);
+    } else if(ty===KHON){
+      for(i=0;i<4;i++) step(out,b,sq,r+DIAG[i][0],f+DIAG[i][1],color);
+      step(out,b,sq,r+FWD[color],f,color);
+    } else if(ty===MA){
+      for(i=0;i<8;i++) step(out,b,sq,r+KNIGHT[i][0],f+KNIGHT[i][1],color);
+    } else if(ty===RUEA){
+      for(i=0;i<4;i++){
+        tr=r+ORTHO[i][0]; tf=f+ORTHO[i][1];
+        while(onBoard(tr,tf)){
+          t=b[tr*8+tf];
+          if(t===0){ push(out,b,sq,tr*8+tf,color,false); }
+          else { if(colorOf(t)!==color) push(out,b,sq,tr*8+tf,color,false); break; }
+          tr+=ORTHO[i][0]; tf+=ORTHO[i][1];
+        }
+      }
+    } else if(ty===KHUN){
+      for(i=0;i<8;i++) step(out,b,sq,r+ALL8[i][0],f+ALL8[i][1],color);
+    }
+  }
+  return out;
+}
+function step(out,b,from,tr,tf,color){
+  if(!onBoard(tr,tf)) return;
+  var t=b[tr*8+tf];
+  if(t!==0 && colorOf(t)===color) return;
+  push(out,b,from,tr*8+tf,color,false);
+}
+function push(out,b,from,to,color,promo){
+  out.push({from:from, to:to, piece:b[from], cap:b[to], promo:promo});
+}
+
+function makeMove(b,m){
+  b[m.to] = m.promo ? make(NGAI, colorOf(m.piece)) : m.piece;
+  b[m.from]=0;
+}
+function unmakeMove(b,m){
+  b[m.from]=m.piece;
+  b[m.to]=m.cap;
+}
+function kingSq(b,color){
+  var k=make(KHUN,color), i;
+  for(i=0;i<64;i++) if(b[i]===k) return i;
+  return -1;
+}
+/* ช่องนี้ถูกฝ่าย by โจมตีอยู่หรือไม่ (มองย้อนจากช่องเป้าหมาย) */
+function isAttacked(b,sq,by){
+  var r=sq>>3, f=sq&7, i, tr, tf, t, ty;
+  for(i=0;i<8;i++){                                   /* ม้า */
+    tr=r+KNIGHT[i][0]; tf=f+KNIGHT[i][1];
+    if(!onBoard(tr,tf)) continue;
+    t=b[tr*8+tf];
+    if(t!==0 && colorOf(t)===by && typeOf(t)===MA) return true;
+  }
+  for(i=0;i<4;i++){                                   /* เรือ ตามแนวตรง */
+    tr=r+ORTHO[i][0]; tf=f+ORTHO[i][1];
+    while(onBoard(tr,tf)){
+      t=b[tr*8+tf];
+      if(t!==0){
+        if(colorOf(t)===by && typeOf(t)===RUEA) return true;
+        break;
+      }
+      tr+=ORTHO[i][0]; tf+=ORTHO[i][1];
+    }
+  }
+  for(i=0;i<8;i++){                                   /* ขุนประชิด */
+    tr=r+ALL8[i][0]; tf=f+ALL8[i][1];
+    if(!onBoard(tr,tf)) continue;
+    t=b[tr*8+tf];
+    if(t!==0 && colorOf(t)===by && typeOf(t)===KHUN) return true;
+  }
+  for(i=0;i<4;i++){                                   /* ทแยงหนึ่งช่อง: เม็ด หงาย โคน เบี้ย */
+    tr=r+DIAG[i][0]; tf=f+DIAG[i][1];
+    if(!onBoard(tr,tf)) continue;
+    t=b[tr*8+tf];
+    if(t===0 || colorOf(t)!==by) continue;
+    ty=typeOf(t);
+    if(ty===MET || ty===NGAI) return true;
+    if(ty===KHON) return true;                        /* โคนกินทแยงได้ทั้งสี่ทิศ */
+  }
+  for(i=-1;i<=1;i+=2){                                /* เบี้ยกินทแยงไปข้างหน้าเท่านั้น */
+    tr=r-FWD[by]; tf=f+i;                             /* เบี้ยที่อยู่ "ข้างหลัง" ช่องนี้ */
+    if(!onBoard(tr,tf)) continue;
+    t=b[tr*8+tf];
+    if(t!==0 && colorOf(t)===by && typeOf(t)===BIA) return true;
+  }
+  tr=r-FWD[by]; tf=f;                                 /* โคนเดินตรงหน้า จึงโจมตีช่องหน้าตัวเองด้วย */
+  if(onBoard(tr,tf)){
+    t=b[tr*8+tf];
+    if(t!==0 && colorOf(t)===by && typeOf(t)===KHON) return true;
+  }
+  return false;
+}
+function inCheck(b,color){ var k=kingSq(b,color); return k<0 ? false : isAttacked(b,k,3-color); }
+
+function legalMoves(b,color){
+  var ps=genMoves(b,color,[]), out=[], i;
+  for(i=0;i<ps.length;i++){
+    makeMove(b,ps[i]);
+    if(!inCheck(b,color)) out.push(ps[i]);
+    unmakeMove(b,ps[i]);
+  }
+  return out;
+}
+
+/* ===================== เครื่องยนต์: อัลฟาบีตา ===================== */
+var PST_CENTER=[0,1,2,3,3,2,1,0];
+function evaluate(b,color){
+  var s=0, i, p, c, ty, r, f;
+  for(i=0;i<64;i++){
+    p=b[i]; if(p===0) continue;
+    c=colorOf(p); ty=typeOf(p); r=i>>3; f=i&7;
+    var v=VAL[ty];
+    v += (PST_CENTER[f] + PST_CENTER[r]) * 4;               /* อยู่กลางกระดานดีกว่าขอบ */
+    if(ty===BIA){
+      v += (c===1 ? (5-r) : (r-2)) * 7;                     /* ยิ่งใกล้แถวหงายยิ่งมีค่า */
+      v += (f===0 || f===7) ? -10 : 0;                      /* เบี้ยริมขอบมีค่าน้อยกว่า */
+    }
+    if((ty===MA || ty===KHON) && (c===1 ? r===7 : r===0)) v -= 14;  /* ยังไม่ออกจากแถวหลัง */
+    s += (c===color ? v : -v);
+  }
+  return s;
+}
+function mvvLva(m){ return m.cap ? VAL[typeOf(m.cap)]*10 - VAL[typeOf(m.piece)] : 0; }
+function orderMoves(ms,pv){
+  ms.sort(function(a,c){
+    if(pv){ if(a.from===pv.from&&a.to===pv.to) return -1; if(c.from===pv.from&&c.to===pv.to) return 1; }
+    return mvvLva(c)-mvvLva(a);
+  });
+  return ms;
+}
+var searchDeadline=0, searchAbort=false, nodeCount=0;
+function timeUp(){
+  if(searchAbort) return true;
+  if((++nodeCount & 1023)===0 && performance.now()>searchDeadline) searchAbort=true;
+  return searchAbort;
+}
+function quiesce(b,color,alpha,beta){
+  var stand=evaluate(b,color);
+  if(stand>=beta) return beta;
+  if(alpha<stand) alpha=stand;
+  if(timeUp()) return alpha;
+  var ms=genMoves(b,color,[]), caps=[], i;
+  for(i=0;i<ms.length;i++) if(ms[i].cap) caps.push(ms[i]);
+  orderMoves(caps,null);
+  for(i=0;i<caps.length;i++){
+    makeMove(b,caps[i]);
+    if(inCheck(b,color)){ unmakeMove(b,caps[i]); continue; }
+    var sc=-quiesce(b,3-color,-beta,-alpha);
+    unmakeMove(b,caps[i]);
+    if(timeUp()) return alpha;
+    if(sc>=beta) return beta;
+    if(sc>alpha) alpha=sc;
+  }
+  return alpha;
+}
+function negamax(b,color,depth,alpha,beta){
+  if(timeUp()) return alpha;
+  if(depth<=0) return quiesce(b,color,alpha,beta);
+  var ms=genMoves(b,color,[]), i, any=false;
+  orderMoves(ms,null);
+  for(i=0;i<ms.length;i++){
+    makeMove(b,ms[i]);
+    if(inCheck(b,color)){ unmakeMove(b,ms[i]); continue; }
+    any=true;
+    var sc=-negamax(b,3-color,depth-1,-beta,-alpha);
+    unmakeMove(b,ms[i]);
+    if(timeUp()) return alpha;
+    if(sc>=beta) return beta;
+    if(sc>alpha) alpha=sc;
+  }
+  if(!any) return inCheck(b,color) ? -90000+ (10-depth) : 0;   /* ฆาต หรือ อับ (เสมอ) */
+  return alpha;
+}
+function searchRoot(b,color,depth,prev){
+  var ms=legalMoves(b,color), i, best=null, alpha=-1e9;
+  if(!ms.length) return null;
+  orderMoves(ms,prev);
+  for(i=0;i<ms.length;i++){
+    makeMove(b,ms[i]);
+    var sc=-negamax(b,3-color,depth-1,-1e9,-alpha);
+    unmakeMove(b,ms[i]);
+    if(searchAbort) break;
+    if(best===null || sc>alpha){ alpha=sc; best=ms[i]; best.score=sc; }
+  }
+  return best;
+}
+
+/* ===================== สถานะเกม ===================== */
+var LEVELS=[{ms:400,maxDepth:2},{ms:1600,maxDepth:4},{ms:4500,maxDepth:6}];
+var board=null, toMove=1, humanColor=1, aiColor=2, level=1, flipped=false;
+var history=[], kifu=[], moveNum=0, lastMove=null, gameOver=false, thinking=false;
+var sel=-1, selMoves=[], cursor=52, usingKeys=false, aiSearchId=0;
+var lastEval=null, lastDepth=0;
+var countActive=false, countMax=0, countNow=0, countLabelTxt="", countSide=0;
+var coachOn=true, coachBase=[], hintMove=null, hintWhy="", hinting=false, riskySquares=[];
+
+var cv=document.getElementById("bd"), ctx=cv.getContext("2d"), px=1, cell=0, lab=0;
+function say(t){ document.getElementById("live").textContent=t; }
+function loadPref(k,d){ try{ var v=localStorage.getItem(k); return v===null?d:v; }catch(e){ return d; } }
+function savePref(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+function newGame(){
+  board=startBoard(); toMove=1; aiColor=3-humanColor;
+  history=[]; kifu=[]; moveNum=0; lastMove=null; gameOver=false; thinking=false;
+  sel=-1; selMoves=[]; hintMove=null; hintWhy=""; hinting=false; riskySquares=[];
+  lastEval=null; lastDepth=0;
+  countActive=false; countMax=0; countNow=0; countLabelTxt=""; countSide=0;
+  flipped = humanColor===2;
+  cursor = humanColor===1 ? 52 : 12;
+  document.getElementById("verdict").hidden=true;
+  layout(); draw(); updateUI();
+  say("เริ่มเกมใหม่ คุณเล่นฝ่าย"+(humanColor===1?"ขาว":"ดำ"));
+  if(toMove===aiColor) setTimeout(startAI,300);
+}
+
+function materialOf(b,color){
+  var s=0,i,p; for(i=0;i<64;i++){ p=b[i]; if(p && colorOf(p)===color) s+=VAL[typeOf(p)]; }
+  return s;
+}
+function countPieces(b,color,type){
+  var n=0,i,p; for(i=0;i<64;i++){ p=b[i]; if(p && colorOf(p)===color && typeOf(p)===type) n++; }
+  return n;
+}
+function totalPieces(b){ var n=0,i; for(i=0;i<64;i++) if(b[i]) n++; return n; }
+function hasBia(b,color){ return countPieces(b,color,BIA)>0; }
+
+/* กฎนับศักดิ์: นับกระดานเมื่อไม่มีเบี้ยทั้งสองฝ่าย · นับหมากเมื่อฝ่ายอ่อนเหลือแต่ขุน */
+function updateCounting(){
+  if(gameOver) return;
+  var noBia = !hasBia(board,1) && !hasBia(board,2);
+  var weak = (totalPieces(board)-countPieces(board,1,KHUN)-countPieces(board,2,KHUN));
+  var loneW = materialOf(board,1)===0, loneB = materialOf(board,2)===0;
+  var strong = loneW ? 2 : (loneB ? 1 : 0);
+  if(strong){
+    var s=strong, max;
+    if(countPieces(board,s,RUEA)>=2) max=8;
+    else if(countPieces(board,s,RUEA)===1) max=16;
+    else if(countPieces(board,s,KHON)>=2) max=22;
+    else if(countPieces(board,s,MA)>=2) max=32;
+    else if(countPieces(board,s,KHON)===1) max=44;
+    else max=64;
+    if(!countActive || countLabelTxt!=="นับศักดิ์หมาก"){
+      countActive=true; countLabelTxt="นับศักดิ์หมาก";
+      countMax=max; countNow=totalPieces(board); countSide=3-s;
+    }
+  } else if(noBia){
+    if(!countActive){
+      countActive=true; countLabelTxt="นับศักดิ์กระดาน"; countMax=64; countNow=0;
+      countSide = materialOf(board,1)<=materialOf(board,2) ? 1 : 2;
+    }
+  }
+}
+
+function moveText(m){
+  var t=NAMES[typeOf(m.piece)];
+  return t+" "+sqName(m.from)+(m.cap?"x":"-")+sqName(m.to)+(m.promo?" (หงาย)":"");
+}
+function snapshot(){
+  history.push({b:board.slice(), tm:toMove, mn:moveNum, kifu:kifu.slice(), last:lastMove,
+                ca:countActive, cm:countMax, cn:countNow, cl:countLabelTxt, cs:countSide});
+  if(history.length>400) history.shift();
+}
+function applyMove(m){
+  makeMove(board,m);
+  moveNum++; lastMove=m;
+  kifu.push({n:moveNum, c:colorOf(m.piece), t:moveText(m), chk:false});
+  toMove=3-colorOf(m.piece);
+  if(countActive && colorOf(m.piece)===countSide) countNow++;   /* ฝ่ายเสียเปรียบเป็นผู้นับ */
+  updateCounting();
+  var opp=toMove;
+  if(inCheck(board,opp)) kifu[kifu.length-1].chk=true;
+  checkEnd();
+}
+function checkEnd(){
+  var ms=legalMoves(board,toMove);
+  if(!ms.length){
+    if(inCheck(board,toMove)){
+      var w = toMove===humanColor ? "คอมพิวเตอร์" : "คุณ";
+      endGame((toMove===humanColor?"คุณถูกรุกฆาต":"คุณรุกฆาตสำเร็จ"),
+              w+"ชนะด้วยการรุกฆาต ขุนถูกรุกและไม่มีทางหนี บัง หรือกินตัวที่รุกได้");
+    } else {
+      endGame("เสมอ เพราะอับ","ฝ่ายที่ถึงตาเดินไม่มีตาเดินที่ถูกกติกาเลย แต่ขุนไม่ได้ถูกรุก ในหมากรุกไทยถือว่าเสมอ");
+    }
+    return;
+  }
+  if(countActive && countNow>=countMax){
+    endGame("เสมอ ตามกฎนับศักดิ์", countLabelTxt+"ครบ "+countMax+" ตาแล้วยังรุกฆาตไม่สำเร็จ จึงถือว่าเสมอ");
+  }
+}
+function endGame(title,body){
+  gameOver=true; thinking=false; hinting=false;
+  var v=document.getElementById("verdict");
+  document.getElementById("vTitle").textContent=title;
+  document.getElementById("vBody").textContent=body;
+  v.hidden=false;
+  say(title);
+  draw(); updateUI();
+}
+
+/* ===================== ฝั่งคอมพิวเตอร์ ===================== */
+function startAI(){
+  if(gameOver) return;
+  thinking=true; sel=-1; selMoves=[]; updateUI();
+  var id=++aiSearchId;
+  var depth=1, best=null;
+  var conf=LEVELS[level];
+  searchDeadline=performance.now()+conf.ms; searchAbort=false; nodeCount=0;
+  (function deepen(){
+    if(id!==aiSearchId || gameOver) return;
+    var res=searchRoot(board,aiColor,depth,best);
+    if(!searchAbort && res){ best=res; lastDepth=depth; lastEval=res.score; }
+    document.getElementById("depthTxt").textContent=lastDepth+" ตา";
+    if(!searchAbort && depth<conf.maxDepth && performance.now()<searchDeadline){
+      depth++; setTimeout(deepen,0); return;
+    }
+    finishAI(best,id);
+  })();
+}
+function finishAI(best,id){
+  if(id!==aiSearchId || gameOver) return;
+  thinking=false;
+  if(!best){ checkEnd(); updateUI(); return; }
+  snapshot();
+  applyMove(best);
+  say("คอมพิวเตอร์เดิน "+moveText(best));
+  draw(); updateUI();
+}
+
+/* ===================== โหมดโค้ช ===================== */
+function attackersOf(b,sq,by){
+  var ms=genMoves(b,by,[]), out=[], i;
+  for(i=0;i<ms.length;i++) if(ms[i].to===sq) out.push(ms[i]);
+  return out;
+}
+function defendersOf(b,sq,color){
+  /* นับตัวที่ "กินคืน" ได้ โดยสมมติว่าช่องนั้นมีตัวของฝ่ายตรงข้ามอยู่ */
+  var saved=b[sq], p=b[sq];
+  b[sq]=make(BIA,3-color);
+  var ms=genMoves(b,color,[]), n=0, i;
+  for(i=0;i<ms.length;i++) if(ms[i].to===sq) n++;
+  b[sq]=saved;
+  if(p){}
+  return n;
+}
+function hangingPieces(b,color){
+  var out=[], i, p;
+  for(i=0;i<64;i++){
+    p=b[i];
+    if(!p || colorOf(p)!==color || typeOf(p)===KHUN) continue;
+    var atk=attackersOf(b,i,3-color);
+    if(!atk.length) continue;
+    var cheapest=1e9, j;
+    for(j=0;j<atk.length;j++) cheapest=Math.min(cheapest, VAL[typeOf(atk[j].piece)]);
+    var def=defendersOf(b,i,color);
+    if(def===0 || cheapest < VAL[typeOf(p)]) out.push({sq:i, piece:p, def:def, cheapest:cheapest});
+  }
+  out.sort(function(a,c){ return VAL[typeOf(c.piece)]-VAL[typeOf(a.piece)]; });
+  return out;
+}
+function freeCaptures(b,color){
+  var ms=legalMoves(b,color), out=[], i;
+  for(i=0;i<ms.length;i++){
+    var m=ms[i];
+    if(!m.cap) continue;
+    makeMove(b,m);
+    var def=attackersOf(b,m.to,3-color).length;
+    unmakeMove(b,m);
+    if(def===0 || VAL[typeOf(m.cap)] > VAL[typeOf(m.piece)]) out.push(m);
+  }
+  out.sort(function(a,c){ return VAL[typeOf(c.cap)]-VAL[typeOf(a.cap)]; });
+  return out;
+}
+function computeCoachLines(){
+  coachBase=[];
+  if(!coachOn || gameOver) return;
+  var lines=[];
+  if(inCheck(board,humanColor) && toMove===humanColor){
+    var k=kingSq(board,humanColor), atk=attackersOf(board,k,aiColor);
+    var who = atk.length ? NAMES[typeOf(atk[0].piece)]+"ที่ "+sqName(atk[0].from) : "ตัวใดตัวหนึ่ง";
+    lines.push("ขุนของคุณกำลังถูกรุกโดย"+who+" ตานี้ต้องแก้รุกเท่านั้น คือหนีขุน เอาตัวไปบัง หรือกินตัวที่รุก");
+  }
+  var hang = toMove===humanColor ? hangingPieces(board,humanColor) : [];
+  if(hang.length){
+    var h=hang[0];
+    lines.push(NAMES[typeOf(h.piece)]+"ของคุณที่ "+sqName(h.sq)+" กำลังถูกจ่ออยู่"+
+      (h.def===0 ? " และยังไม่มีตัวไหนคุ้มกัน ถ้าไม่ย้ายหรือหาตัวมาคุ้ม ตาหน้าจะเสียฟรี"
+                 : " โดยตัวที่ถูกกว่า แลกแล้วคุณเสียเปรียบ ควรย้ายหนีหรือไล่ตัวนั้นออกไป"));
+  }
+  if(toMove===humanColor){
+    var fc=freeCaptures(board,humanColor);
+    if(fc.length) lines.push("คุณกิน"+NAMES[typeOf(fc[0].cap)]+"ที่ "+sqName(fc[0].to)+" ได้ ด้วย"+
+      NAMES[typeOf(fc[0].piece)]+"จาก "+sqName(fc[0].from)+" ลองดูว่าเขากินคืนได้คุ้มไหมก่อนตัดสินใจ");
+  }
+  var me=materialOf(board,humanColor), ai=materialOf(board,aiColor), diff=(me-ai)/100;
+  if(Math.abs(diff)<0.4) lines.push("แต้มหมากตอนนี้พอกัน เกมยังเปิดกว้าง");
+  else if(diff>0) lines.push("ตอนนี้คุณนำอยู่ราว "+diff.toFixed(1)+" แต้มหมาก (นับเบี้ยเป็นหนึ่ง) ตอนนำให้ไล่แลกตัวเพื่อให้เกมง่ายลง");
+  else lines.push("ตอนนี้คุณตามหลังราว "+Math.abs(diff).toFixed(1)+" แต้มหมาก ควรเลี่ยงการแลกตัวแบบหนึ่งต่อหนึ่ง แล้วหาทางจ่อสองตัวพร้อมกัน");
+  if(countActive) lines.push(countLabelTxt+"เดินไปแล้ว "+countNow+" จาก "+countMax+" ตา ถ้าครบแล้วยังไม่ฆาตจะเสมอทันที");
+  coachBase=lines.slice(0,4);
+}
+function renderCoach(){
+  var body=document.getElementById("coachBody"), btn=document.getElementById("btnHint"),
+      tog=document.getElementById("btnCoach");
+  body.hidden=!coachOn;
+  tog.textContent=coachOn?"ปิด":"เปิด";
+  tog.setAttribute("aria-expanded", coachOn?"true":"false");
+  if(!coachOn){ riskySquares=[]; hintMove=null; draw(); return; }
+  var lines=coachBase.slice();
+  if(hinting) lines.unshift("กำลังคิดว่าตาไหนดีที่สุดสำหรับคุณ รอสักครู่");
+  else if(hintWhy) lines.unshift(hintWhy);
+  var html="", i;
+  for(i=0;i<lines.length;i++) html+="<span>"+lines[i]+"</span>";
+  document.getElementById("coachText").innerHTML=html;
+  btn.disabled = gameOver||thinking||hinting||toMove!==humanColor;
+  draw();
+}
+function updateCoach(){ computeCoachLines(); renderCoach(); }
+
+/* ช่องปลายทางที่เดินไปแล้วจะโดนกินโดยไม่คุ้ม */
+function computeRisky(){
+  riskySquares=[];
+  if(!coachOn || sel<0) return;
+  var i;
+  for(i=0;i<selMoves.length;i++){
+    var m=selMoves[i];
+    makeMove(board,m);
+    var atk=attackersOf(board,m.to,aiColor), j, cheapest=1e9;
+    for(j=0;j<atk.length;j++) cheapest=Math.min(cheapest, VAL[typeOf(atk[j].piece)]);
+    var def=defendersOf(board,m.to,humanColor);
+    unmakeMove(board,m);
+    var mine=VAL[typeOf(m.piece)], gain=m.cap?VAL[typeOf(m.cap)]:0;
+    if(atk.length && (def===0 || cheapest<mine) && gain < mine) riskySquares.push(m.to);
+  }
+}
+function explainMove(m){
+  if(!m) return "";
+  var head="แนะนำให้เดิน "+moveText(m)+" ";
+  if(m.cap) return head+"เพื่อกิน"+NAMES[typeOf(m.cap)]+"ของคอมพิวเตอร์";
+  makeMove(board,m);
+  var givesCheck=inCheck(board,aiColor);
+  unmakeMove(board,m);
+  if(givesCheck) return head+"เพื่อรุกขุนของคอมพิวเตอร์ บังคับให้เขาต้องแก้รุกก่อน";
+  var hang=hangingPieces(board,humanColor), i;
+  for(i=0;i<hang.length;i++) if(hang[i].sq===m.from) return head+"เพื่อพาตัวที่กำลังถูกจ่ออยู่ออกจากอันตราย";
+  if(m.promo) return head+"เพื่อหงายเบี้ยเป็นเบี้ยหงาย ซึ่งเดินทแยงได้เหมือนเม็ด";
+  if(typeOf(m.piece)===BIA) return head+"เพื่อดันเบี้ยขึ้นไปหาแถวหงาย และเปิดทางให้ตัวหลัง";
+  return head+"เพื่อวางตัวให้คุมช่องได้มากขึ้นและเตรียมจ่อตัวของเขา";
+}
+function startHint(){
+  if(gameOver||thinking||hinting||toMove!==humanColor) return;
+  hinting=true; hintMove=null; hintWhy=""; renderCoach();
+  var conf=LEVELS[level];
+  searchDeadline=performance.now()+Math.min(1800,conf.ms); searchAbort=false; nodeCount=0;
+  setTimeout(function(){
+    var best=searchRoot(board,humanColor,Math.min(4,conf.maxDepth),null);
+    hinting=false;
+    hintMove=best;
+    hintWhy=explainMove(best);
+    if(hintWhy) say(hintWhy);
+    renderCoach();
+  },20);
+}
+
+/* ===================== การวาด ===================== */
+function layout(){
+  var w=cv.parentNode.clientWidth-28;
+  w=Math.max(260,Math.min(w,620));
+  px=window.devicePixelRatio||1;
+  cv.style.width=w+"px"; cv.style.height=w+"px";
+  cv.width=Math.round(w*px); cv.height=Math.round(w*px);
+  lab=w*0.055; cell=(w-lab*2)/8;
+}
+function cssVar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function viewOf(sq){ return flipped ? 63-sq : sq; }
+function sqFromView(v){ return flipped ? 63-v : v; }
+function sqXY(sq){
+  var v=viewOf(sq);
+  return {x: lab + (v&7)*cell, y: lab + (v>>3)*cell};
+}
+function draw(){
+  var w=cv.width/px, i, p;
+  ctx.setTransform(px,0,0,px,0,0);
+  ctx.clearRect(0,0,w,w);
+
+  var g=ctx.createLinearGradient(0,0,w,w);
+  g.addColorStop(0,cssVar("--board-hi")); g.addColorStop(1,cssVar("--board-lo"));
+  ctx.fillStyle=g; ctx.fillRect(0,0,w,w);
+
+  ctx.save(); ctx.globalAlpha=.09; ctx.strokeStyle=cssVar("--board-rim"); ctx.lineWidth=1;
+  for(i=0;i<22;i++){
+    var gx=(i*w/22)+((i%3)*2.2);
+    ctx.beginPath(); ctx.moveTo(gx,0);
+    ctx.bezierCurveTo(gx+5,w*0.35,gx-5,w*0.7,gx+2,w); ctx.stroke();
+  }
+  ctx.restore();
+
+  /* ไฮไลต์ตาล่าสุดและช่องที่เลือก */
+  if(lastMove){
+    ctx.fillStyle=cssVar("--pick");
+    ctx.globalAlpha=.20;
+    var a=sqXY(lastMove.from), b2=sqXY(lastMove.to);
+    ctx.fillRect(a.x,a.y,cell,cell); ctx.fillRect(b2.x,b2.y,cell,cell);
+    ctx.globalAlpha=1;
+  }
+  if(sel>=0){
+    var s=sqXY(sel);
+    ctx.strokeStyle=cssVar("--pick"); ctx.lineWidth=Math.max(2,cell*0.06);
+    ctx.strokeRect(s.x+2,s.y+2,cell-4,cell-4);
+  }
+
+  /* เส้นกระดาน: หมากรุกไทยเป็นตารางเส้น ไม่สลับสีช่อง */
+  ctx.strokeStyle=cssVar("--line"); ctx.lineWidth=Math.max(.8,cell*0.018);
+  for(i=0;i<=8;i++){
+    ctx.beginPath(); ctx.moveTo(lab, lab+i*cell); ctx.lineTo(lab+8*cell, lab+i*cell); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(lab+i*cell, lab); ctx.lineTo(lab+i*cell, lab+8*cell); ctx.stroke();
+  }
+  ctx.strokeStyle=cssVar("--board-rim"); ctx.lineWidth=2; ctx.globalAlpha=.6;
+  ctx.strokeRect(lab-1,lab-1,8*cell+2,8*cell+2); ctx.globalAlpha=1;
+
+  ctx.globalAlpha=.65; ctx.fillStyle=cssVar("--board-rim");
+  ctx.font="600 "+Math.max(8,lab*0.62)+"px 'IBM Plex Sans Thai Looped', sans-serif";
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  for(i=0;i<8;i++){
+    var fileIdx = flipped ? 7-i : i, rankIdx = flipped ? i : 7-i;
+    ctx.fillText(FILES[fileIdx], lab+i*cell+cell/2, lab*0.5);
+    ctx.fillText(String(rankIdx+1), lab*0.5, lab+i*cell+cell/2);
+  }
+  ctx.globalAlpha=1;
+
+  /* ช่องที่เดินได้ */
+  if(sel>=0){
+    for(i=0;i<selMoves.length;i++){
+      var m=selMoves[i], c=sqXY(m.to);
+      ctx.fillStyle=cssVar("--good"); ctx.strokeStyle=cssVar("--good");
+      if(m.cap){
+        ctx.lineWidth=Math.max(2,cell*0.07);
+        ctx.beginPath(); ctx.arc(c.x+cell/2,c.y+cell/2,cell*0.42,0,6.2832); ctx.stroke();
+      } else {
+        ctx.globalAlpha=.85;
+        ctx.beginPath(); ctx.arc(c.x+cell/2,c.y+cell/2,cell*0.13,0,6.2832); ctx.fill();
+        ctx.globalAlpha=1;
+      }
+    }
+    for(i=0;i<riskySquares.length;i++){
+      var rc=sqXY(riskySquares[i]), rr=cell*0.26;
+      ctx.save();
+      ctx.strokeStyle=cssVar("--seal"); ctx.lineWidth=Math.max(2,cell*0.075); ctx.lineCap="round";
+      ctx.beginPath();
+      ctx.moveTo(rc.x+cell/2-rr, rc.y+cell/2-rr); ctx.lineTo(rc.x+cell/2+rr, rc.y+cell/2+rr);
+      ctx.moveTo(rc.x+cell/2+rr, rc.y+cell/2-rr); ctx.lineTo(rc.x+cell/2-rr, rc.y+cell/2+rr);
+      ctx.stroke(); ctx.restore();
+    }
+  }
+
+  /* ตาที่โค้ชแนะนำ */
+  if(coachOn && hintMove && !gameOver){
+    var hf=sqXY(hintMove.from), ht=sqXY(hintMove.to);
+    ctx.save();
+    ctx.setLineDash([Math.max(3,cell*0.16), Math.max(3,cell*0.12)]);
+    ctx.strokeStyle=cssVar("--good"); ctx.lineWidth=Math.max(2,cell*0.06);
+    ctx.strokeRect(hf.x+3,hf.y+3,cell-6,cell-6);
+    ctx.strokeRect(ht.x+3,ht.y+3,cell-6,cell-6);
+    ctx.restore();
+  }
+
+  for(i=0;i<64;i++){ p=board[i]; if(p) drawPiece(i,p); }
+
+  if(usingKeys){
+    var cc=sqXY(cursor);
+    ctx.strokeStyle=cssVar("--seal"); ctx.lineWidth=Math.max(2,cell*0.06);
+    ctx.strokeRect(cc.x+1,cc.y+1,cell-2,cell-2);
+  }
+}
+function drawPiece(sq,p){
+  var c=sqXY(sq), cx=c.x+cell/2, cy=c.y+cell/2, r=cell*0.40, col=colorOf(p);
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx+cell*0.04,cy+cell*0.06,r,0,6.2832);
+  ctx.fillStyle="rgba(40,24,8,0.25)"; ctx.fill();
+  var g=ctx.createRadialGradient(cx-r*0.35,cy-r*0.4,r*0.12,cx,cy,r);
+  if(col===1){ g.addColorStop(0,"#fff"); g.addColorStop(.55,cssVar("--white-p")); g.addColorStop(1,cssVar("--white-p-lo")); }
+  else { g.addColorStop(0,cssVar("--black-p-hi")); g.addColorStop(.55,cssVar("--black-p")); g.addColorStop(1,"#000"); }
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,6.2832); ctx.fillStyle=g; ctx.fill();
+  ctx.lineWidth=Math.max(1,cell*0.02);
+  ctx.strokeStyle = col===1 ? cssVar("--white-p-lo") : "#000";
+  ctx.stroke();
+  ctx.fillStyle = col===1 ? cssVar("--white-ink") : cssVar("--black-ink");
+  ctx.font="700 "+Math.max(9,cell*0.30)+"px 'IBM Plex Sans Thai Looped', sans-serif";
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(NAMES[typeOf(p)], cx, cy+cell*0.01);
+  ctx.restore();
+}
+
+/* ===================== UI ===================== */
+function updateUI(){
+  var me=materialOf(board,humanColor)/100, ai=materialOf(board,aiColor)/100;
+  document.getElementById("matMe").textContent=me.toFixed(1);
+  document.getElementById("matAi").textContent=ai.toFixed(1);
+  document.getElementById("moveNo").textContent=moveNum;
+  document.getElementById("lastMv").textContent = lastMove ? sqName(lastMove.from)+"→"+sqName(lastMove.to) : "—";
+  document.getElementById("evalTxt").textContent =
+    lastEval===null ? "—" : (lastEval>0?"+":"")+(lastEval/100).toFixed(1)+" (ฝั่งคอมพิวเตอร์)";
+  document.getElementById("depthTxt").textContent = lastDepth ? lastDepth+" ตา" : "—";
+  document.getElementById("countTxt").textContent =
+    countActive ? countNow+" / "+countMax+" ตา" : "ยังไม่เริ่มนับ";
+  document.getElementById("countLabel").textContent = countActive ? countLabelTxt : "การนับศักดิ์";
+
+  var disc=document.getElementById("turnDisc"), who=document.getElementById("turnWho"), note=document.getElementById("turnNote");
+  disc.className="disc "+(toMove===1?"w":"b");
+  if(gameOver){ who.textContent="จบเกมแล้ว"; note.textContent="กดเริ่มเกมใหม่เพื่อเล่นอีกครั้ง"; }
+  else if(thinking){ who.textContent="คอมพิวเตอร์กำลังคิด"; note.textContent="ค้นหาตาเดินล่วงหน้าหลายชั้น"; }
+  else if(toMove===humanColor){
+    who.textContent="ตาของคุณ";
+    note.textContent = inCheck(board,humanColor) ? "ขุนถูกรุก ต้องแก้รุกก่อน" : (sel>=0?"เลือกช่องปลายทาง":"เลือกตัวที่จะเดิน");
+  }
+  else { who.textContent="ตาของคอมพิวเตอร์"; note.textContent="รอสักครู่"; }
+
+  document.getElementById("btnUndo").disabled = gameOver||thinking||!history.length;
+  document.getElementById("btnResign").disabled = gameOver;
+
+  var el=document.getElementById("kifu");
+  if(!kifu.length){ el.innerHTML='<span class="empty">ยังไม่เริ่มเดิน</span>'; }
+  else {
+    var html="", i;
+    for(i=Math.max(0,kifu.length-30);i<kifu.length;i++){
+      var k=kifu[i];
+      html+='<span class="mv"><u>'+k.n+'</u>'+(k.c===1?"ขาว":"ดำ")+" "+k.t+(k.chk?" รุก":"")+'</span>';
+    }
+    el.innerHTML=html;
+    el.scrollTop=el.scrollHeight;
+  }
+  updateCoach();
+}
+function sqAt(ev){
+  var rect=cv.getBoundingClientRect();
+  var x=ev.clientX-rect.left, y=ev.clientY-rect.top;
+  var f=Math.floor((x-lab)/cell), r=Math.floor((y-lab)/cell);
+  if(f<0||r<0||f>7||r>7) return -1;
+  return sqFromView(r*8+f);
+}
+function selectSquare(sq){
+  if(gameOver||thinking||toMove!==humanColor||sq<0) return;
+  var i;
+  if(sel>=0){
+    for(i=0;i<selMoves.length;i++){
+      if(selMoves[i].to===sq){
+        var m=selMoves[i];
+        snapshot(); applyMove(m);
+        sel=-1; selMoves=[]; riskySquares=[]; hintMove=null; hintWhy="";
+        say("คุณเดิน "+moveText(m));
+        draw(); updateUI();
+        if(!gameOver) setTimeout(startAI,160);
+        return;
+      }
+    }
+  }
+  var p=board[sq];
+  if(p && colorOf(p)===humanColor){
+    sel = (sel===sq) ? -1 : sq;
+    selMoves=[];
+    if(sel>=0){
+      var all=legalMoves(board,humanColor);
+      for(i=0;i<all.length;i++) if(all[i].from===sel) selMoves.push(all[i]);
+      computeRisky();
+      say("เลือก"+NAMES[typeOf(p)]+"ที่ "+sqName(sq)+" เดินได้ "+selMoves.length+" ช่อง");
+    } else { riskySquares=[]; }
+  } else {
+    sel=-1; selMoves=[]; riskySquares=[];
+  }
+  draw(); updateUI();
+}
+function undo(){
+  if(thinking||gameOver||!history.length) return;
+  var steps = history.length>=2 ? 2 : 1, s=null, i;
+  for(i=0;i<steps;i++) s=history.pop();
+  board=s.b; toMove=s.tm; moveNum=s.mn; kifu=s.kifu; lastMove=s.last;
+  countActive=s.ca; countMax=s.cm; countNow=s.cn; countLabelTxt=s.cl; countSide=s.cs;
+  sel=-1; selMoves=[]; riskySquares=[]; hintMove=null; hintWhy=""; gameOver=false;
+  document.getElementById("verdict").hidden=true;
+  draw(); updateUI(); say("ย้อนกลับแล้ว");
+}
+
+cv.addEventListener("click",function(e){ usingKeys=false; selectSquare(sqAt(e)); });
+cv.addEventListener("keydown",function(e){
+  var k=e.key, v=viewOf(cursor), r=v>>3, f=v&7, moved=false;
+  if(k==="ArrowLeft"){ f=Math.max(0,f-1); moved=true; }
+  else if(k==="ArrowRight"){ f=Math.min(7,f+1); moved=true; }
+  else if(k==="ArrowUp"){ r=Math.max(0,r-1); moved=true; }
+  else if(k==="ArrowDown"){ r=Math.min(7,r+1); moved=true; }
+  else if(k==="Enter"||k===" "){ e.preventDefault(); usingKeys=true; selectSquare(cursor); return; }
+  else if(k==="u"||k==="U"){ undo(); return; }
+  else return;
+  if(moved){
+    e.preventDefault(); usingKeys=true; cursor=sqFromView(r*8+f); draw();
+    var p=board[cursor];
+    say(sqName(cursor)+(p ? " มี"+NAMES[typeOf(p)]+(colorOf(p)===humanColor?"ของคุณ":"ของคอมพิวเตอร์") : " ว่าง"));
+  }
+});
+cv.addEventListener("focus",function(){ usingKeys=true; draw(); });
+
+document.getElementById("btnUndo").addEventListener("click",undo);
+document.getElementById("btnFlip").addEventListener("click",function(){ flipped=!flipped; draw(); });
+document.getElementById("btnResign").addEventListener("click",function(){
+  if(gameOver) return;
+  aiSearchId++; thinking=false;
+  endGame("คุณยอมแพ้","คอมพิวเตอร์ชนะเพราะคุณยอมแพ้ กดเริ่มเกมใหม่เพื่อเล่นอีกครั้ง");
+});
+document.getElementById("btnNew").addEventListener("click",function(){ aiSearchId++; newGame(); });
+document.getElementById("btnHint").addEventListener("click",startHint);
+
+var helpBtn=document.getElementById("btnHelp");
+function setHelp(on){
+  document.body.classList.toggle("help-on",on);
+  helpBtn.setAttribute("aria-expanded",on?"true":"false");
+  helpBtn.textContent=on?"ซ่อนคำแนะนำ":"แสดงคำแนะนำ";
+  savePref("mk_help", on?"1":"0");
+}
+setHelp(loadPref("mk_help","1")==="1");
+helpBtn.addEventListener("click",function(){ setHelp(!document.body.classList.contains("help-on")); });
+
+var coachBtn=document.getElementById("btnCoach");
+coachOn = loadPref("mk_coach","1")==="1";
+coachBtn.addEventListener("click",function(){
+  coachOn=!coachOn; savePref("mk_coach", coachOn?"1":"0");
+  if(!coachOn){ hintMove=null; hintWhy=""; riskySquares=[]; }
+  updateCoach();
+});
+
+function seg(id,cb){
+  var el=document.getElementById(id);
+  el.addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b) return;
+    var kids=el.querySelectorAll("button"), i;
+    for(i=0;i<kids.length;i++) kids[i].setAttribute("aria-pressed", kids[i]===b?"true":"false");
+    cb(parseInt(b.getAttribute("data-v"),10));
+  });
+}
+seg("segLevel",function(v){ level=v; });
+seg("segColor",function(v){ humanColor=v; aiSearchId++; newGame(); });
+
+window.addEventListener("resize",function(){ layout(); draw(); });
+if(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").addEventListener)
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){ draw(); });
+
+newGame();
+})();
+</script>
+</body>
+</html>

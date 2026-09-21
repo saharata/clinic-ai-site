@@ -404,7 +404,10 @@ export default function HomePage() {
               เปิด Body 101
             </Link>
             <a href="/learn/go" className="btn big">
-              เล่นหมากล้อมกับคอมพิวเตอร์
+              เล่นหมากล้อม
+            </a>
+            <a href="/learn/makruk" className="btn big">
+              เล่นหมากรุกไทย
             </a>
           </div>
         </div>
