@@ -78,6 +78,15 @@ canvas{display:block;width:100%;height:auto;border-radius:3px;touch-action:manip
 canvas:focus-visible{outline:3px solid var(--seal);outline-offset:3px}
 .hintline{font-size:12.5px;color:var(--muted);margin:8px 2px 0}
 
+/* คำแนะนำรายส่วน เปิดปิดได้ที่ปุ่ม "คำแนะนำ" */
+.tip{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0;
+  border-left:3px solid var(--seal);padding:2px 0 2px 9px}
+.tip b{color:var(--ink);font-weight:600}
+body:not(.help-on) .tip{display:none}
+.topmeta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#btnHelp{min-height:38px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
+#btnHelp[aria-expanded="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+
 .rail{display:flex;flex-direction:column;gap:12px;min-width:0}
 .turn{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--edge);
   border-left:4px solid var(--seal);border-radius:3px;padding:12px 14px}
@@ -157,14 +166,19 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
         <div class="sub">goban · เครื่องยนต์ MCTS ทำงานในเครื่องของคุณ</div>
       </div>
     </div>
-    <div class="rules-line">นับพื้นที่แบบจีน · โคมิ <b id="komiLine">6.5</b> แต้ม · ห้ามฆ่าตัวตาย · กฎโค</div>
+    <div class="topmeta">
+      <span class="rules-line">นับพื้นที่แบบจีน · โคมิ <b id="komiLine">6.5</b> แต้ม · ห้ามฆ่าตัวตาย · กฎโค</span>
+      <button type="button" id="btnHelp" aria-expanded="true" aria-controls="tipBoard">ซ่อนคำแนะนำ</button>
+    </div>
   </header>
 
   <div class="main">
     <div class="boardwrap">
       <canvas id="bd" tabindex="0" role="application"
         aria-label="กระดานหมากล้อม ใช้ปุ่มลูกศรเลื่อนตำแหน่ง กด Enter เพื่อวางหมาก"></canvas>
-      <p class="hintline">คลิกจุดตัดเพื่อวางหมาก · หรือใช้แป้นพิมพ์ ลูกศรเลื่อน Enter วาง P ผ่าน U ย้อนกลับ</p>
+      <p class="tip" id="tipBoard"><b>กระดาน</b> — คลิกที่จุดตัดของเส้น ไม่ใช่ในช่องสี่เหลี่ยม วางแล้ววางเลยไม่ต้องยืนยัน
+        ถ้าวางผิดใช้ปุ่มย้อนกลับได้ · เล่นด้วยแป้นพิมพ์ก็ได้ ลูกศรเลื่อนตำแหน่ง Enter วางหมาก P ผ่าน U ย้อนกลับ
+        · วงแหวนสีแดงคือหมากที่เพิ่งวางล่าสุด</p>
       <p class="sr" id="live" role="status" aria-live="polite"></p>
     </div>
 
@@ -177,6 +191,9 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
         </div>
       </div>
 
+      <p class="tip"><b>แถบบอกตา</b> — วงกลมคือสีที่ถึงตาเดิน ถ้าจุดไหนติดกฎโคในตานี้จะบอกพิกัดไว้ให้
+        กฎโคคือห้ามจับคืนทันทีจนกระดานวนกลับมาซ้ำรูปเดิม ต้องไปเดินที่อื่นก่อนหนึ่งตา</p>
+
       <div class="stats">
         <div class="stat"><div class="k">ดำจับได้</div><div class="v" id="capB">0</div></div>
         <div class="stat"><div class="k">ขาวจับได้</div><div class="v" id="capW">0</div></div>
@@ -184,11 +201,18 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
         <div class="stat"><div class="k">หมากล่าสุด</div><div class="v" id="lastMv">—</div></div>
       </div>
 
+      <p class="tip"><b>ตัวเลขสี่ช่อง</b> — ดำจับได้ คือจำนวนหมากขาวที่ถูกดำกินไปแล้ว และกลับกัน
+        หมากที่จับได้นับเป็นแต้มตอนจบเกมด้วย · หมากล่าสุดเขียนเป็นพิกัดแบบโกะ เช่น D4 คือแถวตั้ง D แถวนอนที่ 4</p>
+
       <div class="think">
         <div class="row"><span>คอมพิวเตอร์ประเมินโอกาสชนะของตัวเอง</span><b id="winPct">—</b></div>
         <div class="bar"><i id="winBar" style="width:50%"></i></div>
         <div class="row" style="margin-top:6px"><span>จำนวนเกมที่จำลอง</span><b id="playouts">0</b></div>
       </div>
+
+      <p class="tip"><b>แถบประเมิน</b> — คือโอกาสชนะที่คอมพิวเตอร์คิดว่าตัวเองมี ไม่ใช่ของคุณ
+        ถ้าเลขต่ำกว่า 50 เปอร์เซ็นต์แปลว่าคุณกำลังนำ ถ้าต่ำกว่า 10 เปอร์เซ็นต์มันจะขอยอมแพ้เอง
+        · จำนวนเกมที่จำลองยิ่งมาก มันยิ่งเล่นแม่นขึ้น</p>
 
       <div class="controls">
         <button id="btnPass">ผ่าน</button>
@@ -196,6 +220,9 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
         <button id="btnResign" class="seal">ยอมแพ้</button>
         <button id="btnNew">เริ่มเกมใหม่</button>
       </div>
+
+      <p class="tip"><b>ปุ่มควบคุม</b> — ผ่าน ใช้เมื่อไม่มีจุดไหนคุ้มที่จะเดินแล้ว ถ้าผ่านสองครั้งติดกันทั้งสองฝ่ายถือว่าจบเกม
+        แล้วระบบจะนับแต้มให้ · ย้อนกลับ ถอยทีละคู่ คือของคุณกับของคอมพิวเตอร์พร้อมกัน · ยอมแพ้ จบเกมทันทีและแสดงแต้มขณะนั้น</p>
 
       <div class="setup">
         <h2>ตั้งค่าเกมใหม่</h2>
@@ -224,6 +251,9 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
         </div>
       </div>
 
+      <p class="tip"><b>ตั้งค่า</b> — เปลี่ยนค่าใดก็ตามในกล่องนี้จะเริ่มเกมใหม่ทันที · กระดาน 9×9 เหมาะกับการเริ่มต้นและเป็นขนาดที่คอมพิวเตอร์เล่นได้ดีที่สุด
+        ส่วน 19×19 คือขนาดมาตรฐานการแข่งขัน คอมพิวเตอร์จะอ่อนลงมาก · ระดับเก่งคิดนานราวหกวินาทีต่อหนึ่งตา</p>
+
       <div class="verdict" id="verdict" hidden>
         <h2 id="vTitle">จบเกม</h2>
         <p id="vBody"></p>
@@ -232,6 +262,8 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
       <div class="kifu">
         <h2>บันทึกหมาก</h2>
         <div class="list" id="kifu"><span class="empty">ยังไม่มีหมากบนกระดาน</span></div>
+        <p class="tip" style="margin-top:8px"><b>บันทึกหมาก</b> — ตัวเลขคือลำดับตาที่เดิน วงกลมคือสีของหมาก
+          พิกัดใช้ตัวอักษร A ถึง T โดยข้ามตัว I เพื่อไม่ให้สับสนกับเลขหนึ่ง ซึ่งเป็นธรรมเนียมของหมากล้อมทั่วโลก</p>
       </div>
     </div>
   </div>
@@ -737,6 +769,19 @@ cv.addEventListener("keydown",function(e){
   }
 });
 cv.addEventListener("focus",function(){ usingKeys=true; draw(); });
+
+/* คำแนะนำรายส่วน เปิดปิดได้ และจำค่าไว้ในเครื่อง */
+function loadPref(k,dflt){ try{ var v=localStorage.getItem(k); return v===null?dflt:v; }catch(e){ return dflt; } }
+function savePref(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+var helpBtn=document.getElementById("btnHelp");
+function setHelp(on){
+  document.body.classList.toggle("help-on",on);
+  helpBtn.setAttribute("aria-expanded",on?"true":"false");
+  helpBtn.textContent = on ? "ซ่อนคำแนะนำ" : "แสดงคำแนะนำ";
+  savePref("go_help", on?"1":"0");
+}
+setHelp(loadPref("go_help","1")==="1");
+helpBtn.addEventListener("click",function(){ setHelp(!document.body.classList.contains("help-on")); });
 
 document.getElementById("btnPass").addEventListener("click",humanPass);
 document.getElementById("btnUndo").addEventListener("click",undo);
