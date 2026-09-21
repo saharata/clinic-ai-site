@@ -38,6 +38,8 @@ const nextConfig: NextConfig = {
       { source: "/learn/dna/en", destination: "/learn/dna/en.html" },
       { source: "/learn/hormones/en", destination: "/learn/hormones/en.html" },
       { source: "/learn/mind/en", destination: "/learn/mind/en.html" },
+      { source: "/learn/neurologist", destination: "/learn/neurologist/th.html" },
+      { source: "/learn/neurologist/en", destination: "/learn/neurologist/en.html" },
     ];
   },
 };
