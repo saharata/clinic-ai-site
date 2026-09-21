@@ -229,6 +229,25 @@ const lessonsL2 = [
   },
 ];
 
+const lessonsX = [
+  {
+    key: "neurologist",
+    th: "/learn/neurologist",
+    en: "/learn/neurologist/en",
+    level: "บทพิเศษ · อาชีพ",
+    title: "ประสาทแพทย์คือใคร ทำอะไร",
+    enTitle: "Who Is a Neurologist, and What Do They Do?",
+    text:
+      "หมอที่ดูแลสายไฟทั้งระบบของร่างกาย ตั้งแต่สมองถึงปลายนิ้ว ดูแลอะไร ตรวจอย่างไรโดยไม่ต้องเจาะอะไรเลย ใช้เครื่องอะไรมองเข้าไปในสมอง วันหนึ่งทำอะไร และกว่าจะเป็นได้ต้องเรียนกี่ปี",
+    points: [
+      "แผนที่ระบบประสาท 5 จุดแตะ และเกมส่งคนไข้หาหมอที่ใช่ 5 สาย",
+      "ทดลองค้อนเคาะเข่า ไฟฉายกับรูม่านตา ส้อมเสียง และเกมแตะจมูก",
+      "อ่านคลื่นสมอง 4 แบบ ตารางเทียบ EEG MRI CT และเกมนักสืบหาตำแหน่งรอยโรค",
+      "ภาพประกอบสอน 16 ภาพ เส้นทางการเรียน 12 ปี สัญญาณหลอดเลือดสมอง และแบบทดสอบ 12 ข้อ",
+    ],
+  },
+];
+
 const img = (key: string) => `/learn/img/${key}.webp`;
 
 const heroAlt =
@@ -321,7 +340,7 @@ export default function LearnPage() {
             </h1>
             <p className="lp-tagline">รู้จักร่างกายตั้งแต่เซลล์เล็กจิ๋ว จนถึงอวัยวะและร่างกายทั้งตัว แบบกดแล้วเห็น</p>
             <p className="lp-lead">
-              บทเรียนแบบกดเล่นได้ 12 บท สองระดับ ส่องกล้องจุลทรรศน์ เปิดร่างกายทีละชั้น ทดลองการระบาดของไวรัส
+              บทเรียนแบบกดเล่นได้ 13 บท สองระดับและบทพิเศษ ส่องกล้องจุลทรรศน์ เปิดร่างกายทีละชั้น ทดลองการระบาดของไวรัส
               แปลรหัสดีเอ็นเอ ดูคลื่นไฟฟ้าหัวใจวิ่งจริง ทุกบทมีปุ่มอ่านออกเสียง มีทั้งภาษาไทยและภาษาอังกฤษ
             </p>
             <div className="lp-hero-actions">
@@ -339,9 +358,9 @@ export default function LearnPage() {
               </a>
             </div>
             <ul className="lp-stats" aria-label="สรุปเนื้อหา">
-              <li>12 บท</li>
+              <li>13 บท</li>
               <li>ไทย + อังกฤษ</li>
-              <li>คำถาม 200 ข้อ</li>
+              <li>คำถาม 224 ข้อ</li>
               <li>อ่านออกเสียงได้</li>
               <li>มือถือ แท็บเล็ต คอม</li>
             </ul>
@@ -391,6 +410,20 @@ export default function LearnPage() {
         </div>
       </section>
 
+      <section className="section" aria-labelledby="lx-title">
+        <div className="container">
+          <div className="section-head">
+            <h2 id="lx-title">บทพิเศษ · รู้จักอาชีพ</h2>
+            <p>บทที่ใช้ภาพประกอบเป็นสื่อการสอน พาไปดูห้องตรวจ เครื่องมือ และวันหนึ่งของหมอสมอง เหมาะกับ ป.3 ถึง ม.1</p>
+          </div>
+          <div className="cards two lp-grid">
+            {lessonsX.map((l) => (
+              <LessonCard l={l} n={13} key={l.key} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="section" aria-labelledby="arena-title">
         <div className="container">
           <div className="lp-arena">
@@ -399,7 +432,7 @@ export default function LearnPage() {
               <p className="eyebrow lp-eyebrow">โหมดเกม</p>
               <h2 id="arena-title">สนามแข่ง Body 101</h2>
               <p>
-                รวมคำถาม 200 ข้อจากทุกบทไว้ที่เดียว มี 5 โหมด แข่งกับเวลา 60 วินาที ปะทะสองคนบนจอเดียว
+                รวมคำถาม 224 ข้อจากทุกบทไว้ที่เดียว มี 5 โหมด แข่งกับเวลา 60 วินาที ปะทะสองคนบนจอเดียว
                 ช่วยกันเป็นทีมโดยใช้หัวใจร่วมกัน ล้มบอส 3 ตัว และฝึกซ้อมแบบไม่จับเวลา เก็บเลเวล ตรา
                 และสถิติความแม่นยำไว้ในเครื่อง
               </p>
