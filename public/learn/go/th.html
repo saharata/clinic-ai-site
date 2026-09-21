@@ -42,7 +42,7 @@
   --ink:#241E17; --muted:#6F5E4A;
   --board-hi:#DCB273; --board-lo:#C39450; --board-rim:#8A6234; --line:#4E3419;
   --stone-b:#191920; --stone-b-hi:#55555f; --stone-w:#FBF8F1; --stone-w-lo:#CFC6B4;
-  --seal:#9C3022; --shadow:rgba(60,40,20,.22);
+  --seal:#9C3022; --good:#2E7150; --shadow:rgba(60,40,20,.22);
   --f-display:"Mali","IBM Plex Sans Thai Looped",system-ui,sans-serif;
   --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,sans-serif;
 }
@@ -52,7 +52,7 @@
     --ink:#EFE7D9; --muted:#A2937E;
     --board-hi:#926535; --board-lo:#6D4A26; --board-rim:#3A2615; --line:#261608;
     --stone-b:#0C0C11; --stone-b-hi:#41414E; --stone-w:#F3EEE3; --stone-w-lo:#B4AA96;
-    --seal:#E0725B; --shadow:rgba(0,0,0,.55);
+    --seal:#E0725B; --good:#79B894; --shadow:rgba(0,0,0,.55);
   }
 }
 *{box-sizing:border-box}
@@ -107,6 +107,16 @@ body:not(.help-on) .tip{display:none}
 .bar{height:7px;background:var(--panel-2);border:1px solid var(--edge);border-radius:99px;margin-top:8px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--seal);width:50%;transition:width .25s ease}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+.coach{background:var(--panel);border:1px solid var(--edge);border-left:4px solid var(--good);
+  border-radius:3px;padding:10px 12px}
+.coach-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.coach-head .k{font-family:var(--f-display);font-size:15px;font-weight:700}
+.coach-head button{min-height:34px;padding:4px 12px;font-size:12.5px}
+.coach-text{display:flex;flex-direction:column;gap:7px;margin:9px 0 0;font-size:13px;line-height:1.55}
+.coach-text span{border-left:3px solid var(--good);padding-left:9px;color:var(--muted)}
+.coach-text span:first-child{color:var(--ink);font-weight:600;border-left-color:var(--seal)}
+#btnHint{width:100%;margin-top:10px}
 
 .controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 button{font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink);background:var(--panel);
@@ -193,6 +203,21 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
 
       <p class="tip"><b>แถบบอกตา</b> — วงกลมคือสีที่ถึงตาเดิน ถ้าจุดไหนติดกฎโคในตานี้จะบอกพิกัดไว้ให้
         กฎโคคือห้ามจับคืนทันทีจนกระดานวนกลับมาซ้ำรูปเดิม ต้องไปเดินที่อื่นก่อนหนึ่งตา</p>
+
+      <div class="coach" id="coach">
+        <div class="coach-head">
+          <span class="k">โหมดโค้ช</span>
+          <button type="button" id="btnCoach" aria-expanded="true" aria-controls="coachBody">ปิด</button>
+        </div>
+        <div id="coachBody">
+          <div class="coach-text" id="coachText"></div>
+          <button type="button" id="btnHint">แนะนำตาเดินให้หน่อย</button>
+        </div>
+      </div>
+
+      <p class="tip"><b>โหมดโค้ช</b> — วงประสีแดงคือกลุ่มของคุณที่เหลือลมหายใจเดียว คือกำลังจะถูกกิน
+        วงประสีเขียวคือกลุ่มของคอมพิวเตอร์ที่คุณกินได้ · ปุ่มแนะนำตาเดินจะให้เครื่องคิดจากฝั่งของคุณราวหนึ่งวินาทีครึ่ง
+        แล้วชี้จุดพร้อมบอกเหตุผล แต่ไม่เดินให้ คุณตัดสินใจเอง · ปิดโหมดนี้ได้ถ้าอยากเล่นเงียบ ๆ</p>
 
       <div class="stats">
         <div class="stat"><div class="k">ดำจับได้</div><div class="v" id="capB">0</div></div>
@@ -473,6 +498,49 @@ function oneIteration(st){
     }
   }
 }
+/* เส้นที่ 1 แทบไม่เคยเป็นตาที่ดี ส่วนเส้น 3-4 คือแนวมาตรฐาน
+   ใช้เป็นตัวตัดสินเฉพาะเมื่ออัตราชนะใกล้เคียงกัน จึงไม่ทับการตัดสินทางยุทธวิธี */
+function posBonus(p){
+  if(p<0) return -6;
+  var x=p%N, y=(p/N)|0, d=Math.min(x,y,N-1-x,N-1-y);
+  if(d===0) return -3;
+  if(d===1) return -1;
+  if(d===2 || d===3) return 1;
+  return 0;
+}
+/* ตำราเปิดเกมสั้น ๆ: มุมบนเส้นที่สาม (9x9) หรือเส้นที่สี่ (กระดานใหญ่)
+   MCTS ล้วนไม่มีความรู้เปิดเกม ปล่อยไว้มันจะแนะนำเส้นที่หนึ่งซึ่งสอนผิด */
+function openingLine(){ return N===9 ? 2 : 3; }
+function openingPoint(b){
+  var d=openingLine(), pts=[[d,d],[N-1-d,d],[d,N-1-d],[N-1-d,N-1-d]], i, j, order=[0,1,2,3];
+  for(i=order.length-1;i>0;i--){ j=(Math.random()*(i+1))|0; var t=order[i]; order[i]=order[j]; order[j]=t; }
+  for(i=0;i<order.length;i++){
+    var x=pts[order[i]][0], y=pts[order[i]][1], p=y*N+x, clear=true, dx, dy;
+    for(dy=-2;dy<=2 && clear;dy++) for(dx=-2;dx<=2;dx++){
+      var nx=x+dx, ny=y+dy;
+      if(nx<0||ny<0||nx>=N||ny>=N) continue;
+      if(b[ny*N+nx]){ clear=false; break; }
+    }
+    if(clear) return p;
+  }
+  return -1;
+}
+function pickMove(root){
+  var kids=root.children, best=null, i;
+  if(!kids || !kids.length) return -1;
+  for(i=0;i<kids.length;i++) if(!best || kids[i].n>best.n) best=kids[i];
+  if(best.n===0) return best.move;
+  var bw=best.w/best.n, chosen=best, score=-1e9;
+  for(i=0;i<kids.length;i++){
+    var c=kids[i];
+    if(c.n < best.n*0.5) continue;
+    var wr=c.w/c.n;
+    if(wr < bw-0.02) continue;
+    var sc=wr*100 + posBonus(c.move);
+    if(sc>score){ score=sc; chosen=c; }
+  }
+  return chosen.move;
+}
 function bestChild(root){
   if(!root.children) return null;
   var best=null;
@@ -499,6 +567,7 @@ function newGame(){
   board=new Int8Array(NN); toMove=1; koPoint=-1; caps={1:0,2:0}; passes=0; moveNum=0; lastMove=-1;
   history=[]; kifu=[]; gameOver=false; thinking=false; aiState=null; territory=null;
   hover=-1; cursor=((N*N)-1)/2|0;
+  clearHint(); atariList=[]; lastAICaps=0; lastWinRate=-1;
   aiColor=3-humanColor;
   document.getElementById("komiLine").textContent=KOMI.toFixed(1);
   document.getElementById("verdict").hidden=true;
@@ -581,12 +650,146 @@ function finishAI(st){
   thinking=false; aiState=null;
   var b=bestChild(st.root);
   var wr=(b&&b.n>0)?b.w/b.n:0.5;
+  lastWinRate=wr;
   if(b && b.n>20 && wr<0.09 && moveNum>N){ endGame("resign",aiColor); return; }
+  var mv=pickMove(st.root);
+  if(moveNum<3){ var op=openingPoint(board); if(op>=0) mv=op; }
   snapshot();
-  if(!b || b.move<0){ applyPass(aiColor); say("คอมพิวเตอร์ผ่าน"); }
-  else if(!applyMove(b.move,aiColor)){ applyPass(aiColor); say("คอมพิวเตอร์ผ่าน"); }
-  else say("คอมพิวเตอร์วางที่ "+coordOf(b.move));
+  var capsBefore=caps[aiColor];
+  if(mv<0){ applyPass(aiColor); say("คอมพิวเตอร์ผ่าน"); }
+  else if(!applyMove(mv,aiColor)){ applyPass(aiColor); say("คอมพิวเตอร์ผ่าน"); }
+  else say("คอมพิวเตอร์วางที่ "+coordOf(mv));
+  lastAICaps=caps[aiColor]-capsBefore;
   draw(); updateUI();
+}
+
+/* ---------- โหมดโค้ช: บอกสถานการณ์ + แนะนำตาเดิน ---------- */
+var coachOn=true, atariList=[], hintMove=-2, hintWhy="", hinting=false, hintState=null;
+var lastWinRate=-1, lastAICaps=0;
+
+function allGroups(b){
+  var vis=new Int8Array(NN), out=[], p, i;
+  for(p=0;p<NN;p++){
+    if(!b[p] || vis[p]) continue;
+    var libs=groupLibs(b,p), st=gStones.slice();
+    for(i=0;i<st.length;i++) vis[st[i]]=1;
+    out.push({color:b[p], stones:st, libs:libs});
+  }
+  return out;
+}
+function libsOf(b,stones){
+  var out=[], seen={}, i, j;
+  for(i=0;i<stones.length;i++){
+    var nb=nbrs[stones[i]];
+    for(j=0;j<nb.length;j++) if(b[nb[j]]===0 && !seen[nb[j]]){ seen[nb[j]]=1; out.push(nb[j]); }
+  }
+  return out;
+}
+function groupName(g){
+  var best=g.stones[0], i;
+  for(i=1;i<g.stones.length;i++) if(g.stones[i]<best) best=g.stones[i];
+  return coordOf(best);
+}
+function clearHint(){ hintState=null; hinting=false; hintMove=-2; hintWhy=""; }
+
+function updateCoach(){
+  var body=document.getElementById("coachBody"), btn=document.getElementById("btnHint");
+  var tog=document.getElementById("btnCoach");
+  body.hidden=!coachOn;
+  tog.textContent = coachOn ? "ปิด" : "เปิด";
+  tog.setAttribute("aria-expanded", coachOn?"true":"false");
+  if(!coachOn){ atariList=[]; hintMove=-2; draw(); return; }
+
+  var gs=allGroups(board), mine=[], theirs=[], i;
+  atariList=[];
+  for(i=0;i<gs.length;i++){
+    if(gs[i].libs===1){
+      atariList.push(gs[i]);
+      if(gs[i].color===humanColor) mine.push(gs[i]); else theirs.push(gs[i]);
+    }
+  }
+  var lines=[];
+  if(gameOver){
+    lines.push("เกมจบแล้ว จุดสี่เหลี่ยมบนกระดานคือพื้นที่ของแต่ละฝ่ายตอนนับแต้ม");
+  } else {
+    if(lastAICaps>0 && toMove===humanColor)
+      lines.push("คอมพิวเตอร์เพิ่งกินหมากของคุณไป "+lastAICaps+" เม็ด");
+    if(mine.length){
+      var g=mine[0], lp=libsOf(board,g.stones);
+      lines.push("กลุ่มของคุณที่ "+groupName(g)+" ("+g.stones.length+" เม็ด) เหลือลมหายใจเดียว ตาหน้าจะถูกกิน "+
+        (lp.length ? "ทางแก้คือวางที่ "+coordOf(lp[0])+" เพื่อต่อลมหายใจ หรือปล่อยทิ้งแล้วไปเล่นจุดที่ใหญ่กว่า"
+                   : "ไม่มีจุดต่อแล้ว ปล่อยไปเล่นที่อื่นดีกว่า"));
+    }
+    if(theirs.length){
+      var t=theirs[0], tp=libsOf(board,t.stones);
+      lines.push("กลุ่มของคอมพิวเตอร์ที่ "+groupName(t)+" ("+t.stones.length+" เม็ด) เหลือลมหายใจเดียว"+
+        (tp.length ? " วางที่ "+coordOf(tp[0])+" กินได้ทันที" : ""));
+    }
+    if(!mine.length && !theirs.length)
+      lines.push(moveNum<4
+        ? "ช่วงเปิดเกม วางใกล้มุมกับขอบก่อน เพราะล้อมพื้นที่ได้ด้วยหมากน้อยกว่ากลางกระดาน"
+        : "ยังไม่มีกลุ่มไหนถูกล้อมจนอันตราย ช่วงนี้คือการขยายพื้นที่ของตัวเองและกันไม่ให้อีกฝ่ายขยาย");
+    if(lastWinRate>=0)
+      lines.push("คอมพิวเตอร์ประเมินว่าตัวเองมีโอกาสชนะราว "+Math.round(lastWinRate*100)+
+        " เปอร์เซ็นต์ ถ้าต่ำกว่าห้าสิบแปลว่าคุณกำลังนำ");
+  }
+  if(hinting) lines.unshift("กำลังคิดว่าตาไหนดีที่สุดสำหรับคุณ รอสักครู่");
+  else if(hintWhy) lines.unshift(hintWhy);
+
+  var html="", k;
+  for(k=0;k<lines.length;k++) html+="<span>"+lines[k]+"</span>";
+  document.getElementById("coachText").innerHTML=html;
+  btn.disabled = gameOver||thinking||hinting||toMove!==humanColor;
+  draw();
+}
+
+function explainMove(p){
+  if(p<0) return "ตอนนี้ไม่มีจุดไหนคุ้มที่จะเดินแล้ว แนะนำให้กดผ่าน";
+  var head="แนะนำให้วางที่ "+coordOf(p)+" ";
+  scratch.set(board);
+  var r=tryPlay(scratch,p,humanColor,koPoint);
+  if(!r) return head;
+  if(r.n>0) return head+"จะกินหมากของคอมพิวเตอร์ได้ "+r.n+" เม็ดทันที";
+  var i, j;
+  for(i=0;i<atariList.length;i++){
+    if(atariList[i].color!==humanColor) continue;
+    var lp=libsOf(board,atariList[i].stones);
+    for(j=0;j<lp.length;j++) if(lp[j]===p) return head+"เพื่อต่อลมหายใจให้กลุ่มที่กำลังจะถูกกิน";
+  }
+  var nb=nbrs[p], press=false, near=false;
+  for(i=0;i<nb.length;i++){
+    if(board[nb[i]]===3-humanColor){ near=true; if(groupLibs(board,nb[i])<=2) press=true; }
+    else if(board[nb[i]]===humanColor) near=true;
+  }
+  if(press) return head+"เพื่อบีบให้หมากของคอมพิวเตอร์เหลือลมหายใจน้อยลง";
+  if(near) return head+"เพื่อเสริมรูปของตัวเองให้แข็งขึ้น";
+  return head+"เพื่อขยายไปยังพื้นที่ว่างที่ยังไม่มีใครจอง";
+}
+
+function startHint(){
+  if(gameOver||thinking||hinting||toMove!==humanColor) return;
+  hinting=true; hintMove=-2; hintWhy=""; updateCoach();
+  var st={ root:newNode(-2), board:board.slice(), work:new Int8Array(NN), path:[],
+           ko:koPoint, color:humanColor, end:performance.now()+1600, cap:20000, done:0 };
+  hintState=st;
+  (function step(){
+    if(hintState!==st) return;
+    var slice=performance.now()+45;
+    while(performance.now()<slice && performance.now()<st.end && st.done<st.cap){ oneIteration(st); st.done++; }
+    if(performance.now()<st.end && st.done<st.cap){ setTimeout(step,0); return; }
+    hinting=false; hintState=null;
+    hintMove = pickMove(st.root);
+    var op = moveNum<4 ? openingPoint(board) : -1;
+    if(op>=0){
+      hintMove=op;
+      hintWhy="แนะนำให้วางที่ "+coordOf(op)+" ช่วงเปิดเกมยังไม่มีอะไรต้องสู้ จุดมาตรฐานคือมุมบนเส้นที่"+
+        (openingLine()===2?"สาม":"สี่")+" เพราะล้อมมุมได้ด้วยหมากน้อยที่สุด";
+    } else {
+      hintWhy = explainMove(hintMove);
+    }
+    say(hintWhy);
+    updateCoach();
+  })();
 }
 
 /* ---------- rendering ---------- */
@@ -668,6 +871,30 @@ function draw(){
     ctx.strokeRect(kx-cell*0.42,ky-cell*0.42,cell*0.84,cell*0.84);
   }
 
+  if(coachOn && !gameOver){
+    ctx.save();
+    ctx.setLineDash([Math.max(2,cell*0.15), Math.max(2,cell*0.12)]);
+    ctx.lineWidth=Math.max(1.5,cell*0.06);
+    var a, q;
+    for(a=0;a<atariList.length;a++){
+      ctx.strokeStyle = atariList[a].color===humanColor ? cssVar("--seal") : cssVar("--good");
+      var stn=atariList[a].stones;
+      for(q=0;q<stn.length;q++){
+        var ax=pad+(stn[q]%N)*cell, ay=pad+Math.floor(stn[q]/N)*cell;
+        ctx.beginPath(); ctx.arc(ax,ay,cell*0.44,0,6.2832); ctx.stroke();
+      }
+    }
+    if(hintMove>=0){
+      var hx=pad+(hintMove%N)*cell, hy=pad+Math.floor(hintMove/N)*cell;
+      ctx.strokeStyle=cssVar("--good");
+      ctx.beginPath(); ctx.arc(hx,hy,cell*0.40,0,6.2832); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle=cssVar("--good");
+      ctx.beginPath(); ctx.arc(hx,hy,cell*0.13,0,6.2832); ctx.fill();
+    }
+    ctx.restore();
+  }
+
   if(lastMove>=0 && board[lastMove]){
     var lx=pad+(lastMove%N)*cell, ly=pad+Math.floor(lastMove/N)*cell;
     ctx.strokeStyle=cssVar("--seal"); ctx.lineWidth=Math.max(1.5,cell*0.06);
@@ -703,6 +930,7 @@ function updateUI(){
   document.getElementById("btnPass").disabled = gameOver||thinking||toMove!==humanColor;
   document.getElementById("btnUndo").disabled = gameOver||thinking||history.length===0;
   document.getElementById("btnResign").disabled = gameOver;
+  updateCoach();
 
   var el=document.getElementById("kifu");
   if(!kifu.length){ el.innerHTML='<span class="empty">ยังไม่มีหมากบนกระดาน</span>'; return; }
@@ -723,7 +951,8 @@ function pointAt(ev){
   return gy*N+gx;
 }
 function humanPlay(p){
-  if(gameOver||thinking||toMove!==humanColor||p<0) return;
+  if(gameOver||thinking||hinting||toMove!==humanColor||p<0) return;
+  lastAICaps=0; clearHint();
   scratch.set(board);
   if(!tryPlay(scratch,p,humanColor,koPoint)) { say("วางตรงนั้นไม่ได้"); return; }
   snapshot();
@@ -733,13 +962,15 @@ function humanPlay(p){
   if(!gameOver) setTimeout(startAI,140);
 }
 function humanPass(){
-  if(gameOver||thinking||toMove!==humanColor) return;
+  if(gameOver||thinking||hinting||toMove!==humanColor) return;
+  lastAICaps=0; clearHint();
   snapshot(); applyPass(humanColor); draw(); updateUI();
   say("คุณผ่าน");
   if(!gameOver) setTimeout(startAI,140);
 }
 function undo(){
-  if(thinking||gameOver||!history.length) return;
+  if(thinking||hinting||gameOver||!history.length) return;
+  clearHint(); lastAICaps=0; lastWinRate=-1;
   var steps=history.length>=2?2:1, s=null;
   for(var i=0;i<steps;i++) s=history.pop();
   board=s.b; koPoint=s.ko; toMove=s.tm; caps[1]=s.cb; caps[2]=s.cw;
@@ -782,6 +1013,15 @@ function setHelp(on){
 }
 setHelp(loadPref("go_help","1")==="1");
 helpBtn.addEventListener("click",function(){ setHelp(!document.body.classList.contains("help-on")); });
+
+var coachBtn=document.getElementById("btnCoach");
+coachOn = loadPref("go_coach","1")==="1";
+coachBtn.addEventListener("click",function(){
+  coachOn=!coachOn; savePref("go_coach", coachOn?"1":"0");
+  if(!coachOn) clearHint();
+  updateCoach();
+});
+document.getElementById("btnHint").addEventListener("click",startHint);
 
 document.getElementById("btnPass").addEventListener("click",humanPass);
 document.getElementById("btnUndo").addEventListener("click",undo);
