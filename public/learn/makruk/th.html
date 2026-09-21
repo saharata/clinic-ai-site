@@ -242,6 +242,13 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
           </div>
         </div>
         <div class="field">
+          <span class="lbl" id="lblNames">ชื่อบนตัวหมาก</span>
+          <div class="seg" id="segNames" role="group" aria-labelledby="lblNames">
+            <button type="button" data-v="1" aria-pressed="true">แสดง</button>
+            <button type="button" data-v="0" aria-pressed="false">ซ่อน</button>
+          </div>
+        </div>
+        <div class="field">
           <span class="lbl" id="lblColor">คุณเล่นฝ่าย</span>
           <div class="seg" id="segColor" role="group" aria-labelledby="lblColor">
             <button type="button" data-v="1" aria-pressed="true">ขาว (เดินก่อน)</button>
@@ -551,6 +558,23 @@ var countActive=false, countMax=0, countNow=0, countLabelTxt="", countSide=0;
 var coachOn=true, coachBase=[], hintMove=null, hintWhy="", hinting=false, riskySquares=[];
 
 var cv=document.getElementById("bd"), ctx=cv.getContext("2d"), px=1, cell=0, lab=0;
+
+/* ภาพตัวหมากไม้ (ถ่ายสตูดิโอ ตัดพื้นหลังแล้ว) โหลดไม่ได้ก็ยังเล่นได้ด้วยหมากวาด */
+var PIECE_FILE={1:"bia",2:"ngai",3:"met",4:"khon",5:"ma",6:"ruea",7:"khun"};
+var IMG={}, imgReady=0, imgTotal=14, showNames=true;
+(function loadPieces(){
+  var ty, tone;
+  for(ty in PIECE_FILE){
+    for(tone in {w:1,b:1}){
+      (function(t,tn){
+        var im=new Image();
+        im.onload=function(){ IMG[tn+t]=im; imgReady++; if(imgReady>=imgTotal||imgReady%4===0) draw(); };
+        im.onerror=function(){ imgTotal--; };
+        im.src="/learn/makruk/pieces/"+PIECE_FILE[t]+"_"+tn+".png";
+      })(ty,tone);
+    }
+  }
+})();
 function say(t){ document.getElementById("live").textContent=t; }
 function loadPref(k,d){ try{ var v=localStorage.getItem(k); return v===null?d:v; }catch(e){ return d; } }
 function savePref(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
@@ -688,71 +712,144 @@ function attackersOf(b,sq,by){
   for(i=0;i<ms.length;i++) if(ms[i].to===sq) out.push(ms[i]);
   return out;
 }
-function defendersOf(b,sq,color){
-  /* นับตัวที่ "กินคืน" ได้ โดยสมมติว่าช่องนั้นมีตัวของฝ่ายตรงข้ามอยู่ */
-  var saved=b[sq], p=b[sq];
-  b[sq]=make(BIA,3-color);
-  var ms=genMoves(b,color,[]), n=0, i;
-  for(i=0;i<ms.length;i++) if(ms[i].to===sq) n++;
-  b[sq]=saved;
-  if(p){}
-  return n;
-}
-function hangingPieces(b,color){
-  var out=[], i, p;
-  for(i=0;i<64;i++){
-    p=b[i];
-    if(!p || colorOf(p)!==color || typeOf(p)===KHUN) continue;
-    var atk=attackersOf(b,i,3-color);
-    if(!atk.length) continue;
-    var cheapest=1e9, j;
-    for(j=0;j<atk.length;j++) cheapest=Math.min(cheapest, VAL[typeOf(atk[j].piece)]);
-    var def=defendersOf(b,i,color);
-    if(def===0 || cheapest < VAL[typeOf(p)]) out.push({sq:i, piece:p, def:def, cheapest:cheapest});
-  }
-  out.sort(function(a,c){ return VAL[typeOf(c.piece)]-VAL[typeOf(a.piece)]; });
+function attackerValues(b,sq,by){
+  var ms=genMoves(b,by,[]), out=[], i;
+  for(i=0;i<ms.length;i++) if(ms[i].to===sq) out.push(VAL[typeOf(ms[i].piece)]);
+  out.sort(function(x,y){ return x-y; });        /* กินด้วยตัวที่ถูกที่สุดก่อน */
   return out;
 }
-function freeCaptures(b,color){
-  var ms=legalMoves(b,color), out=[], i;
+/* ประเมินการแลกหมากที่ช่องเดียวกันจนจบ (static exchange) คืนกำไรสุทธิหน่วยเซนติแต้ม */
+function seeCapture(b,m,side){
+  var tmp=new Int8Array(64); tmp.set(b);
+  var captured=b[m.to];
+  var gains=[captured ? VAL[typeOf(captured)] : 0];
+  makeMove(tmp,m);
+  var oppAtk=attackerValues(tmp,m.to,3-side), ownAtk=attackerValues(tmp,m.to,side);
+  var occupant=VAL[typeOf(m.promo ? make(NGAI,side) : m.piece)];
+  var oi=0, si=0, d=0;
+  while(true){
+    d++;
+    var list=(d%2===1)?oppAtk:ownAtk, ptr=(d%2===1)?oi++:si++;
+    if(ptr>=list.length) break;
+    gains[d]=occupant-gains[d-1];
+    occupant=list[ptr];
+  }
+  while(d>1){ d--; gains[d-1]=-Math.max(-gains[d-1], gains[d]); }
+  return gains[0];
+}
+/* ถ้าฝ่ายนี้ได้เดินตอนนี้ ตากินที่คุ้มที่สุดคืออะไร */
+function bestCapture(b,side,minGain){
+  var ms=legalMoves(b,side), best=null, bestGain=(minGain===undefined?40:minGain)-1, i;
   for(i=0;i<ms.length;i++){
-    var m=ms[i];
-    if(!m.cap) continue;
-    makeMove(b,m);
-    var def=attackersOf(b,m.to,3-color).length;
-    unmakeMove(b,m);
-    if(def===0 || VAL[typeOf(m.cap)] > VAL[typeOf(m.piece)]) out.push(m);
+    if(!ms[i].cap) continue;
+    var g=seeCapture(b,ms[i],side);
+    if(g>bestGain){ bestGain=g; best=ms[i]; }
   }
-  out.sort(function(a,c){ return VAL[typeOf(c.cap)]-VAL[typeOf(a.cap)]; });
-  return out;
+  return best ? {move:best, gain:bestGain} : null;
 }
+function mateIn1(b,side){
+  var ms=legalMoves(b,side), i, found=null;
+  for(i=0;i<ms.length && !found;i++){
+    makeMove(b,ms[i]);
+    if(inCheck(b,3-side) && legalMoves(b,3-side).length===0) found=ms[i];
+    unmakeMove(b,ms[i]);
+  }
+  return found;
+}
+/* เดินตานี้แล้วคาดว่าจะเสียเท่าไร (คิดการกินคืนทั้งชุด) */
+function moveLoss(m){
+  var tmp=new Int8Array(64); tmp.set(board);
+  makeMove(tmp,m);
+  var ms=genMoves(tmp,aiColor,[]), i, worst=0;
+  for(i=0;i<ms.length;i++){
+    if(ms[i].to!==m.to) continue;
+    var g=seeCapture(tmp,ms[i],aiColor);
+    if(g>worst) worst=g;
+  }
+  return worst - (m.cap ? VAL[typeOf(m.cap)] : 0);
+}
+function pts(v){ return (v/100).toFixed(1); }
+
 function computeCoachLines(){
   coachBase=[];
   if(!coachOn || gameOver) return;
-  var lines=[];
-  if(inCheck(board,humanColor) && toMove===humanColor){
+  var lines=[], i;
+  var myTurn = toMove===humanColor;
+
+  if(myTurn){
+    var mate=mateIn1(board,humanColor);
+    if(mate) lines.push("คุณรุกฆาตได้ทันทีด้วย "+moveText(mate)+" จบเกมตานี้เลย");
+  }
+  if(inCheck(board,humanColor) && myTurn){
     var k=kingSq(board,humanColor), atk=attackersOf(board,k,aiColor);
     var who = atk.length ? NAMES[typeOf(atk[0].piece)]+"ที่ "+sqName(atk[0].from) : "ตัวใดตัวหนึ่ง";
     lines.push("ขุนของคุณกำลังถูกรุกโดย"+who+" ตานี้ต้องแก้รุกเท่านั้น คือหนีขุน เอาตัวไปบัง หรือกินตัวที่รุก");
   }
-  var hang = toMove===humanColor ? hangingPieces(board,humanColor) : [];
-  if(hang.length){
-    var h=hang[0];
-    lines.push(NAMES[typeOf(h.piece)]+"ของคุณที่ "+sqName(h.sq)+" กำลังถูกจ่ออยู่"+
-      (h.def===0 ? " และยังไม่มีตัวไหนคุ้มกัน ถ้าไม่ย้ายหรือหาตัวมาคุ้ม ตาหน้าจะเสียฟรี"
-                 : " โดยตัวที่ถูกกว่า แลกแล้วคุณเสียเปรียบ ควรย้ายหนีหรือไล่ตัวนั้นออกไป"));
+  if(myTurn && lines.length<3){
+    var theirMate=mateIn1(board,aiColor);
+    if(theirMate)
+      lines.push("ระวัง ถ้าปล่อยไว้ ตาหน้าคอมพิวเตอร์รุกฆาตได้ด้วย "+moveText(theirMate)+
+        " ต้องปิดทางนั้นหรือย้ายขุนหนีตานี้");
+    else {
+      var threat=bestCapture(board,aiColor);
+      if(threat) lines.push("ถ้าคุณไม่ทำอะไร ตาหน้าเขาจะกิน"+NAMES[typeOf(threat.move.cap)]+"ที่ "+
+        sqName(threat.move.to)+" ด้วย"+NAMES[typeOf(threat.move.piece)]+"จาก "+sqName(threat.move.from)+
+        " แลกกันแล้วคุณเสียราว "+pts(threat.gain)+" แต้มหมาก");
+    }
   }
-  if(toMove===humanColor){
-    var fc=freeCaptures(board,humanColor);
-    if(fc.length) lines.push("คุณกิน"+NAMES[typeOf(fc[0].cap)]+"ที่ "+sqName(fc[0].to)+" ได้ ด้วย"+
-      NAMES[typeOf(fc[0].piece)]+"จาก "+sqName(fc[0].from)+" ลองดูว่าเขากินคืนได้คุ้มไหมก่อนตัดสินใจ");
+  if(myTurn && lines.length<4){
+    var mine=bestCapture(board,humanColor,0);
+    if(mine){
+      var howHead="คุณกิน"+NAMES[typeOf(mine.move.cap)]+"ที่ "+sqName(mine.move.to)+" ด้วย"+
+        NAMES[typeOf(mine.move.piece)]+"จาก "+sqName(mine.move.from)+" ได้ ";
+      lines.push(mine.gain>40
+        ? howHead+"แลกกันจนจบแล้วได้กำไรราว "+pts(mine.gain)+" แต้มหมาก"
+        : howHead+"แลกกันจนจบแล้วเท่าทุน ถ้าไม่กินคืนเขาจะได้ตัวนั้นฟรี");
+    }
   }
-  var me=materialOf(board,humanColor), ai=materialOf(board,aiColor), diff=(me-ai)/100;
-  if(Math.abs(diff)<0.4) lines.push("แต้มหมากตอนนี้พอกัน เกมยังเปิดกว้าง");
-  else if(diff>0) lines.push("ตอนนี้คุณนำอยู่ราว "+diff.toFixed(1)+" แต้มหมาก (นับเบี้ยเป็นหนึ่ง) ตอนนำให้ไล่แลกตัวเพื่อให้เกมง่ายลง");
-  else lines.push("ตอนนี้คุณตามหลังราว "+Math.abs(diff).toFixed(1)+" แต้มหมาก ควรเลี่ยงการแลกตัวแบบหนึ่งต่อหนึ่ง แล้วหาทางจ่อสองตัวพร้อมกัน");
-  if(countActive) lines.push(countLabelTxt+"เดินไปแล้ว "+countNow+" จาก "+countMax+" ตา ถ้าครบแล้วยังไม่ฆาตจะเสมอทันที");
+  if(lines.length<4){
+    var me=materialOf(board,humanColor), ai=materialOf(board,aiColor), diff=(me-ai)/100;
+    if(Math.abs(diff)<0.4) lines.push("แต้มหมากตอนนี้พอกัน เกมยังเปิดกว้าง ใครวางตัวคุมกลางกระดานได้มากกว่าจะได้เปรียบ");
+    else if(diff>0) lines.push("คุณนำอยู่ราว "+diff.toFixed(1)+" แต้มหมาก ตอนนำให้ไล่แลกตัวหนึ่งต่อหนึ่ง ยิ่งตัวน้อยยิ่งชนะง่าย");
+    else lines.push("คุณตามหลังราว "+Math.abs(diff).toFixed(1)+" แต้มหมาก เลี่ยงการแลกตัวเท่ากัน แล้วหาทางจ่อสองตัวพร้อมกันเพื่อได้ตัวคืน");
+  }
+  if(countActive && lines.length<4)
+    lines.push(countLabelTxt+"เดินไปแล้ว "+countNow+" จาก "+countMax+" ตา ถ้าครบก่อนรุกฆาตจะเสมอทันที");
   coachBase=lines.slice(0,4);
+}
+
+/* ช่องปลายทางที่เดินไปแล้วเสียหมากโดยไม่คุ้ม */
+function computeRisky(){
+  riskySquares=[];
+  if(!coachOn || sel<0) return;
+  var i;
+  for(i=0;i<selMoves.length;i++) if(moveLoss(selMoves[i]) > 60) riskySquares.push(selMoves[i].to);
+}
+function explainMove(m){
+  if(!m) return "";
+  var head="แนะนำให้เดิน "+moveText(m)+" ";
+  makeMove(board,m);
+  var mates=inCheck(board,aiColor) && legalMoves(board,aiColor).length===0;
+  var givesCheck=inCheck(board,aiColor);
+  unmakeMove(board,m);
+  if(mates) return head+"เป็นการรุกฆาต จบเกมทันที";
+  if(m.cap){
+    var g=seeCapture(board,m,humanColor);
+    return head+"กิน"+NAMES[typeOf(m.cap)]+" แลกกันจนจบแล้ว"+
+      (g>0 ? "ได้กำไรราว "+pts(g)+" แต้มหมาก" : "เสมอตัว แต่ทำให้กระดานโล่งขึ้น");
+  }
+  if(givesCheck) return head+"เป็นการรุก บังคับให้เขาต้องแก้รุกก่อน ทำให้คุณได้จังหวะหนึ่งตา";
+  var threat=bestCapture(board,aiColor);
+  if(threat && threat.move.to===m.from)
+    return head+"เพื่อพา"+NAMES[typeOf(m.piece)]+"หนีจาก"+NAMES[typeOf(threat.move.piece)]+"ที่กำลังจ่ออยู่";
+  var after=new Int8Array(64); after.set(board);
+  makeMove(after,m);
+  var newThreat=bestCapture(after,humanColor);
+  if(newThreat) return head+"แล้วตาถัดไปคุณจะกิน"+NAMES[typeOf(newThreat.move.cap)]+"ที่ "+
+    sqName(newThreat.move.to)+" ได้ เป็นการสร้างภัยไว้ก่อน";
+  if(m.promo) return head+"เพื่อหงายเบี้ยเป็นเบี้ยหงาย ซึ่งเดินทแยงได้เหมือนเม็ด";
+  if(typeOf(m.piece)===BIA) return head+"เพื่อดันเบี้ยขึ้นไปหาแถวหงาย และเปิดทางให้ตัวหลัง";
+  return head+"เพื่อพาตัวออกจากแถวหลังมาคุมช่องกลางกระดานให้มากขึ้น";
 }
 function renderCoach(){
   var body=document.getElementById("coachBody"), btn=document.getElementById("btnHint"),
@@ -772,36 +869,6 @@ function renderCoach(){
 }
 function updateCoach(){ computeCoachLines(); renderCoach(); }
 
-/* ช่องปลายทางที่เดินไปแล้วจะโดนกินโดยไม่คุ้ม */
-function computeRisky(){
-  riskySquares=[];
-  if(!coachOn || sel<0) return;
-  var i;
-  for(i=0;i<selMoves.length;i++){
-    var m=selMoves[i];
-    makeMove(board,m);
-    var atk=attackersOf(board,m.to,aiColor), j, cheapest=1e9;
-    for(j=0;j<atk.length;j++) cheapest=Math.min(cheapest, VAL[typeOf(atk[j].piece)]);
-    var def=defendersOf(board,m.to,humanColor);
-    unmakeMove(board,m);
-    var mine=VAL[typeOf(m.piece)], gain=m.cap?VAL[typeOf(m.cap)]:0;
-    if(atk.length && (def===0 || cheapest<mine) && gain < mine) riskySquares.push(m.to);
-  }
-}
-function explainMove(m){
-  if(!m) return "";
-  var head="แนะนำให้เดิน "+moveText(m)+" ";
-  if(m.cap) return head+"เพื่อกิน"+NAMES[typeOf(m.cap)]+"ของคอมพิวเตอร์";
-  makeMove(board,m);
-  var givesCheck=inCheck(board,aiColor);
-  unmakeMove(board,m);
-  if(givesCheck) return head+"เพื่อรุกขุนของคอมพิวเตอร์ บังคับให้เขาต้องแก้รุกก่อน";
-  var hang=hangingPieces(board,humanColor), i;
-  for(i=0;i<hang.length;i++) if(hang[i].sq===m.from) return head+"เพื่อพาตัวที่กำลังถูกจ่ออยู่ออกจากอันตราย";
-  if(m.promo) return head+"เพื่อหงายเบี้ยเป็นเบี้ยหงาย ซึ่งเดินทแยงได้เหมือนเม็ด";
-  if(typeOf(m.piece)===BIA) return head+"เพื่อดันเบี้ยขึ้นไปหาแถวหงาย และเปิดทางให้ตัวหลัง";
-  return head+"เพื่อวางตัวให้คุมช่องได้มากขึ้นและเตรียมจ่อตัวของเขา";
-}
 function startHint(){
   if(gameOver||thinking||hinting||toMove!==humanColor) return;
   hinting=true; hintMove=null; hintWhy=""; renderCoach();
@@ -929,6 +996,29 @@ function draw(){
 }
 function drawPiece(sq,p){
   var c=sqXY(sq), cx=c.x+cell/2, cy=c.y+cell/2, r=cell*0.40, col=colorOf(p);
+  var key=(col===1?"w":"b")+typeOf(p), im=IMG[key];
+  if(im){
+    ctx.save();
+    ctx.globalAlpha=.22;                                  /* เงาใต้ฐาน */
+    ctx.fillStyle="#2a1a08";
+    ctx.beginPath();
+    ctx.ellipse(cx+cell*0.03, c.y+cell*0.88, cell*0.30, cell*0.085, 0, 0, 6.2832);
+    ctx.fill();
+    ctx.globalAlpha=1;
+    var s=cell*0.98;
+    ctx.drawImage(im, cx-s/2, c.y+cell-s-cell*0.02, s, s);
+    if(showNames){
+      ctx.font="700 "+Math.max(8,cell*0.19)+"px 'IBM Plex Sans Thai Looped', sans-serif";
+      ctx.textAlign="center"; ctx.textBaseline="alphabetic";
+      ctx.lineWidth=Math.max(2,cell*0.05);
+      ctx.strokeStyle = col===1 ? "rgba(255,252,245,.92)" : "rgba(10,8,5,.92)";
+      ctx.strokeText(NAMES[typeOf(p)], cx, c.y+cell-cell*0.06);
+      ctx.fillStyle = col===1 ? "#3A2A14" : "#F0E2C8";
+      ctx.fillText(NAMES[typeOf(p)], cx, c.y+cell-cell*0.06);
+    }
+    ctx.restore();
+    return;
+  }
   ctx.save();
   ctx.beginPath(); ctx.arc(cx+cell*0.04,cy+cell*0.06,r,0,6.2832);
   ctx.fillStyle="rgba(40,24,8,0.25)"; ctx.fill();
@@ -1091,6 +1181,13 @@ function seg(id,cb){
   });
 }
 seg("segLevel",function(v){ level=v; });
+showNames = loadPref("mk_names","1")==="1";
+(function(){
+  var kids=document.getElementById("segNames").querySelectorAll("button"), i;
+  for(i=0;i<kids.length;i++)
+    kids[i].setAttribute("aria-pressed", (kids[i].getAttribute("data-v")==="1")===showNames ? "true":"false");
+})();
+seg("segNames",function(v){ showNames=(v===1); savePref("mk_names", v===1?"1":"0"); draw(); });
 seg("segColor",function(v){ humanColor=v; aiSearchId++; newGame(); });
 
 window.addEventListener("resize",function(){ layout(); draw(); });
