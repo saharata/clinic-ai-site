@@ -569,6 +569,7 @@ function newGame(){
   history=[]; kifu=[]; gameOver=false; thinking=false; aiState=null; territory=null;
   hover=-1; cursor=((N*N)-1)/2|0;
   clearHint(); atariList=[]; lastAICaps=0; lastWinRate=-1;
+  prevWinRate=-1; moveDelta=null; bigPoint=-1; playerState=null; readyHint=null; analysing=false;
   aiColor=3-humanColor;
   document.getElementById("komiLine").textContent=KOMI.toFixed(1);
   document.getElementById("verdict").hidden=true;
@@ -651,6 +652,8 @@ function finishAI(st){
   thinking=false; aiState=null;
   var b=bestChild(st.root);
   var wr=(b&&b.n>0)?b.w/b.n:0.5;
+  moveDelta = (lastWinRate>=0) ? (wr-lastWinRate) : null;   /* ตาที่ผู้เล่นเพิ่งวางทำให้เขาดีขึ้นแค่ไหน */
+  prevWinRate=lastWinRate;
   lastWinRate=wr;
   if(b && b.n>20 && wr<0.09 && moveNum>N){ endGame("resign",aiColor); return; }
   var mv=pickMove(st.root);
@@ -662,11 +665,14 @@ function finishAI(st){
   else say("คอมพิวเตอร์วางที่ "+coordOf(mv));
   lastAICaps=caps[aiColor]-capsBefore;
   draw(); updateUI();
+  playerState=null; readyHint=null; bigPoint=-1;
+  setTimeout(startPlayerAnalysis,60);
 }
 
 /* ---------- โหมดโค้ช: บอกสถานการณ์ + แนะนำตาเดิน ---------- */
 var coachOn=true, atariList=[], coachBase=[], hintMove=-2, hintWhy="", hinting=false, hintState=null;
 var hoverWarn="", riskyPoint=-1;
+var prevWinRate=-1, moveDelta=null, bigPoint=-1, playerState=null, readyHint=null, analysing=false;
 var lastWinRate=-1, lastAICaps=0;
 
 function allGroups(b){
@@ -741,6 +747,32 @@ function pressureThreats(color){
   }
   out.sort(function(a,c){ return c.g.stones.length-a.g.stones.length; });
   return out;
+}
+function zoneName(p){
+  var x=p%N, y=(p/N)|0, t=N/3;
+  var v = y<t ? "บน" : (y>=2*t ? "ล่าง" : "กลาง");
+  var h = x<t ? "ซ้าย" : (x>=2*t ? "ขวา" : "กลาง");
+  if(v==="กลาง" && h==="กลาง") return "กลางกระดาน";
+  if(v==="กลาง") return "ด้านข้าง"+h;
+  if(h==="กลาง") return "ขอบด้าน"+v;
+  return "มุม"+v+h;
+}
+/* คิดฝั่งผู้เล่นไว้เบื้องหลังหลังคอมพิวเตอร์เดินจบ รู้ว่าจุดใหญ่อยู่ไหนและตอบปุ่มแนะนำได้ทันที */
+function startPlayerAnalysis(){
+  if(!coachOn || gameOver || thinking || toMove!==humanColor) return;
+  var st={ root:newNode(-2), board:board.slice(), work:new Int8Array(NN), path:[],
+           ko:koPoint, color:humanColor, end:performance.now()+900,
+           cap:(NN>200?6000:12000), done:0 };
+  playerState=st; analysing=true;
+  (function step(){
+    if(playerState!==st) return;
+    var slice=performance.now()+40;
+    while(performance.now()<slice && performance.now()<st.end && st.done<st.cap){ oneIteration(st); st.done++; }
+    if(performance.now()<st.end && st.done<st.cap){ setTimeout(step,0); return; }
+    analysing=false; readyHint=st;
+    bigPoint=pickMove(st.root);
+    updateCoach();
+  })();
 }
 function clearHint(){ hintState=null; hinting=false; hintMove=-2; hintWhy=""; hoverWarn=""; riskyPoint=-1; }
 
@@ -850,6 +882,17 @@ function computeCoachLines(){
   else
     lines.push("ถ้านับพื้นที่ตอนนี้ "+(net>=0?"คุณนำอยู่ราว ":"คุณตามหลังราว ")+gap+" แต้ม ยังสูสี");
 
+  if(moveDelta!==null && Math.abs(moveDelta)>=0.06 && lines.length<4)
+    lines.push(moveDelta>0
+      ? "ตาที่แล้วของคุณทำให้โอกาสชนะของเขาเพิ่มจาก "+Math.round(prevWinRate*100)+" เป็น "+
+        Math.round(lastWinRate*100)+" เปอร์เซ็นต์ คราวหน้าถ้าไม่แน่ใจ กดปุ่มแนะนำก่อนวางก็ได้"
+      : "ตาที่แล้วของคุณดี โอกาสชนะของเขาลดจาก "+Math.round(prevWinRate*100)+" เหลือ "+
+        Math.round(lastWinRate*100)+" เปอร์เซ็นต์");
+  if(bigPoint>=0 && lines.length<4)
+    lines.push("ถ้าไม่มีอะไรด่วนกว่า จุดใหญ่ที่สุดตอนนี้อยู่ทาง"+zoneName(bigPoint)+" ลองมองแถวนั้นก่อน");
+  else if(analysing && lines.length<4)
+    lines.push("กำลังอ่านกระดานต่ออีกหลายตา เดี๋ยวจะบอกว่าจุดใหญ่อยู่ทางไหน");
+
   if(openPts <= Math.max(6, NN*0.12))
     lines.push("กระดานเกือบเต็มแล้ว ถ้าไม่มีจุดไหนได้แต้มเพิ่ม กดผ่านได้เลย ผ่านสองครั้งติดกันคือจบเกมแล้วนับแต้ม");
 
@@ -915,6 +958,15 @@ function explainMove(p){
 
 function startHint(){
   if(gameOver||thinking||hinting||toMove!==humanColor) return;
+  if(readyHint && readyHint.done>400){           /* ใช้ผลที่คิดไว้เบื้องหลัง ตอบทันที */
+    var op0 = moveNum<4 ? openingPoint(board) : -1;
+    hintMove = op0>=0 ? op0 : pickMove(readyHint.root);
+    hintWhy = op0>=0
+      ? "แนะนำให้วางที่ "+coordOf(op0)+" ช่วงเปิดเกมยังไม่มีอะไรต้องสู้ จุดมาตรฐานคือมุมบนเส้นที่"+
+        (openingLine()===2?"สาม":"สี่")+" เพราะล้อมมุมได้ด้วยหมากน้อยที่สุด"
+      : explainMove(hintMove);
+    say(hintWhy); updateCoach(); return;
+  }
   hinting=true; hintMove=-2; hintWhy=""; updateCoach();
   var st={ root:newNode(-2), board:board.slice(), work:new Int8Array(NN), path:[],
            ko:koPoint, color:humanColor, end:performance.now()+1600, cap:20000, done:0 };
@@ -1109,6 +1161,7 @@ function pointAt(ev){
 function humanPlay(p){
   if(gameOver||thinking||hinting||toMove!==humanColor||p<0) return;
   lastAICaps=0; clearHint();
+  playerState=null; readyHint=null; bigPoint=-1; analysing=false;
   scratch.set(board);
   if(!tryPlay(scratch,p,humanColor,koPoint)) { say("วางตรงนั้นไม่ได้"); return; }
   snapshot();
