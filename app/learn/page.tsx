@@ -334,6 +334,9 @@ export default function LearnPage() {
               <a href="/learn/go" className="btn big lp-btn-ghost">
                 เล่นหมากล้อม
               </a>
+              <a href="/learn/makruk" className="btn big lp-btn-ghost">
+                เล่นหมากรุกไทย
+              </a>
             </div>
             <ul className="lp-stats" aria-label="สรุปเนื้อหา">
               <li>12 บท</li>
@@ -417,16 +420,19 @@ export default function LearnPage() {
         <div className="container">
           <div className="section-head">
             <p className="eyebrow lp-eyebrow">เกมฝึกคิด</p>
-            <h2 id="go-title">หมากล้อม เล่นกับคอมพิวเตอร์</h2>
+            <h2 id="go-title">กระดานสองอย่าง เล่นกับคอมพิวเตอร์</h2>
             <p>
-              กระดานโกะเต็มรูปแบบที่ทำงานอยู่ในเบราว์เซอร์ เลือกกระดาน 9×9 13×13 หรือ 19×19
-              ปรับความเก่งของคอมพิวเตอร์ได้สามระดับ วางหมากด้วยการคลิกหรือใช้แป้นพิมพ์ก็ได้
-              เกมจับหมาก นับพื้นที่ และตัดสินผลให้อัตโนมัติ
+              หมากล้อมเต็มรูปแบบ เลือกกระดาน 9×9 13×13 หรือ 19×19 และหมากรุกไทยครบกติกา
+              ทั้งเบี้ยหงาย โคน เม็ด และกฎนับศักดิ์ ทั้งสองเกมมีโหมดโค้ชที่คอยบอกว่าตอนนี้เกิดอะไรขึ้น
+              และแนะนำตาเดินให้เมื่อขอ เล่นด้วยการคลิกหรือแป้นพิมพ์ก็ได้
             </p>
           </div>
           <div className="lp-hero-actions">
             <a href="/learn/go" className="btn big btn-dark">
               เปิดกระดานหมากล้อม
+            </a>
+            <a href="/learn/makruk" className="btn big btn-dark">
+              เปิดกระดานหมากรุกไทย
             </a>
           </div>
         </div>
