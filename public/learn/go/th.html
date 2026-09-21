@@ -692,6 +692,56 @@ function groupName(g){
   for(i=1;i<g.stones.length;i++) if(g.stones[i]<best) best=g.stones[i];
   return coordOf(best);
 }
+/* ===== อ่านบันได (ชิโจ): ไล่จับกลุ่มที่ลมน้อยจนสุดทาง =====
+   ฝ่ายไล่ลองบีบได้ทุกทิศ ฝ่ายหนีต่อลมหรือกินตัวไล่ที่ลมเดียว
+   คืน true เมื่อไล่จับได้จริง = ต่อไปก็ไม่รอด                              */
+var ladderBudget=0;
+function ladderSearch(b, stone, depth){
+  if(depth<=0 || --ladderBudget<0) return false;
+  if(b[stone]===0) return true;
+  var prey=b[stone], hunter=3-prey, i, j;
+  var libs=groupLibs(b,stone), gp=gStones.slice();
+  if(libs>=3) return false;
+  if(libs===0) return true;
+  var lp=libsOf(b,gp);
+  if(libs===2){
+    for(i=0;i<lp.length;i++){                     /* ฝ่ายไล่ลองทุกทิศ จับได้ทางเดียวก็พอ */
+      var t=new Int8Array(NN); t.set(b);
+      if(!tryPlay(t,lp[i],hunter,-1)) continue;
+      if(t[stone]===0) return true;
+      if(groupLibs(t,stone)===1 && ladderSearch(t,stone,depth-1)) return true;
+    }
+    return false;
+  }
+  for(i=0;i<gp.length;i++){                       /* หนีด้วยการกินตัวไล่ที่ลมเดียว */
+    var nb=nbrs[gp[i]];
+    for(j=0;j<nb.length;j++)
+      if(b[nb[j]]===hunter && groupLibs(b,nb[j])===1) return false;
+  }
+  var t2=new Int8Array(NN); t2.set(b);
+  if(!tryPlay(t2,lp[0],prey,-1)) return true;     /* ต่อไม่ได้ = ตาย */
+  return ladderSearch(t2,stone,depth-1);
+}
+function ladderDead(b, stone, depth){
+  ladderBudget = NN>200 ? 900 : 2500;   /* กระดานใหญ่จำกัดให้แน่นขึ้น กันหน่วง */
+  return ladderSearch(b, stone, depth);
+}
+/* กลุ่มที่เหลือสองลม และอีกฝ่ายบีบให้เหลือลมเดียวได้ในตาเดียว */
+function pressureThreats(color){
+  var gs=allGroups(board), out=[], i, k;
+  for(i=0;i<gs.length;i++){
+    var g=gs[i];
+    if(g.color!==color || g.libs!==2) continue;
+    var lp=libsOf(board,g.stones);
+    for(k=0;k<lp.length;k++){
+      var t=new Int8Array(NN); t.set(board);
+      if(!tryPlay(t,lp[k],3-color,-1)) continue;
+      if(t[g.stones[0]]!==0 && groupLibs(t,g.stones[0])===1){ out.push({g:g, at:lp[k]}); break; }
+    }
+  }
+  out.sort(function(a,c){ return c.g.stones.length-a.g.stones.length; });
+  return out;
+}
 function clearHint(){ hintState=null; hinting=false; hintMove=-2; hintWhy=""; hoverWarn=""; riskyPoint=-1; }
 
 function eyeCount(b,g){
@@ -730,13 +780,36 @@ function computeCoachLines(){
     lines.push("คอมพิวเตอร์เพิ่งกินหมากของคุณไป "+lastAICaps+" เม็ด");
   if(mine.length){
     var g1=mine[0], lp=libsOf(board,g1.stones);
-    lines.push("กลุ่มของคุณที่ "+groupName(g1)+" ("+g1.stones.length+" เม็ด) เหลือลมหายใจเดียว ตาหน้าจะถูกกิน "+
-      (lp.length ? "ทางแก้คือวางที่ "+coordOf(lp[0])+" หรือปล่อยทิ้งแล้วไปเล่นจุดที่ใหญ่กว่า"
-                 : "ไม่มีจุดต่อแล้ว ปล่อยไปเล่นที่อื่นดีกว่า"));
+    if(!lp.length){
+      lines.push("กลุ่มของคุณที่ "+groupName(g1)+" ("+g1.stones.length+" เม็ด) เหลือลมหายใจเดียวและไม่มีจุดต่อ ปล่อยทิ้งแล้วไปเล่นจุดที่ใหญ่กว่าดีกว่า");
+    } else {
+      var esc=new Int8Array(NN); esc.set(board);
+      var canExtend=tryPlay(esc,lp[0],humanColor,koPoint);
+      var doomed = canExtend ? ladderDead(esc, g1.stones[0], 70) : true;
+      lines.push("กลุ่มของคุณที่ "+groupName(g1)+" ("+g1.stones.length+" เม็ด) เหลือลมหายใจเดียว ตาหน้าจะถูกกิน "+
+        (doomed
+          ? "ต่อที่ "+coordOf(lp[0])+" ก็ไม่รอด เพราะเขาไล่เป็นบันไดได้จนสุดกระดาน ยอมเสีย "+g1.stones.length+
+            " เม็ดแล้วไปเล่นจุดที่ใหญ่กว่าคุ้มกว่า"
+          : "ต่อที่ "+coordOf(lp[0])+" แล้วหนีออกมาได้ รีบต่อเลย"));
+    }
   } else if(weak.length){
     var g2=weak[0], lp2=libsOf(board,g2.stones);
     lines.push("กลุ่มของคุณที่ "+groupName(g2)+" ("+g2.stones.length+" เม็ด) เหลือลมหายใจสองช่อง กำลังถูกไล่ "+
       (lp2.length ? "ถ้าจะสู้ต้องรีบขยายออกทาง "+coordOf(lp2[0]) : ""));
+  }
+  if(toMove===humanColor && lines.length<3){
+    var threats=pressureThreats(humanColor);
+    if(threats.length){
+      var th=threats[0];
+      var sim=new Int8Array(NN); sim.set(board);
+      if(tryPlay(sim,th.at,aiColor,-1)){
+        var thenDead=ladderDead(sim, th.g.stones[0], 70);
+        lines.push("ตาหน้าเขาวางที่ "+coordOf(th.at)+" จะบีบกลุ่ม "+groupName(th.g)+" ของคุณ ("+
+          th.g.stones.length+" เม็ด) ให้เหลือลมหายใจเดียว"+
+          (thenDead ? " แล้วไล่เป็นบันไดจนตายทั้งกลุ่ม ตานี้ควรเปิดทางออกไว้ก่อน"
+                    : " ควรเผื่อทางหนีหรือเสริมลมไว้"));
+      }
+    }
   }
   if(eyeless.length){
     var g3=eyeless[0];
@@ -747,6 +820,15 @@ function computeCoachLines(){
     var t=theirs[0], tp=libsOf(board,t.stones);
     lines.push("กลุ่มของคอมพิวเตอร์ที่ "+groupName(t)+" ("+t.stones.length+" เม็ด) เหลือลมหายใจเดียว"+
       (tp.length ? " วางที่ "+coordOf(tp[0])+" กินได้ทันที" : ""));
+  } else if(toMove===humanColor && lines.length<4){
+    var theirWeak=pressureThreats(aiColor);
+    if(theirWeak.length){
+      var w2=theirWeak[0];
+      var sim2=new Int8Array(NN); sim2.set(board);
+      if(tryPlay(sim2,w2.at,humanColor,koPoint) && ladderDead(sim2, w2.g.stones[0], 70))
+        lines.push("คุณวางที่ "+coordOf(w2.at)+" จะบีบกลุ่ม "+groupName(w2.g)+" ของเขา ("+
+          w2.g.stones.length+" เม็ด) เข้าบันได ไล่ต่อไปจนกินได้ทั้งกลุ่ม");
+    }
   }
 
   /* สถานะแต้มคร่าว ๆ จากการนับพื้นที่ ณ ตอนนี้ */
