@@ -356,6 +356,9 @@ export default function LearnPage() {
               <a href="/learn/makruk" className="btn big lp-btn-ghost">
                 เล่นหมากรุกไทย
               </a>
+              <a href="/learn/chess" className="btn big lp-btn-ghost">
+                หมากรุกสากล 3 มิติ
+              </a>
             </div>
             <ul className="lp-stats" aria-label="สรุปเนื้อหา">
               <li>13 บท</li>
@@ -453,11 +456,11 @@ export default function LearnPage() {
         <div className="container">
           <div className="section-head">
             <p className="eyebrow lp-eyebrow">เกมฝึกคิด</p>
-            <h2 id="go-title">กระดานสองอย่าง เล่นกับคอมพิวเตอร์</h2>
+            <h2 id="go-title">กระดานสามอย่าง เล่นกับคอมพิวเตอร์หรือสองคน</h2>
             <p>
-              หมากล้อมเต็มรูปแบบ เลือกกระดาน 9×9 13×13 หรือ 19×19 และหมากรุกไทยครบกติกา
-              ทั้งเบี้ยหงาย โคน เม็ด และกฎนับศักดิ์ ทั้งสองเกมมีโหมดโค้ชที่คอยบอกว่าตอนนี้เกิดอะไรขึ้น
-              และแนะนำตาเดินให้เมื่อขอ เล่นด้วยการคลิกหรือแป้นพิมพ์ก็ได้
+              หมากล้อมเต็มรูปแบบ เลือกกระดาน 9×9 13×13 หรือ 19×19 · หมากรุกไทยครบกติกาทั้งเบี้ยหงาย โคน เม็ด และนับศักดิ์
+              · และหมากรุกสากลกระดานสามมิติที่หมุนดูได้ เล่นกับคอมพิวเตอร์หรือสองคนบนจอเดียว
+              ทุกเกมมีโหมดโค้ชที่บอกว่าตอนนี้เกิดอะไรขึ้นและแนะนำตาเดินให้เมื่อขอ
             </p>
           </div>
           <div className="lp-hero-actions">
@@ -466,6 +469,9 @@ export default function LearnPage() {
             </a>
             <a href="/learn/makruk" className="btn big btn-dark">
               เปิดกระดานหมากรุกไทย
+            </a>
+            <a href="/learn/chess" className="btn big btn-dark">
+              เปิดหมากรุกสากล 3 มิติ
             </a>
           </div>
         </div>

@@ -26,6 +26,7 @@ const nextConfig: NextConfig = {
       { source: "/learn/life/en", destination: "/learn/life/en.html" },
       { source: "/learn/go", destination: "/learn/go/th.html" },
       { source: "/learn/makruk", destination: "/learn/makruk/th.html" },
+      { source: "/learn/chess", destination: "/learn/chess/th.html" },
       { source: "/learn/play", destination: "/learn/play/th.html" },
       { source: "/learn/play/en", destination: "/learn/play/en.html" },
       { source: "/learn/brain", destination: "/learn/brain/th.html" },
