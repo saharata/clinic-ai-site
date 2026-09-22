@@ -409,6 +409,9 @@ export default function HomePage() {
             <a href="/learn/makruk" className="btn big">
               เล่นหมากรุกไทย
             </a>
+            <a href="/learn/chess" className="btn big">
+              หมากรุกสากล 3 มิติ
+            </a>
           </div>
         </div>
       </section>
