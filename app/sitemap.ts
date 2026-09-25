@@ -227,5 +227,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.4,
     },
+    {
+      url: `${siteUrl}/learn/robot`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/learn/robot/en`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.4,
+    },
   ];
 }
