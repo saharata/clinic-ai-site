@@ -43,6 +43,8 @@ const nextConfig: NextConfig = {
       { source: "/learn/neurologist/en", destination: "/learn/neurologist/en.html" },
       { source: "/learn/space", destination: "/learn/space/th.html" },
       { source: "/learn/space/en", destination: "/learn/space/en.html" },
+      { source: "/learn/ai", destination: "/learn/ai/th.html" },
+      { source: "/learn/ai/en", destination: "/learn/ai/en.html" },
     ];
   },
 };

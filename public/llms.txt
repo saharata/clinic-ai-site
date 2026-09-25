@@ -46,4 +46,5 @@
 - ระดับสอง ฉบับภาษาอังกฤษ: https://www.sahawanclinic.clinic/learn/brain/en · https://www.sahawanclinic.clinic/learn/heart/en · https://www.sahawanclinic.clinic/learn/dna/en · https://www.sahawanclinic.clinic/learn/hormones/en · https://www.sahawanclinic.clinic/learn/mind/en
 - บทที่ 13 บทพิเศษ ประสาทแพทย์คือใคร ทำอะไร (ป.3 ถึง ม.1) — https://www.sahawanclinic.clinic/learn/neurologist (English: https://www.sahawanclinic.clinic/learn/neurologist/en)
 - บทที่ 14 บทพิเศษ ระบบสุริยะและจักรวาล ฉบับเจาะลึก (อายุ 10 ถึง 13 ปี) — https://www.sahawanclinic.clinic/learn/space (English: https://www.sahawanclinic.clinic/learn/space/en)
+- บทที่ 15 บทพิเศษ ปัญญาประดิษฐ์ AI เรียนรู้อย่างไร พร้อมคำศัพท์ AI 30 คำ (อายุ 10 ถึง 13 ปี) — https://www.sahawanclinic.clinic/learn/ai (English: https://www.sahawanclinic.clinic/learn/ai/en)
 - หน้ารวม Body 101: https://www.sahawanclinic.clinic/learn
