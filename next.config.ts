@@ -45,6 +45,8 @@ const nextConfig: NextConfig = {
       { source: "/learn/space/en", destination: "/learn/space/en.html" },
       { source: "/learn/ai", destination: "/learn/ai/th.html" },
       { source: "/learn/ai/en", destination: "/learn/ai/en.html" },
+      { source: "/learn/robot", destination: "/learn/robot/th.html" },
+      { source: "/learn/robot/en", destination: "/learn/robot/en.html" },
     ];
   },
 };
