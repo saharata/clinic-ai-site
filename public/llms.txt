@@ -48,4 +48,5 @@
 - บทที่ 14 บทพิเศษ ระบบสุริยะและจักรวาล ฉบับเจาะลึก (อายุ 10 ถึง 13 ปี) — https://www.sahawanclinic.clinic/learn/space (English: https://www.sahawanclinic.clinic/learn/space/en)
 - บทที่ 15 บทพิเศษ ปัญญาประดิษฐ์ AI เรียนรู้อย่างไร พร้อมคำศัพท์ AI 32 คำ (อายุ 10 ถึง 13 ปี) — https://www.sahawanclinic.clinic/learn/ai (English: https://www.sahawanclinic.clinic/learn/ai/en)
 - บทที่ 16 บทพิเศษ AI ขั้นสูงและหุ่นยนต์ จากศูนย์ถึงสร้างเอง พร้อม 3 โครงงานและโค้ด Arduino (อายุ 10 ถึง 13 ปี) — https://www.sahawanclinic.clinic/learn/robot (English: https://www.sahawanclinic.clinic/learn/robot/en)
+- บทที่ 17 บทพิเศษ AI กับหุ่นยนต์ ทีมเดียวกัน สมอง AI กับร่างกายหุ่นยนต์ทำงานเป็นวงเดียว พร้อมโครงงาน AI ขับรถ (อายุ 10 ถึง 13 ปี) — https://www.sahawanclinic.clinic/learn/airobot (English: https://www.sahawanclinic.clinic/learn/airobot/en)
 - หน้ารวม Body 101: https://www.sahawanclinic.clinic/learn
