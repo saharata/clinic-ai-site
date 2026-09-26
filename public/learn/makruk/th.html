@@ -43,7 +43,7 @@
   --board-hi:#D9AF72; --board-lo:#BE8F4D; --board-rim:#87602F; --line:#4E3419;
   --white-p:#FAF4E6; --white-p-lo:#D6C7A8; --white-ink:#3A2A14;
   --black-p:#2A2118; --black-p-hi:#5A4A36; --black-ink:#F2E6D2;
-  --seal:#9C3022; --good:#2E7150; --pick:#C8901F;
+  --seal:#9C3022; --good:#2E7150; --pick:#C8901F; --coord:#3A2615;
   --shadow:rgba(60,40,20,.22);
   --f-display:"Mali","IBM Plex Sans Thai Looped",system-ui,sans-serif;
   --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,sans-serif;
@@ -52,7 +52,7 @@
   :root:not([data-theme="light"]){
     --ground:#13121A; --panel:#1C1A23; --panel-2:#23202B; --edge:#353140;
     --ink:#EFE7D9; --muted:#A2937E;
-    --board-hi:#8E6234; --board-lo:#6A4825; --board-rim:#3A2615; --line:#261608;
+    --board-hi:#8E6234; --board-lo:#6A4825; --board-rim:#3A2615; --line:#E8D3B0; --coord:#FFF1D6;
     --white-p:#EFE6D2; --white-p-lo:#B6A783; --white-ink:#2A1E0E;
     --black-p:#1A150F; --black-p-hi:#43382A; --black-ink:#E7D9BF;
     --seal:#E0725B; --good:#79B894; --pick:#E0AE4A;
@@ -71,7 +71,7 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
 .topmeta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .rules-line{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .rules-line b{color:var(--ink);font-weight:600}
-#btnHelp{min-height:38px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
+#btnHelp{min-height:44px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
 #btnHelp[aria-expanded="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 
 .tip{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0;
@@ -100,7 +100,7 @@ canvas:focus-visible{outline:3px solid var(--seal);outline-offset:3px}
   border-radius:3px;padding:10px 12px}
 .coach-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .coach-head .k{font-family:var(--f-display);font-size:15px;font-weight:700}
-.coach-head button{min-height:34px;padding:4px 12px;font-size:12.5px}
+.coach-head button{min-height:44px;padding:4px 12px;font-size:12.5px}
 .coach-text{display:flex;flex-direction:column;gap:7px;margin:9px 0 0;font-size:13px;line-height:1.55}
 .coach-text span{border-left:3px solid var(--good);padding-left:9px;color:var(--muted)}
 .coach-text span:first-child{color:var(--ink);font-weight:600;border-left-color:var(--seal)}
@@ -131,7 +131,7 @@ button.seal{color:var(--seal);border-color:var(--seal)}
 .field:last-child{margin-bottom:0}
 .field .lbl{font-size:13px;color:var(--muted)}
 .seg{display:flex;border:1.5px solid var(--edge);border-radius:3px;overflow:hidden}
-.seg button{border:0;border-radius:0;padding:5px 10px;min-height:40px;font-size:13.5px;background:var(--panel)}
+.seg button{border:0;border-radius:0;padding:5px 10px;min-height:44px;font-size:13.5px;background:var(--panel)}
 .seg button+button{border-left:1.5px solid var(--edge)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
 
@@ -156,9 +156,15 @@ button.seal{color:var(--seal);border-color:var(--seal)}
 .howto td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
 footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edge);padding-top:12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;padding:13px 16px;border-radius:10px;font:600 16px/1.2 system-ui,sans-serif;text-decoration:underline}
+.skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
+#main:focus{outline:none}
+@media (max-width:600px){.boardwrap{padding:6px}}   /* กระดานกว้างขึ้นบนมือถือ จุด/ช่องใหญ่ขึ้น */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
 <nav class="sw-bar" aria-label="สหวรรณคลินิก">
   <a class="sw-brand" href="/">สหวรรณคลินิก</a><span class="sw-sep" aria-hidden="true">/</span>
   <a href="/learn">Body 101 ทุกบท</a>
@@ -166,7 +172,7 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
   <a href="/learn/chess">หมากรุกสากล</a>
 </nav>
 
-<div class="wrap">
+<div class="wrap" id="main" role="main" tabindex="-1">
   <header class="top">
     <div class="mark">
       <h1>หมากรุกไทย เล่นกับคอมพิวเตอร์</h1>
@@ -1033,6 +1039,11 @@ function draw(){
     var a=sqXY(lastMove.from), b2=sqXY(lastMove.to);
     ctx.fillRect(a.x,a.y,cell,cell); ctx.fillRect(b2.x,b2.y,cell,cell);
     ctx.globalAlpha=1;
+    /* ขอบประทึบ ≥3:1 บอกตาล่าสุดได้โดยไม่พึ่งพื้นจาง ๆ (ต่างจากช่องที่เลือกซึ่งเป็นเส้นทึบ) */
+    ctx.save(); ctx.strokeStyle=cssVar("--line"); ctx.lineWidth=Math.max(2,cell*0.05);
+    ctx.setLineDash([Math.max(3,cell*0.12), Math.max(3,cell*0.08)]);
+    ctx.strokeRect(a.x+cell*0.1,a.y+cell*0.1,cell*0.8,cell*0.8); ctx.strokeRect(b2.x+cell*0.1,b2.y+cell*0.1,cell*0.8,cell*0.8);
+    ctx.restore();
   }
   if(sel>=0){
     var s=sqXY(sel);
@@ -1049,8 +1060,8 @@ function draw(){
   ctx.strokeStyle=cssVar("--board-rim"); ctx.lineWidth=2; ctx.globalAlpha=.6;
   ctx.strokeRect(lab-1,lab-1,8*cell+2,8*cell+2); ctx.globalAlpha=1;
 
-  ctx.globalAlpha=.65; ctx.fillStyle=cssVar("--board-rim");
-  ctx.font="600 "+Math.max(8,lab*0.62)+"px 'IBM Plex Sans Thai Looped', sans-serif";
+  ctx.fillStyle=cssVar("--coord");   /* ทึบ ≥4.5:1 และไม่เล็กกว่า 12px */
+  ctx.font="600 "+Math.max(12,lab*0.62)+"px 'IBM Plex Sans Thai Looped', sans-serif";
   ctx.textAlign="center"; ctx.textBaseline="middle";
   for(i=0;i<8;i++){
     var fileIdx = flipped ? 7-i : i, rankIdx = flipped ? i : 7-i;
