@@ -750,6 +750,11 @@
   .parts td.m{font-family:var(--f-mono)}
   .ledglow{transition:opacity .2s}
   @media (max-width:880px){.gmap{max-width:100%}}
+  .shopbtn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;border:1.5px solid var(--accent);border-radius:999px;font-weight:600;font-size:14.5px;line-height:1.3;text-decoration:none;color:var(--accent);background:transparent;white-space:nowrap;gap:4px}
+  .shopbtn:hover{background:var(--accent-wash)}
+  .shopbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .shopbox .parts td:last-child{white-space:nowrap}
+  .shopbox .how{font-size:14.5px;color:var(--ink-2)}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Advanced AI and Robots: From Zero to Building Your Own · Body 101 Lesson 16", "description": "Special lesson, ages 10 to 13: a long, 11-level lesson from zero, first circuits, microcontrollers and programming, sensors and lidar, motors and steering, feedback control, robots that learn by themselves, attention in advanced AI, prosthetic hands and medical robots, then three build-it-yourself projects with Arduino code, a 24-term glossary, a game and a quiz.", "url": "https://www.sahawanclinic.clinic/learn/robot/en", "inLanguage": "en", "educationalLevel": "Primary school", "learningResourceType": "Interactive resource", "isAccessibleForFree": true, "author": {"@type": "Person", "name": "Dr. Saharat Aungsumart", "jobTitle": "Neurologist"}, "publisher": {"@type": "MedicalClinic", "name": "สหวรรณคลินิก", "url": "https://www.sahawanclinic.clinic"}, "isPartOf": {"@type": "Course", "name": "Body 101", "url": "https://www.sahawanclinic.clinic/learn"}}</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -1086,6 +1091,29 @@
           <tr><td>Chassis, jumper wires and black electrical tape</td><td class="m">–</td><td>The car’s body, connecting wires, and for making the line on white paper</td></tr>
         </tbody>
       </table></div>
+      <div class="faq shopbox" style="margin:14px 0">
+        <details>
+          <summary><span aria-hidden="true">🛒&nbsp;</span>Buying the parts on Lazada</summary>
+          <p class="how">Each button opens a Lazada search in a new tab and is not tied to any one shop. An adult should choose the shop and place the order.</p>
+          <p><b>Easiest: buy a complete kit.</b> A line-follower car kit costs about 550 to 750 baht. Read the list of what is in the box before buying. Most kits have no HC-SR04 sensor and no long USB cable, and the battery holder may have no switch, so add those from the table below.</p>
+          <p><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%A3%E0%B8%96%E0%B8%AB%E0%B8%B8%E0%B9%88%E0%B8%99%E0%B8%A2%E0%B8%99%E0%B8%95%E0%B9%8C%E0%B9%80%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%95%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%AA%E0%B9%89%E0%B8%99+Arduino" target="_blank" rel="noopener" aria-label="Search Lazada for kits (opens a new tab)">Search Lazada for kits<span aria-hidden="true"> ↗</span></a></p>
+          <p style="margin-top:14px"><b>Or buy the parts one by one.</b> About 400 to 700 baht in total, not counting batteries.</p>
+          <div style="overflow-x:auto"><table class="parts" aria-label="Parts list for buying separately">
+            <thead><tr><th>Part</th><th>Approximate price</th><th>Check before you buy</th><th>Search</th></tr></thead>
+            <tbody>
+            <tr><td>Arduino Uno R3 board with USB cable</td><td>140 to 220 baht</td><td>Some shops sell the board without the cable, so check that a USB cable is included</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=Arduino+UNO+R3+%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%AA%E0%B8%B2%E0%B8%A2+USB" target="_blank" rel="noopener" aria-label="Search Lazada for an Arduino Uno board (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>L298N motor driver board</td><td>40 to 75 baht</td><td>A red board with a black heatsink</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=L298N" target="_blank" rel="noopener" aria-label="Search Lazada for an L298N motor driver (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>Two-wheel car chassis with motors</td><td>90 to 150 baht</td><td>It must come with 2 yellow gear motors, 2 wheels and a free-spinning caster, not just a bare acrylic plate</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=Smart+Robot+Car+2WD+Chassis+With+2+Motors" target="_blank" rel="noopener" aria-label="Search Lazada for a two-wheel chassis with motors (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>2 TCRT5000 sensor modules</td><td>20 to 35 baht each</td><td>Choose the module with a small circuit board and 3 pins, not the bare sensor that costs a few baht, and not the 5-channel version</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B9%82%E0%B8%A1%E0%B8%94%E0%B8%B9%E0%B8%A5+TCRT5000" target="_blank" rel="noopener" aria-label="Search Lazada for a TCRT5000 sensor module (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>4 x AA battery holder with a switch</td><td>20 to 45 baht</td><td>It must have an on/off switch so you can cut the power at once</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%99+AA+4+%E0%B8%81%E0%B9%89%E0%B8%AD%E0%B8%99+%E0%B8%A1%E0%B8%B5%E0%B8%AA%E0%B8%A7%E0%B8%B4%E0%B8%95%E0%B8%8A%E0%B9%8C" target="_blank" rel="noopener" aria-label="Search Lazada for a 4 x AA battery holder with a switch (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>Jumper wires</td><td>15 to 30 baht</td><td>Get both male-to-female and male-to-male</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%AA%E0%B8%B2%E0%B8%A2%E0%B8%88%E0%B8%B1%E0%B8%A1%E0%B9%80%E0%B8%9B%E0%B8%AD%E0%B8%A3%E0%B9%8C+Arduino" target="_blank" rel="noopener" aria-label="Search Lazada for jumper wires (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>HC-SR04 ultrasonic sensor, for project 3 in Lesson 16</td><td>30 to 60 baht</td><td>You only need it for the obstacle-avoider project</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=HC-SR04" target="_blank" rel="noopener" aria-label="Search Lazada for an HC-SR04 ultrasonic sensor (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>3-metre USB cable, for the AI Driver project in Lesson 17</td><td>20 to 45 baht</td><td>Check the socket on your board first: most use Type B, but some use Type-C</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%AA%E0%B8%B2%E0%B8%A2+USB+Type+B+3+%E0%B9%80%E0%B8%A1%E0%B8%95%E0%B8%A3" target="_blank" rel="noopener" aria-label="Search Lazada for a 3-metre USB cable (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            </tbody>
+          </table></div>
+          <p class="how">Approximate prices from Lazada search pages in September 2026. Shops and prices change all the time. Choose shops with good reviews that ship from within Thailand. This website receives no payment from any shop or from Lazada.</p>
+        </details>
+      </div>
       <h4 style="margin:10px 0 4px;font-family:var(--f-display)">Wiring</h4>
       <div style="overflow-x:auto"><table class="parts" aria-label="Wiring table">
         <thead><tr><th>From</th><th>To</th></tr></thead>

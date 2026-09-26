@@ -1667,6 +1667,11 @@
     #bd-printsheet ul{padding-left:16pt;margin:3pt 0 0;list-style:none}
     #bd-printsheet .bd-foot{margin-top:12pt;font-size:10pt}
   }
+  #ch-build .shopbtn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;border:1.5px solid var(--accent);border-radius:999px;font-weight:600;font-size:14.5px;line-height:1.3;text-decoration:none;color:var(--accent);background:transparent;white-space:nowrap;gap:4px}
+  #ch-build .shopbtn:hover{background:var(--accent-wash)}
+  #ch-build .shopbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  #ch-build .shopbox .parts td:last-child{white-space:nowrap}
+  #ch-build .shopbox .how{font-size:14.5px;color:var(--ink-2)}
 
 
   /* ===== 11_limits ===== */
@@ -3513,7 +3518,7 @@ if (letter !== lastSent ||
         <thead><tr><th>Part</th><th>Notes</th></tr></thead>
         <tbody>
           <tr><td>The car from <a href="/learn/robot#ch-build">Project 2 of Lesson 16</a> with an Arduino Uno, an L298N (ENA/ENB jumpers left on), 2 gear motors with wheels, a caster wheel, a holder for 4 AA batteries, the chassis and jumper wires</td><td>Pins D5, D6, D9, D10 and the <code>drive()</code> function all stay exactly as before. The IR sensors on D2 and D3 can stay where they are. This code just doesn’t use them.</td></tr>
-          <tr><td>Battery holder with an on/off switch</td><td>You must have this. The Lesson 16 parts list didn’t include it. If your holder has no switch, ask a grown-up to swap it for one that does.</td></tr>
+          <tr><td>Battery holder with an on/off switch</td><td>You must have this. If your holder has no switch, ask a grown-up to swap it for one that does.</td></tr>
           <tr><td>Long USB cable for the Uno</td><td>Long enough to hang loose</td></tr>
           <tr><td>A computer with a webcam + Chrome or Edge + Arduino IDE</td><td>Not a phone or tablet</td></tr>
           <tr><td>4 paper cards: an up arrow, a left arrow, a right arrow and an open palm</td><td>Never use people’s faces</td></tr>
@@ -3521,6 +3526,29 @@ if (letter !== lastSent ||
         </tbody>
       </table></div>
       <p class="note">Why a battery switch? Because the switch is the final way to stop the car, and it sits completely outside the AI brain. If the web page freezes, a cable comes loose or anything else goes wrong, a grown-up flips the switch off and the motors lose power straight away.</p>
+      <div class="faq shopbox" style="margin:14px 0">
+        <details>
+          <summary><span aria-hidden="true">🛒&nbsp;</span>Buying the parts on Lazada</summary>
+          <p class="how">Each button opens a Lazada search in a new tab and is not tied to any one shop. An adult should choose the shop and place the order.</p>
+          <p><b>Easiest: buy a complete kit.</b> A line-follower car kit costs about 550 to 750 baht. Read the list of what is in the box before buying. Most kits have no HC-SR04 sensor and no long USB cable, and the battery holder may have no switch, so add those from the table below.</p>
+          <p><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%A3%E0%B8%96%E0%B8%AB%E0%B8%B8%E0%B9%88%E0%B8%99%E0%B8%A2%E0%B8%99%E0%B8%95%E0%B9%8C%E0%B9%80%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%95%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%AA%E0%B9%89%E0%B8%99+Arduino" target="_blank" rel="noopener" aria-label="Search Lazada for kits (opens a new tab)">Search Lazada for kits<span aria-hidden="true"> ↗</span></a></p>
+          <p style="margin-top:14px"><b>Or buy the parts one by one.</b> About 400 to 700 baht in total, not counting batteries.</p>
+          <div style="overflow-x:auto"><table class="parts" aria-label="Parts list for buying separately">
+            <thead><tr><th>Part</th><th>Approximate price</th><th>Check before you buy</th><th>Search</th></tr></thead>
+            <tbody>
+            <tr><td>Arduino Uno R3 board with USB cable</td><td>140 to 220 baht</td><td>Some shops sell the board without the cable, so check that a USB cable is included</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=Arduino+UNO+R3+%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%AA%E0%B8%B2%E0%B8%A2+USB" target="_blank" rel="noopener" aria-label="Search Lazada for an Arduino Uno board (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>L298N motor driver board</td><td>40 to 75 baht</td><td>A red board with a black heatsink</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=L298N" target="_blank" rel="noopener" aria-label="Search Lazada for an L298N motor driver (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>Two-wheel car chassis with motors</td><td>90 to 150 baht</td><td>It must come with 2 yellow gear motors, 2 wheels and a free-spinning caster, not just a bare acrylic plate</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=Smart+Robot+Car+2WD+Chassis+With+2+Motors" target="_blank" rel="noopener" aria-label="Search Lazada for a two-wheel chassis with motors (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>2 TCRT5000 sensor modules</td><td>20 to 35 baht each</td><td>Choose the module with a small circuit board and 3 pins, not the bare sensor that costs a few baht, and not the 5-channel version</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B9%82%E0%B8%A1%E0%B8%94%E0%B8%B9%E0%B8%A5+TCRT5000" target="_blank" rel="noopener" aria-label="Search Lazada for a TCRT5000 sensor module (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>4 x AA battery holder with a switch</td><td>20 to 45 baht</td><td>It must have an on/off switch so you can cut the power at once</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%99+AA+4+%E0%B8%81%E0%B9%89%E0%B8%AD%E0%B8%99+%E0%B8%A1%E0%B8%B5%E0%B8%AA%E0%B8%A7%E0%B8%B4%E0%B8%95%E0%B8%8A%E0%B9%8C" target="_blank" rel="noopener" aria-label="Search Lazada for a 4 x AA battery holder with a switch (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>Jumper wires</td><td>15 to 30 baht</td><td>Get both male-to-female and male-to-male</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%AA%E0%B8%B2%E0%B8%A2%E0%B8%88%E0%B8%B1%E0%B8%A1%E0%B9%80%E0%B8%9B%E0%B8%AD%E0%B8%A3%E0%B9%8C+Arduino" target="_blank" rel="noopener" aria-label="Search Lazada for jumper wires (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>HC-SR04 ultrasonic sensor, for project 3 in Lesson 16</td><td>30 to 60 baht</td><td>You only need it for the obstacle-avoider project</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=HC-SR04" target="_blank" rel="noopener" aria-label="Search Lazada for an HC-SR04 ultrasonic sensor (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>3-metre USB cable, for the AI Driver project in Lesson 17</td><td>20 to 45 baht</td><td>Check the socket on your board first: most use Type B, but some use Type-C</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%AA%E0%B8%B2%E0%B8%A2+USB+Type+B+3+%E0%B9%80%E0%B8%A1%E0%B8%95%E0%B8%A3" target="_blank" rel="noopener" aria-label="Search Lazada for a 3-metre USB cable (opens a new tab)">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            </tbody>
+          </table></div>
+          <p class="how">Approximate prices from Lazada search pages in September 2026. Shops and prices change all the time. Choose shops with good reviews that ship from within Thailand. This website receives no payment from any shop or from Lazada.</p>
+        </details>
+      </div>
     </div>
 
     <div class="proj" id="bd-steps">

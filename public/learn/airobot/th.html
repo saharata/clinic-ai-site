@@ -1667,6 +1667,11 @@
     #bd-printsheet ul{padding-left:16pt;margin:3pt 0 0;list-style:none}
     #bd-printsheet .bd-foot{margin-top:12pt;font-size:10pt}
   }
+  #ch-build .shopbtn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;border:1.5px solid var(--accent);border-radius:999px;font-weight:600;font-size:14.5px;line-height:1.3;text-decoration:none;color:var(--accent);background:transparent;white-space:nowrap;gap:4px}
+  #ch-build .shopbtn:hover{background:var(--accent-wash)}
+  #ch-build .shopbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  #ch-build .shopbox .parts td:last-child{white-space:nowrap}
+  #ch-build .shopbox .how{font-size:14.5px;color:var(--ink-2)}
 
 
   /* ===== 11_limits ===== */
@@ -3513,7 +3518,7 @@ if (letter !== lastSent ||
         <thead><tr><th>ชิ้นส่วน</th><th>หมายเหตุ</th></tr></thead>
         <tbody>
           <tr><td>รถจาก<a href="/learn/robot#ch-build">โครงงานที่ 2 ของบทที่ 16</a> คือ Arduino Uno, L298N (จัมเปอร์ ENA/ENB เสียบอยู่), มอเตอร์เกียร์ 2 ตัวพร้อมล้อ, ล้อหมุนอิสระ, รางถ่าน AA 4 ก้อน, ฐานรถ, สายจัมเปอร์</td><td>ขา D5 D6 D9 D10 และฟังก์ชัน <code>drive()</code> ใช้ตามเดิมทุกอย่าง เซ็นเซอร์ IR ที่ D2 D3 ติดค้างไว้ได้ โค้ดนี้ไม่ได้ใช้</td></tr>
-          <tr><td>รางถ่านที่มีสวิตช์เปิดปิด</td><td>ต้องมี รายการชิ้นส่วนบทที่ 16 ยังไม่ได้ระบุ ถ้าไม่มีให้ผู้ใหญ่เปลี่ยนเป็นรางที่มีสวิตช์</td></tr>
+          <tr><td>รางถ่านที่มีสวิตช์เปิดปิด</td><td>ต้องมี ถ้ารางเดิมไม่มีสวิตช์ ให้ผู้ใหญ่เปลี่ยนเป็นรางที่มีสวิตช์</td></tr>
           <tr><td>สาย USB ยาวสำหรับ Uno</td><td>ยาวพอให้หย่อน</td></tr>
           <tr><td>คอมพิวเตอร์ที่มีเว็บแคม + Chrome หรือ Edge + Arduino IDE</td><td>ไม่ใช่มือถือหรือแท็บเล็ต</td></tr>
           <tr><td>การ์ดกระดาษ 4 ใบ ลูกศรขึ้น ซ้าย ขวา และรูปฝ่ามือ</td><td>ห้ามใช้หน้าคน</td></tr>
@@ -3521,6 +3526,29 @@ if (letter !== lastSent ||
         </tbody>
       </table></div>
       <p class="note">ทำไมต้องมีสวิตช์ถ่าน เพราะสวิตช์คือตัวหยุดสุดท้ายที่อยู่นอกสมอง AI ทั้งหมด ถ้าหน้าเว็บค้าง สายหลุด หรืออะไรก็ตามผิดพลาด ผู้ใหญ่ปิดสวิตช์แล้วมอเตอร์ไม่มีไฟทันที</p>
+      <div class="faq shopbox" style="margin:14px 0">
+        <details>
+          <summary><span aria-hidden="true">🛒&nbsp;</span>หาซื้ออุปกรณ์ใน Lazada</summary>
+          <p class="how">ปุ่มจะพาไปหน้าค้นหาของ Lazada ในแท็บใหม่ ไม่ได้ผูกกับร้านใดร้านหนึ่ง ให้ผู้ใหญ่เป็นคนเลือกร้านและกดสั่งซื้อ</p>
+          <p><b>ง่ายที่สุด ซื้อเป็นชุดรวม</b> ชุดรถเดินตามเส้นราว 550 ถึง 750 บาท อ่านรายการของในกล่องก่อนซื้อ ชุดส่วนใหญ่ไม่มีเซ็นเซอร์ HC-SR04 และสาย USB ยาว และรางถ่านอาจไม่มีสวิตช์ ต้องซื้อเพิ่มจากตารางข้างล่าง</p>
+          <p><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%A3%E0%B8%96%E0%B8%AB%E0%B8%B8%E0%B9%88%E0%B8%99%E0%B8%A2%E0%B8%99%E0%B8%95%E0%B9%8C%E0%B9%80%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%95%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%AA%E0%B9%89%E0%B8%99+Arduino" target="_blank" rel="noopener" aria-label="ค้นหาชุดรถใน Lazada เปิดแท็บใหม่">ค้นหาชุดรถใน Lazada<span aria-hidden="true"> ↗</span></a></p>
+          <p style="margin-top:14px"><b>หรือซื้อแยกทีละชิ้น</b> รวมราว 400 ถึง 700 บาท ไม่รวมถ่าน</p>
+          <div style="overflow-x:auto"><table class="parts" aria-label="รายการอุปกรณ์สำหรับซื้อแยกชิ้น">
+            <thead><tr><th>ชิ้นส่วน</th><th>ราคาโดยประมาณ</th><th>ดูให้ดีก่อนซื้อ</th><th>ค้นหา</th></tr></thead>
+            <tbody>
+            <tr><td>บอร์ด Arduino Uno R3 พร้อมสาย USB</td><td>140 ถึง 220 บาท</td><td>บางร้านขายแต่บอร์ด ไม่รวมสาย ดูให้ดีว่ามีสาย USB มาด้วย</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=Arduino+UNO+R3+%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%AA%E0%B8%B2%E0%B8%A2+USB" target="_blank" rel="noopener" aria-label="ค้นหาบอร์ด Arduino Uno ใน Lazada เปิดแท็บใหม่">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>บอร์ดขับมอเตอร์ L298N</td><td>40 ถึง 75 บาท</td><td>แผงสีแดง มีครีบระบายความร้อนสีดำ</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=L298N" target="_blank" rel="noopener" aria-label="ค้นหาบอร์ดขับมอเตอร์ L298N ใน Lazada เปิดแท็บใหม่">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>โครงรถ 2 ล้อพร้อมมอเตอร์</td><td>90 ถึง 150 บาท</td><td>ต้องมีมอเตอร์เกียร์สีเหลือง 2 ตัว ล้อ 2 ล้อ และล้อหมุนอิสระ ไม่ใช่แผ่นอะคริลิกเปล่า</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=Smart+Robot+Car+2WD+Chassis+With+2+Motors" target="_blank" rel="noopener" aria-label="ค้นหาโครงรถ 2 ล้อพร้อมมอเตอร์ ใน Lazada เปิดแท็บใหม่">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>โมดูลเซ็นเซอร์ TCRT5000 จำนวน 2 ชิ้น</td><td>20 ถึง 35 บาทต่อชิ้น</td><td>เลือกแบบโมดูลที่มีแผงวงจรเล็กและขา 3 ขา ไม่ใช่ตัวเซ็นเซอร์เปล่าราคาไม่กี่บาท และไม่ใช่แบบ 5 ช่อง</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B9%82%E0%B8%A1%E0%B8%94%E0%B8%B9%E0%B8%A5+TCRT5000" target="_blank" rel="noopener" aria-label="ค้นหาโมดูลเซ็นเซอร์ TCRT5000 ใน Lazada เปิดแท็บใหม่">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>รางถ่าน AA 4 ก้อน แบบมีสวิตช์</td><td>20 ถึง 45 บาท</td><td>ต้องมีสวิตช์เปิดปิด เพื่อตัดไฟได้ทันที</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%99+AA+4+%E0%B8%81%E0%B9%89%E0%B8%AD%E0%B8%99+%E0%B8%A1%E0%B8%B5%E0%B8%AA%E0%B8%A7%E0%B8%B4%E0%B8%95%E0%B8%8A%E0%B9%8C" target="_blank" rel="noopener" aria-label="ค้นหารางถ่าน AA 4 ก้อน แบบมีสวิตช์ ใน Lazada เปิดแท็บใหม่">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>สายจัมเปอร์</td><td>15 ถึง 30 บาท</td><td>ซื้อทั้งแบบผู้กับเมีย และแบบผู้กับผู้</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%AA%E0%B8%B2%E0%B8%A2%E0%B8%88%E0%B8%B1%E0%B8%A1%E0%B9%80%E0%B8%9B%E0%B8%AD%E0%B8%A3%E0%B9%8C+Arduino" target="_blank" rel="noopener" aria-label="ค้นหาสายจัมเปอร์ ใน Lazada เปิดแท็บใหม่">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>เซ็นเซอร์อัลตราโซนิก HC-SR04 สำหรับโครงงาน 3 บทที่ 16</td><td>30 ถึง 60 บาท</td><td>ถ้าไม่ทำโครงงานหลบสิ่งกีดขวาง ไม่ต้องซื้อ</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=HC-SR04" target="_blank" rel="noopener" aria-label="ค้นหาเซ็นเซอร์อัลตราโซนิก HC-SR04 ใน Lazada เปิดแท็บใหม่">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            <tr><td>สาย USB ยาว 3 เมตร สำหรับโครงงาน AI ขับรถ บทที่ 17</td><td>20 ถึง 45 บาท</td><td>ดูหัวต่อบนบอร์ดก่อน บอร์ดส่วนใหญ่ใช้หัว Type B แต่บางรุ่นใช้ Type-C</td><td><a class="shopbtn" href="https://www.lazada.co.th/catalog/?q=%E0%B8%AA%E0%B8%B2%E0%B8%A2+USB+Type+B+3+%E0%B9%80%E0%B8%A1%E0%B8%95%E0%B8%A3" target="_blank" rel="noopener" aria-label="ค้นหาสาย USB ยาว 3 เมตร ใน Lazada เปิดแท็บใหม่">Lazada<span aria-hidden="true"> ↗</span></a></td></tr>
+            </tbody>
+          </table></div>
+          <p class="how">ราคาโดยประมาณจากหน้าค้นหาของ Lazada เมื่อเดือนกันยายน 2569 ร้านและราคาเปลี่ยนได้ตลอด ควรเลือกร้านที่มีรีวิวดีและส่งจากในไทย เว็บไซต์นี้ไม่ได้รับค่าตอบแทนจากร้านค้าหรือ Lazada</p>
+        </details>
+      </div>
     </div>
 
     <div class="proj" id="bd-steps">
