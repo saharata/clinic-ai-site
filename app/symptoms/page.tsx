@@ -55,7 +55,7 @@ const videoJsonLd = {
 
 export default function SymptomsPage() {
   return (
-    <main>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
@@ -81,6 +81,8 @@ export default function SymptomsPage() {
           </nav>
         </div>
       </header>
+
+      <main id="main-content" tabIndex={-1}>
 
       <section className="hero small">
         <div className="container">
@@ -174,6 +176,8 @@ export default function SymptomsPage() {
         </div>
       </section>
 
+      </main>
+
       <footer className="footer">
         <div className="container footer-grid">
           <div>
@@ -199,6 +203,6 @@ export default function SymptomsPage() {
           </div>
         </div>
       </footer>
-    </main>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const COOKBOOK = "/SOAP_Cookbook_TH.pdf";
 const CONTACT_EMAIL = "saharatau@gmail.com";
@@ -20,6 +20,42 @@ export default function SoapGuidePage() {
   const allChecked = checked.every(Boolean);
   const [form, setForm] = useState({ name: "", role: "", org: "", email: "", note: "" });
   const [sent, setSent] = useState(false);
+  const openerRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // a11y (keyboard): เปิดกล่องแล้วย้าย focus เข้าไป, Esc ปิด, Tab วนอยู่ในกล่อง, ปิดแล้วคืน focus ที่ปุ่มเดิม
+  useEffect(() => {
+    if (!open) return;
+    const opener = openerRef.current;
+    closeRef.current?.focus();
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const items = dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled])'
+      );
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      opener?.focus();
+    };
+  }, [open]);
 
   const mailto = () => {
     const body = [
@@ -40,7 +76,7 @@ export default function SoapGuidePage() {
   };
 
   return (
-    <main className="soapPage">
+    <main id="main-content" tabIndex={-1} className="soapPage">
       <section className="soapHero">
         <a href="/ai" className="soapBack">← กลับหน้าเครื่องมือ AI</a>
         <p className="soapEyebrow">คู่มือการใช้งาน</p>
@@ -62,7 +98,7 @@ export default function SoapGuidePage() {
           <span className="soapBtnTop">ดาวน์โหลดคู่มือ (PDF)</span>
           <span className="soapBtnSub">อ่านได้ทันที ไม่ต้องลงทะเบียน</span>
         </a>
-        <button className="soapBtn" onClick={() => setOpen(true)}>
+        <button type="button" className="soapBtn" ref={openerRef} onClick={() => setOpen(true)}>
           <span className="soapBtnTop">ขอรับตัวโปรแกรม</span>
           <span className="soapBtnSub">สำหรับแพทย์และหน่วยงาน · ต้องรับทราบเงื่อนไข</span>
         </button>
@@ -97,10 +133,17 @@ export default function SoapGuidePage() {
       {/* ── กล่องรับทราบเงื่อนไข + ฟอร์มขอรับ ── */}
       {open && (
         <div className="soapOverlay" onClick={() => setOpen(false)}>
-          <div className="soapDialog" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="soapDialog"
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="soap-dialog-title"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="soapDialogHead">
-              <h3>ขอรับตัวโปรแกรม</h3>
-              <button className="soapClose" onClick={() => setOpen(false)} aria-label="ปิด">×</button>
+              <h2 id="soap-dialog-title">ขอรับตัวโปรแกรม</h2>
+              <button type="button" className="soapClose" ref={closeRef} onClick={() => setOpen(false)} aria-label="ปิด">×</button>
             </div>
 
             {!sent ? (
@@ -121,7 +164,8 @@ export default function SoapGuidePage() {
                   ))}
                 </div>
 
-                <div className={`soapForm ${allChecked ? "" : "locked"}`}>
+                {/* a11y (keyboard): เดิมล็อกด้วย pointer-events อย่างเดียว คีย์บอร์ดยัง Tab เข้าไปพิมพ์ได้ → ใช้ fieldset disabled */}
+                <fieldset className="soapForm" disabled={!allChecked}>
                   <input placeholder="ชื่อ-นามสกุล" value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })} />
                   <input placeholder="ตำแหน่ง / สาขา (เช่น ประสาทแพทย์)" value={form.role}
@@ -133,7 +177,7 @@ export default function SoapGuidePage() {
                   <textarea placeholder="ต้องการนำไปใช้กับงานลักษณะใด (โดยย่อ)" rows={3}
                     value={form.note}
                     onChange={(e) => setForm({ ...form, note: e.target.value })} />
-                </div>
+                </fieldset>
 
                 <a
                   className={`soapBtn primary full ${
@@ -155,7 +199,7 @@ export default function SoapGuidePage() {
               <div className="soapDone">
                 <p><strong>เปิดโปรแกรมอีเมลแล้ว</strong></p>
                 <p>กรุณากดส่งอีเมลเพื่อให้คำขอถึงผู้ดูแล จะติดต่อกลับตามอีเมลที่ให้ไว้</p>
-                <button className="soapBtn full" onClick={() => { setOpen(false); setSent(false); }}>
+                <button type="button" className="soapBtn full" onClick={() => { setOpen(false); setSent(false); }}>
                   ปิด
                 </button>
               </div>
@@ -206,7 +250,7 @@ export default function SoapGuidePage() {
           border-radius: 18px 18px 0 0; padding: 20px 18px calc(20px + env(safe-area-inset-bottom)); }
         .soapDialogHead { display: flex; align-items: center; justify-content: space-between;
           margin-bottom: 6px; }
-        .soapDialogHead h3 { margin: 0; font-size: 19px; color: #0f172a; }
+        .soapDialogHead h2 { margin: 0; font-size: 19px; color: #0f172a; }
         .soapClose { background: none; border: none; font-size: 30px; line-height: 1;
           color: #4b5563; cursor: pointer; padding: 0; min-width: 44px; min-height: 44px;
           display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; }
@@ -216,8 +260,8 @@ export default function SoapGuidePage() {
           line-height: 1.6; color: #374151; cursor: pointer; }
         .soapTerm input { margin-top: 3px; width: 20px; height: 20px; flex: 0 0 auto;
           accent-color: #2f6a5b; }
-        .soapForm { display: flex; flex-direction: column; gap: 10px; }
-        .soapForm.locked { opacity: .4; pointer-events: none; }
+        .soapForm { display: flex; flex-direction: column; gap: 10px; border: 0; padding: 0; margin: 0; min-width: 0; }
+        .soapForm:disabled { opacity: .4; }
         .soapForm input, .soapForm textarea { width: 100%; padding: 13px 14px; font-size: 16px;
           border: 1px solid #6b7280; border-radius: 11px; font-family: inherit;
           color: #0f172a; background: #fff; }

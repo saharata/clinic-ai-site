@@ -366,7 +366,7 @@ function LessonCard({ l, n }: { l: Lesson; n: number }) {
 
 export default function LearnPage() {
   return (
-    <main className="learn-page">
+    <div className="learn-page">
       <header className="navbar">
         <div className="container nav-inner">
           <Link href="/" className="brand">
@@ -387,6 +387,8 @@ export default function LearnPage() {
           </nav>
         </div>
       </header>
+
+      <main id="main-content" tabIndex={-1}>
 
       <section className="lp-hero" aria-labelledby="lp-title">
         <img
@@ -561,6 +563,8 @@ export default function LearnPage() {
         </div>
       </section>
 
+      </main>
+
       <footer className="footer">
         <div className="container footer-grid">
           <div>
@@ -588,6 +592,6 @@ export default function LearnPage() {
           </div>
         </div>
       </footer>
-    </main>
+    </div>
   );
 }

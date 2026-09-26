@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 
 export default function VaccinePage() {
   return (
-    <main>
+    <>
       <header className="navbar">
         <div className="container nav-inner">
           <Link href="/" className="brand">
@@ -63,6 +63,8 @@ export default function VaccinePage() {
           </nav>
         </div>
       </header>
+
+      <main id="main-content" tabIndex={-1}>
 
       <section className="vaccine-hero">
         <div className="container">
@@ -129,6 +131,8 @@ export default function VaccinePage() {
         </div>
       </section>
 
+      </main>
+
       <footer className="footer">
         <div className="container footer-grid">
           <div>
@@ -156,6 +160,6 @@ export default function VaccinePage() {
           </div>
         </div>
       </footer>
-    </main>
+    </>
   );
 }

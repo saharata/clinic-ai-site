@@ -24,7 +24,7 @@ export default async function TikTokCallbackPage({
   const errorDescription = first(params.error_description);
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
+    <main id="main-content" tabIndex={-1} className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
       <h1 className="text-2xl font-bold text-slate-900">
         การเชื่อมต่อบัญชี TikTok
       </h1>

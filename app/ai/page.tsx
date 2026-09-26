@@ -117,7 +117,7 @@ export default function AiToolsPage() {
   }
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <section className="hero small">
         <div className="container">
           <p className="eyebrow">AI Tools for Neurologists</p>
