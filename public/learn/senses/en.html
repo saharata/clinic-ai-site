@@ -558,6 +558,7 @@
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <nav class="sw-bar" aria-label="Sahawan Clinic">
   <a class="sw-brand" href="/">Sahawan Clinic</a><span class="sw-sep" aria-hidden="true">/</span>
   <a href="/learn">Body 101: all lessons</a>
@@ -1681,7 +1682,7 @@
 .btn:hover{transform:translateY(-1px)}
 .btn:active{transform:translateY(1px) scale(.99)}
 .opt,.food,.gal button,.tastes button,.shapes button,.vlist button,.gbins button,.mode{transition:transform .14s ease,border-color .16s ease,background .16s ease}
-.opt:hover:not(:disabled),.gal button:hover,.vlist button:hover,.gbins button:hover:not(:disabled){transform:translateY(-1px)}
+.opt:hover:not(:disabled):not([aria-disabled="true"]),.gal button:hover,.vlist button:hover,.gbins button:hover:not(:disabled){transform:translateY(-1px)}
 .opt.right{animation:bp-pop .32s ease}
 .opt.wrong{animation:bp-shake .3s ease}
 @keyframes bp-pop{0%{transform:scale(1)}45%{transform:scale(1.035)}100%{transform:scale(1)}}
@@ -1698,22 +1699,78 @@
 .ch-art img{transition:transform .6s cubic-bezier(.2,.7,.3,1)}
 .ch-art:hover img{transform:scale(1.03)}
 
-/* sections rise into view */
-.bp-reveal{opacity:0;transform:translateY(14px)}
-.bp-reveal.bp-in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
+/* sections rise into view: movement only, never invisible (a11y: text found by Tab/Find must be visible) */
+.bp-reveal{transform:translateY(14px)}
+.bp-reveal.bp-in{transform:none;transition:transform .45s cubic-bezier(.2,.7,.3,1)}
+.bp-reveal:focus-within,.bp-reveal:target{transform:none}
+@media print{.bp-reveal{transform:none!important}}
 
 /* quiz answers keep their colour but read calmer */
 .qgrid .card{border-radius:18px}
 .fb{line-height:1.55}
 
 /* footer */
-.wrap3 footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);opacity:.9}
+.wrap3 footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--line)}
 
 @media (prefers-reduced-motion:reduce){
   .bp-reveal,.bp-reveal.bp-in{opacity:1;transform:none;transition:none}
   .card:hover,.btn:hover,.ch-art:hover img{transform:none}
   .opt.right,.opt.wrong{animation:none}
+  .opt:hover,.gal button:hover,.vlist button:hover,.gbins button:hover{transform:none}
+  html{scroll-behavior:auto!important}
 }
+
+/* ===== Accessibility (WCAG 2.2 AA) — patients with low vision, tremor, older readers ===== */
+
+/* skip link + main landmark (the link itself is written by site_build) */
+.skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;padding:12px 16px;border-radius:10px;
+  font:600 16px/1.2 system-ui,-apple-system,sans-serif;text-decoration:underline}
+.skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
+#main:focus{outline:none}
+
+/* sticky top bar must not hide what has focus or an anchor target */
+html{scroll-padding-top:72px}
+.ch{scroll-margin-top:72px}
+@media (max-width:1060px){.shell .rail{top:52px}}
+@media (max-height:500px),(max-width:360px){.sw-bar{position:static!important}}
+
+/* "did you know" titles: body text colour, topic colour moves to a side rule */
+.infocard .city{border-left:5px solid var(--hue,var(--accent));padding-left:10px}
+.infocard .city b{color:var(--ink)!important}
+
+/* level tag l1 was 4.34:1 */
+.term .lv.l1,.l1.lv{color:#17603F}
+@media (prefers-color-scheme:dark){.term .lv.l1,.l1.lv{color:var(--good)}}
+/* level tag l3 and the "no" verdict were #b53f2c on #f7e0db = 4.48:1 */
+@media (prefers-color-scheme:light){.term .lv.l3,.l3.lv,.verdict.no{color:#96301F}}
+
+/* reflow at 320px / 400% zoom */
+.remember b{white-space:normal}
+.sens>*,.demo,.demo>*,.grid2>*,.zoom>*,.lm-row>*{min-width:0}
+.wrap3 p,.wrap3 li,.wrap3 b{overflow-wrap:anywhere}
+.qgrid{grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr))!important}
+
+/* bigger targets for shaky hands */
+.opt{min-height:48px}
+@media (min-width:1061px){.shell .rail .lvl a{display:flex;align-items:center;min-height:44px;padding-top:0;padding-bottom:0}}
+@media (max-width:1060px){.shell{grid-template-columns:minmax(0,1fr)!important}.shell .rail{margin-left:0;margin-right:0;max-width:100%}}
+/* wide tables and code scroll inside their own box instead of the whole page */
+.bp-tscroll{max-width:100%;overflow-x:auto}
+.wrap3 pre{max-width:100%;overflow-x:auto}
+.wrap3 h1 em,.wrap3 h1 span,.wrap3 h2 em{white-space:normal}
+.wrap3 li{min-width:0}
+.city>*,.ticks>*{min-width:0}
+.ticks{flex-wrap:wrap}
+.lm-row .btn,#ch-limits .lm-tog{white-space:normal!important;min-width:0;max-width:100%}
+svg .bp-hit{fill:transparent;stroke:none} /* inherits pointer-events, so hidden layers stay untappable */
+
+/* answered quiz options stay focusable (aria-disabled) but look done */
+.opt[aria-disabled="true"]{cursor:default}
+
+/* locked badges: dim only the icon, keep the name readable */
+.badges .badge:not(.on){opacity:1;border-style:dashed}
+.badges .badge:not(.on) .em{opacity:.38;filter:grayscale(1)}
+.badges .badge:not(.on) .nm{color:var(--ink-2)}
 </style>
 
 <script>
@@ -1743,6 +1800,117 @@
     (window.requestAnimationFrame || function(f){ setTimeout(f, 16); })(progress);
   }, { passive: true });
   progress();
+
+  /* ===== Accessibility (WCAG 2.2 AA) ===== */
+  var EN = document.documentElement.lang === "en";
+
+  // main landmark + skip-link target
+  var main = document.querySelector("main") || document.querySelector(".wrap3, .shell, .wrap");
+  if (main) {
+    if (!main.id) main.id = "main";
+    if (main.tagName !== "MAIN") main.setAttribute("role", "main");
+    main.setAttribute("tabindex", "-1");
+    var skip = document.querySelector(".skip-link");
+    if (skip) skip.setAttribute("href", "#" + main.id);
+  }
+
+  // an <svg role="img"> hides the buttons inside it from screen readers
+  function fixSvgRoles(){
+    Array.prototype.forEach.call(document.querySelectorAll("svg[role='img']"), function(svg){
+      if (svg.querySelector("[tabindex],[role='button'],a")) svg.setAttribute("role", "group");
+    });
+  }
+  fixSvgRoles();
+  setTimeout(fixSvgRoles, 1500);
+
+  // info cards and quiz feedback are announced when they change
+  Array.prototype.forEach.call(document.querySelectorAll(".infocard, [id$='Info'], #info, .fb"), function(el){
+    if (!el.hasAttribute("aria-live")) el.setAttribute("aria-live", "polite");
+  });
+
+  // wide tables scroll inside their own box (keeps real table semantics for screen readers)
+  Array.prototype.forEach.call(document.querySelectorAll(".wrap3 table"), function(t){
+    var par = t.parentNode;
+    if (par.classList && par.classList.contains("bp-tscroll")) return;
+    var cs = getComputedStyle(par);
+    if (cs.overflowX === "auto" || cs.overflowX === "scroll") return;
+    var w = document.createElement("div"); w.className = "bp-tscroll";
+    par.insertBefore(w, t); w.appendChild(t);
+  });
+
+  // wide code boxes and tables that scroll sideways can be reached by keyboard
+  function fixScrollers(){
+    Array.prototype.forEach.call(document.querySelectorAll("pre, .bp-tscroll, [style*='overflow-x:auto'], [style*='overflow-x: auto']"), function(el){
+      if (el.scrollWidth > el.clientWidth + 1 && !el.querySelector("a,button,input,select,textarea,[tabindex]")) {
+        el.tabIndex = 0; el.setAttribute("role", "region");
+        if (el.classList.contains("bp-tscroll")) { if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", EN ? "Table, scroll sideways to see more" : "ตาราง เลื่อนซ้ายขวาเพื่อดูเพิ่ม"); }
+        else if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", EN ? "Scrollable box" : "กล่องเลื่อนดูได้");
+      }
+    });
+  }
+  window.addEventListener("load", fixScrollers);
+  window.addEventListener("resize", function(){ clearTimeout(fixScrollers.t); fixScrollers.t = setTimeout(fixScrollers, 300); });
+
+  // after answering a quiz the options are disabled; keep keyboard focus on the feedback instead of losing it
+  document.addEventListener("click", function(ev){
+    var opt = ev.target && ev.target.closest ? ev.target.closest(".opt") : null;
+    if (!opt) return;
+    setTimeout(function(){
+      var a = document.activeElement;
+      if (a && a !== document.body && !a.disabled) return;
+      var box = opt.closest(".card, .q, section") || opt.parentNode;
+      var fb = box && box.querySelector(".fb");
+      if (fb) { if (!fb.hasAttribute("tabindex")) fb.setAttribute("tabindex", "-1"); fb.focus({ preventScroll: true }); }
+    }, 0);
+  });
+
+  // small SVG hotspots get an invisible tap area of up to 44px, without overlapping their neighbours
+  var hits = [];
+  function sizeHits(){
+    // only hotspots that are showing right now count as neighbours (lessons swap layers)
+    var vis = hits.filter(function(h){
+      return h.el.getClientRects().length > 0 && getComputedStyle(h.el).pointerEvents !== "none";
+    });
+    hits.forEach(function(h){
+      var ctm = h.el.getScreenCTM && h.el.getScreenCTM();
+      if (!ctm || vis.indexOf(h) < 0) { h.c.setAttribute("r", h.min); return; }
+      var scale = Math.hypot(ctm.a, ctm.b) || 1;
+      var nn = Infinity;
+      vis.forEach(function(o){ if (o !== h && o.svg === h.svg) nn = Math.min(nn, Math.hypot(o.x - h.x, o.y - h.y)); });
+      var r = Math.min(22 / scale, isFinite(nn) ? nn / 2 : 1e6);
+      h.c.setAttribute("r", Math.max(r, h.min).toFixed(2));
+    });
+  }
+  function addHits(){
+    Array.prototype.forEach.call(document.querySelectorAll("svg"), function(svg){
+      var hs = Array.prototype.filter.call(svg.querySelectorAll("[role='button']"), function(el){
+        return !el.querySelector(".bp-hit") && !el.hasAttribute("data-bp-hit");
+      });
+      if (!hs.length) return;
+      var pts = hs.map(function(el){
+        try { var b = el.getBBox(); return { el: el, x: b.x + b.width / 2, y: b.y + b.height / 2, min: Math.max(b.width, b.height) / 2 }; }
+        catch (e) { return null; }
+      }).filter(Boolean);
+      pts.forEach(function(p){
+        var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("class", "bp-hit"); c.setAttribute("aria-hidden", "true");
+        c.setAttribute("cx", p.x); c.setAttribute("cy", p.y); c.setAttribute("r", p.min);
+        p.el.setAttribute("data-bp-hit", "1");
+        if (p.el.tagName.toLowerCase() === "g") {
+          p.el.insertBefore(c, p.el.firstChild);
+        } else {
+          if (p.el.getAttribute("transform")) c.setAttribute("transform", p.el.getAttribute("transform"));
+          p.el.parentNode.insertBefore(c, p.el);
+          c.addEventListener("click", function(){ p.el.dispatchEvent(new MouseEvent("click", { bubbles: true })); });
+        }
+        hits.push({ el: p.el, c: c, svg: svg, x: p.x, y: p.y, min: p.min });
+      });
+    });
+    sizeHits();
+  }
+  window.addEventListener("load", function(){ addHits(); setTimeout(addHits, 1200); });
+  window.addEventListener("resize", function(){ (window.requestAnimationFrame || setTimeout)(sizeHits); }, { passive: true });
+  document.addEventListener("click", function(){ setTimeout(sizeHits, 60); });
 
   if (reduce || !("IntersectionObserver" in window)) return;
   var blocks = Array.prototype.slice.call(document.querySelectorAll(".wrap3 .ch")).slice(1);
@@ -1787,33 +1955,44 @@
     ".ra-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:70;display:none;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;" +
     "background:#0f172a;color:#fff;border-radius:16px;padding:9px 12px;box-shadow:0 8px 26px rgba(0,0,0,.3);max-width:min(96vw,560px)}" +
     ".ra-bar.on{display:flex}.ra-fab.hide{display:none}" +
-    ".ra-bar button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;min-height:40px;padding:6px 12px;" +
+    ".ra-bar button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;min-height:44px;min-width:44px;padding:6px 12px;" +
     "font:600 14.5px/1 system-ui,-apple-system,sans-serif;cursor:pointer}" +
     ".ra-bar button:hover{background:rgba(255,255,255,.2)}" +
     ".ra-bar .ra-rate{font:600 13px/1 ui-monospace,monospace;opacity:.85;min-width:42px;text-align:center}" +
     ".ra-hint{font:400 12.5px/1.3 system-ui,sans-serif;opacity:.75;flex-basis:100%;text-align:center}" +
-    ".ra-on{background:rgba(15,118,110,.16);box-shadow:0 0 0 3px rgba(15,118,110,.22);border-radius:8px}" +
-    "@media (prefers-color-scheme:dark){.ra-fab{background:#14b8a6;color:#04231f}.ra-on{background:rgba(94,234,212,.16);box-shadow:0 0 0 3px rgba(94,234,212,.24)}}" +
+    ".ra-on{background:rgba(15,118,110,.12);outline:3px solid #0f766e;outline-offset:4px;border-radius:6px}" +
+    ".ra-bar button:focus-visible{outline:3px solid #fde047;outline-offset:2px}" +
+    ".ra-fab:focus-visible{outline:3px solid #0f172a;outline-offset:3px;box-shadow:0 0 0 6px #fff}" +
+    "@media (max-width:520px),(max-height:500px){.ra-hint{display:none}.ra-bar{gap:4px;padding:6px 8px;bottom:8px}}" +
+    "body.ra-open{padding-bottom:calc(var(--ra-h,120px) + 24px)}html.ra-open{scroll-padding-bottom:calc(var(--ra-h,120px) + 24px)}" +
+    "@media (prefers-color-scheme:dark){.ra-fab{background:#14b8a6;color:#04231f}.ra-fab:focus-visible{outline-color:#fde047;box-shadow:0 0 0 6px #0f172a}" +
+    ".ra-on{background:rgba(94,234,212,.12);outline-color:#5eead4}}" +
     "@media print{.ra-fab,.ra-bar{display:none}}";
   document.head.appendChild(css);
 
   var fab = document.createElement("button");
-  fab.type = "button"; fab.className = "ra-fab"; fab.textContent = T.open;
+  fab.type = "button"; fab.className = "ra-fab";
+  fab.innerHTML = '<span aria-hidden="true">🔊</span> ' + T.open.replace("🔊 ", "");
   var bar = document.createElement("div");
   bar.className = "ra-bar"; bar.setAttribute("role", "group"); bar.setAttribute("aria-label", T.label);
   function mk(txt){ var b = document.createElement("button"); b.type = "button"; b.textContent = txt; bar.appendChild(b); return b; }
   var bPlay = mk(T.play), bStop = mk(T.stop), bSlow = mk(T.slower);
   var rate = document.createElement("span"); rate.className = "ra-rate"; bar.appendChild(rate);
   var bFast = mk(T.faster), bClose = mk(T.close);
+  rate.setAttribute("aria-hidden", "true");
   var hint = document.createElement("span"); hint.className = "ra-hint"; hint.textContent = T.from; bar.appendChild(hint);
+  hint.setAttribute("role", "status"); hint.setAttribute("aria-live", "polite");
+  var RM = false; try { RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
   document.body.appendChild(fab); document.body.appendChild(bar);
 
   var blocks = [], idx = 0, chunks = [], ci = 0, speed = 1, playing = false, keep = null, cur = null;
   function collect(){
-    blocks = Array.prototype.slice.call(document.querySelectorAll(
-      ".wrap3 h1, .wrap3 h2, .wrap3 h3, .wrap3 p, .wrap3 li, .wrap3 .lede, .wrap3 .remember span, .wrap3 .life"))
+    // lessons use .wrap3; the body and cells lessons use <main>/.shell instead
+    var root = document.querySelector(".wrap3") || document.querySelector("main") || document.querySelector(".shell") || document.body;
+    blocks = Array.prototype.slice.call(root.querySelectorAll(
+      "h1, h2, h3, p, li, .lede, .remember span, .life"))
       .filter(function(el){
-        if (el.closest("footer") || el.closest(".ra-bar")) return false;
+        if (el.closest("footer, nav, .sw-bar, .ra-bar, .skip-link, [aria-hidden='true']")) return false;
         if (el.offsetParent === null) return false;
         var t = (el.textContent || "").trim();
         return t.length > 1 && !el.querySelector("h1,h2,h3,p,li");
@@ -1847,7 +2026,10 @@
     cur = el || null;
     if (cur) {
       cur.classList.add("ra-on");
-      try { cur.scrollIntoView({ block:"center", behavior:"smooth" }); } catch (e) { cur.scrollIntoView(); }
+      var r = cur.getBoundingClientRect();
+      if (r.top < 70 || r.bottom > window.innerHeight - (bar.offsetHeight + 20)) {
+        try { cur.scrollIntoView({ block:"center", behavior: RM ? "auto" : "smooth" }); } catch (e) { cur.scrollIntoView(); }
+      }
     }
   }
   function speakChunk(){
@@ -1870,7 +2052,7 @@
   }
   function play(){
     collect();
-    if (!blocks.length) return;
+    if (!blocks.length) { hint.textContent = LANG === "en" ? "Nothing to read on this page" : "หน้านี้ไม่มีข้อความให้อ่าน"; return; }
     if (!pickVoice() && (window.speechSynthesis.getVoices() || []).length) hint.textContent = T.novoice;
     playing = true; bPlay.textContent = T.pause;
     if (!chunks.length || idx >= blocks.length) { idx = firstVisible(); nextBlock(); }
@@ -1911,14 +2093,25 @@
   function setRate(v){
     speed = Math.min(1.4, Math.max(.6, Math.round(v * 10) / 10));
     rate.textContent = "×" + speed.toFixed(1);
+    var sp = T.speed + " " + speed.toFixed(1) + (LANG === "en" ? "×" : " เท่า");
+    bSlow.setAttribute("aria-label", T.slower + " (" + sp + ")");
+    bFast.setAttribute("aria-label", T.faster + " (" + sp + ")");
     try { localStorage.setItem("body101_ra_rate", String(speed)); } catch (e) {}
     if (playing) { window.speechSynthesis.cancel(); speakChunk(); }
   }
-  bSlow.addEventListener("click", function(){ setRate(speed - .1); });
-  bFast.addEventListener("click", function(){ setRate(speed + .1); });
-  bClose.addEventListener("click", function(){ stop(); bar.classList.remove("on"); fab.classList.remove("hide"); });
+  function announceRate(){ hint.textContent = T.speed + " " + speed.toFixed(1) + (LANG === "en" ? "×" : " เท่า"); }
+  bSlow.addEventListener("click", function(){ setRate(speed - .1); announceRate(); });
+  bFast.addEventListener("click", function(){ setRate(speed + .1); announceRate(); });
+  function openState(on){
+    document.documentElement.classList.toggle("ra-open", on); document.body.classList.toggle("ra-open", on);
+    if (on) document.documentElement.style.setProperty("--ra-h", bar.offsetHeight + "px");
+  }
+  function closeBar(){ stop(); bar.classList.remove("on"); fab.classList.remove("hide"); openState(false); fab.focus(); }
+  bClose.addEventListener("click", closeBar);
+  bar.addEventListener("keydown", function(e){ if (e.key === "Escape") { e.preventDefault(); closeBar(); } });
   fab.addEventListener("click", function(){
-    bar.classList.add("on"); fab.classList.add("hide");
+    bar.classList.add("on"); fab.classList.add("hide"); openState(true);
+    bPlay.focus();
     play();
   });
   window.addEventListener("beforeunload", function(){ try { window.speechSynthesis.cancel(); } catch (e) {} });
