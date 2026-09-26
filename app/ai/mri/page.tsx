@@ -162,35 +162,35 @@ export default function MriShowcasePage() {
       <style jsx>{`
         .mri-wrap { max-width: 1080px; margin: 0 auto; padding: clamp(20px,4vw,44px); color: ${C.ink};
           font-family: -apple-system,"Segoe UI","Sarabun","Noto Sans Thai",system-ui,sans-serif; line-height: 1.6; }
-        .mri-back { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; color: ${C.teal}; text-decoration: none; font-weight: 600; margin-bottom: 18px; }
+        .mri-back { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.8125rem; color: ${C.teal}; text-decoration: none; font-weight: 600; margin-bottom: 18px; }
         .mri-back:hover { text-decoration: underline; }
-        .mri-eyebrow { font-size: 12px; letter-spacing: .16em; color: ${C.teal}; font-weight: 700; }
-        .mri-h1 { font-size: clamp(26px,4vw,40px); line-height: 1.15; margin: .35em 0 .25em; font-weight: 700; text-wrap: balance;
+        .mri-eyebrow { font-size: 0.75rem; letter-spacing: .16em; color: ${C.teal}; font-weight: 700; }
+        .mri-h1 { font-size: clamp(1.625rem,4vw,2.5rem); line-height: 1.15; margin: .35em 0 .25em; font-weight: 700; text-wrap: balance;
           font-family: Georgia,"Times New Roman",serif; }
-        .mri-lede { font-size: clamp(15px,1.8vw,18px); color: ${C.muted}; max-width: 62ch; margin: 0; }
+        .mri-lede { font-size: clamp(0.9375rem,1.8vw,1.125rem); color: ${C.muted}; max-width: 62ch; margin: 0; }
         .mri-lede strong { color: ${C.ink}; }
         .mri-stats { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
         .mri-stat { background: ${C.panel}; border: 1px solid ${C.line}; border-radius: 14px; padding: 16px 20px; flex: 1 1 180px; }
-        .mri-stat .n { font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
-        .mri-stat .k { font-size: 12.5px; color: ${C.muted}; margin-top: 6px; }
-        .mri-sech { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: ${C.muted}; font-weight: 700;
+        .mri-stat .n { font-size: 1.875rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+        .mri-stat .k { font-size: 0.7812rem; color: ${C.muted}; margin-top: 6px; }
+        .mri-sech { font-size: 0.75rem; letter-spacing: .14em; text-transform: uppercase; color: ${C.muted}; font-weight: 700;
           margin: clamp(34px,5vw,52px) 0 16px; }
         .mri-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
         .mri-card { background: ${C.panel}; border: 1px solid ${C.line}; border-radius: 16px; padding: 18px 18px 12px; }
-        .mri-card h3 { margin: 0; font-size: 15px; font-weight: 700; }
-        .mri-card .sub { font-size: 12px; color: ${C.muted}; margin: 2px 0 8px; }
-        .mri-card .cap { font-size: 11.5px; color: ${C.muted}; margin: 6px 2px 2px; }
+        .mri-card h3 { margin: 0; font-size: 0.9375rem; font-weight: 700; }
+        .mri-card .sub { font-size: 0.75rem; color: ${C.muted}; margin: 2px 0 8px; }
+        .mri-card .cap { font-size: 0.7188rem; color: ${C.muted}; margin: 6px 2px 2px; }
         .mri-read { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
         .mri-item { background: ${C.panel}; border: 1px solid ${C.line}; border-radius: 14px; padding: 16px 18px; }
-        .mri-item .t { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .mri-item .t { font-weight: 700; font-size: 0.9375rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
         .mri-item .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; display: inline-block; }
-        .mri-item .d { font-size: 13.5px; color: ${C.muted}; }
+        .mri-item .d { font-size: 0.8438rem; color: ${C.muted}; }
         .mri-badges { display: flex; flex-wrap: wrap; gap: 10px; }
         .mri-badge { display: inline-flex; align-items: center; gap: 7px; background: ${C.panel}; border: 1px solid ${C.line};
-          border-radius: 999px; padding: 8px 14px; font-size: 12.5px; font-weight: 600; }
-        .mri-note { margin-top: 18px; padding: 14px 18px; border: 1px dashed ${C.line}; border-radius: 12px; font-size: 12.5px; color: ${C.muted}; }
+          border-radius: 999px; padding: 8px 14px; font-size: 0.7812rem; font-weight: 600; }
+        .mri-note { margin-top: 18px; padding: 14px 18px; border: 1px dashed ${C.line}; border-radius: 12px; font-size: 0.7812rem; color: ${C.muted}; }
         .mri-note strong { color: ${C.ink}; }
-        .mri-foot { margin-top: 36px; padding-top: 18px; border-top: 1px solid ${C.line}; font-size: 12.5px; color: ${C.muted};
+        .mri-foot { margin-top: 36px; padding-top: 18px; border-top: 1px solid ${C.line}; font-size: 0.7812rem; color: ${C.muted};
           display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
         @media (max-width: 680px) { .mri-grid, .mri-read { grid-template-columns: 1fr; } }
       `}</style>

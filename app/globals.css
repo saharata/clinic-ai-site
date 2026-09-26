@@ -68,6 +68,17 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   color: #0f172a;
   background: #f8fafc;
+  /* a11y (reflow 1.4.10): คำยาว/อีเมล/URL ตัดบรรทัดได้ ไม่ดันให้หน้าเลื่อนแนวนอนตอนขยายตัวอักษร */
+  overflow-wrap: break-word;
+}
+
+/* หัวข้อตัวใหญ่: คำไทยยาวติดกันตัดบรรทัดได้เมื่อไม่พอจริงๆ (ขยายตัวอักษร 200% บนจอ 320px) */
+h1,
+h2,
+h3,
+.vaccine-age,
+.vaccine-name {
+  overflow-wrap: anywhere;
 }
 
 a {
@@ -116,11 +127,11 @@ a {
 
 .brand-title {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .brand-subtitle {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #64748b;
 }
 
@@ -167,13 +178,13 @@ a {
 }
 
 .hero-title {
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(2rem, 5vw, 3.25rem);
   line-height: 1.1;
   margin: 0 0 16px;
 }
 
 .hero-text {
-  font-size: 18px;
+  font-size: 1.125rem;
   color: #334155;
   line-height: 1.7;
   margin: 0 0 24px;
@@ -239,7 +250,7 @@ a {
 
 .section-head h2 {
   margin: 0 0 10px;
-  font-size: 32px;
+  font-size: 2rem;
 }
 
 .section-head p {
@@ -426,10 +437,12 @@ a {
 
 .hours-list li {
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
   justify-content: space-between;
   padding: 12px 0;
   border-top: 1px solid #e2e8f0;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .hours-list li span:last-child {
@@ -481,7 +494,7 @@ a {
 }
 
 .vaccine-title {
-  font-size: clamp(26px, 4vw, 40px);
+  font-size: clamp(1.625rem, 4vw, 2.5rem);
   margin: 0 0 12px;
 }
 
@@ -554,7 +567,7 @@ a {
 
 .vaccine-row {
   display: grid;
-  grid-template-columns: 116px 1fr;
+  grid-template-columns: 7.25rem minmax(0, 1fr);
 }
 
 .vaccine-row + .vaccine-row {
@@ -598,6 +611,8 @@ ul.vaccine-items {
 
 .vaccine-head .vaccine-items {
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
   justify-content: space-between;
   padding: 16px;
 }
@@ -630,18 +645,18 @@ ul.vaccine-items {
 .vaccine-note {
   margin: 18px 2px 0;
   color: #475569;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.7;
 }
 
 @media (max-width: 640px) {
   .vaccine-row {
-    grid-template-columns: 84px 1fr;
+    grid-template-columns: minmax(0, 30%) minmax(0, 1fr);
   }
 
   .vaccine-age {
     padding: 12px 10px;
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   .vaccine-items {
@@ -699,7 +714,7 @@ ul.vaccine-items {
 
 .symptom-body h2 {
   margin: 0 0 12px;
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1.3;
 }
 
@@ -719,7 +734,7 @@ ul.vaccine-items {
   border-radius: 8px;
   padding: 12px 14px;
   color: #7f1d1d !important;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .symptom-redflag strong {
@@ -740,7 +755,7 @@ ul.vaccine-items {
 /* ===== Clinic gallery ===== */
 .gallery-title {
   margin: 0 0 16px;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 
 .gallery-grid {
@@ -799,7 +814,7 @@ ul.vaccine-items {
   margin: 0;
   padding: 12px 14px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.4;
   color: #0f172a;
 }
@@ -830,7 +845,7 @@ ul.vaccine-items {
   list-style: none;
   padding: 16px 0;
   font-weight: 700;
-  font-size: 17px;
+  font-size: 1.0625rem;
   color: #0f172a;
   display: flex;
   justify-content: space-between;
@@ -845,7 +860,7 @@ ul.vaccine-items {
 .faq-item summary::after {
   content: "+";
   color: #0f766e;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
   flex-shrink: 0;
@@ -890,7 +905,7 @@ ul.vaccine-items {
     min-height: 48px;
     border-radius: 14px;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: white;
   }
 
@@ -908,7 +923,7 @@ ul.vaccine-items {
 
   /* เผื่อพื้นที่ไม่ให้ปุ่มลอยบังเนื้อหาท้ายหน้า */
   body {
-    padding-bottom: 76px;
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
   }
 }
 
@@ -949,7 +964,7 @@ ul.vaccine-items {
   .nav-links .btn {
     min-height: 44px;
     padding: 0 14px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 }
 .hero-side {
@@ -1073,7 +1088,8 @@ ul.vaccine-items {
 .eeg-btn-sample { min-height:44px; background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; border-radius:999px; padding:8px 16px; font-size:.9rem; font-weight:600; cursor:pointer; transition:.15s; }
 .eeg-btn-sample:hover { background:#dbeafe; }
 .eeg-controls { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:20px; }
-.eeg-controls select { min-height:44px; font-family:inherit; border:1px solid #64748b; border-radius:10px; padding:9px 12px; font-size:.95rem; background:#fff; color:#0f172a; }
+.eeg-controls label { display:flex; flex-wrap:wrap; align-items:center; gap:6px; max-width:100%; }
+.eeg-controls select { max-width:100%;  min-height:44px; font-family:inherit; border:1px solid #64748b; border-radius:10px; padding:9px 12px; font-size:.95rem; background:#fff; color:#0f172a; }
 .eeg-status { margin-top:18px; font-size:.93rem; color:#475569; }
 .eeg-spin { display:inline-block; width:14px; height:14px; border:2px solid #e2e8f0; border-top-color:#1d4ed8; border-radius:50%; animation:eegspin .8s linear infinite; vertical-align:-2px; margin-right:7px; }
 @keyframes eegspin { to { transform:rotate(360deg); } }
@@ -1120,7 +1136,7 @@ ul.vaccine-items {
   filter: blur(40px);
 }
 .learn-page .hero.small > * { position: relative; }
-.learn-page .hero-title { font-size: clamp(38px, 7vw, 64px); letter-spacing: -0.02em; }
+.learn-page .hero-title { font-size: clamp(2.375rem, 7vw, 4rem); letter-spacing: -0.02em; }
 .learn-page .card {
   border-radius: 22px;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
@@ -1174,31 +1190,31 @@ ul.vaccine-items {
 .lp-hero-inner { position: relative; z-index: 2; min-height: min(80vh, 640px); display: grid; align-items: center; padding: 72px 0; }
 .lp-hero-copy { max-width: 580px; }
 .lp-eyebrow { display: inline-block; background: rgba(255,255,255,.12); color: #a5f3fc; border-radius: 999px; padding: 4px 12px; font-weight: 700; }
-.lp-title { font-size: clamp(48px, 8vw, 84px); line-height: 1; letter-spacing: -0.02em; margin: 14px 0 12px; color: #fff; }
-.lp-tagline { font-size: clamp(19px, 2.4vw, 24px); font-weight: 700; margin: 0 0 12px; color: #fde68a; line-height: 1.45; }
-.lp-lead { font-size: 17px; line-height: 1.75; color: #dbe4f3; margin: 0 0 22px; }
+.lp-title { font-size: clamp(3rem, 8vw, 5.25rem); line-height: 1; letter-spacing: -0.02em; margin: 14px 0 12px; color: #fff; }
+.lp-tagline { font-size: clamp(1.1875rem, 2.4vw, 1.5rem); font-weight: 700; margin: 0 0 12px; color: #fde68a; line-height: 1.45; }
+.lp-lead { font-size: 1.0625rem; line-height: 1.75; color: #dbe4f3; margin: 0 0 22px; }
 .lp-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
 .lp-btn-light { background: #fff; color: #0f172a; border-color: #fff; }
 .lp-btn-ghost { background: rgba(255,255,255,.06); color: #fff; border: 2px solid rgba(255,255,255,.75); }
 .lp-btn-ghost:hover, .lp-btn-ghost:focus-visible { background: rgba(255,255,255,.16); }
 .lp-stats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.lp-stats li { border: 1px solid rgba(255,255,255,.28); border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #e2e8f0; background: rgba(5,11,26,.5); }
+.lp-stats li { border: 1px solid rgba(255,255,255,.28); border-radius: 999px; padding: 6px 12px; font-size: 0.875rem; color: #e2e8f0; background: rgba(5,11,26,.5); }
 
 .lp-band { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 0; align-items: center; background: #0b1730; color: #f8fafc;
   border-radius: 28px; overflow: hidden; margin-bottom: 28px; box-shadow: 0 18px 40px rgba(15,23,42,.14); }
 .lp-band img { width: 100%; max-width: 100%; height: 100%; min-height: 0; object-fit: cover; display: block; aspect-ratio: 16/9; }
 .lp-band-copy { padding: 28px 32px; }
-.lp-band-copy h2 { margin: 8px 0 8px; font-size: clamp(26px, 3.2vw, 36px); color: #fff; }
+.lp-band-copy h2 { margin: 8px 0 8px; font-size: clamp(1.625rem, 3.2vw, 2.25rem); color: #fff; }
 .lp-band-copy p { color: #dbe4f3; line-height: 1.75; margin: 0; }
 
 .learn-page .card.lp-card { padding: 0; overflow: hidden; }
 .lp-thumb-wrap { aspect-ratio: 16/9; overflow: hidden; background: #0b1730; flex: none; }
 .lp-thumb { display: block; width: 100%; height: 100%; object-fit: cover; }
 .lp-card-body { padding: 18px 22px 22px; display: flex; flex-direction: column; flex: 1; }
-.lp-card-title { margin: 8px 0 2px; font-size: 21px; line-height: 1.3; }
+.lp-card-title { margin: 8px 0 2px; font-size: 1.3125rem; line-height: 1.3; }
 .lp-card-en { margin: 0 0 8px; color: #64748b; }
 .lp-points { color: #475569; line-height: 1.8; padding-left: 20px; margin: 0 0 16px; }
-.lp-points-lg { color: #334155; line-height: 1.9; font-size: 16px; }
+.lp-points-lg { color: #334155; line-height: 1.9; font-size: 1rem; }
 .lp-grid { margin-top: 0; }
 
 .lp-arena { position: relative; overflow: hidden; border-radius: 28px; background: #071025; color: #f8fafc;
@@ -1206,7 +1222,7 @@ ul.vaccine-items {
 .lp-arena img { position: absolute; right: 0; top: 0; height: 100%; width: 62%; object-fit: cover; object-position: center;
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 40%); mask-image: linear-gradient(90deg, transparent 0%, #000 40%); }
 .lp-arena-copy { position: relative; z-index: 1; padding: 36px 32px; }
-.lp-arena-copy h2 { margin: 8px 0; color: #fff; font-size: clamp(26px, 3.2vw, 36px); }
+.lp-arena-copy h2 { margin: 8px 0; color: #fff; font-size: clamp(1.625rem, 3.2vw, 2.25rem); }
 .lp-arena-copy p { color: #dbe4f3; line-height: 1.75; }
 
 .lp-parents { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 32px; align-items: center; }
