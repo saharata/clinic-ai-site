@@ -43,6 +43,7 @@
   --board-hi:#DCB273; --board-lo:#C39450; --board-rim:#8A6234; --line:#4E3419;
   --stone-b:#191920; --stone-b-hi:#55555f; --stone-w:#FBF8F1; --stone-w-lo:#CFC6B4;
   --seal:#9C3022; --good:#2E7150; --shadow:rgba(60,40,20,.22);
+  --coord:#3A2615; --stone-b-rim:rgba(0,0,0,0);
   --f-display:"Mali","IBM Plex Sans Thai Looped",system-ui,sans-serif;
   --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,sans-serif;
 }
@@ -50,7 +51,8 @@
   :root:not([data-theme="light"]){
     --ground:#13121A; --panel:#1C1A23; --panel-2:#23202B; --edge:#353140;
     --ink:#EFE7D9; --muted:#A2937E;
-    --board-hi:#926535; --board-lo:#6D4A26; --board-rim:#3A2615; --line:#261608;
+    --board-hi:#926535; --board-lo:#6D4A26; --board-rim:#3A2615; --line:#E8D3B0;
+    --coord:#FFF1D6; --stone-b-rim:#CFC6B4;
     --stone-b:#0C0C11; --stone-b-hi:#41414E; --stone-w:#F3EEE3; --stone-w-lo:#B4AA96;
     --seal:#E0725B; --good:#79B894; --shadow:rgba(0,0,0,.55);
   }
@@ -84,7 +86,7 @@ canvas:focus-visible{outline:3px solid var(--seal);outline-offset:3px}
 .tip b{color:var(--ink);font-weight:600}
 body:not(.help-on) .tip{display:none}
 .topmeta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-#btnHelp{min-height:38px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
+#btnHelp{min-height:44px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
 #btnHelp[aria-expanded="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 
 .rail{display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -112,7 +114,7 @@ body:not(.help-on) .tip{display:none}
   border-radius:3px;padding:10px 12px}
 .coach-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .coach-head .k{font-family:var(--f-display);font-size:15px;font-weight:700}
-.coach-head button{min-height:34px;padding:4px 12px;font-size:12.5px}
+.coach-head button{min-height:44px;padding:4px 12px;font-size:12.5px}
 .coach-text{display:flex;flex-direction:column;gap:7px;margin:9px 0 0;font-size:13px;line-height:1.55}
 .coach-text span{border-left:3px solid var(--good);padding-left:9px;color:var(--muted)}
 .coach-text span:first-child{color:var(--ink);font-weight:600;border-left-color:var(--seal)}
@@ -133,7 +135,7 @@ button.seal{color:var(--seal);border-color:var(--seal)}
 .field:last-child{margin-bottom:0}
 .field .lbl{font-size:13px;color:var(--muted)}
 .seg{display:flex;border:1.5px solid var(--edge);border-radius:3px;overflow:hidden}
-.seg button{border:0;border-radius:0;padding:5px 10px;min-height:40px;font-size:13.5px;background:var(--panel)}
+.seg button{border:0;border-radius:0;padding:5px 10px;min-height:44px;font-size:13.5px;background:var(--panel)}
 .seg button+button{border-left:1.5px solid var(--edge)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
 
@@ -158,9 +160,15 @@ button.seal{color:var(--seal);border-color:var(--seal)}
 .howto section p{margin:0;font-size:13.5px;color:var(--muted)}
 footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edge);padding-top:12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;padding:13px 16px;border-radius:10px;font:600 16px/1.2 system-ui,sans-serif;text-decoration:underline}
+.skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
+#main:focus{outline:none}
+@media (max-width:600px){.boardwrap{padding:6px}}   /* กระดานกว้างขึ้นบนมือถือ จุด/ช่องใหญ่ขึ้น */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
 <nav class="sw-bar" aria-label="สหวรรณคลินิก">
   <a class="sw-brand" href="/">สหวรรณคลินิก</a><span class="sw-sep" aria-hidden="true">/</span>
   <a href="/learn">Body 101 ทุกบท</a>
@@ -169,7 +177,7 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
   <a href="/learn/play">สนามแข่ง</a>
 </nav>
 
-<div class="wrap">
+<div class="wrap" id="main" role="main" tabindex="-1">
   <header class="top">
     <div class="mark">
       <span class="kanji" aria-hidden="true">囲碁</span>
@@ -189,7 +197,7 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
       <canvas id="bd" tabindex="0" role="application"
         aria-label="กระดานหมากล้อม ใช้ปุ่มลูกศรเลื่อนตำแหน่ง กด Enter เพื่อวางหมาก"></canvas>
       <p class="tip" id="tipBoard"><b>กระดาน</b> — คลิกที่จุดตัดของเส้น ไม่ใช่ในช่องสี่เหลี่ยม วางแล้ววางเลยไม่ต้องยืนยัน
-        ถ้าวางผิดใช้ปุ่มย้อนกลับได้ · เล่นด้วยแป้นพิมพ์ก็ได้ ลูกศรเลื่อนตำแหน่ง Enter วางหมาก P ผ่าน U ย้อนกลับ
+        ถ้าวางผิดใช้ปุ่มย้อนกลับได้ · ถ้ามือสั่นหรือกลัววางพลาด กดปุ่ม "แตะสองครั้งเพื่อวาง" แตะแรกจะแสดงหมากจาง ๆ ให้ดูก่อน แตะซ้ำจุดเดิมจึงวางจริง (มือถือเปิดให้อัตโนมัติ) · เล่นด้วยแป้นพิมพ์ก็ได้ ลูกศรเลื่อนตำแหน่ง Enter วางหมาก P ผ่าน U ย้อนกลับ
         · วงแหวนสีแดงคือหมากที่เพิ่งวางล่าสุด</p>
       <p class="sr" id="live" role="status" aria-live="polite"></p>
     </div>
@@ -246,6 +254,7 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
         <button id="btnUndo">ย้อนกลับ</button>
         <button id="btnResign" class="seal">ยอมแพ้</button>
         <button id="btnNew">เริ่มเกมใหม่</button>
+        <button type="button" id="btnAim" aria-pressed="false">แตะสองครั้งเพื่อวาง</button>
       </div>
 
       <p class="tip"><b>ปุ่มควบคุม</b> — ผ่าน ใช้เมื่อไม่มีจุดไหนคุ้มที่จะเดินแล้ว ถ้าผ่านสองครั้งติดกันทั้งสองฝ่ายถือว่าจบเกม
@@ -1096,8 +1105,8 @@ function draw(){
     ctx.fill();
   }
 
-  ctx.globalAlpha=.6; ctx.fillStyle=cssVar("--board-rim");
-  ctx.font="600 "+Math.max(8,cell*0.30)+"px 'IBM Plex Sans Thai Looped', sans-serif";
+  ctx.fillStyle=cssVar("--coord");   /* ทึบ ≥4.5:1 และไม่เล็กกว่า 12px */
+  ctx.font="600 "+Math.max(12,cell*0.34)+"px 'IBM Plex Sans Thai Looped', sans-serif";
   ctx.textAlign="center"; ctx.textBaseline="middle";
   for(i=0;i<N;i++){
     ctx.fillText(LETTERS[i], pad+i*cell, pad-cell*0.62);
@@ -1143,7 +1152,12 @@ function draw(){
     ctx.lineWidth=Math.max(1.5,cell*0.06);
     var a, q;
     for(a=0;a<atariList.length;a++){
-      ctx.strokeStyle = atariList[a].color===humanColor ? cssVar("--seal") : cssVar("--good");
+      var mine = atariList[a].color===humanColor;
+      ctx.strokeStyle = mine ? cssVar("--seal") : cssVar("--good");
+      /* หมากเราโดนขู่ = เส้นประยาว · หมากเขาที่เรากินได้ = จุดไข่ปลา (แยกด้วยลาย ไม่ใช่สีอย่างเดียว) */
+      ctx.lineCap = mine ? "butt" : "round";
+      ctx.setLineDash(mine ? [Math.max(4,cell*0.22), Math.max(3,cell*0.12)] : [0.1, Math.max(4,cell*0.14)]);
+      ctx.lineWidth = mine ? Math.max(1.5,cell*0.06) : Math.max(2.5,cell*0.09);
       var stn=atariList[a].stones;
       for(q=0;q<stn.length;q++){
         var ax=pad+(stn[q]%N)*cell, ay=pad+Math.floor(stn[q]/N)*cell;
@@ -1152,7 +1166,8 @@ function draw(){
     }
     if(hintMove>=0){
       var hx=pad+(hintMove%N)*cell, hy=pad+Math.floor(hintMove/N)*cell;
-      ctx.strokeStyle=cssVar("--good");
+      ctx.strokeStyle=cssVar("--good"); ctx.lineCap="butt"; ctx.lineWidth=Math.max(1.5,cell*0.06);
+      ctx.setLineDash([Math.max(2,cell*0.15), Math.max(2,cell*0.12)]);
       ctx.beginPath(); ctx.arc(hx,hy,cell*0.40,0,6.2832); ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle=cssVar("--good");
@@ -1176,6 +1191,7 @@ function drawStone(p,color,alpha){
   if(color===1){ g.addColorStop(0,cssVar("--stone-b-hi")); g.addColorStop(.55,cssVar("--stone-b")); g.addColorStop(1,"#000"); }
   else { g.addColorStop(0,"#fff"); g.addColorStop(.5,cssVar("--stone-w")); g.addColorStop(1,cssVar("--stone-w-lo")); }
   ctx.beginPath(); ctx.arc(x,y,r,0,6.2832); ctx.fillStyle=g; ctx.fill();
+  if(color===1){ ctx.lineWidth=1.5; ctx.strokeStyle=cssVar("--stone-b-rim"); ctx.stroke(); }  /* ขอบหมากดำในโหมดมืด */
   ctx.restore();
 }
 
@@ -1247,10 +1263,26 @@ function undo(){
 
 cv.addEventListener("mousemove",function(e){
   var p=pointAt(e);
+  if(aim>=0) return;   /* เล็งค้างไว้ อย่าให้เมาส์ขยับทิ้ง */
   if(p!==hover){ hover=p; usingKeys=false; draw(); checkHoverRisk(p); }
 });
-cv.addEventListener("mouseleave",function(){ if(hover!==-1){ hover=-1; draw(); checkHoverRisk(-1); } });
-cv.addEventListener("click",function(e){ usingKeys=false; humanPlay(pointAt(e)); });
+cv.addEventListener("mouseleave",function(){ if(hover!==-1 && aim<0){ hover=-1; draw(); checkHoverRisk(-1); } });
+var aimMode=false, aim=-1;
+try{ aimMode = window.matchMedia("(pointer: coarse)").matches; }catch(e){}
+var aimBtn=document.getElementById("btnAim");
+function setAim(on){ aimMode=on; aim=-1; aimBtn.setAttribute("aria-pressed",on?"true":"false"); }
+setAim(aimMode);
+aimBtn.addEventListener("click",function(){ setAim(!aimMode); say(aimMode?"เปิดโหมดแตะสองครั้ง แตะแรกเล็ง แตะซ้ำเพื่อวาง":"ปิดโหมดแตะสองครั้ง แตะครั้งเดียววางเลย"); });
+cv.addEventListener("click",function(e){
+  usingKeys=false;
+  var p=pointAt(e);
+  if(aimMode && p>=0 && p!==aim){       /* แตะแรก: เล็งไว้ก่อน */
+    aim=p; hover=p; draw(); checkHoverRisk(p);
+    say("เล็งที่ "+coordOf(p)+" แตะซ้ำเพื่อวาง");
+    return;
+  }
+  aim=-1; humanPlay(p);
+});
 cv.addEventListener("keydown",function(e){
   var k=e.key, x=cursor%N, y=Math.floor(cursor/N), moved=false;
   if(k==="ArrowLeft"){ x=Math.max(0,x-1); moved=true; }
