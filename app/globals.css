@@ -86,6 +86,28 @@ a {
   color: inherit;
 }
 
+/* a11y (use of color 1.4.1): ลิงก์ที่อยู่กลางข้อความต้องดูออกว่าเป็นลิงก์โดยไม่พึ่งสี → ขีดเส้นใต้
+   (เดิมสีเดียวกับตัวอักษรรอบข้างและไม่มีเส้นใต้ เช่น "ลงทะเบียนใช้งาน" ในหน้า login) */
+main p a:not([class]),
+main li a:not([class]),
+main td a:not([class]) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* เว็บนี้ออกแบบโทนสว่างอย่างเดียว ประกาศให้เบราว์เซอร์วาดช่องกรอก/ปุ่มระบบแบบสว่างให้ตรงกัน */
+:root {
+  color-scheme: light;
+}
+
+/* Windows High Contrast / forced colors: จุด "วัคซีนหลัก" ยังต้องมองเห็น */
+@media (forced-colors: active) {
+  .dot.core {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+}
+
 .container {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
