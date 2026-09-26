@@ -199,6 +199,7 @@ export default function MsPage() {
             <nav className="ms-jump" aria-label="ไปยังหัวข้อ">
               <a href="#selfcare" className="btn btn-outline">ดูแลตัวเอง</a>
               <a href="#rights" className="btn btn-outline">สิทธิประกันสังคม</a>
+              <a href="#equipment" className="btn btn-outline">ยืมอุปกรณ์ฟรี</a>
               <a href="#videos" className="btn btn-outline">คลิปเรียนรู้ต่อ</a>
               <a href="#appointment" className="btn btn-outline">นัดตรวจ</a>
             </nav>
@@ -326,10 +327,65 @@ export default function MsPage() {
           </div>
         </section>
 
-        <section id="videos" className="section">
+        <section id="equipment" className="section">
           <div className="container">
             <div className="section-head">
               <p className="eyebrow">ส่วนที่ 3</p>
+              <h2>ยืมอุปกรณ์การแพทย์ฟรี</h2>
+              <p>
+                สำหรับผู้สูงอายุ คนพิการ และผู้ป่วยที่มีภาวะพึ่งพิง เช่น เตียงผู้ป่วย รถเข็น เครื่องผลิตออกซิเจน
+                เครื่องดูดเสมหะ ไม้เท้า walker ไม้ค้ำยัน
+              </p>
+            </div>
+
+            <div className="cards two">
+              <div className="card ms-rights">
+                <h3>อยู่ในกรุงเทพฯ</h3>
+                <ul>
+                  <li>ยื่นคำขอทางเว็บ หรือที่ศูนย์บริการสาธารณสุขใกล้บ้าน</li>
+                  <li>นักสังคมสงเคราะห์ประเมินความจำเป็น</li>
+                  <li>รับอุปกรณ์พร้อมคำแนะนำการใช้ คืนเมื่อไม่จำเป็นต้องใช้แล้ว</li>
+                  <li>นำบัตรประชาชนผู้ป่วยไปด้วย (ถ้าผู้ป่วยมาเองไม่ได้ ให้นำบัตรของผู้ป่วยและของตัวเองไป)</li>
+                </ul>
+                <p className="top-gap">
+                  <a
+                    href="https://fa-equipment.bangkok.go.th"
+                    className="btn btn-dark"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    ยื่นคำขอ fa-equipment.bangkok.go.th
+                  </a>
+                </p>
+              </div>
+
+              <div className="card ms-rights">
+                <h3>อยู่ต่างจังหวัด</h3>
+                <ul>
+                  <li>ถาม รพ.สต. หรือ รพ.ชุมชนใกล้บ้าน ผ่านทีมเยี่ยมบ้าน</li>
+                  <li>
+                    อบจ. เทศบาล อบต. หลายแห่งมี &ldquo;ธนาคารกายอุปกรณ์&rdquo; หรือศูนย์ยืมอุปกรณ์ ร่วมกับ สปสช.
+                    (เช่น นครราชสีมา ชลบุรี สมุทรสงคราม)
+                  </li>
+                  <li>มีบัตรคนพิการและใช้บัตรทอง ขอรถเข็นหรือกายอุปกรณ์ผ่านโรงพยาบาลได้ โดยไม่ต้องสำรองจ่าย</li>
+                  <li>ทำบัตรคนพิการได้ที่ พมจ. หรือศูนย์บริการคนพิการจังหวัด</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="card ms-hotline top-gap">
+              <h3>ไม่รู้จะเริ่มที่ไหน ถามได้ที่</h3>
+              <p>
+                สายด่วน สปสช. <a href="tel:1330">โทร 1330</a> · สายด่วน พม. <a href="tel:1300">โทร 1300</a>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="videos" className="section alt">
+          <div className="container">
+            <div className="section-head">
+              <p className="eyebrow">ส่วนที่ 4</p>
               <h2>คลิปเรียนรู้ต่อ</h2>
               <p>ฟังต่อที่บ้านได้ อธิบายโดย นพ. สหรัฐ อังศุมาศ</p>
             </div>
@@ -370,7 +426,7 @@ export default function MsPage() {
           </div>
         </section>
 
-        <section id="faq" className="section alt">
+        <section id="faq" className="section">
           <div className="container">
             <div className="section-head">
               <p className="eyebrow">คำถามที่พบบ่อย</p>
@@ -387,7 +443,7 @@ export default function MsPage() {
           </div>
         </section>
 
-        <section id="appointment" className="section">
+        <section id="appointment" className="section alt">
           <div className="container cta-box">
             <div>
               <p className="eyebrow">นัดตรวจ</p>
