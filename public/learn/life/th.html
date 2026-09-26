@@ -1051,7 +1051,7 @@
       card.className = "gcard idle"; card.textContent = "จบเกม ได้ " + score + " คะแนน";
       $$("button", bins).forEach(function(b){ b.disabled = true; });
       $("#g7Btn").textContent = "เล่นอีกครั้ง";
-      if (score > best) { best = score; save("body101_life_best", best); msg.textContent = "ทำสถิติใหม่ได้ด้วย เก่งมาก"; }
+      if (!window.B101_UNTIMED && score > best) { best = score; save("body101_life_best", best); msg.textContent = "ทำสถิติใหม่ได้ด้วย เก่งมาก"; }
       else msg.textContent = score >= 150 ? "เยี่ยมมาก จำกลุ่มสิ่งมีชีวิตได้แม่นจริงๆ" : "ลองอีกรอบ ดูจากวิธีกินอาหารกับจำนวนเซลล์เป็นหลัก";
       showBest();
     }
@@ -1079,7 +1079,7 @@
       $("#g7Score").textContent = "0"; $("#g7Time").textContent = left; $("#g7Streak").textContent = "";
       msg.className = "msg"; msg.textContent = "เลือกให้ไวที่สุด";
       $("#g7Btn").textContent = "จบเกม"; next();
-      timer = setInterval(function(){ left--; $("#g7Time").textContent = left; if (left <= 0) stop(); }, 1000);
+      timer = setInterval(function(){ if (window.B101_UNTIMED) return; left--; $("#g7Time").textContent = left; if (left <= 0) stop(); }, 1000);
     });
     showBest();
   }
@@ -1277,6 +1277,12 @@ svg .bp-hit{fill:transparent;stroke:none} /* inherits pointer-events, so hidden 
 .badges .badge:not(.on){opacity:1;border-style:dashed}
 .badges .badge:not(.on) .em{opacity:.38;filter:grayscale(1)}
 .badges .badge:not(.on) .nm{color:var(--ink-2)}
+
+/* "no timer" switch for timed mini-games */
+.bp-untimed-note{display:none}
+html.b101-untimed .bp-timeread{display:none}
+html.b101-untimed .bp-untimed-note{display:inline}
+.bp-untimed-btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent)}
 </style>
 
 <script>
@@ -1417,6 +1423,37 @@ svg .bp-hit{fill:transparent;stroke:none} /* inherits pointer-events, so hidden 
   window.addEventListener("load", function(){ addHits(); setTimeout(addHits, 1200); });
   window.addEventListener("resize", function(){ (window.requestAnimationFrame || setTimeout)(sizeHits); }, { passive: true });
   document.addEventListener("click", function(){ setTimeout(sizeHits, 60); });
+
+  // timed mini-games get a "no timer" switch (WCAG 2.2.1): the countdown pauses and records are not saved
+  var timeEls = Array.prototype.filter.call(document.querySelectorAll("[id$='Time']"), function(el){ return /^g\d+Time$/.test(el.id); });
+  if (timeEls.length) {
+    var untimed = false;
+    try { untimed = localStorage.getItem("body101_untimed") === "1"; } catch (e) {}
+    var toggles = [];
+    function applyUntimed(){
+      window.B101_UNTIMED = untimed;
+      document.documentElement.classList.toggle("b101-untimed", untimed);
+      toggles.forEach(function(t){ t.setAttribute("aria-pressed", untimed ? "true" : "false"); });
+    }
+    timeEls.forEach(function(el){
+      var read = el.parentElement; read.classList.add("bp-timeread");
+      var note = document.createElement("span"); note.className = "readout bp-untimed-note";
+      note.textContent = EN ? "No timer · press Stop when you are done" : "ไม่จับเวลา · กดหยุดเมื่ออยากจบ";
+      read.parentNode.insertBefore(note, read.nextSibling);
+      var start = document.getElementById(el.id.replace(/Time$/, "Btn"));
+      if (!start) return;
+      var t = document.createElement("button"); t.type = "button"; t.className = "btn ghost bp-untimed-btn";
+      t.textContent = EN ? "No timer" : "ไม่จับเวลา";
+      t.addEventListener("click", function(){
+        untimed = !untimed;
+        try { localStorage.setItem("body101_untimed", untimed ? "1" : "0"); } catch (e) {}
+        applyUntimed();
+      });
+      start.parentNode.insertBefore(t, start.nextSibling);
+      toggles.push(t);
+    });
+    applyUntimed();
+  }
 
   if (reduce || !("IntersectionObserver" in window)) return;
   var blocks = Array.prototype.slice.call(document.querySelectorAll(".wrap3 .ch")).slice(1);
