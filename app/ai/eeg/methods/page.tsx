@@ -68,11 +68,20 @@ function ResultsTable({ lang }: { lang: "th" | "en" }) {
     },
   ];
   return (
-    <div className="my-5 overflow-x-auto">
+    // a11y (keyboard/reflow): ตารางกว้างเลื่อนแนวนอนได้ในกรอบของตัวเอง (หน้าไม่ต้องเลื่อน) และ Tab เข้าไปเลื่อนด้วยลูกศรได้
+    <div
+      className="my-5 overflow-x-auto"
+      style={{ overflowX: "auto" }}
+      role="region"
+      aria-label={th ? "ตารางผลหลัก (เลื่อนซ้ายขวาได้)" : "Main results table (scrolls horizontally)"}
+      tabIndex={0}
+    >
       <table className="w-full min-w-[34rem] border-collapse text-sm">
         <thead>
           <tr className="border-b-2 border-slate-300 text-left">
-            <th className="py-2 pr-3 font-semibold"></th>
+            <th className="py-2 pr-3 font-semibold">
+              <span className="sr-only">{th ? "วิธี" : "Method"}</span>
+            </th>
             <th className="py-2 pr-3 font-semibold">
               {th ? "จับเหตุการณ์ชักได้" : "Event sensitivity"}
             </th>
@@ -115,10 +124,14 @@ function ResultsTable({ lang }: { lang: "th" | "en" }) {
 
 export default function EegMethodsPage() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12 text-slate-800">
+    <main id="main-content" tabIndex={-1} className="mx-auto max-w-3xl px-6 py-12 text-slate-800">
       <p className="text-sm text-slate-500">
-        <Link href="/ai/eeg" className="underline underline-offset-2 hover:text-slate-700">
-          ← กลับไปหน้าเครื่องมือ EEG
+        <Link
+          href="/ai/eeg"
+          className="underline underline-offset-2 hover:text-slate-700"
+          style={{ display: "inline-flex", alignItems: "center", minHeight: 44, textDecoration: "underline" }}
+        >
+          <span aria-hidden="true">←</span>&nbsp;กลับไปหน้าเครื่องมือ EEG
         </Link>
       </p>
 
@@ -259,6 +272,8 @@ export default function EegMethodsPage() {
       </P>
 
       {/* ───────────────── English ───────────────── */}
+      {/* a11y: ส่วนภาษาอังกฤษประกาศ lang="en" ให้ screen reader เปลี่ยนเสียงอ่าน */}
+      <div lang="en">
 
       <hr className="my-12 border-slate-300" />
 
@@ -408,6 +423,8 @@ export default function EegMethodsPage() {
         case; the system only points to segments worth looking at first. Uploaded files are
         deleted immediately after processing and are never retained.
       </P>
+
+      </div>
 
       <p className="mt-12 border-t border-slate-200 pt-5 text-sm text-slate-500">
         นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์ — สหวรรณคลินิก

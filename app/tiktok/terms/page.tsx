@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function TikTokTermsPage() {
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
+    <main id="main-content" tabIndex={-1} className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
       <h1 className="text-2xl font-bold text-slate-900">
         ข้อกำหนดการใช้งาน — Sahawan Neuro Content
       </h1>
@@ -75,7 +75,7 @@ export default function TikTokTermsPage() {
 
       <hr className="my-8 border-slate-200" />
 
-      <section className="space-y-3 leading-relaxed">
+      <section className="space-y-3 leading-relaxed" lang="en">
         <h2 className="text-lg font-semibold text-slate-900">English</h2>
         <p>
           <strong>Sahawan Neuro Content</strong> is an internal publishing tool

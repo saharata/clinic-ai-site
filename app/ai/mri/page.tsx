@@ -2,14 +2,20 @@
 
 const YEARS = ["2021", "2022", "2024", "2025", "2026"];
 const C = {
-  teal: "#0B7A8C", amber: "#C77B25", mint: "#02A98C", good: "#0A8F6E",
+  // a11y (contrast): amber เดิม #C77B25 (3.3:1) และ mint #02A98C (3.0:1) เข้มขึ้นให้ตัวเลขบนกราฟอ่านได้ ≥4.5:1
+  teal: "#0B7A8C", amber: "#A15C0F", mint: "#028A73", good: "#0A8F6E",
   ink: "#0E2A33", muted: "#5A757C", line: "#DCE9E9", panel: "#FFFFFF", ground: "#F7FAFA",
 };
 
 type Fmt = { axis: (v: number) => string; pt: (v: number) => string };
 
-function LineChart({ data, color, minY, maxY, fmt }: {
-  data: number[]; color: string; minY: number; maxY: number; fmt: Fmt;
+// a11y (screen reader): กราฟ SVG ต้องมีชื่อที่อ่านตัวเลขได้ ไม่ใช่แค่ role="img" เปล่าๆ
+function chartLabel(title: string, data: number[], fmt: Fmt) {
+  return `${title}: ` + YEARS.map((y, i) => `ปี ${y} ${fmt.pt(data[i])}`).join(", ");
+}
+
+function LineChart({ title, data, color, minY, maxY, fmt }: {
+  title: string; data: number[]; color: string; minY: number; maxY: number; fmt: Fmt;
 }) {
   const W = 440, H = 190, pt = 26, pr = 14, pb = 26, pl = 44;
   const rng = maxY - minY || 1;
@@ -29,7 +35,7 @@ function LineChart({ data, color, minY, maxY, fmt }: {
   const path = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
   const last = data.length - 1;
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" style={{ display: "block", width: "100%", height: "auto" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={chartLabel(title, data, fmt)} style={{ display: "block", width: "100%", height: "auto" }}>
       {grid}
       <path d={`${path} L${X(last)} ${H - pb} L${pl} ${H - pb} Z`} fill={color} opacity={0.08} />
       <path d={path} fill="none" stroke={color} strokeWidth={2.4} strokeLinejoin="round" strokeLinecap="round" />
@@ -46,7 +52,7 @@ function LineChart({ data, color, minY, maxY, fmt }: {
   );
 }
 
-function BarChart({ data, color, fmt }: { data: number[]; color: string; fmt: Fmt }) {
+function BarChart({ title, data, color, fmt }: { title: string; data: number[]; color: string; fmt: Fmt }) {
   const W = 440, H = 190, pt = 26, pr = 14, pb = 26, pl = 44;
   const mx = Math.max(...data) * 1.08, mn = 0, rng = mx - mn || 1;
   const peak = Math.max(...data);
@@ -64,7 +70,7 @@ function BarChart({ data, color, fmt }: { data: number[]; color: string; fmt: Fm
     );
   });
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" style={{ display: "block", width: "100%", height: "auto" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={chartLabel(title, data, fmt)} style={{ display: "block", width: "100%", height: "auto" }}>
       {grid}
       {data.map((v, i) => {
         const x = X(i) - bw / 2, y = Y(v), h = (H - pb) - y;
@@ -98,8 +104,8 @@ const BADGES = [
 
 export default function MriShowcasePage() {
   return (
-    <main className="mri-wrap">
-      <a href="/ai" className="mri-back">← กลับหน้าเครื่องมือ AI</a>
+    <main id="main-content" tabIndex={-1} className="mri-wrap">
+      <a href="/ai" className="mri-back"><span aria-hidden="true">←</span> กลับหน้าเครื่องมือ AI</a>
       <div className="mri-eyebrow">MRI LESION TRACKING · เคสตัวอย่าง (de-identified)</div>
       <h1 className="mri-h1">ติดตามการเปลี่ยนแปลงของสมองข้ามปี<br />ในผู้ป่วยปลอกประสาทเสื่อมแข็ง (MS)</h1>
       <p className="mri-lede">
@@ -113,35 +119,35 @@ export default function MriShowcasePage() {
         <div className="mri-stat"><div className="n" style={{ color: C.ink }}>5 ปี</div><div className="k">2021–2026 · 5 จุดเวลา · T1 + FLAIR</div></div>
       </div>
 
-      <div className="mri-sech">แนวโน้มเชิงปริมาณ · 2021–2026</div>
+      <h2 className="mri-sech">แนวโน้มเชิงปริมาณ · 2021–2026</h2>
       <div className="mri-grid">
         <div className="mri-card"><h3>สมองฝ่อสะสม (PBVC)</h3><div className="sub">% ปริมาตรสมองเทียบ baseline ยิ่งต่ำ = ฝ่อมาก</div>
-          <LineChart data={[0, -1.3, -4.35, -5.05, -5.77]} color={C.amber} minY={-6.5} maxY={0.5} fmt={{ axis: (v) => v.toFixed(0) + "%", pt: (v) => v.toFixed(1) }} />
+          <LineChart title="สมองฝ่อสะสม (PBVC) %" data={[0, -1.3, -4.35, -5.05, -5.77]} color={C.amber} minY={-6.5} maxY={0.5} fmt={{ axis: (v) => v.toFixed(0) + "%", pt: (v) => v.toFixed(1) }} />
           <div className="cap">เส้นลาดคงที่ = neurodegeneration เดินหน้าต่อเนื่อง</div></div>
         <div className="mri-card"><h3>จำนวนรอยโรค (Lesion count)</h3><div className="sub">นับจาก FLAIR ด้วย LST-AI</div>
-          <BarChart data={[52, 57, 71, 61, 48]} color={C.teal} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(0) }} />
+          <BarChart title="จำนวนรอยโรค" data={[52, 57, 71, 61, 48]} color={C.teal} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(0) }} />
           <div className="cap">พีค 2024 แล้วลด = การอักเสบสงบลง (ตอบสนองการรักษา)</div></div>
         <div className="mri-card"><h3>ปริมาตรสมอง (mL)</h3><div className="sub">FastSurfer segmentation</div>
-          <LineChart data={[1037, 1024, 992, 986, 978]} color={C.teal} minY={968} maxY={1044} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(0) }} />
+          <LineChart title="ปริมาตรสมอง (mL)" data={[1037, 1024, 992, 986, 978]} color={C.teal} minY={968} maxY={1044} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(0) }} />
           <div className="cap">1037 → 978 mL ใน 5 ปี</div></div>
         <div className="mri-card"><h3>ปริมาตรรอยโรค (mL)</h3><div className="sub">Total lesion volume</div>
-          <LineChart data={[34.2, 25.5, 29.0, 26.2, 26.4]} color={C.mint} minY={22} maxY={36} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(1) }} />
+          <LineChart title="ปริมาตรรอยโรค (mL)" data={[34.2, 25.5, 29.0, 26.2, 26.4]} color={C.mint} minY={22} maxY={36} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(1) }} />
           <div className="cap">ลดลงหลัง 2024 สอดคล้องกับจำนวนที่ลด</div></div>
       </div>
 
-      <div className="mri-sech">การอ่านผลทางคลินิก</div>
+      <h2 className="mri-sech">การอ่านผลทางคลินิก</h2>
       <div className="mri-read">
         {READ.map(([t, c, d]) => (
           <div className="mri-item" key={t}>
-            <div className="t"><span className="dot" style={{ background: c }} />{t}</div>
+            <div className="t"><span className="dot" aria-hidden="true" style={{ background: c }} />{t}</div>
             <div className="d">{d}</div>
           </div>
         ))}
       </div>
 
-      <div className="mri-sech">วิธีการและความปลอดภัย</div>
+      <h2 className="mri-sech">วิธีการและความปลอดภัย</h2>
       <div className="mri-badges">
-        {BADGES.map(([e, t]) => (<span className="mri-badge" key={t}>{e} <span>{t}</span></span>))}
+        {BADGES.map(([e, t]) => (<span className="mri-badge" key={t}><span aria-hidden="true">{e}</span> <span>{t}</span></span>))}
       </div>
       <div className="mri-note">
         หมายเหตุ: หน้านี้เป็นการ<strong>สาธิตความสามารถ</strong>จากเคสตัวอย่างที่ปกปิดข้อมูลส่วนบุคคลแล้ว ไม่ใช่ช่องอัปโหลดสาธารณะ
@@ -156,35 +162,35 @@ export default function MriShowcasePage() {
       <style jsx>{`
         .mri-wrap { max-width: 1080px; margin: 0 auto; padding: clamp(20px,4vw,44px); color: ${C.ink};
           font-family: -apple-system,"Segoe UI","Sarabun","Noto Sans Thai",system-ui,sans-serif; line-height: 1.6; }
-        .mri-back { display: inline-block; font-size: 13px; color: ${C.teal}; text-decoration: none; font-weight: 600; margin-bottom: 18px; }
+        .mri-back { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.8125rem; color: ${C.teal}; text-decoration: none; font-weight: 600; margin-bottom: 18px; }
         .mri-back:hover { text-decoration: underline; }
-        .mri-eyebrow { font-size: 12px; letter-spacing: .16em; color: ${C.teal}; font-weight: 700; }
-        .mri-h1 { font-size: clamp(26px,4vw,40px); line-height: 1.15; margin: .35em 0 .25em; font-weight: 700; text-wrap: balance;
+        .mri-eyebrow { font-size: 0.75rem; letter-spacing: .16em; color: ${C.teal}; font-weight: 700; }
+        .mri-h1 { font-size: clamp(1.625rem,4vw,2.5rem); line-height: 1.15; margin: .35em 0 .25em; font-weight: 700; text-wrap: balance;
           font-family: Georgia,"Times New Roman",serif; }
-        .mri-lede { font-size: clamp(15px,1.8vw,18px); color: ${C.muted}; max-width: 62ch; margin: 0; }
+        .mri-lede { font-size: clamp(0.9375rem,1.8vw,1.125rem); color: ${C.muted}; max-width: 62ch; margin: 0; }
         .mri-lede strong { color: ${C.ink}; }
         .mri-stats { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
         .mri-stat { background: ${C.panel}; border: 1px solid ${C.line}; border-radius: 14px; padding: 16px 20px; flex: 1 1 180px; }
-        .mri-stat .n { font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
-        .mri-stat .k { font-size: 12.5px; color: ${C.muted}; margin-top: 6px; }
-        .mri-sech { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: ${C.muted}; font-weight: 700;
+        .mri-stat .n { font-size: 1.875rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+        .mri-stat .k { font-size: 0.7812rem; color: ${C.muted}; margin-top: 6px; }
+        .mri-sech { font-size: 0.75rem; letter-spacing: .14em; text-transform: uppercase; color: ${C.muted}; font-weight: 700;
           margin: clamp(34px,5vw,52px) 0 16px; }
         .mri-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
         .mri-card { background: ${C.panel}; border: 1px solid ${C.line}; border-radius: 16px; padding: 18px 18px 12px; }
-        .mri-card h3 { margin: 0; font-size: 15px; font-weight: 700; }
-        .mri-card .sub { font-size: 12px; color: ${C.muted}; margin: 2px 0 8px; }
-        .mri-card .cap { font-size: 11.5px; color: ${C.muted}; margin: 6px 2px 2px; }
+        .mri-card h3 { margin: 0; font-size: 0.9375rem; font-weight: 700; }
+        .mri-card .sub { font-size: 0.75rem; color: ${C.muted}; margin: 2px 0 8px; }
+        .mri-card .cap { font-size: 0.7188rem; color: ${C.muted}; margin: 6px 2px 2px; }
         .mri-read { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
         .mri-item { background: ${C.panel}; border: 1px solid ${C.line}; border-radius: 14px; padding: 16px 18px; }
-        .mri-item .t { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .mri-item .t { font-weight: 700; font-size: 0.9375rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
         .mri-item .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; display: inline-block; }
-        .mri-item .d { font-size: 13.5px; color: ${C.muted}; }
+        .mri-item .d { font-size: 0.8438rem; color: ${C.muted}; }
         .mri-badges { display: flex; flex-wrap: wrap; gap: 10px; }
         .mri-badge { display: inline-flex; align-items: center; gap: 7px; background: ${C.panel}; border: 1px solid ${C.line};
-          border-radius: 999px; padding: 8px 14px; font-size: 12.5px; font-weight: 600; }
-        .mri-note { margin-top: 18px; padding: 14px 18px; border: 1px dashed ${C.line}; border-radius: 12px; font-size: 12.5px; color: ${C.muted}; }
+          border-radius: 999px; padding: 8px 14px; font-size: 0.7812rem; font-weight: 600; }
+        .mri-note { margin-top: 18px; padding: 14px 18px; border: 1px dashed ${C.line}; border-radius: 12px; font-size: 0.7812rem; color: ${C.muted}; }
         .mri-note strong { color: ${C.ink}; }
-        .mri-foot { margin-top: 36px; padding-top: 18px; border-top: 1px solid ${C.line}; font-size: 12.5px; color: ${C.muted};
+        .mri-foot { margin-top: 36px; padding-top: 18px; border-top: 1px solid ${C.line}; font-size: 0.7812rem; color: ${C.muted};
           display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
         @media (max-width: 680px) { .mri-grid, .mri-read { grid-template-columns: 1fr; } }
       `}</style>

@@ -76,13 +76,11 @@ export default function AiToolsPage() {
   }, []);
 
   const [user, setUser] = useState<User | null>(null);
-  const [loadingUser, setLoadingUser] = useState(true);
+  // ไม่มีการตั้งค่า Supabase = ไม่ต้องรอโหลดผู้ใช้ (กำหนดตั้งแต่แรก แทนการ setState ใน effect)
+  const [loadingUser, setLoadingUser] = useState(supabase !== null);
 
   useEffect(() => {
-    if (!supabase) {
-      setLoadingUser(false);
-      return;
-    }
+    if (!supabase) return;
 
     let mounted = true;
 
@@ -117,10 +115,10 @@ export default function AiToolsPage() {
   }
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <section className="hero small">
         <div className="container">
-          <p className="eyebrow">AI Tools for Neurologists</p>
+          <p className="eyebrow" lang="en">AI Tools for Neurologists</p>
 
           <h1 className="hero-title">
             {loadingUser
@@ -250,7 +248,8 @@ function ToolCard({
             fontWeight: 600,
           }}
         >
-          {tool.status === "live" ? `● ${badgeText}` : badgeText}
+          {tool.status === "live" && <span aria-hidden="true">● </span>}
+          {badgeText}
         </p>
         <p style={{ marginTop: 12 }}>{tool.description}</p>
       </div>
@@ -288,7 +287,7 @@ function ToolCard({
             fontWeight: 600,
           }}
         >
-          ● {badgeText}
+          <span aria-hidden="true">●</span> {badgeText}
         </p>
         <p style={{ marginTop: 12 }}>{tool.description}</p>
 
@@ -313,7 +312,7 @@ function ToolCard({
             fontWeight: 600,
           }}
         >
-          ● {badgeText}
+          <span aria-hidden="true">●</span> {badgeText}
         </p>
         <p style={{ marginTop: 12 }}>{tool.description}</p>
 
@@ -355,7 +354,7 @@ function ToolCard({
                 border: "1px solid #d1d5db",
               }}
             >
-              📄 คู่มือ
+              <span aria-hidden="true">📄 </span>คู่มือ
             </a>
           )}
         </div>
@@ -374,7 +373,7 @@ function ToolCard({
           fontWeight: 600,
         }}
       >
-        ● {badgeText}
+        <span aria-hidden="true">●</span> {badgeText}
       </p>
       <p style={{ marginTop: 12 }}>{tool.description}</p>
 
@@ -407,7 +406,7 @@ function ToolCard({
               border: "1px solid #d1d5db",
             }}
           >
-            📄 คู่มือ
+            <span aria-hidden="true">📄 </span>คู่มือ
           </a>
         )}
       </div>

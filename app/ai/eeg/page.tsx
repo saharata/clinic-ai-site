@@ -30,7 +30,24 @@ type AnalyzeResult = {
   tasks: Record<string, TaskResult>;
 };
 
-const BAR_COLORS = ["#1d4ed8", "#dc2626", "#0f766e", "#f59e0b", "#7c3aed"];
+// a11y (contrast): ทุกสีรับตัวอักษรขาวได้ ≥4.5:1 (เดิม #f59e0b ได้ 2.15:1)
+// แถบความน่าจะเป็นรายหน้าต่าง: สีต่างกันและ "ลาย" ต่างกัน เพื่อไม่ให้สื่อความหมายด้วยสีอย่างเดียว
+// ทุกแบบมี contrast ≥3:1 กับพื้น #f8fafc (เดิมสีเทา #94a3b8 และส้ม #f59e0b ได้แค่ 2.1–2.5:1)
+const PROB_COLORS = {
+  reported: "#b91c1c",
+  nearMiss: "repeating-linear-gradient(135deg, #b45309 0 3px, #fde68a 3px 5px)",
+  below: "#64748b",
+};
+
+const BAR_COLORS = ["#1d4ed8", "#b91c1c", "#0f766e", "#b45309", "#7c3aed"];
+
+// a11y (error suggestion): "Failed to fetch" ของเบราว์เซอร์ไม่บอกผู้ใช้ว่าต้องทำอะไร → แปลเป็นวิธีแก้
+function friendlyError(e: unknown, fallback: string): string {
+  if (e instanceof TypeError) {
+    return "เชื่อมต่อเซิร์ฟเวอร์วิจัยไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต รอประมาณ 1 นาที (เซิร์ฟเวอร์อาจกำลังตื่น) แล้วลองอีกครั้ง";
+  }
+  return e instanceof Error && e.message ? e.message : fallback;
+}
 
 export default function EegDemoPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -71,7 +88,7 @@ export default function EegDemoPage() {
   function pickFile(f: File | null) {
     if (!f) return;
     if (!/\.edf$/i.test(f.name)) {
-      setError("รองรับเฉพาะไฟล์ .edf เท่านั้น");
+      setError("รองรับเฉพาะไฟล์ .edf เท่านั้น — กรุณาเลือกไฟล์ที่ลงท้ายด้วย .edf แล้วลองอีกครั้ง");
       return;
     }
     setError(null);
@@ -101,7 +118,9 @@ export default function EegDemoPage() {
       try {
         data = JSON.parse(text);
       } catch {
-        throw new Error("ตอบกลับไม่ใช่ JSON (HTTP " + r.status + ")");
+        throw new Error(
+          "เซิร์ฟเวอร์ตอบกลับผิดรูปแบบ (HTTP " + r.status + ") กรุณารอสักครู่แล้วกด \"วิเคราะห์\" อีกครั้ง"
+        );
       }
       if (!r.ok) {
         const d = data as { detail?: unknown };
@@ -112,7 +131,7 @@ export default function EegDemoPage() {
       setResult(data as AnalyzeResult);
       setStatus(null);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "เกิดข้อผิดพลาด");
+      setError(friendlyError(e, "เกิดข้อผิดพลาด กรุณากด \"วิเคราะห์\" อีกครั้ง"));
       setStatus(null);
     } finally {
       setBusy(false);
@@ -126,7 +145,7 @@ export default function EegDemoPage() {
     setStatus("กำลังโหลดไฟล์ตัวอย่าง…");
     try {
       const res = await fetch(url);
-      if (!res.ok) throw new Error("โหลดไฟล์ตัวอย่างไม่สำเร็จ");
+      if (!res.ok) throw new Error("โหลดไฟล์ตัวอย่างไม่สำเร็จ กรุณาโหลดหน้าเว็บใหม่แล้วลองอีกครั้ง");
       const blob = await res.blob();
       const f = new File([blob], url.split("/").pop() || "sample.edf", {
         type: "application/octet-stream",
@@ -136,15 +155,15 @@ export default function EegDemoPage() {
       await analyze(f, "A,C");
     } catch (e) {
       setStatus(null);
-      setError(e instanceof Error ? e.message : "โหลดตัวอย่างไม่สำเร็จ");
+      setError(friendlyError(e, "โหลดตัวอย่างไม่สำเร็จ กรุณาโหลดหน้าเว็บใหม่แล้วลองอีกครั้ง"));
     }
   }
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <section className="hero small">
         <div className="container">
-          <a href="/ai" className="eeg-back">← กลับไปหน้าเครื่องมือ AI</a>
+          <a href="/ai" className="eeg-back"><span aria-hidden="true">←</span> กลับไปหน้าเครื่องมือ AI</a>
           <p className="eyebrow">AI EEG · SpikeSense</p>
           <h1 className="hero-title">ช่วยอ่าน EEG หาคลื่นชักและ IED</h1>
           <p className="hero-text narrow">
@@ -152,7 +171,7 @@ export default function EegDemoPage() {
             epileptiform (IED / sharp wave) จากไฟล์ EEG มาตรฐาน เพื่อช่วยลดเวลาการอ่านคลื่นเบื้องต้นของแพทย์
           </p>
           <div style={{ marginTop: 16 }}>
-            <span className="eeg-badge">● โมเดลพร้อมใช้งาน · เครื่องมือเพื่อการวิจัย ไม่ใช่เครื่องมือวินิจฉัย</span>
+            <span className="eeg-badge"><span aria-hidden="true">●</span> โมเดลพร้อมใช้งาน · เครื่องมือเพื่อการวิจัย ไม่ใช่เครื่องมือวินิจฉัย</span>
           </div>
           <p className="hero-text narrow" style={{ marginTop: 12, fontSize: "0.95rem" }}>
             <a href="/ai/eeg/methods" style={{ textDecoration: "underline" }}>
@@ -168,26 +187,26 @@ export default function EegDemoPage() {
           <div className="section-head">
             <h2>สามงานวิเคราะห์ในโมเดลเดียว</h2>
             <p>วิเคราะห์ทีละหน้าต่าง พร้อมค่าความมั่นใจ (confidence)</p>
-            <p style={{ color: "#b45309", fontSize: ".9em" }}>⚠️ ทั้งสามงานเป็นรุ่นวิจัย (beta) อยู่ระหว่างพัฒนาและตรวจสอบความแม่นยำ — ผลใช้เพื่อการวิจัย/คัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางคลินิก</p>
+            <p className="eeg-beta-note"><span aria-hidden="true">⚠️ </span>ทั้งสามงานเป็นรุ่นวิจัย (beta) อยู่ระหว่างพัฒนาและตรวจสอบความแม่นยำ — ผลใช้เพื่อการวิจัย/คัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางคลินิก</p>
           </div>
           <div className="eeg-tasks">
             <div className="card eeg-task">
               <span className="tag">Task A</span>
-              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
+              <span className="tag tag-beta">beta</span>
               <h3>ตรวจจับคลื่นชัก</h3>
               <p>แยกช่วงปกติ (interictal) ออกจากช่วงที่มีสัญญาณ seizure</p>
               <div className="mdl">model · ShallowConvNet (ปรับด้วยข้อมูลผู้ป่วยไทย)</div>
             </div>
             <div className="card eeg-task">
               <span className="tag">Task B</span>
-              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
+              <span className="tag tag-beta">beta</span>
               <h3>ระบุข้างจุดเริ่ม</h3>
               <p>ประเมินว่าคลื่นชักเริ่มจากซีกซ้าย ซีกขวา หรือทั่วสมอง (generalized)</p>
               <div className="mdl">model · ShallowConvNet</div>
             </div>
             <div className="card eeg-task">
               <span className="tag">Task C</span>
-              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
+              <span className="tag tag-beta">beta</span>
               <h3>ตรวจจับ IED / sharp wave</h3>
               <p>หาคลื่น epileptiform ระหว่างชัก เบาะแสสำคัญของโรคลมชัก</p>
               <div className="mdl">model · ShallowConvNet</div>
@@ -212,7 +231,20 @@ export default function EegDemoPage() {
               </div>
             </div>
 
-            <div
+            {/* a11y (keyboard): พื้นที่วางไฟล์เดิมเป็น <div onClick> ที่ Tab ไม่ถึง → เป็น <button> ใช้ Enter/Space ได้
+                การลากวางยังใช้ได้ แต่ไม่ใช่ทางเดียว */}
+            <input
+              ref={inputRef}
+              id="edf-file"
+              type="file"
+              accept=".edf"
+              tabIndex={-1}
+              aria-hidden="true"
+              style={{ display: "none" }}
+              onChange={(e) => pickFile(e.target.files?.[0] || null)}
+            />
+            <button
+              type="button"
               className={"eeg-drop" + (over ? " over" : "")}
               onClick={() => inputRef.current?.click()}
               onDragOver={(e) => {
@@ -226,21 +258,16 @@ export default function EegDemoPage() {
                 if (e.dataTransfer.files[0]) pickFile(e.dataTransfer.files[0]);
               }}
             >
-              <input
-                ref={inputRef}
-                type="file"
-                accept=".edf"
-                style={{ display: "none" }}
-                onChange={(e) => pickFile(e.target.files?.[0] || null)}
-              />
-              <div className="ico">🧠</div>
-              <div className="big">
+              <span className="ico" aria-hidden="true">
+                🧠
+              </span>
+              <span className="big">
                 {file
                   ? `ไฟล์ที่เลือก: ${file.name} · ${(file.size / 1048576).toFixed(1)} MB`
-                  : "ลากไฟล์ .edf มาวาง หรือคลิกเพื่อเลือก"}
-              </div>
-              <div className="small">รองรับไฟล์ EDF มาตรฐาน</div>
-            </div>
+                  : "ลากไฟล์ .edf มาวาง หรือกดเพื่อเลือกไฟล์"}
+              </span>
+              <span className="small">รองรับไฟล์ EDF มาตรฐาน</span>
+            </button>
 
             <div className="eeg-samples">
               <span>ไม่มีไฟล์? ลองด้วยตัวอย่างจริง:</span>
@@ -250,7 +277,7 @@ export default function EegDemoPage() {
                 disabled={busy}
                 onClick={() => loadSample("/eeg-samples/sample_eeg_seizure.edf")}
               >
-                ▶ ตัวอย่างคลื่นชัก + IED (80 วินาที)
+                <span aria-hidden="true">▶ </span>ตัวอย่างคลื่นชัก + IED (80 วินาที)
               </button>
               <span style={{ fontSize: ".82rem" }}>
                 EEG ผู้ป่วยจริง ลบข้อมูลระบุตัวตนแล้ว มาจาก{" "}
@@ -290,15 +317,21 @@ export default function EegDemoPage() {
               </button>
             </div>
 
-            {status && (
-              <div className="eeg-status">
-                {busy && <span className="eeg-spin" />}
-                {status}
-              </div>
-            )}
-            {error && (
-              <div className="eeg-status eeg-err">เกิดข้อผิดพลาด: {error}</div>
-            )}
+            {/* a11y (status messages 4.1.3): กล่อง live region อยู่ในหน้าตลอด screen reader จึงประกาศทุกครั้งที่สถานะเปลี่ยน */}
+            <div role="status" aria-live="polite">
+              {status && (
+                <div className="eeg-status">
+                  {busy && <span className="eeg-spin" aria-hidden="true" />}
+                  {status}
+                </div>
+              )}
+              {!busy && result && (
+                <span className="sr-only">วิเคราะห์เสร็จแล้ว ผลการวิเคราะห์อยู่ด้านล่าง</span>
+              )}
+            </div>
+            <div role="alert">
+              {error && <div className="eeg-status eeg-err">เกิดข้อผิดพลาด: {error}</div>}
+            </div>
 
             {result && (
               <div className="eeg-results">
@@ -324,30 +357,30 @@ export default function EegDemoPage() {
                   return (
                     <div className="eeg-tcard" key={k} style={bMuted ? { opacity: 0.55 } : undefined}>
                       <div className="eeg-th">
-                        <h4>
+                        <h3>
                           Task {k} · {t.task_name}
-                        </h4>
+                        </h3>
                         <span className="mdl">{t.model_used}</span>
                       </div>
                       {bMuted ? (
-                        <div style={{ margin: "10px 0", color: "#6b7280" }}>
+                        <div style={{ margin: "10px 0", color: "#475569" }}>
                           Task A ไม่พบ seizure ในไฟล์นี้ — <b>ไม่นำผลระบุข้างมาใช้</b>{" "}
                           (Task B ตีความได้เฉพาะเมื่อ Task A พบ seizure)
                         </div>
                       ) : isB ? (
                         t.ictal_summary ? (
                           <div style={{ margin: "10px 0" }}>
-                            <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#b45309" }}>
-                              🔎 ช่วง seizure น่าจะเริ่ม: {t.ictal_summary.side} ·{" "}
+                            <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#92400e" }}>
+                              <span aria-hidden="true">🔎 </span>ช่วง seizure น่าจะเริ่ม: {t.ictal_summary.side} ·{" "}
                               {Math.round(t.ictal_summary.confidence * 100)}%
                             </div>
-                            <div style={{ fontSize: ".82rem", color: "#6b7280", marginTop: 4 }}>
+                            <div style={{ fontSize: ".82rem", color: "#475569", marginTop: 4 }}>
                               จาก {t.ictal_summary.n_ictal_windows} ช่วงที่ Task A พบ seizure · เป็นตัวช่วยคร่าวๆ
                               (Task B เชื่อได้น้อยสุด ตีความโดยแพทย์)
                             </div>
                           </div>
                         ) : (
-                          <div style={{ margin: "10px 0", color: "#6b7280" }}>
+                          <div style={{ margin: "10px 0", color: "#475569" }}>
                             ระบุข้างได้เฉพาะเมื่อเลือกวิเคราะห์ Task A ร่วมด้วย
                           </div>
                         )
@@ -370,7 +403,7 @@ export default function EegDemoPage() {
                           <div className="eeg-legend">
                             {summaryKeys.map((cls, i) => (
                               <span key={cls} style={{ marginRight: 14 }}>
-                                <span style={{ color: BAR_COLORS[i % BAR_COLORS.length] }}>■</span> {cls} —{" "}
+                                <span aria-hidden="true" style={{ color: BAR_COLORS[i % BAR_COLORS.length] }}>■</span> {cls} —{" "}
                                 {t.summary[cls].count} หน้าต่าง
                               </span>
                             ))}
@@ -379,6 +412,14 @@ export default function EegDemoPage() {
                             <div style={{ marginTop: 14 }}>
                               <b>ความน่าจะเป็นของแต่ละหน้าต่าง</b>
                               <div
+                                role="img"
+                                aria-label={`กราฟแท่ง ${t.timeline.length} หน้าต่าง: รายงานเป็นเหตุการณ์ ${
+                                  t.timeline.filter((w) => w.predicted_class !== 0).length
+                                } หน้าต่าง, ผ่านเกณฑ์แต่สั้นเกินไป ${
+                                  t.timeline.filter((w) => w.predicted_class === 0 && w.above_threshold).length
+                                } หน้าต่าง, ต่ำกว่าเกณฑ์ ${
+                                  t.timeline.filter((w) => w.predicted_class === 0 && !w.above_threshold).length
+                                } หน้าต่าง — ตัวเลขรายหน้าต่างดูได้ในตารางด้านล่าง`}
                                 style={{
                                   display: "flex",
                                   alignItems: "flex-end",
@@ -405,22 +446,58 @@ export default function EegDemoPage() {
                                         minWidth: 3,
                                         height: `${Math.max(2, pr * 100)}%`,
                                         background: reported
-                                          ? "#dc2626"
+                                          ? PROB_COLORS.reported
                                           : nearMiss
-                                            ? "#f59e0b"
-                                            : "#94a3b8",
+                                            ? PROB_COLORS.nearMiss
+                                            : PROB_COLORS.below,
                                       }}
                                     />
                                   );
                                 })}
                               </div>
-                              <div style={{ fontSize: ".8rem", color: "#6b7280", marginTop: 5 }}>
-                                <span style={{ color: "#dc2626" }}>■</span> รายงานเป็นเหตุการณ์ ·{" "}
-                                <span style={{ color: "#f59e0b" }}>■</span> ผ่านเกณฑ์แต่สั้นเกินไป จึงไม่รายงาน ·{" "}
-                                <span style={{ color: "#94a3b8" }}>■</span> ต่ำกว่าเกณฑ์
+                              <div style={{ fontSize: ".8rem", color: "#475569", marginTop: 5 }}>
+                                <span aria-hidden="true" className="eeg-swatch" style={{ background: PROB_COLORS.reported }} /> รายงานเป็นเหตุการณ์ ·{" "}
+                                <span aria-hidden="true" className="eeg-swatch" style={{ background: PROB_COLORS.nearMiss }} /> ผ่านเกณฑ์แต่สั้นเกินไป จึงไม่รายงาน (ลายขีด) ·{" "}
+                                <span aria-hidden="true" className="eeg-swatch" style={{ background: PROB_COLORS.below }} /> ต่ำกว่าเกณฑ์
                                 <br />
                                 แท่งสูง = โมเดลมั่นใจมาก · ช่วงเวลาไล่จากซ้ายไปขวา
                               </div>
+                              {/* a11y: ค่ารายหน้าต่างเดิมดูได้เฉพาะตอน hover (title) → เปิดดูเป็นตารางได้ด้วยการกด/คีย์บอร์ด */}
+                              <details className="eeg-windows">
+                                <summary>ดูตัวเลขรายหน้าต่างเป็นตาราง ({t.timeline.length} หน้าต่าง)</summary>
+                                <div className="eeg-windows-scroll">
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">ช่วงเวลา (วินาที)</th>
+                                        <th scope="col">ความน่าจะเป็น</th>
+                                        <th scope="col">สถานะ</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {t.timeline.map((w, i) => {
+                                        const pr = w.probabilities?.[posName] ?? 0;
+                                        const reported = w.predicted_class !== 0;
+                                        return (
+                                          <tr key={i}>
+                                            <td>
+                                              {w.start_sec}–{w.end_sec}
+                                            </td>
+                                            <td>{Math.round(pr * 100)}%</td>
+                                            <td>
+                                              {reported
+                                                ? "รายงานเป็นเหตุการณ์"
+                                                : w.above_threshold
+                                                  ? "ผ่านเกณฑ์แต่สั้นเกินไป จึงไม่รายงาน"
+                                                  : "ต่ำกว่าเกณฑ์"}
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </details>
                             </div>
                           )}
                           {flags.length > 0 ? (
@@ -448,8 +525,8 @@ export default function EegDemoPage() {
                     </div>
                   );
                 })}
-                <div style={{ marginTop: 14, fontSize: ".85rem", color: "#b45309" }}>
-                  ⚠️ ผลนี้เป็นการสาธิตของโมเดลวิจัย ต้องตีความโดยแพทย์เสมอ
+                <div className="eeg-result-warn">
+                  <span aria-hidden="true">⚠️ </span>ผลนี้เป็นการสาธิตของโมเดลวิจัย ต้องตีความโดยแพทย์เสมอ
                 </div>
               </div>
             )}
@@ -462,7 +539,8 @@ export default function EegDemoPage() {
               rel="noopener noreferrer"
               className="btn btn-outline"
             >
-              เปิดแอปวิเคราะห์เต็มรูปแบบ ↗
+              เปิดแอปวิเคราะห์เต็มรูปแบบ <span aria-hidden="true">↗</span>
+              <span className="sr-only"> (เปิดในแท็บใหม่)</span>
             </a>
           </div>
         </div>

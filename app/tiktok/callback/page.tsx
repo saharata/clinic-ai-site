@@ -24,7 +24,7 @@ export default async function TikTokCallbackPage({
   const errorDescription = first(params.error_description);
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
+    <main id="main-content" tabIndex={-1} className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
       <h1 className="text-2xl font-bold text-slate-900">
         การเชื่อมต่อบัญชี TikTok
       </h1>
@@ -82,7 +82,7 @@ export default async function TikTokCallbackPage({
 
       <hr className="my-8 border-slate-200" />
 
-      <section className="space-y-2 leading-relaxed text-slate-600">
+      <section className="space-y-2 leading-relaxed text-slate-600" lang="en">
         <h2 className="text-lg font-semibold text-slate-900">English</h2>
         <p>
           This page only receives the TikTok OAuth result for Sahawan

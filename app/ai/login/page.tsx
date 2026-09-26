@@ -2,7 +2,13 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { thaiAuthError } from "../authErrors";
 import { useRouter } from "next/navigation";
+
+const FIELD_LABELS: Record<string, string> = {
+  email: "อีเมล",
+  password: "รหัสผ่าน",
+};
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,19 +26,28 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [invalid, setInvalid] = useState<string[]>([]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
+    setInvalid([]);
 
     if (!supabase) {
-      setErrorMessage("ยังไม่พบการตั้งค่า Supabase");
+      setErrorMessage("ระบบเข้าสู่ระบบยังไม่พร้อมใช้งานชั่วคราว กรุณาติดต่อคลินิกผ่าน LINE");
       return;
     }
 
-    if (!email || !password) {
-      setErrorMessage("กรุณากรอกอีเมลและรหัสผ่าน");
+    const missing = [
+      ...(!email ? ["email"] : []),
+      ...(!password ? ["password"] : []),
+    ];
+    if (missing.length) {
+      setInvalid(missing);
+      setErrorMessage(
+        `ยังไม่ได้กรอก${missing.map((f) => FIELD_LABELS[f]).join("และ")} กรุณากรอกให้ครบแล้วกด "เข้าสู่ระบบ" อีกครั้ง`
+      );
       return;
     }
 
@@ -45,7 +60,7 @@ export default function LoginPage() {
       });
 
       if (error) {
-        setErrorMessage(error.message);
+        setErrorMessage(thaiAuthError(error.message));
         return;
       }
 
@@ -55,14 +70,14 @@ export default function LoginPage() {
       }, 800);
     } catch (err) {
       console.error(err);
-      setErrorMessage("เกิดข้อผิดพลาดระหว่างเข้าสู่ระบบ");
+      setErrorMessage("เกิดข้อผิดพลาดระหว่างเข้าสู่ระบบ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="section">
+    <main id="main-content" tabIndex={-1} className="section">
       <div className="container" style={{ maxWidth: 720 }}>
         <div className="section-head">
           <p className="eyebrow">Login</p>
@@ -74,11 +89,19 @@ export default function LoginPage() {
         </div>
 
         <div className="cta-box" style={{ padding: 24 }}>
-          <form onSubmit={handleSubmit} style={{ display: "grid", gap: 16 }}>
+          <form onSubmit={handleSubmit} style={{ display: "grid", gap: 16 }} noValidate>
+            <p style={{ margin: 0, color: "#475569" }}>ช่องที่มีเครื่องหมาย * จำเป็นต้องกรอก</p>
             <div style={{ display: "grid", gap: 8 }}>
-              <label htmlFor="email">อีเมล</label>
+              <label htmlFor="email">
+                อีเมล <span aria-hidden="true">*</span>
+              </label>
               <input
                 id="email"
+                aria-required="true"
+                aria-invalid={invalid.includes("email")}
+                aria-describedby={
+                  [invalid.includes("email") ? "form-error" : ""].filter(Boolean).join(" ") || undefined
+                }
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -89,9 +112,16 @@ export default function LoginPage() {
             </div>
 
             <div style={{ display: "grid", gap: 8 }}>
-              <label htmlFor="password">รหัสผ่าน</label>
+              <label htmlFor="password">
+                รหัสผ่าน <span aria-hidden="true">*</span>
+              </label>
               <input
                 id="password"
+                aria-required="true"
+                aria-invalid={invalid.includes("password")}
+                aria-describedby={
+                  [invalid.includes("password") ? "form-error" : ""].filter(Boolean).join(" ") || undefined
+                }
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -103,12 +133,14 @@ export default function LoginPage() {
 
             {errorMessage ? (
               <div
+                id="form-error"
+                role="alert"
                 style={{
                   background: "#fee2e2",
                   color: "#991b1b",
                   padding: 12,
                   borderRadius: 12,
-                  fontSize: 14,
+                  fontSize: "1rem",
                 }}
               >
                 {errorMessage}
@@ -117,12 +149,13 @@ export default function LoginPage() {
 
             {successMessage ? (
               <div
+                role="status"
                 style={{
                   background: "#dcfce7",
                   color: "#166534",
                   padding: 12,
                   borderRadius: 12,
-                  fontSize: 14,
+                  fontSize: "1rem",
                 }}
               >
                 {successMessage}

@@ -2,8 +2,65 @@
   box-sizing: border-box;
 }
 
+/* ซ่อนจากสายตาแต่ screen reader ยังอ่านได้ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 html {
   scroll-behavior: smooth;
+  /* a11y (focus not obscured, 2.4.11): เวลากด Tab หรือกดลิงก์ #anchor อย่าให้แถบเมนูบน/แถบปุ่มล่างบังสิ่งที่ focus อยู่ */
+  scroll-padding-top: 6rem;
+  scroll-padding-bottom: 6rem;
+}
+
+/* ===== Keyboard: skip link + focus ring ===== */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: underline;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* วงแหวน focus ชัด หนา 3px สีน้ำเงินเข้ม (6.7:1 กับพื้นขาว) เห็นเฉพาะตอนใช้คีย์บอร์ด */
+:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 3px;
+}
+
+/* บนพื้นเข้ม (footer, hero เข้ม, แถบล่างมือถือ) ใช้วงแหวนสีเหลืองอ่อนแทน */
+.footer :focus-visible,
+.skip-link:focus-visible,
+.lp-hero :focus-visible,
+.lp-band :focus-visible,
+.lp-arena :focus-visible,
+.learn-page .cta-box :focus-visible,
+.vaccine-hero :focus-visible {
+  outline-color: #fde68a;
+}
+
+/* ปลายทางของ skip link เป็นแค่จุดเริ่มอ่าน ไม่ใช่ปุ่ม จึงไม่ต้องมีกรอบ */
+#main-content:focus {
+  outline: none;
 }
 
 body {
@@ -11,11 +68,44 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   color: #0f172a;
   background: #f8fafc;
+  /* a11y (reflow 1.4.10): คำยาว/อีเมล/URL ตัดบรรทัดได้ ไม่ดันให้หน้าเลื่อนแนวนอนตอนขยายตัวอักษร */
+  overflow-wrap: break-word;
+}
+
+/* หัวข้อตัวใหญ่: คำไทยยาวติดกันตัดบรรทัดได้เมื่อไม่พอจริงๆ (ขยายตัวอักษร 200% บนจอ 320px) */
+h1,
+h2,
+h3,
+.vaccine-age,
+.vaccine-name {
+  overflow-wrap: anywhere;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+/* a11y (use of color 1.4.1): ลิงก์ที่อยู่กลางข้อความต้องดูออกว่าเป็นลิงก์โดยไม่พึ่งสี → ขีดเส้นใต้
+   (เดิมสีเดียวกับตัวอักษรรอบข้างและไม่มีเส้นใต้ เช่น "ลงทะเบียนใช้งาน" ในหน้า login) */
+main p a:not([class]),
+main li a:not([class]),
+main td a:not([class]) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* เว็บนี้ออกแบบโทนสว่างอย่างเดียว ประกาศให้เบราว์เซอร์วาดช่องกรอก/ปุ่มระบบแบบสว่างให้ตรงกัน */
+:root {
+  color-scheme: light;
+}
+
+/* Windows High Contrast / forced colors: จุด "วัคซีนหลัก" ยังต้องมองเห็น */
+@media (forced-colors: active) {
+  .dot.core {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
 }
 
 .container {
@@ -59,11 +149,11 @@ a {
 
 .brand-title {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .brand-subtitle {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #64748b;
 }
 
@@ -72,6 +162,18 @@ a {
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+/* a11y (target size): ลิงก์ข้อความในเมนูเดิมสูงแค่ ~18px → เป้ากดสูง 44px (ผู้ป่วยมือสั่นกดพลาดน้อยลง) */
+.nav-links a:not(.btn) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 4px;
+}
+
+.brand {
+  min-height: 44px;
 }
 
 .hero {
@@ -98,13 +200,13 @@ a {
 }
 
 .hero-title {
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(2rem, 5vw, 3.25rem);
   line-height: 1.1;
   margin: 0 0 16px;
 }
 
 .hero-text {
-  font-size: 18px;
+  font-size: 1.125rem;
   color: #334155;
   line-height: 1.7;
   margin: 0 0 24px;
@@ -130,6 +232,11 @@ a {
 
 .hero-card h3 {
   margin-top: 0;
+}
+
+.hero-card .hero-card-title {
+  font-size: 1.17em;
+  margin: 0 0 1em;
 }
 
 .hero-card ul {
@@ -165,7 +272,7 @@ a {
 
 .section-head h2 {
   margin: 0 0 10px;
-  font-size: 32px;
+  font-size: 2rem;
 }
 
 .section-head p {
@@ -226,6 +333,16 @@ a {
   gap: 24px;
 }
 
+.footer-title {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+
+.footer-subtitle {
+  font-size: 1em;
+  margin: 1.33em 0;
+}
+
 .footer-links {
   list-style: none;
   padding: 0;
@@ -233,7 +350,14 @@ a {
 }
 
 .footer-links li + li {
-  margin-top: 10px;
+  margin-top: 4px;
+}
+
+/* a11y (target size): ลิงก์ท้ายหน้าเป็นเป้ากดสูง 44px */
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .btn {
@@ -257,8 +381,9 @@ a {
   padding: 0 20px;
 }
 
+/* a11y (contrast): ขาวบน #22c55e ได้แค่ 2.27:1 → ใช้เขียวเข้มขึ้น 5.02:1 */
 .btn-line {
-  background: #22c55e;
+  background: #15803d;
   color: white;
 }
 
@@ -281,6 +406,24 @@ a {
 .btn-call {
   background: #0f766e;
   color: white;
+}
+
+/* ===== Form fields (/ai/login, /ai/register) ===== */
+/* a11y: เดิมไม่มีสไตล์ ช่องกรอกเล็กตามค่าเริ่มต้นเบราว์เซอร์ → ขนาดตัวอักษร 1rem สูง ≥44px ขอบ contrast ≥3:1 */
+.input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.875rem;
+  font: inherit;
+  font-size: 1rem;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #64748b;
+  border-radius: 12px;
+}
+
+.input[aria-invalid="true"] {
+  border: 2px solid #b91c1c;
 }
 
 /* ===== Opening hours ===== */
@@ -316,10 +459,12 @@ a {
 
 .hours-list li {
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
   justify-content: space-between;
   padding: 12px 0;
   border-top: 1px solid #e2e8f0;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .hours-list li span:last-child {
@@ -357,7 +502,8 @@ a {
 
 /* ===== Vaccine price page ===== */
 .vaccine-hero {
-  background: linear-gradient(135deg, #f59e0b, #f97316);
+  /* a11y (contrast): ขาวบน #f59e0b/#f97316 ได้ 2.2–2.8:1 → โทนเดิมที่เข้มขึ้น ≥5:1 */
+  background: linear-gradient(135deg, #b45309, #c2410c);
   color: white;
   padding: 48px 0 40px;
   text-align: center;
@@ -370,7 +516,7 @@ a {
 }
 
 .vaccine-title {
-  font-size: clamp(26px, 4vw, 40px);
+  font-size: clamp(1.625rem, 4vw, 2.5rem);
   margin: 0 0 12px;
 }
 
@@ -407,7 +553,7 @@ a {
 }
 
 .dot.optional {
-  background: #f97316;
+  background: #c2410c;
 }
 
 .vaccine-hero .dot.core {
@@ -416,6 +562,17 @@ a {
 
 .vaccine-hero .dot.optional {
   background: #fde68a;
+}
+
+/* a11y (use of color): หลัก/เสริม ต้องแยกได้โดยไม่ต้องดูสี → หลัก = จุดทึบ, เสริม = วงแหวนกลวง */
+.dot.optional {
+  background: transparent;
+  border: 2.5px solid #c2410c;
+}
+
+.vaccine-hero .dot.optional {
+  background: transparent;
+  border-color: #fde68a;
 }
 
 .vaccine-section {
@@ -432,7 +589,7 @@ a {
 
 .vaccine-row {
   display: grid;
-  grid-template-columns: 116px 1fr;
+  grid-template-columns: 7.25rem minmax(0, 1fr);
 }
 
 .vaccine-row + .vaccine-row {
@@ -440,7 +597,7 @@ a {
 }
 
 .vaccine-head {
-  background: #f97316;
+  background: #c2410c;
   color: white;
   font-weight: 700;
 }
@@ -463,8 +620,21 @@ a {
   padding: 8px 16px;
 }
 
+/* ช่วงอายุเป็น <h2> และรายการเป็น <ul> เพื่อ screen reader — คงหน้าตาเดิม */
+h2.vaccine-age {
+  margin: 0;
+  font-size: 1rem;
+}
+
+ul.vaccine-items {
+  list-style: none;
+  margin: 0;
+}
+
 .vaccine-head .vaccine-items {
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
   justify-content: space-between;
   padding: 16px;
 }
@@ -496,19 +666,19 @@ a {
 
 .vaccine-note {
   margin: 18px 2px 0;
-  color: #64748b;
-  font-size: 14px;
+  color: #475569;
+  font-size: 0.875rem;
   line-height: 1.7;
 }
 
 @media (max-width: 640px) {
   .vaccine-row {
-    grid-template-columns: 84px 1fr;
+    grid-template-columns: minmax(0, 30%) minmax(0, 1fr);
   }
 
   .vaccine-age {
     padding: 12px 10px;
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   .vaccine-items {
@@ -566,7 +736,7 @@ a {
 
 .symptom-body h2 {
   margin: 0 0 12px;
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1.3;
 }
 
@@ -586,7 +756,7 @@ a {
   border-radius: 8px;
   padding: 12px 14px;
   color: #7f1d1d !important;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .symptom-redflag strong {
@@ -607,7 +777,7 @@ a {
 /* ===== Clinic gallery ===== */
 .gallery-title {
   margin: 0 0 16px;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 
 .gallery-grid {
@@ -666,7 +836,7 @@ a {
   margin: 0;
   padding: 12px 14px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.4;
   color: #0f172a;
 }
@@ -697,7 +867,7 @@ a {
   list-style: none;
   padding: 16px 0;
   font-weight: 700;
-  font-size: 17px;
+  font-size: 1.0625rem;
   color: #0f172a;
   display: flex;
   justify-content: space-between;
@@ -712,7 +882,7 @@ a {
 .faq-item summary::after {
   content: "+";
   color: #0f766e;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
   flex-shrink: 0;
@@ -757,7 +927,7 @@ a {
     min-height: 48px;
     border-radius: 14px;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: white;
   }
 
@@ -766,7 +936,7 @@ a {
   }
 
   .mobile-bar-btn.line {
-    background: #22c55e;
+    background: #15803d;
   }
 
   .mobile-bar-btn.hours {
@@ -775,7 +945,7 @@ a {
 
   /* เผื่อพื้นที่ไม่ให้ปุ่มลอยบังเนื้อหาท้ายหน้า */
   body {
-    padding-bottom: 76px;
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
   }
 }
 
@@ -814,9 +984,9 @@ a {
   }
 
   .nav-links .btn {
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 14px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 }
 .hero-side {
@@ -919,41 +1089,53 @@ a {
   }
 }
 /* ===== EEG demo (/ai/eeg) ===== */
-.eeg-back { display:inline-flex; align-items:center; gap:6px; color:#2563eb; font-weight:600; font-size:.95rem; margin-bottom:8px; }
-.eeg-badge { display:inline-flex; align-items:center; gap:8px; font-size:.85rem; color:#0f766e; background:#ecfdf5; border:1px solid #a7f3d0; padding:6px 14px; border-radius:999px; }
+.eeg-back { display:inline-flex; align-items:center; min-height:44px; gap:6px; color:#2563eb; font-weight:600; font-size:.95rem; margin-bottom:8px; }
+.eeg-badge { display:inline-flex; align-items:center; gap:8px; font-size:1rem; font-weight:600; color:#0f766e; background:#ecfdf5; border:1px solid #a7f3d0; padding:6px 14px; border-radius:999px; }
 .eeg-tasks { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:8px; }
 .eeg-task .tag { display:inline-block; font-weight:700; font-size:.75rem; color:#fff; background:linear-gradient(135deg,#1d4ed8,#0f766e); padding:3px 10px; border-radius:6px; margin-bottom:10px; }
+.eeg-task .tag-beta { background:#fffbeb; color:#92400e; border:1px solid #b45309; margin-left:6px; font-size:.875rem; }
+.section-head .eeg-beta-note { color:#92400e; font-weight:600; font-size:1rem; margin-top:10px; }
+.eeg-result-warn { margin-top:14px; font-size:1rem; font-weight:700; color:#92400e; }
+.eeg-swatch { display:inline-block; width:.8em; height:.8em; vertical-align:-.05em; border-radius:2px; }
 .eeg-task .mdl { margin-top:12px; font-size:.78rem; color:#64748b; font-family:ui-monospace,monospace; }
 .eeg-demo { border:1px solid #e2e8f0; background:#fff; border-radius:18px; padding:28px; box-shadow:0 6px 24px rgba(15,23,42,.05); }
-.eeg-phi { display:flex; gap:10px; background:#fef2f2; border:1px solid #fecaca; color:#991b1b; border-radius:12px; padding:13px 16px; font-size:.9rem; margin-bottom:20px; }
-.eeg-drop { border:2px dashed #cbd5e1; border-radius:14px; padding:32px 18px; text-align:center; cursor:pointer; transition:.15s; background:#f8fafc; }
+.eeg-phi { display:flex; gap:10px; background:#fef2f2; border:1px solid #fecaca; color:#991b1b; border-radius:12px; padding:13px 16px; font-size:1rem; margin-bottom:20px; }
+.eeg-drop { display:block; width:100%; font:inherit; color:inherit; border:2px dashed #64748b; border-radius:14px; padding:32px 18px; text-align:center; cursor:pointer; transition:.15s; background:#f8fafc; }
 .eeg-drop:hover,.eeg-drop.over { border-color:#1d4ed8; background:#eff6ff; }
+.eeg-drop .ico, .eeg-drop .big, .eeg-drop .small { display:block; }
 .eeg-drop .ico { font-size:2rem; }
 .eeg-drop .big { font-weight:600; margin-top:8px; color:#0f172a; }
-.eeg-drop .small { color:#94a3b8; font-size:.85rem; margin-top:4px; }
+.eeg-drop .small { color:#475569; font-size:.85rem; margin-top:4px; }
 .eeg-samples { margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:.9rem; color:#64748b; }
-.eeg-btn-sample { background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; border-radius:999px; padding:8px 16px; font-size:.9rem; font-weight:600; cursor:pointer; transition:.15s; }
+.eeg-btn-sample { min-height:44px; background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; border-radius:999px; padding:8px 16px; font-size:.9rem; font-weight:600; cursor:pointer; transition:.15s; }
 .eeg-btn-sample:hover { background:#dbeafe; }
 .eeg-controls { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:20px; }
-.eeg-controls select { font-family:inherit; border:1px solid #cbd5e1; border-radius:10px; padding:9px 12px; font-size:.95rem; background:#fff; color:#0f172a; }
+.eeg-controls label { display:flex; flex-wrap:wrap; align-items:center; gap:6px; max-width:100%; }
+.eeg-controls select { max-width:100%;  min-height:44px; font-family:inherit; border:1px solid #64748b; border-radius:10px; padding:9px 12px; font-size:.95rem; background:#fff; color:#0f172a; }
 .eeg-status { margin-top:18px; font-size:.93rem; color:#475569; }
 .eeg-spin { display:inline-block; width:14px; height:14px; border:2px solid #e2e8f0; border-top-color:#1d4ed8; border-radius:50%; animation:eegspin .8s linear infinite; vertical-align:-2px; margin-right:7px; }
 @keyframes eegspin { to { transform:rotate(360deg); } }
 .eeg-results { margin-top:22px; }
-.eeg-rmeta { font-size:.85rem; color:#94a3b8; font-family:ui-monospace,monospace; margin-bottom:16px; }
+.eeg-rmeta { font-size:.85rem; color:#475569; font-family:ui-monospace,monospace; margin-bottom:16px; }
 .eeg-tcard { border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-bottom:14px; background:#f8fafc; }
 .eeg-th { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
-.eeg-th h4 { margin:0; font-size:1.05rem; }
-.eeg-th .mdl { font-size:.76rem; color:#94a3b8; font-family:ui-monospace,monospace; }
+.eeg-th h3 { margin:0; font-size:1.05rem; }
+.eeg-th .mdl { font-size:.76rem; color:#475569; font-family:ui-monospace,monospace; }
 .eeg-bar { height:24px; border-radius:7px; overflow:hidden; display:flex; background:#e2e8f0; margin-bottom:8px; }
 .eeg-bar span { display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; color:#fff; white-space:nowrap; }
-.eeg-legend { font-size:.8rem; color:#64748b; }
+.eeg-legend { font-size:.8rem; color:#475569; }
+.eeg-windows { margin-top:10px; }
+.eeg-windows summary { display:inline-flex; align-items:center; min-height:44px; cursor:pointer; color:#1d4ed8; font-weight:600; text-decoration:underline; text-underline-offset:3px; }
+.eeg-windows-scroll { max-height:18rem; overflow:auto; border:1px solid #e2e8f0; border-radius:8px; background:#fff; }
+.eeg-windows table { width:100%; border-collapse:collapse; font-size:.9rem; }
+.eeg-windows th, .eeg-windows td { text-align:left; padding:6px 10px; border-bottom:1px solid #e2e8f0; }
+.eeg-windows thead th { position:sticky; top:0; background:#f1f5f9; }
 .eeg-flag { display:inline-flex; align-items:center; gap:6px; background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:8px; padding:5px 10px; margin:6px 6px 0 0; font-size:.82rem; }
 .eeg-clean { color:#15803d; font-size:.92rem; margin-top:8px; font-weight:600; }
 .eeg-err { color:#dc2626; font-weight:600; }
 .eeg-disc { border:1px solid #fde68a; border-left:4px solid #f59e0b; background:#fffbeb; border-radius:12px; padding:22px 24px; }
 .eeg-disc h3 { color:#92400e; margin:0 0 10px; }
-.eeg-disc ul { margin:0; padding-left:20px; color:#78350f; font-size:.94rem; }
+.eeg-disc ul { margin:0; padding-left:20px; color:#78350f; font-size:1rem; line-height:1.7; }
 .eeg-disc li { margin-bottom:8px; }
 @media (max-width:760px){ .eeg-tasks{ grid-template-columns:1fr; } }
 
@@ -976,7 +1158,7 @@ a {
   filter: blur(40px);
 }
 .learn-page .hero.small > * { position: relative; }
-.learn-page .hero-title { font-size: clamp(38px, 7vw, 64px); letter-spacing: -0.02em; }
+.learn-page .hero-title { font-size: clamp(2.375rem, 7vw, 4rem); letter-spacing: -0.02em; }
 .learn-page .card {
   border-radius: 22px;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
@@ -1030,31 +1212,31 @@ a {
 .lp-hero-inner { position: relative; z-index: 2; min-height: min(80vh, 640px); display: grid; align-items: center; padding: 72px 0; }
 .lp-hero-copy { max-width: 580px; }
 .lp-eyebrow { display: inline-block; background: rgba(255,255,255,.12); color: #a5f3fc; border-radius: 999px; padding: 4px 12px; font-weight: 700; }
-.lp-title { font-size: clamp(48px, 8vw, 84px); line-height: 1; letter-spacing: -0.02em; margin: 14px 0 12px; color: #fff; }
-.lp-tagline { font-size: clamp(19px, 2.4vw, 24px); font-weight: 700; margin: 0 0 12px; color: #fde68a; line-height: 1.45; }
-.lp-lead { font-size: 17px; line-height: 1.75; color: #dbe4f3; margin: 0 0 22px; }
+.lp-title { font-size: clamp(3rem, 8vw, 5.25rem); line-height: 1; letter-spacing: -0.02em; margin: 14px 0 12px; color: #fff; }
+.lp-tagline { font-size: clamp(1.1875rem, 2.4vw, 1.5rem); font-weight: 700; margin: 0 0 12px; color: #fde68a; line-height: 1.45; }
+.lp-lead { font-size: 1.0625rem; line-height: 1.75; color: #dbe4f3; margin: 0 0 22px; }
 .lp-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
 .lp-btn-light { background: #fff; color: #0f172a; border-color: #fff; }
 .lp-btn-ghost { background: rgba(255,255,255,.06); color: #fff; border: 2px solid rgba(255,255,255,.75); }
 .lp-btn-ghost:hover, .lp-btn-ghost:focus-visible { background: rgba(255,255,255,.16); }
 .lp-stats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.lp-stats li { border: 1px solid rgba(255,255,255,.28); border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #e2e8f0; background: rgba(5,11,26,.5); }
+.lp-stats li { border: 1px solid rgba(255,255,255,.28); border-radius: 999px; padding: 6px 12px; font-size: 0.875rem; color: #e2e8f0; background: rgba(5,11,26,.5); }
 
 .lp-band { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 0; align-items: center; background: #0b1730; color: #f8fafc;
   border-radius: 28px; overflow: hidden; margin-bottom: 28px; box-shadow: 0 18px 40px rgba(15,23,42,.14); }
 .lp-band img { width: 100%; max-width: 100%; height: 100%; min-height: 0; object-fit: cover; display: block; aspect-ratio: 16/9; }
 .lp-band-copy { padding: 28px 32px; }
-.lp-band-copy h2 { margin: 8px 0 8px; font-size: clamp(26px, 3.2vw, 36px); color: #fff; }
+.lp-band-copy h2 { margin: 8px 0 8px; font-size: clamp(1.625rem, 3.2vw, 2.25rem); color: #fff; }
 .lp-band-copy p { color: #dbe4f3; line-height: 1.75; margin: 0; }
 
 .learn-page .card.lp-card { padding: 0; overflow: hidden; }
 .lp-thumb-wrap { aspect-ratio: 16/9; overflow: hidden; background: #0b1730; flex: none; }
 .lp-thumb { display: block; width: 100%; height: 100%; object-fit: cover; }
 .lp-card-body { padding: 18px 22px 22px; display: flex; flex-direction: column; flex: 1; }
-.lp-card-title { margin: 8px 0 2px; font-size: 21px; line-height: 1.3; }
+.lp-card-title { margin: 8px 0 2px; font-size: 1.3125rem; line-height: 1.3; }
 .lp-card-en { margin: 0 0 8px; color: #64748b; }
 .lp-points { color: #475569; line-height: 1.8; padding-left: 20px; margin: 0 0 16px; }
-.lp-points-lg { color: #334155; line-height: 1.9; font-size: 16px; }
+.lp-points-lg { color: #334155; line-height: 1.9; font-size: 1rem; }
 .lp-grid { margin-top: 0; }
 
 .lp-arena { position: relative; overflow: hidden; border-radius: 28px; background: #071025; color: #f8fafc;
@@ -1062,7 +1244,7 @@ a {
 .lp-arena img { position: absolute; right: 0; top: 0; height: 100%; width: 62%; object-fit: cover; object-position: center;
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 40%); mask-image: linear-gradient(90deg, transparent 0%, #000 40%); }
 .lp-arena-copy { position: relative; z-index: 1; padding: 36px 32px; }
-.lp-arena-copy h2 { margin: 8px 0; color: #fff; font-size: clamp(26px, 3.2vw, 36px); }
+.lp-arena-copy h2 { margin: 8px 0; color: #fff; font-size: clamp(1.625rem, 3.2vw, 2.25rem); }
 .lp-arena-copy p { color: #dbe4f3; line-height: 1.75; }
 
 .lp-parents { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 32px; align-items: center; }
@@ -1078,3 +1260,26 @@ a {
   .lp-band-copy { padding: 22px 22px 26px; }
 }
 @media (prefers-reduced-motion: reduce) { .lp-btn-ghost, .lp-btn-light { transition: none; } }
+
+/* ===== a11y (motion): เคารพการตั้งค่า "ลดการเคลื่อนไหว" ของระบบ =====
+   ผู้ป่วยเวียนศีรษะ/ไมเกรน/หลัง optic neuritis อาจไวต่อภาพเคลื่อนไหว — ปิดการเลื่อนแบบนุ่ม
+   ปุ่ม/การ์ดไม่ลอยขึ้นตอน hover และทำให้แอนิเมชันทุกชนิดจบทันที (spinner หยุดหมุน แต่ข้อความสถานะยังอยู่) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn:hover,
+  .learn-page .card:hover {
+    transform: none;
+  }
+}
