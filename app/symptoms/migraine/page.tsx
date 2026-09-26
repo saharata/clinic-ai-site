@@ -1,15 +1,26 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import {
+  ArticleFooter,
+  ArticleHeader,
+  ArticleMeta,
+  Breadcrumb,
+  FaqList,
+  MedicalDisclaimer,
+  NeuroBookingCta,
+  YouTube,
+  breadcrumbJsonLd,
+  faqJsonLd,
+  physicianRef,
+  siteUrl,
+  videoJsonLd,
+  type Faq,
+} from "../articleParts";
 
 // หน้าต้นแบบ "หน้าอาการ" — หน้าอาการอื่น (เวียนศีรษะ ชา มือสั่น ชัก ฯลฯ) ใช้โครงเดียวกันนี้:
 // hero → red flag → อาการเป็นอย่างไร → เทียบกับโรคที่คล้าย → ตัวกระตุ้น → ดูแลตัวเอง
 // → การรักษา → เตรียมตัวก่อนพบแพทย์ → วิดีโอ → FAQ → นัดหมาย
 
-const siteUrl = "https://www.sahawanclinic.clinic";
 const pageUrl = `${siteUrl}/symptoms/migraine`;
-const lineUrl = "https://lin.ee/7Y8onWN";
-const phoneDisplay = "065-480-8771";
-const phoneTel = "tel:0654808771";
 const updated = "2026-09-26";
 
 const pageTitle = "ไมเกรน: อาการ ตัวกระตุ้น และเมื่อไรควรพบประสาทแพทย์";
@@ -141,7 +152,7 @@ const selfCare = [
   "ไม่ควรกินยาแก้ปวดเกิน 2–3 วันต่อสัปดาห์ ถ้าต้องกินบ่อยกว่านั้นควรปรึกษาแพทย์",
 ];
 
-const faqs = [
+const faqs: Faq[] = [
   {
     q: "ไมเกรนหายขาดได้ไหม",
     a: "ไมเกรนเป็นภาวะที่สมองไวต่อสิ่งกระตุ้นมากกว่าปกติ ซึ่งมักเกี่ยวกับพันธุกรรม จึงมักไม่ได้หายขาดแบบครั้งเดียวจบ แต่ส่วนใหญ่ควบคุมได้ด้วยการปรับพฤติกรรม หลีกเลี่ยงตัวกระตุ้น และใช้ยาที่เหมาะสม ในผู้หญิงหลายคนอาการลดลงหลังวัยหมดประจำเดือน ผลของการรักษาแตกต่างกันในแต่ละคน",
@@ -168,8 +179,6 @@ const faqs = [
   },
 ];
 
-const physicianRef = { "@id": `${siteUrl}/#physician-saharat` };
-
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -195,33 +204,14 @@ const jsonLd = {
           { "@type": "MedicalSignOrSymptom", name: "อาการเตือน (aura) ทางการมองเห็น" },
         ],
       },
-      breadcrumb: {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "หน้าแรก", item: siteUrl },
-          { "@type": "ListItem", position: 2, name: "อาการทางระบบประสาท", item: `${siteUrl}/symptoms` },
-          { "@type": "ListItem", position: 3, name: "ไมเกรน", item: pageUrl },
-        ],
-      },
+      breadcrumb: breadcrumbJsonLd(pageUrl, "ไมเกรน"),
     },
-    {
-      "@type": "FAQPage",
-      "@id": `${pageUrl}#faq`,
-      mainEntity: faqs.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
-    },
-    {
-      "@type": "VideoObject",
-      name: "ปวดหัวแบบไหนอันตราย? 10 สัญญาณที่ต้องรีบไปหาหมอ",
-      description: "ประสาทแพทย์อธิบายวิธีแยกอาการปวดศีรษะที่ไม่อันตรายกับสัญญาณเตือนที่ควรรีบตรวจ",
-      thumbnailUrl: "https://i.ytimg.com/vi/rLfKxBrIbKY/hqdefault.jpg",
-      contentUrl: "https://www.youtube.com/watch?v=rLfKxBrIbKY",
-      embedUrl: "https://www.youtube.com/embed/rLfKxBrIbKY",
-      author: physicianRef,
-    },
+    faqJsonLd(pageUrl, faqs),
+    videoJsonLd(
+      "rLfKxBrIbKY",
+      "ปวดหัวแบบไหนอันตราย? 10 สัญญาณที่ต้องรีบไปหาหมอ",
+      "ประสาทแพทย์อธิบายวิธีแยกอาการปวดศีรษะที่ไม่อันตรายกับสัญญาณเตือนที่ควรรีบตรวจ",
+    ),
   ],
 };
 
@@ -229,19 +219,6 @@ const shorts = [
   { videoId: "ud6jgVw4FcM", title: "ความเครียด ทำให้ไมเกรนจริงไหม?" },
   { videoId: "-6FdERlyqJY", title: "กินยาแก้ปวดหัวบ่อย ยิ่งกินยิ่งปวด?" },
 ];
-
-function YouTube({ id, title }: { id: string; title: string }) {
-  return (
-    <iframe
-      src={`https://www.youtube-nocookie.com/embed/${id}`}
-      title={title}
-      loading="lazy"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerPolicy="strict-origin-when-cross-origin"
-      allowFullScreen
-    />
-  );
-}
 
 export default function MigrainePage() {
   return (
@@ -251,36 +228,11 @@ export default function MigrainePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <header className="navbar">
-        <div className="container nav-inner">
-          <Link href="/" className="brand">
-            <div className="brand-badge">N</div>
-            <div>
-              <div className="brand-title">สหวรรณคลินิก</div>
-              <div className="brand-subtitle">คลินิกเวชกรรมเด็กและระบบประสาท</div>
-            </div>
-          </Link>
-          <nav className="nav-links">
-            <Link href="/symptoms">อาการอื่นๆ</Link>
-            <a href={phoneTel} className="btn btn-call">
-              โทร {phoneDisplay}
-            </a>
-            <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
-              แอด LINE
-            </a>
-          </nav>
-        </div>
-      </header>
+      <ArticleHeader />
 
       <section className="hero small">
         <div className="container">
-          <nav className="breadcrumb" aria-label="breadcrumb">
-            <Link href="/">หน้าแรก</Link>
-            <span aria-hidden="true">›</span>
-            <Link href="/symptoms">อาการทางระบบประสาท</Link>
-            <span aria-hidden="true">›</span>
-            <span>ไมเกรน</span>
-          </nav>
+          <Breadcrumb name="ไมเกรน" />
           <p className="eyebrow">ความรู้จากประสาทแพทย์</p>
           <h1 className="hero-title">ไมเกรน</h1>
           <p className="hero-text narrow">
@@ -289,10 +241,7 @@ export default function MigrainePage() {
             หน้านี้อธิบายว่าไมเกรนต่างจากปวดหัวแบบอื่นอย่างไร อะไรเป็นตัวกระตุ้น ดูแลตัวเองอย่างไร
             และอาการแบบไหนที่ต้องรีบพบแพทย์
           </p>
-          <p className="article-meta">
-            โดย นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์ · ปรับปรุงล่าสุด{" "}
-            <time dateTime={updated}>26 กันยายน 2569</time>
-          </p>
+          <ArticleMeta updated={updated} updatedThai="26 กันยายน 2569" />
         </div>
       </section>
 
@@ -452,84 +401,16 @@ export default function MigrainePage() {
 
           <div className="article-block">
             <h2 className="article-h2">คำถามที่พบบ่อยเกี่ยวกับไมเกรน</h2>
-            <div className="faq-list">
-              {faqs.map((f) => (
-                <details className="faq-item" key={f.q}>
-                  <summary>{f.q}</summary>
-                  <p>{f.a}</p>
-                </details>
-              ))}
-            </div>
+            <FaqList faqs={faqs} />
           </div>
 
-          <div className="cta-box top-gap">
-            <div>
-              <p className="eyebrow">คลินิกระบบประสาท (ผู้ใหญ่)</p>
-              <h2>ปรึกษาเรื่องไมเกรนกับประสาทแพทย์</h2>
-              <p>
-                นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์ · ตรวจวันพุธและศุกร์ 17:00–20:00 น.
-                <br />
-                แนะนำนัดล่วงหน้าผ่าน LINE หรือโทร เพื่อลดเวลารอ
-              </p>
-            </div>
-            <div className="cta-actions">
-              <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line big">
-                นัดผ่าน LINE
-              </a>
-              <a href={phoneTel} className="btn btn-call big">
-                โทร {phoneDisplay}
-              </a>
-            </div>
-          </div>
+          <NeuroBookingCta heading="ปรึกษาเรื่องไมเกรนกับประสาทแพทย์" />
 
-          <p className="vaccine-note">
-            * ข้อมูลนี้เพื่อความเข้าใจเบื้องต้น ไม่ใช่การวินิจฉัยหรือทดแทนการพบแพทย์
-            การวินิจฉัยและการรักษาขึ้นกับการตรวจประเมินรายบุคคลโดยแพทย์ ผลการรักษาแตกต่างกันในแต่ละบุคคล ·
-            หากมีอาการเฉียบพลันรุนแรง ควรไปห้องฉุกเฉินทันที
-          </p>
+          <MedicalDisclaimer />
         </div>
       </section>
 
-      <footer className="footer">
-        <div className="container footer-grid">
-          <div>
-            <h3>สหวรรณคลินิก</h3>
-            <p>คลินิกเวชกรรมเด็กและระบบประสาท</p>
-            <p>101 หมู่บ้านประชานิเวศน์ 3 ถนนประชานิเวศน์ ต.ท่าทราย อ.เมืองนนทบุรี จ.นนทบุรี 11000</p>
-          </div>
-          <div>
-            <h4>ช่องทางติดต่อ</h4>
-            <ul className="footer-links">
-              <li>
-                <a href={phoneTel}>โทร {phoneDisplay}</a>
-              </li>
-              <li>
-                <a href={lineUrl} target="_blank" rel="noreferrer">
-                  LINE Official
-                </a>
-              </li>
-              <li>
-                <Link href="/symptoms">อาการทางระบบประสาทอื่นๆ</Link>
-              </li>
-              <li>
-                <Link href="/">กลับหน้าแรก</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
-
-      <div className="mobile-bar">
-        <a href={phoneTel} className="mobile-bar-btn call">
-          โทร
-        </a>
-        <a href={lineUrl} target="_blank" rel="noreferrer" className="mobile-bar-btn line">
-          แอด LINE
-        </a>
-        <Link href="/#hours" className="mobile-bar-btn hours">
-          เวลาทำการ
-        </Link>
-      </div>
+      <ArticleFooter />
     </main>
   );
 }

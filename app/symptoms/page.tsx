@@ -119,7 +119,7 @@ export default function SymptomsPage() {
                   <div className="card-actions">
                     {s.articleHref && (
                       <Link href={s.articleHref} className="btn btn-call">
-                        อ่านเรื่องไมเกรนแบบละเอียด
+                        อ่านบทความฉบับเต็ม
                       </Link>
                     )}
                     <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
