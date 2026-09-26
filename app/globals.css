@@ -1078,3 +1078,135 @@ a {
   .lp-band-copy { padding: 22px 22px 26px; }
 }
 @media (prefers-reduced-motion: reduce) { .lp-btn-ghost, .lp-btn-light { transition: none; } }
+
+/* ===== Symptom article page (/symptoms/<slug>) ===== */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.breadcrumb a {
+  color: #2563eb;
+}
+
+.article-meta {
+  margin: 0;
+  font-size: 15px;
+  color: #64748b;
+}
+
+.article-block {
+  margin-top: 48px;
+}
+
+.article-h2 {
+  margin: 0 0 14px;
+  font-size: 26px;
+  line-height: 1.3;
+  color: #0f172a;
+}
+
+.article-p {
+  max-width: 760px;
+  margin: 0 0 20px;
+  font-size: 18px;
+  line-height: 1.75;
+  color: #334155;
+}
+
+.article-list {
+  margin: 0;
+  padding-left: 20px;
+  color: #475569;
+  line-height: 1.8;
+}
+
+.article-list li + li {
+  margin-top: 6px;
+}
+
+.redflag-box {
+  background: #fef2f2;
+  border-left: 4px solid #ef4444;
+  border-radius: 8px;
+  padding: 18px 22px;
+  color: #7f1d1d;
+}
+
+.redflag-box h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1.4;
+  color: #b91c1c;
+}
+
+.redflag-box ul {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.8;
+}
+
+.article-video {
+  max-width: 760px;
+}
+
+.compare-wrap {
+  overflow-x: auto;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.compare-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 14px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #e2e8f0;
+  line-height: 1.6;
+}
+
+.compare-table tbody tr:last-child th,
+.compare-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.compare-table thead th {
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.compare-table thead th:nth-child(2) {
+  color: #0f766e;
+}
+
+.compare-table tbody th {
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.compare-table td {
+  color: #475569;
+}
+
+@media (max-width: 720px) {
+  .article-h2 {
+    font-size: 22px;
+  }
+
+  .article-p {
+    font-size: 17px;
+  }
+}

@@ -6,6 +6,7 @@ export type Symptom = {
   videoTitle: string;
   blurb: string; // อธิบายสั้นแบบหมอ
   redFlag: string; // ควรพบแพทย์เมื่อไร
+  articleHref?: string; // หน้าบทความเต็ม (ถ้ามี)
 };
 
 export type ShortClip = {
@@ -25,6 +26,7 @@ export const shorts: ShortClip[] = [
 export const symptoms: Symptom[] = [
   {
     slug: "headache",
+    articleHref: "/symptoms/migraine",
     icon: "🤕",
     title: "ปวดศีรษะ / ไมเกรน แบบไหนอันตราย",
     videoId: "rLfKxBrIbKY",
