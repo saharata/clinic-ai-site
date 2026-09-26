@@ -30,7 +30,16 @@ type AnalyzeResult = {
   tasks: Record<string, TaskResult>;
 };
 
-const BAR_COLORS = ["#1d4ed8", "#dc2626", "#0f766e", "#f59e0b", "#7c3aed"];
+// a11y (contrast): ทุกสีรับตัวอักษรขาวได้ ≥4.5:1 (เดิม #f59e0b ได้ 2.15:1)
+// แถบความน่าจะเป็นรายหน้าต่าง: สีต่างกันและ "ลาย" ต่างกัน เพื่อไม่ให้สื่อความหมายด้วยสีอย่างเดียว
+// ทุกแบบมี contrast ≥3:1 กับพื้น #f8fafc (เดิมสีเทา #94a3b8 และส้ม #f59e0b ได้แค่ 2.1–2.5:1)
+const PROB_COLORS = {
+  reported: "#b91c1c",
+  nearMiss: "repeating-linear-gradient(135deg, #b45309 0 3px, #fde68a 3px 5px)",
+  below: "#64748b",
+};
+
+const BAR_COLORS = ["#1d4ed8", "#b91c1c", "#0f766e", "#b45309", "#7c3aed"];
 
 export default function EegDemoPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -168,26 +177,26 @@ export default function EegDemoPage() {
           <div className="section-head">
             <h2>สามงานวิเคราะห์ในโมเดลเดียว</h2>
             <p>วิเคราะห์ทีละหน้าต่าง พร้อมค่าความมั่นใจ (confidence)</p>
-            <p style={{ color: "#b45309", fontSize: ".9em" }}>⚠️ ทั้งสามงานเป็นรุ่นวิจัย (beta) อยู่ระหว่างพัฒนาและตรวจสอบความแม่นยำ — ผลใช้เพื่อการวิจัย/คัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางคลินิก</p>
+            <p className="eeg-beta-note"><span aria-hidden="true">⚠️ </span>ทั้งสามงานเป็นรุ่นวิจัย (beta) อยู่ระหว่างพัฒนาและตรวจสอบความแม่นยำ — ผลใช้เพื่อการวิจัย/คัดกรองเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยทางคลินิก</p>
           </div>
           <div className="eeg-tasks">
             <div className="card eeg-task">
               <span className="tag">Task A</span>
-              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
+              <span className="tag tag-beta">beta</span>
               <h3>ตรวจจับคลื่นชัก</h3>
               <p>แยกช่วงปกติ (interictal) ออกจากช่วงที่มีสัญญาณ seizure</p>
               <div className="mdl">model · ShallowConvNet (ปรับด้วยข้อมูลผู้ป่วยไทย)</div>
             </div>
             <div className="card eeg-task">
               <span className="tag">Task B</span>
-              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
+              <span className="tag tag-beta">beta</span>
               <h3>ระบุข้างจุดเริ่ม</h3>
               <p>ประเมินว่าคลื่นชักเริ่มจากซีกซ้าย ซีกขวา หรือทั่วสมอง (generalized)</p>
               <div className="mdl">model · ShallowConvNet</div>
             </div>
             <div className="card eeg-task">
               <span className="tag">Task C</span>
-              <span className="tag" style={{ background: "rgba(245,158,11,.16)", color: "#b45309", marginLeft: 6 }}>beta</span>
+              <span className="tag tag-beta">beta</span>
               <h3>ตรวจจับ IED / sharp wave</h3>
               <p>หาคลื่น epileptiform ระหว่างชัก เบาะแสสำคัญของโรคลมชัก</p>
               <div className="mdl">model · ShallowConvNet</div>
@@ -330,24 +339,24 @@ export default function EegDemoPage() {
                         <span className="mdl">{t.model_used}</span>
                       </div>
                       {bMuted ? (
-                        <div style={{ margin: "10px 0", color: "#6b7280" }}>
+                        <div style={{ margin: "10px 0", color: "#475569" }}>
                           Task A ไม่พบ seizure ในไฟล์นี้ — <b>ไม่นำผลระบุข้างมาใช้</b>{" "}
                           (Task B ตีความได้เฉพาะเมื่อ Task A พบ seizure)
                         </div>
                       ) : isB ? (
                         t.ictal_summary ? (
                           <div style={{ margin: "10px 0" }}>
-                            <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#b45309" }}>
+                            <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#92400e" }}>
                               🔎 ช่วง seizure น่าจะเริ่ม: {t.ictal_summary.side} ·{" "}
                               {Math.round(t.ictal_summary.confidence * 100)}%
                             </div>
-                            <div style={{ fontSize: ".82rem", color: "#6b7280", marginTop: 4 }}>
+                            <div style={{ fontSize: ".82rem", color: "#475569", marginTop: 4 }}>
                               จาก {t.ictal_summary.n_ictal_windows} ช่วงที่ Task A พบ seizure · เป็นตัวช่วยคร่าวๆ
                               (Task B เชื่อได้น้อยสุด ตีความโดยแพทย์)
                             </div>
                           </div>
                         ) : (
-                          <div style={{ margin: "10px 0", color: "#6b7280" }}>
+                          <div style={{ margin: "10px 0", color: "#475569" }}>
                             ระบุข้างได้เฉพาะเมื่อเลือกวิเคราะห์ Task A ร่วมด้วย
                           </div>
                         )
@@ -370,7 +379,7 @@ export default function EegDemoPage() {
                           <div className="eeg-legend">
                             {summaryKeys.map((cls, i) => (
                               <span key={cls} style={{ marginRight: 14 }}>
-                                <span style={{ color: BAR_COLORS[i % BAR_COLORS.length] }}>■</span> {cls} —{" "}
+                                <span aria-hidden="true" style={{ color: BAR_COLORS[i % BAR_COLORS.length] }}>■</span> {cls} —{" "}
                                 {t.summary[cls].count} หน้าต่าง
                               </span>
                             ))}
@@ -405,19 +414,19 @@ export default function EegDemoPage() {
                                         minWidth: 3,
                                         height: `${Math.max(2, pr * 100)}%`,
                                         background: reported
-                                          ? "#dc2626"
+                                          ? PROB_COLORS.reported
                                           : nearMiss
-                                            ? "#f59e0b"
-                                            : "#94a3b8",
+                                            ? PROB_COLORS.nearMiss
+                                            : PROB_COLORS.below,
                                       }}
                                     />
                                   );
                                 })}
                               </div>
-                              <div style={{ fontSize: ".8rem", color: "#6b7280", marginTop: 5 }}>
-                                <span style={{ color: "#dc2626" }}>■</span> รายงานเป็นเหตุการณ์ ·{" "}
-                                <span style={{ color: "#f59e0b" }}>■</span> ผ่านเกณฑ์แต่สั้นเกินไป จึงไม่รายงาน ·{" "}
-                                <span style={{ color: "#94a3b8" }}>■</span> ต่ำกว่าเกณฑ์
+                              <div style={{ fontSize: ".8rem", color: "#475569", marginTop: 5 }}>
+                                <span aria-hidden="true" className="eeg-swatch" style={{ background: PROB_COLORS.reported }} /> รายงานเป็นเหตุการณ์ ·{" "}
+                                <span aria-hidden="true" className="eeg-swatch" style={{ background: PROB_COLORS.nearMiss }} /> ผ่านเกณฑ์แต่สั้นเกินไป จึงไม่รายงาน (ลายขีด) ·{" "}
+                                <span aria-hidden="true" className="eeg-swatch" style={{ background: PROB_COLORS.below }} /> ต่ำกว่าเกณฑ์
                                 <br />
                                 แท่งสูง = โมเดลมั่นใจมาก · ช่วงเวลาไล่จากซ้ายไปขวา
                               </div>
@@ -448,8 +457,8 @@ export default function EegDemoPage() {
                     </div>
                   );
                 })}
-                <div style={{ marginTop: 14, fontSize: ".85rem", color: "#b45309" }}>
-                  ⚠️ ผลนี้เป็นการสาธิตของโมเดลวิจัย ต้องตีความโดยแพทย์เสมอ
+                <div className="eeg-result-warn">
+                  <span aria-hidden="true">⚠️ </span>ผลนี้เป็นการสาธิตของโมเดลวิจัย ต้องตีความโดยแพทย์เสมอ
                 </div>
               </div>
             )}
