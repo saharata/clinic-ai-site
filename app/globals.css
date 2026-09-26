@@ -1238,3 +1238,26 @@ ul.vaccine-items {
   .lp-band-copy { padding: 22px 22px 26px; }
 }
 @media (prefers-reduced-motion: reduce) { .lp-btn-ghost, .lp-btn-light { transition: none; } }
+
+/* ===== a11y (motion): เคารพการตั้งค่า "ลดการเคลื่อนไหว" ของระบบ =====
+   ผู้ป่วยเวียนศีรษะ/ไมเกรน/หลัง optic neuritis อาจไวต่อภาพเคลื่อนไหว — ปิดการเลื่อนแบบนุ่ม
+   ปุ่ม/การ์ดไม่ลอยขึ้นตอน hover และทำให้แอนิเมชันทุกชนิดจบทันที (spinner หยุดหมุน แต่ข้อความสถานะยังอยู่) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn:hover,
+  .learn-page .card:hover {
+    transform: none;
+  }
+}
