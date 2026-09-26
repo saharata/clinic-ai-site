@@ -218,7 +218,7 @@ export default function SoapGuidePage() {
         .soapForm { display: flex; flex-direction: column; gap: 10px; }
         .soapForm.locked { opacity: .4; pointer-events: none; }
         .soapForm input, .soapForm textarea { width: 100%; padding: 13px 14px; font-size: 16px;
-          border: 1px solid #d1d5db; border-radius: 11px; font-family: inherit;
+          border: 1px solid #6b7280; border-radius: 11px; font-family: inherit;
           color: #0f172a; background: #fff; }
         .soapFine { font-size: 12.5px; color: #6b7280; line-height: 1.6; margin: 12px 0 0; }
         .soapDone { text-align: center; padding: 14px 0; }

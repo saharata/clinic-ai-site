@@ -2,7 +2,8 @@
 
 const YEARS = ["2021", "2022", "2024", "2025", "2026"];
 const C = {
-  teal: "#0B7A8C", amber: "#C77B25", mint: "#02A98C", good: "#0A8F6E",
+  // a11y (contrast): amber เดิม #C77B25 (3.3:1) และ mint #02A98C (3.0:1) เข้มขึ้นให้ตัวเลขบนกราฟอ่านได้ ≥4.5:1
+  teal: "#0B7A8C", amber: "#A15C0F", mint: "#028A73", good: "#0A8F6E",
   ink: "#0E2A33", muted: "#5A757C", line: "#DCE9E9", panel: "#FFFFFF", ground: "#F7FAFA",
 };
 

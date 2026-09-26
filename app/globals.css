@@ -2,6 +2,19 @@
   box-sizing: border-box;
 }
 
+/* ซ่อนจากสายตาแต่ screen reader ยังอ่านได้ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -257,8 +270,9 @@ a {
   padding: 0 20px;
 }
 
+/* a11y (contrast): ขาวบน #22c55e ได้แค่ 2.27:1 → ใช้เขียวเข้มขึ้น 5.02:1 */
 .btn-line {
-  background: #22c55e;
+  background: #15803d;
   color: white;
 }
 
@@ -281,6 +295,24 @@ a {
 .btn-call {
   background: #0f766e;
   color: white;
+}
+
+/* ===== Form fields (/ai/login, /ai/register) ===== */
+/* a11y: เดิมไม่มีสไตล์ ช่องกรอกเล็กตามค่าเริ่มต้นเบราว์เซอร์ → ขนาดตัวอักษร 1rem สูง ≥44px ขอบ contrast ≥3:1 */
+.input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.875rem;
+  font: inherit;
+  font-size: 1rem;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #64748b;
+  border-radius: 12px;
+}
+
+.input[aria-invalid="true"] {
+  border: 2px solid #b91c1c;
 }
 
 /* ===== Opening hours ===== */
@@ -357,7 +389,8 @@ a {
 
 /* ===== Vaccine price page ===== */
 .vaccine-hero {
-  background: linear-gradient(135deg, #f59e0b, #f97316);
+  /* a11y (contrast): ขาวบน #f59e0b/#f97316 ได้ 2.2–2.8:1 → โทนเดิมที่เข้มขึ้น ≥5:1 */
+  background: linear-gradient(135deg, #b45309, #c2410c);
   color: white;
   padding: 48px 0 40px;
   text-align: center;
@@ -407,7 +440,7 @@ a {
 }
 
 .dot.optional {
-  background: #f97316;
+  background: #c2410c;
 }
 
 .vaccine-hero .dot.core {
@@ -416,6 +449,17 @@ a {
 
 .vaccine-hero .dot.optional {
   background: #fde68a;
+}
+
+/* a11y (use of color): หลัก/เสริม ต้องแยกได้โดยไม่ต้องดูสี → หลัก = จุดทึบ, เสริม = วงแหวนกลวง */
+.dot.optional {
+  background: transparent;
+  border: 2.5px solid #c2410c;
+}
+
+.vaccine-hero .dot.optional {
+  background: transparent;
+  border-color: #fde68a;
 }
 
 .vaccine-section {
@@ -440,7 +484,7 @@ a {
 }
 
 .vaccine-head {
-  background: #f97316;
+  background: #c2410c;
   color: white;
   font-weight: 700;
 }
@@ -496,7 +540,7 @@ a {
 
 .vaccine-note {
   margin: 18px 2px 0;
-  color: #64748b;
+  color: #475569;
   font-size: 14px;
   line-height: 1.7;
 }
@@ -766,7 +810,7 @@ a {
   }
 
   .mobile-bar-btn.line {
-    background: #22c55e;
+    background: #15803d;
   }
 
   .mobile-bar-btn.hours {
@@ -920,40 +964,44 @@ a {
 }
 /* ===== EEG demo (/ai/eeg) ===== */
 .eeg-back { display:inline-flex; align-items:center; gap:6px; color:#2563eb; font-weight:600; font-size:.95rem; margin-bottom:8px; }
-.eeg-badge { display:inline-flex; align-items:center; gap:8px; font-size:.85rem; color:#0f766e; background:#ecfdf5; border:1px solid #a7f3d0; padding:6px 14px; border-radius:999px; }
+.eeg-badge { display:inline-flex; align-items:center; gap:8px; font-size:1rem; font-weight:600; color:#0f766e; background:#ecfdf5; border:1px solid #a7f3d0; padding:6px 14px; border-radius:999px; }
 .eeg-tasks { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:8px; }
 .eeg-task .tag { display:inline-block; font-weight:700; font-size:.75rem; color:#fff; background:linear-gradient(135deg,#1d4ed8,#0f766e); padding:3px 10px; border-radius:6px; margin-bottom:10px; }
+.eeg-task .tag-beta { background:#fffbeb; color:#92400e; border:1px solid #b45309; margin-left:6px; font-size:.875rem; }
+.section-head .eeg-beta-note { color:#92400e; font-weight:600; font-size:1rem; margin-top:10px; }
+.eeg-result-warn { margin-top:14px; font-size:1rem; font-weight:700; color:#92400e; }
+.eeg-swatch { display:inline-block; width:.8em; height:.8em; vertical-align:-.05em; border-radius:2px; }
 .eeg-task .mdl { margin-top:12px; font-size:.78rem; color:#64748b; font-family:ui-monospace,monospace; }
 .eeg-demo { border:1px solid #e2e8f0; background:#fff; border-radius:18px; padding:28px; box-shadow:0 6px 24px rgba(15,23,42,.05); }
-.eeg-phi { display:flex; gap:10px; background:#fef2f2; border:1px solid #fecaca; color:#991b1b; border-radius:12px; padding:13px 16px; font-size:.9rem; margin-bottom:20px; }
-.eeg-drop { border:2px dashed #cbd5e1; border-radius:14px; padding:32px 18px; text-align:center; cursor:pointer; transition:.15s; background:#f8fafc; }
+.eeg-phi { display:flex; gap:10px; background:#fef2f2; border:1px solid #fecaca; color:#991b1b; border-radius:12px; padding:13px 16px; font-size:1rem; margin-bottom:20px; }
+.eeg-drop { border:2px dashed #64748b; border-radius:14px; padding:32px 18px; text-align:center; cursor:pointer; transition:.15s; background:#f8fafc; }
 .eeg-drop:hover,.eeg-drop.over { border-color:#1d4ed8; background:#eff6ff; }
 .eeg-drop .ico { font-size:2rem; }
 .eeg-drop .big { font-weight:600; margin-top:8px; color:#0f172a; }
-.eeg-drop .small { color:#94a3b8; font-size:.85rem; margin-top:4px; }
+.eeg-drop .small { color:#475569; font-size:.85rem; margin-top:4px; }
 .eeg-samples { margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:.9rem; color:#64748b; }
 .eeg-btn-sample { background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; border-radius:999px; padding:8px 16px; font-size:.9rem; font-weight:600; cursor:pointer; transition:.15s; }
 .eeg-btn-sample:hover { background:#dbeafe; }
 .eeg-controls { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:20px; }
-.eeg-controls select { font-family:inherit; border:1px solid #cbd5e1; border-radius:10px; padding:9px 12px; font-size:.95rem; background:#fff; color:#0f172a; }
+.eeg-controls select { font-family:inherit; border:1px solid #64748b; border-radius:10px; padding:9px 12px; font-size:.95rem; background:#fff; color:#0f172a; }
 .eeg-status { margin-top:18px; font-size:.93rem; color:#475569; }
 .eeg-spin { display:inline-block; width:14px; height:14px; border:2px solid #e2e8f0; border-top-color:#1d4ed8; border-radius:50%; animation:eegspin .8s linear infinite; vertical-align:-2px; margin-right:7px; }
 @keyframes eegspin { to { transform:rotate(360deg); } }
 .eeg-results { margin-top:22px; }
-.eeg-rmeta { font-size:.85rem; color:#94a3b8; font-family:ui-monospace,monospace; margin-bottom:16px; }
+.eeg-rmeta { font-size:.85rem; color:#475569; font-family:ui-monospace,monospace; margin-bottom:16px; }
 .eeg-tcard { border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-bottom:14px; background:#f8fafc; }
 .eeg-th { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
 .eeg-th h4 { margin:0; font-size:1.05rem; }
-.eeg-th .mdl { font-size:.76rem; color:#94a3b8; font-family:ui-monospace,monospace; }
+.eeg-th .mdl { font-size:.76rem; color:#475569; font-family:ui-monospace,monospace; }
 .eeg-bar { height:24px; border-radius:7px; overflow:hidden; display:flex; background:#e2e8f0; margin-bottom:8px; }
 .eeg-bar span { display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; color:#fff; white-space:nowrap; }
-.eeg-legend { font-size:.8rem; color:#64748b; }
+.eeg-legend { font-size:.8rem; color:#475569; }
 .eeg-flag { display:inline-flex; align-items:center; gap:6px; background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:8px; padding:5px 10px; margin:6px 6px 0 0; font-size:.82rem; }
 .eeg-clean { color:#15803d; font-size:.92rem; margin-top:8px; font-weight:600; }
 .eeg-err { color:#dc2626; font-weight:600; }
 .eeg-disc { border:1px solid #fde68a; border-left:4px solid #f59e0b; background:#fffbeb; border-radius:12px; padding:22px 24px; }
 .eeg-disc h3 { color:#92400e; margin:0 0 10px; }
-.eeg-disc ul { margin:0; padding-left:20px; color:#78350f; font-size:.94rem; }
+.eeg-disc ul { margin:0; padding-left:20px; color:#78350f; font-size:1rem; line-height:1.7; }
 .eeg-disc li { margin-bottom:8px; }
 @media (max-width:760px){ .eeg-tasks{ grid-template-columns:1fr; } }
 

@@ -73,10 +73,10 @@ export default function VaccinePage() {
           </p>
           <div className="vaccine-legend">
             <span>
-              <i className="dot core" /> วัคซีนหลัก
+              <i className="dot core" aria-hidden="true" /> วัคซีนหลัก
             </span>
             <span>
-              <i className="dot optional" /> วัคซีนเสริม
+              <i className="dot optional" aria-hidden="true" /> วัคซีนเสริม
             </span>
           </div>
         </div>
@@ -100,7 +100,10 @@ export default function VaccinePage() {
                   {group.items.map((item, i) => (
                     <div className="vaccine-line" key={i}>
                       <span className="vaccine-name">
-                        <i className={`dot ${item.type}`} /> {item.name}
+                        <i className={`dot ${item.type}`} aria-hidden="true" /> {item.name}
+                        <span className="sr-only">
+                          {item.type === "core" ? " (วัคซีนหลัก)" : " (วัคซีนเสริม)"}
+                        </span>
                       </span>
                       <span className="vaccine-line-price">{item.price}</span>
                     </div>
