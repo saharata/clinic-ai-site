@@ -236,14 +236,14 @@ export default function SoapGuidePage() {
       <style jsx>{`
         /* ── ออกแบบมือถือก่อน (mobile-first) แล้วค่อยขยายบนจอใหญ่ ── */
         .soapPage { max-width: 720px; margin: 0 auto; padding: 20px 16px 72px; }
-        .soapBack { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; color: #2f6a5b;
+        .soapBack { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.875rem; color: #2f6a5b;
           text-decoration: none; margin-bottom: 18px; padding: 6px 0; }
-        .soapEyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+        .soapEyebrow { font-size: 0.75rem; letter-spacing: .16em; text-transform: uppercase;
           color: #6b7280; font-weight: 600; margin: 0 0 6px; }
-        .soapTitle { font-size: 26px; line-height: 1.25; margin: 0 0 12px; color: #0f172a; }
-        .soapLead { font-size: 16px; line-height: 1.7; color: #374151; margin: 0 0 16px; }
+        .soapTitle { font-size: 1.625rem; line-height: 1.25; margin: 0 0 12px; color: #0f172a; }
+        .soapLead { font-size: 1rem; line-height: 1.7; color: #374151; margin: 0 0 16px; }
         .soapTags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
-        .soapTag { font-size: 12.5px; padding: 5px 11px; border-radius: 999px;
+        .soapTag { font-size: 0.7812rem; padding: 5px 11px; border-radius: 999px;
           border: 1px solid #e5e7eb; color: #6b7280; }
         .soapTag.on { background: #eef3f0; border-color: #cfe0d8; color: #2f6a5b; }
         .soapTag.warn { background: #fdf6e7; border-color: #f0e2c4; color: #92660f; }
@@ -257,15 +257,15 @@ export default function SoapGuidePage() {
         .soapBtn.primary { background: #2f6a5b; border-color: #2f6a5b; color: #fff; }
         .soapBtn.full { width: 100%; margin-top: 6px; }
         .soapBtn.disabled { opacity: .45; pointer-events: none; }
-        .soapBtnTop { font-size: 16px; font-weight: 600; }
-        .soapBtnSub { font-size: 12.5px; opacity: .85; font-weight: 400; }
+        .soapBtnTop { font-size: 1rem; font-weight: 600; }
+        .soapBtnSub { font-size: 0.7812rem; opacity: .85; font-weight: 400; }
 
-        .soapBody h2 { font-size: 18px; margin: 28px 0 10px; color: #0f172a; }
+        .soapBody h2 { font-size: 1.125rem; margin: 28px 0 10px; color: #0f172a; }
         .soapBody ul, .soapBody ol { padding-left: 20px; margin: 0; }
-        .soapBody li { font-size: 15.5px; line-height: 1.75; color: #374151; margin: 4px 0; }
+        .soapBody li { font-size: 0.9688rem; line-height: 1.75; color: #374151; margin: 4px 0; }
         .soapNote { margin-top: 26px; background: #f8f7f3; border: 1px solid #e6e0d3;
           border-left: 3px solid #92660f; border-radius: 10px; padding: 14px 16px;
-          font-size: 14.5px; line-height: 1.7; color: #3f3f46; }
+          font-size: 0.9062rem; line-height: 1.7; color: #3f3f46; }
 
         /* ── กล่องเงื่อนไข: บนมือถือเป็น sheet เลื่อนขึ้นจากล่าง ── */
         .soapOverlay { position: fixed; inset: 0; background: rgba(15,23,42,.55);
@@ -275,30 +275,30 @@ export default function SoapGuidePage() {
           border-radius: 18px 18px 0 0; padding: 20px 18px calc(20px + env(safe-area-inset-bottom)); }
         .soapDialogHead { display: flex; align-items: center; justify-content: space-between;
           margin-bottom: 6px; }
-        .soapDialogHead h2 { margin: 0; font-size: 19px; color: #0f172a; }
-        .soapClose { background: none; border: none; font-size: 30px; line-height: 1;
+        .soapDialogHead h2 { margin: 0; font-size: 1.1875rem; color: #0f172a; }
+        .soapClose { background: none; border: none; font-size: 1.875rem; line-height: 1;
           color: #4b5563; cursor: pointer; padding: 0; min-width: 44px; min-height: 44px;
           display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; }
-        .soapDialogLead { font-size: 14px; color: #6b7280; margin: 0 0 14px; }
+        .soapDialogLead { font-size: 0.875rem; color: #6b7280; margin: 0 0 14px; }
         .soapTerms { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-        .soapTerm { display: flex; gap: 11px; align-items: flex-start; font-size: 14.5px;
+        .soapTerm { display: flex; gap: 11px; align-items: flex-start; font-size: 0.9062rem;
           line-height: 1.6; color: #374151; cursor: pointer; }
         .soapTerm input { margin-top: 3px; width: 20px; height: 20px; flex: 0 0 auto;
           accent-color: #2f6a5b; }
         .soapForm { display: flex; flex-direction: column; gap: 10px; border: 0; padding: 0; margin: 0; min-width: 0; }
         .soapForm:disabled { opacity: .4; }
-        .soapForm input, .soapForm textarea { width: 100%; padding: 13px 14px; font-size: 16px;
+        .soapForm input, .soapForm textarea { width: 100%; padding: 13px 14px; font-size: 1rem;
           border: 1px solid #6b7280; border-radius: 11px; font-family: inherit;
           color: #0f172a; background: #fff; }
-        .soapField { display: flex; flex-direction: column; gap: 4px; font-size: 14.5px; color: #374151; font-weight: 600; }
-        .soapHint { font-size: 14.5px; color: #374151; margin: 16px 0 4px; }
-        .soapFine { font-size: 12.5px; color: #6b7280; line-height: 1.6; margin: 12px 0 0; }
+        .soapField { display: flex; flex-direction: column; gap: 4px; font-size: 0.9062rem; color: #374151; font-weight: 600; }
+        .soapHint { font-size: 0.9062rem; color: #374151; margin: 16px 0 4px; }
+        .soapFine { font-size: 0.7812rem; color: #6b7280; line-height: 1.6; margin: 12px 0 0; }
         .soapDone { text-align: center; padding: 14px 0; }
-        .soapDone p { font-size: 15px; line-height: 1.7; color: #374151; margin: 0 0 10px; }
+        .soapDone p { font-size: 0.9375rem; line-height: 1.7; color: #374151; margin: 0 0 10px; }
 
         @media (min-width: 720px) {
           .soapPage { padding: 40px 24px 90px; }
-          .soapTitle { font-size: 34px; }
+          .soapTitle { font-size: 2.125rem; }
           .soapActions { flex-direction: row; }
           .soapBtn { flex: 1; }
           .soapOverlay { align-items: center; padding: 24px; }
