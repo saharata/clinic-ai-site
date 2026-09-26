@@ -117,6 +117,11 @@ export default function SymptomsPage() {
                     <strong>ควรพบแพทย์เมื่อไร:</strong> {s.redFlag}
                   </p>
                   <div className="card-actions">
+                    {s.articleHref && (
+                      <Link href={s.articleHref} className="btn btn-call">
+                        อ่านเรื่องไมเกรนแบบละเอียด
+                      </Link>
+                    )}
                     <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
                       ปรึกษา / นัดตรวจผ่าน LINE
                     </a>
