@@ -120,7 +120,7 @@ export default function AiToolsPage() {
     <main id="main-content" tabIndex={-1}>
       <section className="hero small">
         <div className="container">
-          <p className="eyebrow">AI Tools for Neurologists</p>
+          <p className="eyebrow" lang="en">AI Tools for Neurologists</p>
 
           <h1 className="hero-title">
             {loadingUser
@@ -250,7 +250,8 @@ function ToolCard({
             fontWeight: 600,
           }}
         >
-          {tool.status === "live" ? `● ${badgeText}` : badgeText}
+          {tool.status === "live" && <span aria-hidden="true">● </span>}
+          {badgeText}
         </p>
         <p style={{ marginTop: 12 }}>{tool.description}</p>
       </div>
@@ -288,7 +289,7 @@ function ToolCard({
             fontWeight: 600,
           }}
         >
-          ● {badgeText}
+          <span aria-hidden="true">●</span> {badgeText}
         </p>
         <p style={{ marginTop: 12 }}>{tool.description}</p>
 
@@ -313,7 +314,7 @@ function ToolCard({
             fontWeight: 600,
           }}
         >
-          ● {badgeText}
+          <span aria-hidden="true">●</span> {badgeText}
         </p>
         <p style={{ marginTop: 12 }}>{tool.description}</p>
 
@@ -355,7 +356,7 @@ function ToolCard({
                 border: "1px solid #d1d5db",
               }}
             >
-              📄 คู่มือ
+              <span aria-hidden="true">📄 </span>คู่มือ
             </a>
           )}
         </div>
@@ -374,7 +375,7 @@ function ToolCard({
           fontWeight: 600,
         }}
       >
-        ● {badgeText}
+        <span aria-hidden="true">●</span> {badgeText}
       </p>
       <p style={{ marginTop: 12 }}>{tool.description}</p>
 
@@ -407,7 +408,7 @@ function ToolCard({
               border: "1px solid #d1d5db",
             }}
           >
-            📄 คู่มือ
+            <span aria-hidden="true">📄 </span>คู่มือ
           </a>
         )}
       </div>

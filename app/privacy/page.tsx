@@ -66,7 +66,7 @@ export default function PrivacyPage() {
 
       <hr className="my-8 border-slate-200" />
 
-      <section className="space-y-3 leading-relaxed">
+      <section className="space-y-3 leading-relaxed" lang="en">
         <h2 className="text-lg font-semibold text-slate-900">English (summary)</h2>
         <p>
           Sahawan Clinic is a personal health-logging app for patients of

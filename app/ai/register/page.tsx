@@ -2,6 +2,13 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { thaiAuthError } from "../authErrors";
+
+const FIELD_LABELS: Record<string, string> = {
+  fullName: "ชื่อ-นามสกุล",
+  email: "อีเมล",
+  password: "รหัสผ่าน",
+};
 
 export default function RegisterPage() {
   const supabase = useMemo(() => {
@@ -24,19 +31,29 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [invalid, setInvalid] = useState<string[]>([]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
+    setInvalid([]);
 
     if (!supabase) {
-      setErrorMessage("ยังไม่พบการตั้งค่า Supabase environment variables");
+      setErrorMessage("ระบบลงทะเบียนยังไม่พร้อมใช้งานชั่วคราว กรุณาติดต่อคลินิกผ่าน LINE");
       return;
     }
 
-    if (!fullName || !email || !password) {
-      setErrorMessage("กรุณากรอกชื่อ อีเมล และรหัสผ่าน");
+    const missing = [
+      ...(!fullName ? ["fullName"] : []),
+      ...(!email ? ["email"] : []),
+      ...(!password ? ["password"] : []),
+    ];
+    if (missing.length) {
+      setInvalid(missing);
+      setErrorMessage(
+        `ยังไม่ได้กรอก ${missing.map((f) => FIELD_LABELS[f]).join(", ")} กรุณากรอกช่องที่มีเครื่องหมาย * ให้ครบแล้วกด "ลงทะเบียน" อีกครั้ง`
+      );
       return;
     }
 
@@ -60,7 +77,7 @@ export default function RegisterPage() {
       });
 
       if (error) {
-        setErrorMessage(error.message);
+        setErrorMessage(thaiAuthError(error.message));
         return;
       }
 
@@ -76,7 +93,7 @@ export default function RegisterPage() {
       }
     } catch (err) {
       console.error(err);
-      setErrorMessage("เกิดข้อผิดพลาดระหว่างลงทะเบียน");
+      setErrorMessage("เกิดข้อผิดพลาดระหว่างลงทะเบียน กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง");
     } finally {
       setLoading(false);
     }
@@ -95,11 +112,19 @@ export default function RegisterPage() {
         </div>
 
         <div className="cta-box" style={{ padding: 24 }}>
-          <form onSubmit={handleSubmit} style={{ display: "grid", gap: 16 }}>
+          <form onSubmit={handleSubmit} style={{ display: "grid", gap: 16 }} noValidate>
+            <p style={{ margin: 0, color: "#475569" }}>ช่องที่มีเครื่องหมาย * จำเป็นต้องกรอก</p>
             <div style={{ display: "grid", gap: 8 }}>
-              <label htmlFor="fullName">ชื่อ-นามสกุล</label>
+              <label htmlFor="fullName">
+                ชื่อ-นามสกุล <span aria-hidden="true">*</span>
+              </label>
               <input
                 id="fullName"
+                aria-required="true"
+                aria-invalid={invalid.includes("fullName")}
+                aria-describedby={
+                  [invalid.includes("fullName") ? "form-error" : ""].filter(Boolean).join(" ") || undefined
+                }
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
@@ -133,9 +158,16 @@ export default function RegisterPage() {
             </div>
 
             <div style={{ display: "grid", gap: 8 }}>
-              <label htmlFor="email">อีเมล</label>
+              <label htmlFor="email">
+                อีเมล <span aria-hidden="true">*</span>
+              </label>
               <input
                 id="email"
+                aria-required="true"
+                aria-invalid={invalid.includes("email")}
+                aria-describedby={
+                  [invalid.includes("email") ? "form-error" : ""].filter(Boolean).join(" ") || undefined
+                }
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -146,9 +178,16 @@ export default function RegisterPage() {
             </div>
 
             <div style={{ display: "grid", gap: 8 }}>
-              <label htmlFor="password">รหัสผ่าน</label>
+              <label htmlFor="password">
+                รหัสผ่าน <span aria-hidden="true">*</span>
+              </label>
               <input
                 id="password"
+                aria-required="true"
+                aria-invalid={invalid.includes("password")}
+                aria-describedby={
+                  [invalid.includes("password") ? "form-error" : "", "pw-hint"].filter(Boolean).join(" ") || undefined
+                }
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -156,16 +195,21 @@ export default function RegisterPage() {
                 className="input"
                 autoComplete="new-password"
               />
+              <p id="pw-hint" style={{ margin: 0, color: "#475569", fontSize: "0.9375rem" }}>
+                อย่างน้อย 6 ตัวอักษร
+              </p>
             </div>
 
             {errorMessage ? (
               <div
+                id="form-error"
+                role="alert"
                 style={{
                   background: "#fee2e2",
                   color: "#991b1b",
                   padding: 12,
                   borderRadius: 12,
-                  fontSize: 14,
+                  fontSize: "1rem",
                 }}
               >
                 {errorMessage}
@@ -174,12 +218,13 @@ export default function RegisterPage() {
 
             {successMessage ? (
               <div
+                role="status"
                 style={{
                   background: "#dcfce7",
                   color: "#166534",
                   padding: 12,
                   borderRadius: 12,
-                  fontSize: 14,
+                  fontSize: "1rem",
                 }}
               >
                 {successMessage}

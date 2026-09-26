@@ -201,6 +201,11 @@ a {
   margin-top: 0;
 }
 
+.hero-card .hero-card-title {
+  font-size: 1.17em;
+  margin: 0 0 1em;
+}
+
 .hero-card ul {
   margin: 0;
   padding-left: 18px;
@@ -293,6 +298,16 @@ a {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 24px;
+}
+
+.footer-title {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+
+.footer-subtitle {
+  font-size: 1em;
+  margin: 1.33em 0;
 }
 
 .footer-links {
@@ -568,6 +583,17 @@ a {
 
 .vaccine-items {
   padding: 8px 16px;
+}
+
+/* ช่วงอายุเป็น <h2> และรายการเป็น <ul> เพื่อ screen reader — คงหน้าตาเดิม */
+h2.vaccine-age {
+  margin: 0;
+  font-size: 1rem;
+}
+
+ul.vaccine-items {
+  list-style: none;
+  margin: 0;
 }
 
 .vaccine-head .vaccine-items {
@@ -1055,7 +1081,7 @@ a {
 .eeg-rmeta { font-size:.85rem; color:#475569; font-family:ui-monospace,monospace; margin-bottom:16px; }
 .eeg-tcard { border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-bottom:14px; background:#f8fafc; }
 .eeg-th { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
-.eeg-th h4 { margin:0; font-size:1.05rem; }
+.eeg-th h3 { margin:0; font-size:1.05rem; }
 .eeg-th .mdl { font-size:.76rem; color:#475569; font-family:ui-monospace,monospace; }
 .eeg-bar { height:24px; border-radius:7px; overflow:hidden; display:flex; background:#e2e8f0; margin-bottom:8px; }
 .eeg-bar span { display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; color:#fff; white-space:nowrap; }
