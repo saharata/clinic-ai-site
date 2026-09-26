@@ -1283,3 +1283,170 @@ ul.vaccine-items {
     transform: none;
   }
 }
+
+/* ===== /ms — หน้าผู้ป่วย MS/NMOSD (ปลายทาง QR งาน 9 พ.ย. 2569) =====
+   ผู้ป่วย MS อาจมีปัญหาการมองเห็น (หลัง optic neuritis) และมือสั่น/อ่อนแรง →
+   ตัวอักษรฐาน 18px, สีข้อความเข้ม (contrast สูง), เป้ากดสูงอย่างน้อย 48px */
+.ms-page {
+  font-size: 1.125rem;
+}
+
+.ms-page .hero-text,
+.ms-page .section-head p,
+.ms-page .card p,
+.ms-page .faq-item p,
+.ms-page .cta-box p {
+  font-size: 1.125rem;
+  color: #1e293b;
+  line-height: 1.8;
+}
+
+.ms-page .footer p {
+  font-size: 1.0625rem;
+  color: #e2e8f0;
+  line-height: 1.7;
+}
+
+.ms-page .btn,
+.ms-page .nav-links .btn {
+  min-height: 48px;
+  font-size: 1.0625rem;
+}
+
+.ms-page .btn.big {
+  min-height: 52px;
+}
+
+.ms-page .nav-links a:not(.btn),
+.ms-page .footer-links a,
+.ms-page .brand {
+  min-height: 48px;
+}
+
+.ms-page .faq-item summary {
+  min-height: 48px;
+  font-size: 1.1875rem;
+}
+
+.ms-byline {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f766e;
+  margin: 0 0 12px;
+}
+
+.ms-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ms-care-list,
+.ms-playlists {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ms-care-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 18px;
+}
+
+.ms-page .card h3 {
+  font-size: 1.3125rem;
+  line-height: 1.4;
+}
+
+.ms-care p {
+  margin-bottom: 0;
+}
+
+.ms-key {
+  border-left: 6px solid #0f766e;
+}
+
+.ms-key h3 {
+  font-size: 1.5rem !important;
+}
+
+.ms-key ol,
+.ms-rights ul {
+  margin: 0;
+  padding-left: 1.4em;
+  color: #1e293b;
+  line-height: 1.8;
+}
+
+.ms-key li + li,
+.ms-rights li + li {
+  margin-top: 8px;
+}
+
+.ms-hotline {
+  background: #fffbeb;
+  border-color: #b45309;
+}
+
+.ms-hotline h3 {
+  color: #78350f;
+}
+
+.ms-hotline p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.ms-hotline a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.ms-playlists .card {
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-playlists .card .btn {
+  margin-top: auto;
+}
+
+.ms-video {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.ms-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.ms-nowrap {
+  display: inline-block;
+}
+
+@media (max-width: 720px) {
+  .ms-page .nav-links .btn {
+    font-size: 0.9375rem;
+    padding: 0 12px;
+  }
+
+  .ms-page .mobile-bar-btn {
+    min-height: 52px;
+    font-size: 1.0625rem;
+  }
+
+  .ms-jump .btn {
+    flex: 1 1 calc(50% - 10px);
+  }
+}

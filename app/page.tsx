@@ -391,6 +391,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section id="ms-teaser" className="section">
+        <div className="container cta-box">
+          <div>
+            <p className="eyebrow">สำหรับผู้ป่วย MS · NMOSD</p>
+            <h2>ดูแลตัวเองได้ รู้สิทธิไม่ให้ขาด</h2>
+            <p>
+              สิ่งที่ทำเองได้ทุกวัน สรุปสิทธิประกันสังคม ม.33 ม.39 ม.40 และคลิปเรียนรู้ต่อ
+              โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์
+            </p>
+          </div>
+          <div className="cta-actions">
+            <Link href="/ms" className="btn btn-dark big">
+              ดูหน้า MS · NMOSD
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section id="learn-teaser" className="section">
         <div className="container cta-box">
           <div>
