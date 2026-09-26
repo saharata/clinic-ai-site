@@ -430,6 +430,42 @@ export default function EegDemoPage() {
                                 <br />
                                 แท่งสูง = โมเดลมั่นใจมาก · ช่วงเวลาไล่จากซ้ายไปขวา
                               </div>
+                              {/* a11y: ค่ารายหน้าต่างเดิมดูได้เฉพาะตอน hover (title) → เปิดดูเป็นตารางได้ด้วยการกด/คีย์บอร์ด */}
+                              <details className="eeg-windows">
+                                <summary>ดูตัวเลขรายหน้าต่างเป็นตาราง ({t.timeline.length} หน้าต่าง)</summary>
+                                <div className="eeg-windows-scroll">
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">ช่วงเวลา (วินาที)</th>
+                                        <th scope="col">ความน่าจะเป็น</th>
+                                        <th scope="col">สถานะ</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {t.timeline.map((w, i) => {
+                                        const pr = w.probabilities?.[posName] ?? 0;
+                                        const reported = w.predicted_class !== 0;
+                                        return (
+                                          <tr key={i}>
+                                            <td>
+                                              {w.start_sec}–{w.end_sec}
+                                            </td>
+                                            <td>{Math.round(pr * 100)}%</td>
+                                            <td>
+                                              {reported
+                                                ? "รายงานเป็นเหตุการณ์"
+                                                : w.above_threshold
+                                                  ? "ผ่านเกณฑ์แต่สั้นเกินไป จึงไม่รายงาน"
+                                                  : "ต่ำกว่าเกณฑ์"}
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </details>
                             </div>
                           )}
                           {flags.length > 0 ? (

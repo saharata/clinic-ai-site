@@ -167,7 +167,7 @@ export default function SoapGuidePage() {
       <style jsx>{`
         /* ── ออกแบบมือถือก่อน (mobile-first) แล้วค่อยขยายบนจอใหญ่ ── */
         .soapPage { max-width: 720px; margin: 0 auto; padding: 20px 16px 72px; }
-        .soapBack { display: inline-block; font-size: 14px; color: #2f6a5b;
+        .soapBack { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; color: #2f6a5b;
           text-decoration: none; margin-bottom: 18px; padding: 6px 0; }
         .soapEyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
           color: #6b7280; font-weight: 600; margin: 0 0 6px; }
@@ -208,7 +208,8 @@ export default function SoapGuidePage() {
           margin-bottom: 6px; }
         .soapDialogHead h3 { margin: 0; font-size: 19px; color: #0f172a; }
         .soapClose { background: none; border: none; font-size: 30px; line-height: 1;
-          color: #6b7280; cursor: pointer; padding: 0 6px; }
+          color: #4b5563; cursor: pointer; padding: 0; min-width: 44px; min-height: 44px;
+          display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; }
         .soapDialogLead { font-size: 14px; color: #6b7280; margin: 0 0 14px; }
         .soapTerms { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
         .soapTerm { display: flex; gap: 11px; align-items: flex-start; font-size: 14.5px;

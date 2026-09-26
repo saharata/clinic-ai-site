@@ -157,7 +157,7 @@ export default function MriShowcasePage() {
       <style jsx>{`
         .mri-wrap { max-width: 1080px; margin: 0 auto; padding: clamp(20px,4vw,44px); color: ${C.ink};
           font-family: -apple-system,"Segoe UI","Sarabun","Noto Sans Thai",system-ui,sans-serif; line-height: 1.6; }
-        .mri-back { display: inline-block; font-size: 13px; color: ${C.teal}; text-decoration: none; font-weight: 600; margin-bottom: 18px; }
+        .mri-back { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; color: ${C.teal}; text-decoration: none; font-weight: 600; margin-bottom: 18px; }
         .mri-back:hover { text-decoration: underline; }
         .mri-eyebrow { font-size: 12px; letter-spacing: .16em; color: ${C.teal}; font-weight: 700; }
         .mri-h1 { font-size: clamp(26px,4vw,40px); line-height: 1.15; margin: .35em 0 .25em; font-weight: 700; text-wrap: balance;
