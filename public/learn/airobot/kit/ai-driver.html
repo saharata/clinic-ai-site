@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Driver</title>
+<style>
+  body { font: 18px/1.5 system-ui, sans-serif; max-width: 640px; margin: 16px auto; padding: 0 16px; }
+  button, input { font: inherit; min-height: 48px; margin: 4px 0; } input { width: 100%; box-sizing: border-box; }
+  #btnStop { background: #b91c1c; color: #fff; font-weight: bold; min-width: 120px; }
+</style>
+</head>
+<body>
+<h1>AI Driver</h1>
+<p>Paste your Teachable Machine model link. Classes must be named Forward, Left, Right, Stop.</p>
+<input id="url" aria-label="Model link" placeholder="https://teachablemachine.withgoogle.com/models/xxxx/">
+<p>
+  <button id="btnSerial">1. Connect robot</button>
+  <button id="btnCam">2. Start camera</button>
+  <button id="btnStop">STOP (Esc)</button>
+</p>
+<p id="status" role="status" aria-live="polite">Not connected.</p>
+<p id="ai">AI: waiting</p>
+<div id="cam"></div>
+<!-- Same libraries as the official Teachable Machine export, pinned to tested versions -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.5/dist/teachablemachine-image.min.js"></script>
+<script>
+const THRESHOLD = 0.8;    // below 80% sure = not trusted = Stop
+const HEARTBEAT_MS = 400; // re-send the current letter so the Arduino's 1000 ms watchdog stays fed
+const LETTER = { forward: 'F', left: 'L', right: 'R', stop: 'S' };
+const key = (name) => name.trim().toLowerCase(); // "Forward " and "forward" both count
+const $ = (id) => document.getElementById(id);
+const say = (msg) => { $('status').textContent = msg; };
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let writer = null, model = null, webcam = null, lastSent = '', lastSentAt = 0;
+let runId = 0;             // each Start gets a new id; STOP changes it, so old loops quit
+// Send ONE letter to the robot over USB serial
+async function send(letter) {
+  lastSent = letter;
+  lastSentAt = performance.now();
+  if (!writer) return;                      // camera can run before the robot is connected
+  try {
+    await writer.write(new TextEncoder().encode(letter));
+  } catch (e) {
+    writer = null;                          // cable pulled out: forget the port
+    say('Robot disconnected.');
+  }
+}
+// Button 1: the browser shows a list of serial ports (only works from a click)
+$('btnSerial').onclick = async () => {
+  if (!('serial' in navigator)) return say('No Web Serial here. Use Chrome or Edge on a computer.');
+  try {
+    const port = await navigator.serial.requestPort();
+    await port.open({ baudRate: 9600 });    // must match Serial.begin(9600) on the Arduino
+    const w = port.writable.getWriter();
+    say('Connected. Waiting 2 seconds while the Arduino restarts...');
+    await sleep(2000);                      // an Uno usually resets when the port opens
+    writer = w;
+    await send('S');                        // always begin stopped
+    say('Robot connected. Now start the camera.');
+  } catch (e) {
+    say('Could not connect: ' + (e.message || e));
+  }
+};
+// Button 2: load the AI model, open the webcam, start the sense-think-act loop
+$('btnCam').onclick = async () => {
+  let url = $('url').value.trim();
+  if (!url) return say('Paste your model link first.');
+  if (!url.endsWith('/')) url += '/';
+  const id = ++runId;                            // pressing STOP while loading cancels this start
+  $('btnCam').disabled = true;
+  try {
+    say('Loading AI model...');
+    model = await tmImage.load(url + 'model.json', url + 'metadata.json');
+    const labels = model.getClassLabels().map(key);
+    if (!Object.keys(LETTER).every((n) => labels.includes(n))) throw new Error('the model needs 4 classes: Forward, Left, Right, Stop');
+    const cam = new tmImage.Webcam(224, 224, true); // width, height, flip (Teachable Machine trains mirrored)
+    await cam.setup();                              // browser asks permission to use the camera
+    await cam.play();
+    if (id !== runId) return cam.stop();            // STOP was pressed while loading
+    webcam = cam;
+    $('cam').replaceChildren(webcam.canvas);
+    say('AI is driving. Press STOP or Esc at any time.');
+    requestAnimationFrame(() => loop(id));
+  } catch (e) {
+    $('btnCam').disabled = false;
+    say('Camera or model problem: ' + (e.message || e));
+  }
+};
+// One turn of the loop: SENSE (camera) -> THINK (AI) -> ACT (send a letter)
+async function loop(id) {
+  if (id !== runId) return;                          // STOP was pressed
+  webcam.update();                                   // SENSE: grab a new frame
+  const preds = await model.predict(webcam.canvas);  // THINK: [{className, probability}, ...]
+  if (id !== runId) return;                          // STOP was pressed while the AI was thinking
+  const top = preds.reduce((a, b) => (b.probability > a.probability ? b : a));
+  const sure = top.probability >= THRESHOLD;
+  const letter = sure ? (LETTER[key(top.className)] || 'S') : 'S'; // unsure or unknown class = Stop
+  // ACT: send only when the decision changes, plus a heartbeat repeat.
+  // This loop pauses when the tab is hidden, so heartbeats stop and the Arduino stops itself.
+  if (letter !== lastSent || performance.now() - lastSentAt > HEARTBEAT_MS) await send(letter);
+  $('ai').textContent = `AI: ${top.className} ${Math.round(top.probability * 100)}%` +
+    (sure ? '' : ' (not sure)') + ` -> ${letter}`;
+  requestAnimationFrame(() => loop(id));
+}
+// Emergency stop: the button or the Esc key
+async function emergencyStop() {
+  runId++;                                           // ends the loop
+  await send('S');                                   // stop the wheels first
+  if (webcam) { webcam.stop(); webcam = null; }      // then switch the camera off
+  $('btnCam').disabled = false;
+  say('Stopped. Press Start camera to try again.');
+}
+$('btnStop').onclick = emergencyStop;
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') emergencyStop(); });
+</script>
+</body>
+</html>

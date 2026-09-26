@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ชุดโครงงาน AI ขับรถ · AI Driver kit</title>
+<meta name="description" content="ชุดไฟล์โครงงาน AI ขับรถ จาก Body 101 บทที่ 17 · Files for the AI Driver project from Body 101 lesson 17">
+<style>
+  :root{
+    --bg:#EDF1F4;
+    --panel:#FBFCFD;
+    --panel-2:#E5EBF0;
+    --ink:#1B2133;
+    --ink-2:#586176;
+    --line:#D2D9E2;
+    --accent:#5A3E9E;
+    --accent-ink:#FFFFFF;
+    --accent-wash:#E8E2F5;
+    --good:#1F7C55;
+    --good-wash:#DDF0E6;
+    --bad:#B53F2C;
+    --bad-wash:#F7E0DB;
+    --code-bg:#0b1226;
+    --code-ink:#E2E8F0;
+    --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai","Noto Sans Thai","Leelawadee UI","Thonburi",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A0E19;
+      --panel:#121A2B;
+      --panel-2:#1A2438;
+      --ink:#E8ECF7;
+      --ink-2:#9BA7C1;
+      --line:#27324B;
+      --accent:#AD93FF;
+      --accent-ink:#150E29;
+      --accent-wash:#231B40;
+      --good:#52D39A;
+      --good-wash:#12352A;
+      --bad:#FF8A78;
+      --bad-wash:#3A1C19;
+      --code-bg:#050913;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A0E19; --panel:#121A2B; --panel-2:#1A2438; --ink:#E8ECF7; --ink-2:#9BA7C1; --line:#27324B;
+    --accent:#AD93FF; --accent-ink:#150E29; --accent-wash:#231B40; --good:#52D39A; --good-wash:#12352A;
+    --bad:#FF8A78; --bad-wash:#3A1C19; --code-bg:#050913;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 var(--f-body)}
+  main{max-width:760px;margin:0 auto;padding:24px 16px 48px}
+  a{color:var(--accent);text-underline-offset:3px}
+  a:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+  h1{font-size:clamp(28px,6vw,38px);line-height:1.25;margin:4px 0 10px}
+  h2{font-size:22px;line-height:1.35;margin:30px 0 8px}
+  h3{font-size:18px;margin:18px 0 6px}
+  p{margin:0 0 12px}
+  code,kbd{font-family:var(--f-mono);font-size:.9em;background:var(--panel-2);border-radius:6px;padding:1px 5px;overflow-wrap:anywhere}
+  pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:12px 14px;overflow-x:auto;font:14px/1.6 var(--f-mono);margin:8px 0 12px}
+  pre code{background:none;padding:0;color:inherit}
+  ul,ol{padding-left:24px;margin:6px 0 14px}
+  li{margin-bottom:4px}
+  .eyebrow{font-family:var(--f-mono);font-size:13px;color:var(--ink-2);letter-spacing:.02em}
+  .lede{font-size:18px;color:var(--ink)}
+  .jump{font-size:15px}
+  .card{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;margin:14px 0}
+  .honest{border-left:6px solid var(--accent);background:var(--accent-wash)}
+  .honest b,.safe b,.priv b{display:block;font-size:18px;margin-bottom:4px}
+  .safe{border-left:6px solid var(--bad)}
+  .priv{border-left:6px solid var(--good)}
+  .btns{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:10px 18px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font-weight:600;text-decoration:none;text-align:center}
+  .btn.main{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .btn:hover{border-color:var(--accent)}
+  .filelist{list-style:none;padding:0;margin:8px 0;display:grid;gap:8px}
+  .filelist li{background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:0}
+  .filelist li a{display:inline-flex;align-items:center;font-weight:600;min-height:44px}
+  .filelist li span{display:block;font-size:15px;color:var(--ink-2)}
+  .note{font-size:15px;color:var(--ink-2)}
+  hr{border:none;border-top:2px dashed var(--line);margin:40px 0 10px}
+  footer{max-width:760px;margin:0 auto;padding:0 16px 32px;font-size:14px;color:var(--ink-2)}
+  @media print{ .btns{display:none} body{background:#fff;color:#000} .card{border-color:#999} }
+</style>
+</head>
+<body>
+<main>
+
+<section lang="th" aria-labelledby="th-title">
+  <div class="eyebrow">Body 101 · บทที่ 17 AI กับหุ่นยนต์ ทีมเดียวกัน · ระดับ 9</div>
+  <h1 id="th-title">ชุดโครงงาน AI ขับรถ</h1>
+  <p class="lede">ชุดนี้ต่อ AI ที่หนูสอนเองใน Teachable Machine เข้ากับรถจากบทที่ 16 กล้องของคอมพิวเตอร์ดูการ์ดลูกศรหรือท่ามือ AI ในเบราว์เซอร์เลือกตัวอักษร F L R หรือ S แล้วส่งลงสาย USB ไปให้ Arduino หมุนล้อ AI เป็นสมอง รถเป็นร่างกาย สายเป็นเส้นประสาท และหนูเป็นคนดูผลแล้วเปลี่ยนท่ามือ</p>
+  <p class="jump"><a href="#en">English version below</a> · <a href="/learn/airobot#ch-build">อ่านวิธีทำเต็มๆ ในบทเรียน ระดับ 9</a></p>
+
+  <div class="card honest">
+    <b>บอกกันตรงๆ</b>
+    หน้าเว็บทดสอบแล้วกับรถจำลองและกล้องจำลอง ยังไม่ได้ทดสอบกับรถจริงและกล้องจริง โค้ด Arduino ทดสอบตรรกะบนคอมพิวเตอร์แล้ว แต่ยังไม่เคยคอมไพล์ลงบอร์ด ต้องกด Verify ในโปรแกรม Arduino ก่อนใช้
+  </div>
+
+  <h2>ไฟล์ในชุด</h2>
+  <ul class="filelist">
+    <li><a href="/learn/airobot/kit/ai-driver.html"><code>ai-driver.html</code></a><span>หน้าเว็บสมอง AI มีปุ่ม 1. Connect robot · 2. Start camera · STOP (Esc) ตัวหนังสือบนหน้านี้เป็นภาษาอังกฤษ</span></li>
+    <li><a href="/learn/airobot/kit/ai_driver_car/ai_driver_car.ino" download><code>ai_driver_car/ai_driver_car.ino</code></a><span>โค้ดร่างกายสำหรับ Arduino Uno ของรถจากโครงงานที่ 2 บทที่ 16 ขาและฟังก์ชัน <code>drive()</code> ใช้ตามเดิม</span></li>
+    <li><a href="/learn/airobot/kit/ai-driver-kit.zip" download><code>ai-driver-kit.zip</code></a><span>สองไฟล์ข้างบน รวมกับ <code>README_TH.txt</code> วิธีใช้ฉบับภาษาไทย</span></li>
+  </ul>
+  <div class="btns">
+    <a class="btn main" href="/learn/airobot/kit/ai-driver.html">เปิดหน้า AI Driver</a>
+    <a class="btn" href="/learn/airobot/kit/ai-driver-kit.zip" download>⬇ ดาวน์โหลดชุดไฟล์ zip</a>
+    <a class="btn" href="/learn/airobot/kit/ai_driver_car/ai_driver_car.ino" download>⬇ โค้ด Arduino</a>
+  </div>
+
+  <div class="card priv">
+    <b>อินเทอร์เน็ตและความเป็นส่วนตัว อ่านกับผู้ใหญ่ก่อนเปิด</b>
+    <ul>
+      <li>หน้า AI Driver โหลดไลบรารี AI สองตัวจาก cdn.jsdelivr.net คือ TensorFlow.js รุ่น 4.22.0 และ @teachablemachine/image รุ่น 0.8.5 และโหลดโมเดลของหนูจากเซิร์ฟเวอร์ของ Google</li>
+      <li>ภาพจากกล้องถูกประมวลผลในเบราว์เซอร์ หน้า AI Driver ไม่ได้อัปโหลดภาพออกไป</li>
+      <li>ลิงก์โมเดลที่ได้จาก Upload my model เป็นลิงก์สาธารณะ ใครมีลิงก์ก็ใช้โมเดลได้ จึงสอน AI ด้วยการ์ดลูกศรหรือท่ามือเท่านั้น ห้ามถ่ายหน้าคน</li>
+      <li>ระหว่างฝึก Google บอกว่าภาพตัวอย่างอยู่ในคอมพิวเตอร์ของเรา เว้นแต่เลือกบันทึกโปรเจกต์ลง Google Drive</li>
+      <li>หน้านี้ที่หนูกำลังอ่านอยู่ไม่มีสคริปต์และไม่ได้ส่งข้อมูลอะไรออกไป</li>
+  </ul>
+  </div>
+
+  <h2>วิธีเปิดหน้า AI Driver</h2>
+  <p>เบราว์เซอร์ยอมให้ใช้พอร์ตและกล้องเฉพาะหน้าที่ปลอดภัย คือหน้าที่เปิดจาก https หรือจาก localhost</p>
+  <h3>ทางที่ง่ายที่สุด เปิดจากหน้านี้เลย</h3>
+  <p>หน้านี้อยู่บนเว็บที่ขึ้นต้นด้วย https กดปุ่ม <b>เปิดหน้า AI Driver</b> ข้างบนใน Chrome หรือ Edge ได้เลย ไม่ต้องใช้ python และไม่ต้องพิมพ์คำสั่งอะไร</p>
+  <h3>อีกทาง เปิดจากไฟล์ในเครื่อง ผ่าน localhost (ผู้ใหญ่ทำ)</h3>
+  <ol>
+    <li>ดาวน์โหลดไฟล์ zip แล้วแตกไฟล์ไว้ในโฟลเดอร์หนึ่ง</li>
+    <li>เปิด Terminal (Mac หรือ Linux) หรือ Command Prompt (Windows) ในโฟลเดอร์ที่มีไฟล์ <code>ai-driver.html</code></li>
+    <li>พิมพ์คำสั่งนี้ (บน Windows ถ้าหาคำสั่ง python3 ไม่เจอ ลอง <code>py -m http.server</code>)
+      <pre><code>python3 -m http.server</code></pre></li>
+    <li>เปิด Chrome หรือ Edge ไปที่ <code>http://localhost:8000/ai-driver.html</code></li>
+    <li>เล่นเสร็จแล้ว กลับไปที่ Terminal แล้วกด <kbd>Ctrl</kbd> + <kbd>C</kbd></li>
+  </ol>
+  <p class="note">ดับเบิลคลิกไฟล์ตรงๆ อาจใช้ได้ใน Chrome แต่ยังไม่ยืนยัน</p>
+  <p>ใช้ Chrome หรือ Microsoft Edge บนคอมพิวเตอร์ Windows Mac Linux หรือ ChromeOS ใช้ Safari ไอโฟน และไอแพดไม่ได้ Firefox รุ่นใหม่และ Chrome บน Android รุ่นใหม่รองรับแล้ว แต่ยังไม่ได้ทดสอบกับโครงงานนี้ จึงแนะนำให้ใช้คอมพิวเตอร์</p>
+
+  <div class="card safe">
+    <b>⚠ ปลอดภัยไว้ก่อน</b>
+    <ul>
+      <li>ทำกับผู้ใหญ่ทุกครั้ง</li>
+      <li>เล่นบนพื้นเท่านั้น ห้ามบนโต๊ะ</li>
+      <li>ใช้ความเร็วต่ำตามโค้ด</li>
+      <li>ผู้ใหญ่อยู่ใกล้สวิตช์ถ่านตลอดเวลา</li>
+      <li>ทดสอบล้อลอยก่อน</li>
+      <li>นิ้วห่างล้อ</li>
+      <li>ปิดถ่านก่อนถอดสาย</li>
+      <li>ไม่ทิ้งให้รถวิ่งโดยไม่มีคนดู</li>
+      <li>เรื่องถ่าน ห้ามใช้ถ่านเก่าปนใหม่ ห้ามลัดวงจร ถอดถ่านเมื่อเล่นเสร็จ</li>
+      <li>ใช้ท่ามือหรือการ์ด ไม่ใช้หน้าคน</li>
+      <li>ไม่ต่อแบบไร้สายในโครงงานแรก</li>
+  </ul>
+  </div>
+
+  <h2>12 ขั้นแบบย่อ</h2>
+  <ol>
+    <li>ตรวจร่างกายก่อน อัปโหลดโค้ดทดสอบของบทที่ 16 วางรถบนกล่องให้ล้อลอย ดูว่าล้อหมุนเดินหน้าทั้งสองข้าง</li>
+    <li>ทำการ์ด 4 ใบ ลูกศรขึ้น ซ้าย ขวา และรูปฝ่ามือ</li>
+    <li>สอนตาใน Teachable Machine กลุ่ม Forward Left Right Stop และ Nothing กลุ่มละอย่างน้อย 50 ภาพ ถ่ายแค่การ์ดหรือมือ</li>
+    <li>ฝึกแล้วทดสอบในหน้าตัวอย่าง ทุกท่าควรขึ้นถึง 80% อย่างสม่ำเสมอ</li>
+    <li>Export แล้ว Upload my model แล้วคัดลอกลิงก์</li>
+    <li>ปิดสวิตช์ถ่าน กด Verify แล้ว Upload <code>ai_driver_car.ino</code> แล้วปิด Serial Monitor</li>
+    <li>เปิดหน้า AI Driver ใน Chrome หรือ Edge จาก https หรือ localhost</li>
+    <li>ล้อลอยอยู่ เปิดสวิตช์ถ่าน กด 1. Connect robot เลือกพอร์ต วางลิงก์ กด 2. Start camera</li>
+    <li>ทดสอบความปลอดภัย 8 ข้อตอนล้อลอย ต้องผ่านครบ รวมถึง กด STOP กด Esc และสลับแท็บ ล้อต้องหยุด</li>
+    <li>ขับบนพื้นเท่านั้น เคลียร์ที่รอบรถ ไม่มีสัตว์เลี้ยงหรือน้องเล็ก ผู้ใหญ่ถือสายให้หย่อนและอยู่ใกล้สวิตช์ถ่าน ใช้ความเร็วตามโค้ด กด STOP หรือ Esc ได้ทุกเมื่อ</li>
+    <li>ทดลองต่อ เช่น เปลี่ยน <code>THRESHOLD</code> เป็น 0.6 หรือ 0.95 การแก้โค้ดต้องใช้ไฟล์ในเครื่อง ดาวน์โหลดชุดไฟล์ zip แก้ <code>ai-driver.html</code> ด้วยโปรแกรมแก้ข้อความ แล้วเปิดผ่าน localhost ตามอีกทางข้างบน หน้าบนเว็บแก้ไม่ได้</li>
+    <li>เก็บของ กด STOP แล้วปิดสวิตช์ถ่าน แล้วถอดสาย USB</li>
+  </ol>
+  <p class="note">รายละเอียด เหตุผลของแต่ละขั้น เกมเรียงขั้น และรายการตรวจที่พิมพ์ได้ อยู่ใน<a href="/learn/airobot#ch-build">บทเรียน ระดับ 9</a></p>
+</section>
+
+<hr>
+
+<section lang="en" id="en" aria-labelledby="en-title">
+  <div class="eyebrow">Body 101 · Lesson 17 AI + Robots, One Team · Level 9</div>
+  <h1 id="en-title">AI Driver kit</h1>
+  <p class="lede">This kit connects an image model that you train yourself in Teachable Machine to the robot car from lesson 16. The computer's webcam looks at an arrow card or a hand sign, the AI in the browser picks one letter (F, L, R or S) and sends it down the USB cable, and the Arduino turns the wheels. The AI is the brain, the car is the body, the cable is the nerve, and you watch the result and change your hand sign.</p>
+  <p class="jump"><a href="/learn/airobot/en#ch-build">Full step-by-step guide in the lesson (level 9)</a></p>
+
+  <div class="card honest">
+    <b>Honest note</b>
+    The web page was tested with a pretend robot and a pretend camera. It has not been tested with a real robot and a real camera. The Arduino code was logic-tested on a computer but has never been compiled for a board. Press Verify in the Arduino IDE before you use it.
+  </div>
+
+  <h2>Files</h2>
+  <ul class="filelist">
+    <li><a href="/learn/airobot/kit/ai-driver.html"><code>ai-driver.html</code></a><span>The AI "brain" page, with the buttons 1. Connect robot · 2. Start camera · STOP (Esc)</span></li>
+    <li><a href="/learn/airobot/kit/ai_driver_car/ai_driver_car.ino" download><code>ai_driver_car/ai_driver_car.ino</code></a><span>The "body" sketch for the Arduino Uno on the lesson 16 car (project 2). Pins and <code>drive()</code> are unchanged.</span></li>
+    <li><a href="/learn/airobot/kit/ai-driver-kit.zip" download><code>ai-driver-kit.zip</code></a><span>Both files above plus <code>README_TH.txt</code> (instructions in Thai)</span></li>
+  </ul>
+  <div class="btns">
+    <a class="btn main" href="/learn/airobot/kit/ai-driver.html">Open AI Driver</a>
+    <a class="btn" href="/learn/airobot/kit/ai-driver-kit.zip" download>⬇ Download the zip</a>
+    <a class="btn" href="/learn/airobot/kit/ai_driver_car/ai_driver_car.ino" download>⬇ Arduino sketch</a>
+  </div>
+
+  <div class="card priv">
+    <b>Network and privacy (read with an adult first)</b>
+    <ul>
+      <li>The AI Driver page loads two libraries from cdn.jsdelivr.net, TensorFlow.js 4.22.0 and @teachablemachine/image 0.8.5 (pinned versions), and loads your model from Google's servers.</li>
+      <li>Camera frames are processed in the browser. The AI Driver page does not upload them.</li>
+      <li>The link you get from "Upload my model" is public: anyone who has it can use the model. Train on arrow cards or hand signs only, never on faces.</li>
+      <li>Google says the example photos stay on your computer while you train, unless you choose to save the project to Google Drive.</li>
+      <li>This page you are reading has no scripts and sends nothing anywhere.</li>
+  </ul>
+  </div>
+
+  <h2>How to open AI Driver</h2>
+  <p>Browsers only allow serial ports and the camera on secure pages: pages opened from https or from localhost.</p>
+  <h3>Easiest: open it from this page</h3>
+  <p>This page is served over https, so just press <b>Open AI Driver</b> above in Chrome or Edge. No Python and no commands needed.</p>
+  <h3>Alternative: run it from your own computer via localhost (adult step)</h3>
+  <ol>
+    <li>Download the zip and unzip it into a folder.</li>
+    <li>Open Terminal (Mac or Linux) or Command Prompt (Windows) in the folder that contains <code>ai-driver.html</code>.</li>
+    <li>Type this command (on Windows, if <code>python3</code> is not found, try <code>py -m http.server</code>):
+      <pre><code>python3 -m http.server</code></pre></li>
+    <li>Open <code>http://localhost:8000/ai-driver.html</code> in Chrome or Edge.</li>
+    <li>When you are done, go back to the terminal and press <kbd>Ctrl</kbd> + <kbd>C</kbd>.</li>
+  </ol>
+  <p class="note">Double-clicking the file may work in Chrome, but this is not confirmed.</p>
+  <p>Use Chrome or Microsoft Edge on a Windows, Mac, Linux or ChromeOS computer. Safari, iPhone and iPad do not work. Newer Firefox and newer Chrome on Android support Web Serial, but they have not been tested with this project, so please use a computer.</p>
+
+  <div class="card safe">
+    <b>⚠ Safety first</b>
+    <ul>
+      <li>Always build and drive with an adult.</li>
+      <li>Drive on the floor only, never on a table.</li>
+      <li>Keep the low speeds in the code.</li>
+      <li>An adult stays next to the battery switch the whole time.</li>
+      <li>Test with the wheels lifted first.</li>
+      <li>Keep fingers away from the wheels.</li>
+      <li>Switch the battery pack off before unplugging the USB cable.</li>
+      <li>Never leave the car running with nobody watching.</li>
+      <li>Batteries: never mix old and new, never short-circuit them, and take them out when you finish.</li>
+      <li>Use hand signs or cards, never faces.</li>
+      <li>No wireless connection in your first build.</li>
+  </ul>
+  </div>
+
+  <h2>The 12 steps in short</h2>
+  <ol>
+    <li>Check the body first: upload the lesson 16 test code, put the car on a box with the wheels lifted, and check that both wheels turn forward.</li>
+    <li>Make 4 cards: up arrow, left arrow, right arrow and an open palm.</li>
+    <li>Teach the eyes in Teachable Machine: classes Forward, Left, Right, Stop and Nothing, at least 50 pictures each, cards or hands only.</li>
+    <li>Train, then test in the preview: every sign should reach 80% reliably.</li>
+    <li>Export, press Upload my model, and copy the link.</li>
+    <li>Battery switch off: Verify, then Upload <code>ai_driver_car.ino</code>, then close the Serial Monitor.</li>
+    <li>Open AI Driver in Chrome or Edge from https or localhost.</li>
+    <li>Wheels still lifted: switch the battery on, press 1. Connect robot, pick the port, paste the link, press 2. Start camera.</li>
+    <li>Run the 8 wheels-lifted safety tests. All must pass, including STOP, Esc and switching tabs (the wheels must stop).</li>
+    <li>Drive on the floor only. Clear the area first, with no pets or small children nearby. An adult holds the cable loosely and stays next to the battery switch. Keep the speeds in the code, and press STOP or Esc at any time.</li>
+    <li>Experiment, for example change <code>THRESHOLD</code> to 0.6 or 0.95. Editing the code needs your own copy: download the zip, edit <code>ai-driver.html</code> in a text editor, then open it through localhost (the alternative above). The page on this website cannot be edited.</li>
+    <li>Pack up: press STOP, switch the battery off, then unplug the USB cable.</li>
+  </ol>
+</section>
+
+</main>
+<footer>
+  <p>Body 101 บทที่ 17 · <span lang="en">lesson 17</span> · เรียบเรียงโดย นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+</footer>
+</body>
+</html>

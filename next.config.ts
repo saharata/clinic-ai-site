@@ -47,6 +47,9 @@ const nextConfig: NextConfig = {
       { source: "/learn/ai/en", destination: "/learn/ai/en.html" },
       { source: "/learn/robot", destination: "/learn/robot/th.html" },
       { source: "/learn/robot/en", destination: "/learn/robot/en.html" },
+      { source: "/learn/airobot", destination: "/learn/airobot/th.html" },
+      { source: "/learn/airobot/en", destination: "/learn/airobot/en.html" },
+      { source: "/learn/airobot/kit", destination: "/learn/airobot/kit/index.html" },
     ];
   },
 };
