@@ -78,7 +78,7 @@ export default function SoapGuidePage() {
   return (
     <main id="main-content" tabIndex={-1} className="soapPage">
       <section className="soapHero">
-        <a href="/ai" className="soapBack">← กลับหน้าเครื่องมือ AI</a>
+        <a href="/ai" className="soapBack"><span aria-hidden="true">←</span> กลับหน้าเครื่องมือ AI</a>
         <p className="soapEyebrow">คู่มือการใช้งาน</p>
         <h1 className="soapTitle">SOAP Note ด้วย AI ที่รันในเครื่อง</h1>
         <p className="soapLead">
@@ -166,19 +166,44 @@ export default function SoapGuidePage() {
 
                 {/* a11y (keyboard): เดิมล็อกด้วย pointer-events อย่างเดียว คีย์บอร์ดยัง Tab เข้าไปพิมพ์ได้ → ใช้ fieldset disabled */}
                 <fieldset className="soapForm" disabled={!allChecked}>
-                  <input placeholder="ชื่อ-นามสกุล" value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                  <input placeholder="ตำแหน่ง / สาขา (เช่น ประสาทแพทย์)" value={form.role}
-                    onChange={(e) => setForm({ ...form, role: e.target.value })} />
-                  <input placeholder="หน่วยงาน / สถานพยาบาล" value={form.org}
-                    onChange={(e) => setForm({ ...form, org: e.target.value })} />
-                  <input type="email" placeholder="อีเมลติดต่อกลับ" value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                  <textarea placeholder="ต้องการนำไปใช้กับงานลักษณะใด (โดยย่อ)" rows={3}
-                    value={form.note}
-                    onChange={(e) => setForm({ ...form, note: e.target.value })} />
+                  {/* a11y (labels): เดิมมีแค่ placeholder ซึ่งหายไปเมื่อเริ่มพิมพ์ → มีป้ายกำกับถาวร */}
+                  <legend className="sr-only">ข้อมูลผู้ขอรับโปรแกรม</legend>
+                  <label className="soapField">
+                    <span>ชื่อ-นามสกุล <span aria-hidden="true">*</span></span>
+                    <input value={form.name} aria-required="true" autoComplete="name"
+                      onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                  </label>
+                  <label className="soapField">
+                    <span>ตำแหน่ง / สาขา</span>
+                    <input placeholder="เช่น ประสาทแพทย์" value={form.role} autoComplete="organization-title"
+                      onChange={(e) => setForm({ ...form, role: e.target.value })} />
+                  </label>
+                  <label className="soapField">
+                    <span>หน่วยงาน / สถานพยาบาล</span>
+                    <input value={form.org} autoComplete="organization"
+                      onChange={(e) => setForm({ ...form, org: e.target.value })} />
+                  </label>
+                  <label className="soapField">
+                    <span>อีเมลติดต่อกลับ <span aria-hidden="true">*</span></span>
+                    <input type="email" value={form.email} aria-required="true" autoComplete="email"
+                      onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                  </label>
+                  <label className="soapField">
+                    <span>ต้องการนำไปใช้กับงานลักษณะใด (โดยย่อ)</span>
+                    <textarea rows={3}
+                      value={form.note}
+                      onChange={(e) => setForm({ ...form, note: e.target.value })} />
+                  </label>
                 </fieldset>
 
+                {/* a11y (error suggestion): บอกว่าทำไมยังกดส่งไม่ได้ และต้องทำอะไรเพิ่ม */}
+                <p className="soapHint" aria-live="polite">
+                  {!allChecked
+                    ? "ติ๊กรับทราบเงื่อนไขให้ครบทุกข้อก่อน จึงจะกรอกข้อมูลได้"
+                    : !form.name || !form.email
+                      ? "กรอกชื่อ-นามสกุลและอีเมลติดต่อกลับ (ช่องที่มี *) แล้วจึงกดส่งได้"
+                      : "ข้อมูลครบแล้ว กดส่งคำขอได้เลย"}
+                </p>
                 <a
                   className={`soapBtn primary full ${
                     allChecked && form.name && form.email ? "" : "disabled"
@@ -265,6 +290,8 @@ export default function SoapGuidePage() {
         .soapForm input, .soapForm textarea { width: 100%; padding: 13px 14px; font-size: 16px;
           border: 1px solid #6b7280; border-radius: 11px; font-family: inherit;
           color: #0f172a; background: #fff; }
+        .soapField { display: flex; flex-direction: column; gap: 4px; font-size: 14.5px; color: #374151; font-weight: 600; }
+        .soapHint { font-size: 14.5px; color: #374151; margin: 16px 0 4px; }
         .soapFine { font-size: 12.5px; color: #6b7280; line-height: 1.6; margin: 12px 0 0; }
         .soapDone { text-align: center; padding: 14px 0; }
         .soapDone p { font-size: 15px; line-height: 1.7; color: #374151; margin: 0 0 10px; }

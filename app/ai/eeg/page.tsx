@@ -41,6 +41,14 @@ const PROB_COLORS = {
 
 const BAR_COLORS = ["#1d4ed8", "#b91c1c", "#0f766e", "#b45309", "#7c3aed"];
 
+// a11y (error suggestion): "Failed to fetch" ของเบราว์เซอร์ไม่บอกผู้ใช้ว่าต้องทำอะไร → แปลเป็นวิธีแก้
+function friendlyError(e: unknown, fallback: string): string {
+  if (e instanceof TypeError) {
+    return "เชื่อมต่อเซิร์ฟเวอร์วิจัยไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต รอประมาณ 1 นาที (เซิร์ฟเวอร์อาจกำลังตื่น) แล้วลองอีกครั้ง";
+  }
+  return e instanceof Error && e.message ? e.message : fallback;
+}
+
 export default function EegDemoPage() {
   const [file, setFile] = useState<File | null>(null);
   const [task, setTask] = useState("C");
@@ -80,7 +88,7 @@ export default function EegDemoPage() {
   function pickFile(f: File | null) {
     if (!f) return;
     if (!/\.edf$/i.test(f.name)) {
-      setError("รองรับเฉพาะไฟล์ .edf เท่านั้น");
+      setError("รองรับเฉพาะไฟล์ .edf เท่านั้น — กรุณาเลือกไฟล์ที่ลงท้ายด้วย .edf แล้วลองอีกครั้ง");
       return;
     }
     setError(null);
@@ -110,7 +118,9 @@ export default function EegDemoPage() {
       try {
         data = JSON.parse(text);
       } catch {
-        throw new Error("ตอบกลับไม่ใช่ JSON (HTTP " + r.status + ")");
+        throw new Error(
+          "เซิร์ฟเวอร์ตอบกลับผิดรูปแบบ (HTTP " + r.status + ") กรุณารอสักครู่แล้วกด \"วิเคราะห์\" อีกครั้ง"
+        );
       }
       if (!r.ok) {
         const d = data as { detail?: unknown };
@@ -121,7 +131,7 @@ export default function EegDemoPage() {
       setResult(data as AnalyzeResult);
       setStatus(null);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "เกิดข้อผิดพลาด");
+      setError(friendlyError(e, "เกิดข้อผิดพลาด กรุณากด \"วิเคราะห์\" อีกครั้ง"));
       setStatus(null);
     } finally {
       setBusy(false);
@@ -135,7 +145,7 @@ export default function EegDemoPage() {
     setStatus("กำลังโหลดไฟล์ตัวอย่าง…");
     try {
       const res = await fetch(url);
-      if (!res.ok) throw new Error("โหลดไฟล์ตัวอย่างไม่สำเร็จ");
+      if (!res.ok) throw new Error("โหลดไฟล์ตัวอย่างไม่สำเร็จ กรุณาโหลดหน้าเว็บใหม่แล้วลองอีกครั้ง");
       const blob = await res.blob();
       const f = new File([blob], url.split("/").pop() || "sample.edf", {
         type: "application/octet-stream",
@@ -145,7 +155,7 @@ export default function EegDemoPage() {
       await analyze(f, "A,C");
     } catch (e) {
       setStatus(null);
-      setError(e instanceof Error ? e.message : "โหลดตัวอย่างไม่สำเร็จ");
+      setError(friendlyError(e, "โหลดตัวอย่างไม่สำเร็จ กรุณาโหลดหน้าเว็บใหม่แล้วลองอีกครั้ง"));
     }
   }
 
@@ -153,7 +163,7 @@ export default function EegDemoPage() {
     <main id="main-content" tabIndex={-1}>
       <section className="hero small">
         <div className="container">
-          <a href="/ai" className="eeg-back">← กลับไปหน้าเครื่องมือ AI</a>
+          <a href="/ai" className="eeg-back"><span aria-hidden="true">←</span> กลับไปหน้าเครื่องมือ AI</a>
           <p className="eyebrow">AI EEG · SpikeSense</p>
           <h1 className="hero-title">ช่วยอ่าน EEG หาคลื่นชักและ IED</h1>
           <p className="hero-text narrow">
@@ -161,7 +171,7 @@ export default function EegDemoPage() {
             epileptiform (IED / sharp wave) จากไฟล์ EEG มาตรฐาน เพื่อช่วยลดเวลาการอ่านคลื่นเบื้องต้นของแพทย์
           </p>
           <div style={{ marginTop: 16 }}>
-            <span className="eeg-badge">● โมเดลพร้อมใช้งาน · เครื่องมือเพื่อการวิจัย ไม่ใช่เครื่องมือวินิจฉัย</span>
+            <span className="eeg-badge"><span aria-hidden="true">●</span> โมเดลพร้อมใช้งาน · เครื่องมือเพื่อการวิจัย ไม่ใช่เครื่องมือวินิจฉัย</span>
           </div>
           <p className="hero-text narrow" style={{ marginTop: 12, fontSize: "0.95rem" }}>
             <a href="/ai/eeg/methods" style={{ textDecoration: "underline" }}>
@@ -267,7 +277,7 @@ export default function EegDemoPage() {
                 disabled={busy}
                 onClick={() => loadSample("/eeg-samples/sample_eeg_seizure.edf")}
               >
-                ▶ ตัวอย่างคลื่นชัก + IED (80 วินาที)
+                <span aria-hidden="true">▶ </span>ตัวอย่างคลื่นชัก + IED (80 วินาที)
               </button>
               <span style={{ fontSize: ".82rem" }}>
                 EEG ผู้ป่วยจริง ลบข้อมูลระบุตัวตนแล้ว มาจาก{" "}
@@ -307,15 +317,21 @@ export default function EegDemoPage() {
               </button>
             </div>
 
-            {status && (
-              <div className="eeg-status">
-                {busy && <span className="eeg-spin" />}
-                {status}
-              </div>
-            )}
-            {error && (
-              <div className="eeg-status eeg-err">เกิดข้อผิดพลาด: {error}</div>
-            )}
+            {/* a11y (status messages 4.1.3): กล่อง live region อยู่ในหน้าตลอด screen reader จึงประกาศทุกครั้งที่สถานะเปลี่ยน */}
+            <div role="status" aria-live="polite">
+              {status && (
+                <div className="eeg-status">
+                  {busy && <span className="eeg-spin" aria-hidden="true" />}
+                  {status}
+                </div>
+              )}
+              {!busy && result && (
+                <span className="sr-only">วิเคราะห์เสร็จแล้ว ผลการวิเคราะห์อยู่ด้านล่าง</span>
+              )}
+            </div>
+            <div role="alert">
+              {error && <div className="eeg-status eeg-err">เกิดข้อผิดพลาด: {error}</div>}
+            </div>
 
             {result && (
               <div className="eeg-results">
@@ -341,9 +357,9 @@ export default function EegDemoPage() {
                   return (
                     <div className="eeg-tcard" key={k} style={bMuted ? { opacity: 0.55 } : undefined}>
                       <div className="eeg-th">
-                        <h4>
+                        <h3>
                           Task {k} · {t.task_name}
-                        </h4>
+                        </h3>
                         <span className="mdl">{t.model_used}</span>
                       </div>
                       {bMuted ? (
@@ -355,7 +371,7 @@ export default function EegDemoPage() {
                         t.ictal_summary ? (
                           <div style={{ margin: "10px 0" }}>
                             <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#92400e" }}>
-                              🔎 ช่วง seizure น่าจะเริ่ม: {t.ictal_summary.side} ·{" "}
+                              <span aria-hidden="true">🔎 </span>ช่วง seizure น่าจะเริ่ม: {t.ictal_summary.side} ·{" "}
                               {Math.round(t.ictal_summary.confidence * 100)}%
                             </div>
                             <div style={{ fontSize: ".82rem", color: "#475569", marginTop: 4 }}>
@@ -396,6 +412,14 @@ export default function EegDemoPage() {
                             <div style={{ marginTop: 14 }}>
                               <b>ความน่าจะเป็นของแต่ละหน้าต่าง</b>
                               <div
+                                role="img"
+                                aria-label={`กราฟแท่ง ${t.timeline.length} หน้าต่าง: รายงานเป็นเหตุการณ์ ${
+                                  t.timeline.filter((w) => w.predicted_class !== 0).length
+                                } หน้าต่าง, ผ่านเกณฑ์แต่สั้นเกินไป ${
+                                  t.timeline.filter((w) => w.predicted_class === 0 && w.above_threshold).length
+                                } หน้าต่าง, ต่ำกว่าเกณฑ์ ${
+                                  t.timeline.filter((w) => w.predicted_class === 0 && !w.above_threshold).length
+                                } หน้าต่าง — ตัวเลขรายหน้าต่างดูได้ในตารางด้านล่าง`}
                                 style={{
                                   display: "flex",
                                   alignItems: "flex-end",
@@ -515,7 +539,8 @@ export default function EegDemoPage() {
               rel="noopener noreferrer"
               className="btn btn-outline"
             >
-              เปิดแอปวิเคราะห์เต็มรูปแบบ ↗
+              เปิดแอปวิเคราะห์เต็มรูปแบบ <span aria-hidden="true">↗</span>
+              <span className="sr-only"> (เปิดในแท็บใหม่)</span>
             </a>
           </div>
         </div>

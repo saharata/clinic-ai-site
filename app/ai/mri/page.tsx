@@ -9,8 +9,13 @@ const C = {
 
 type Fmt = { axis: (v: number) => string; pt: (v: number) => string };
 
-function LineChart({ data, color, minY, maxY, fmt }: {
-  data: number[]; color: string; minY: number; maxY: number; fmt: Fmt;
+// a11y (screen reader): กราฟ SVG ต้องมีชื่อที่อ่านตัวเลขได้ ไม่ใช่แค่ role="img" เปล่าๆ
+function chartLabel(title: string, data: number[], fmt: Fmt) {
+  return `${title}: ` + YEARS.map((y, i) => `ปี ${y} ${fmt.pt(data[i])}`).join(", ");
+}
+
+function LineChart({ title, data, color, minY, maxY, fmt }: {
+  title: string; data: number[]; color: string; minY: number; maxY: number; fmt: Fmt;
 }) {
   const W = 440, H = 190, pt = 26, pr = 14, pb = 26, pl = 44;
   const rng = maxY - minY || 1;
@@ -30,7 +35,7 @@ function LineChart({ data, color, minY, maxY, fmt }: {
   const path = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
   const last = data.length - 1;
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" style={{ display: "block", width: "100%", height: "auto" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={chartLabel(title, data, fmt)} style={{ display: "block", width: "100%", height: "auto" }}>
       {grid}
       <path d={`${path} L${X(last)} ${H - pb} L${pl} ${H - pb} Z`} fill={color} opacity={0.08} />
       <path d={path} fill="none" stroke={color} strokeWidth={2.4} strokeLinejoin="round" strokeLinecap="round" />
@@ -47,7 +52,7 @@ function LineChart({ data, color, minY, maxY, fmt }: {
   );
 }
 
-function BarChart({ data, color, fmt }: { data: number[]; color: string; fmt: Fmt }) {
+function BarChart({ title, data, color, fmt }: { title: string; data: number[]; color: string; fmt: Fmt }) {
   const W = 440, H = 190, pt = 26, pr = 14, pb = 26, pl = 44;
   const mx = Math.max(...data) * 1.08, mn = 0, rng = mx - mn || 1;
   const peak = Math.max(...data);
@@ -65,7 +70,7 @@ function BarChart({ data, color, fmt }: { data: number[]; color: string; fmt: Fm
     );
   });
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" style={{ display: "block", width: "100%", height: "auto" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={chartLabel(title, data, fmt)} style={{ display: "block", width: "100%", height: "auto" }}>
       {grid}
       {data.map((v, i) => {
         const x = X(i) - bw / 2, y = Y(v), h = (H - pb) - y;
@@ -100,7 +105,7 @@ const BADGES = [
 export default function MriShowcasePage() {
   return (
     <main id="main-content" tabIndex={-1} className="mri-wrap">
-      <a href="/ai" className="mri-back">← กลับหน้าเครื่องมือ AI</a>
+      <a href="/ai" className="mri-back"><span aria-hidden="true">←</span> กลับหน้าเครื่องมือ AI</a>
       <div className="mri-eyebrow">MRI LESION TRACKING · เคสตัวอย่าง (de-identified)</div>
       <h1 className="mri-h1">ติดตามการเปลี่ยนแปลงของสมองข้ามปี<br />ในผู้ป่วยปลอกประสาทเสื่อมแข็ง (MS)</h1>
       <p className="mri-lede">
@@ -114,35 +119,35 @@ export default function MriShowcasePage() {
         <div className="mri-stat"><div className="n" style={{ color: C.ink }}>5 ปี</div><div className="k">2021–2026 · 5 จุดเวลา · T1 + FLAIR</div></div>
       </div>
 
-      <div className="mri-sech">แนวโน้มเชิงปริมาณ · 2021–2026</div>
+      <h2 className="mri-sech">แนวโน้มเชิงปริมาณ · 2021–2026</h2>
       <div className="mri-grid">
         <div className="mri-card"><h3>สมองฝ่อสะสม (PBVC)</h3><div className="sub">% ปริมาตรสมองเทียบ baseline ยิ่งต่ำ = ฝ่อมาก</div>
-          <LineChart data={[0, -1.3, -4.35, -5.05, -5.77]} color={C.amber} minY={-6.5} maxY={0.5} fmt={{ axis: (v) => v.toFixed(0) + "%", pt: (v) => v.toFixed(1) }} />
+          <LineChart title="สมองฝ่อสะสม (PBVC) %" data={[0, -1.3, -4.35, -5.05, -5.77]} color={C.amber} minY={-6.5} maxY={0.5} fmt={{ axis: (v) => v.toFixed(0) + "%", pt: (v) => v.toFixed(1) }} />
           <div className="cap">เส้นลาดคงที่ = neurodegeneration เดินหน้าต่อเนื่อง</div></div>
         <div className="mri-card"><h3>จำนวนรอยโรค (Lesion count)</h3><div className="sub">นับจาก FLAIR ด้วย LST-AI</div>
-          <BarChart data={[52, 57, 71, 61, 48]} color={C.teal} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(0) }} />
+          <BarChart title="จำนวนรอยโรค" data={[52, 57, 71, 61, 48]} color={C.teal} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(0) }} />
           <div className="cap">พีค 2024 แล้วลด = การอักเสบสงบลง (ตอบสนองการรักษา)</div></div>
         <div className="mri-card"><h3>ปริมาตรสมอง (mL)</h3><div className="sub">FastSurfer segmentation</div>
-          <LineChart data={[1037, 1024, 992, 986, 978]} color={C.teal} minY={968} maxY={1044} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(0) }} />
+          <LineChart title="ปริมาตรสมอง (mL)" data={[1037, 1024, 992, 986, 978]} color={C.teal} minY={968} maxY={1044} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(0) }} />
           <div className="cap">1037 → 978 mL ใน 5 ปี</div></div>
         <div className="mri-card"><h3>ปริมาตรรอยโรค (mL)</h3><div className="sub">Total lesion volume</div>
-          <LineChart data={[34.2, 25.5, 29.0, 26.2, 26.4]} color={C.mint} minY={22} maxY={36} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(1) }} />
+          <LineChart title="ปริมาตรรอยโรค (mL)" data={[34.2, 25.5, 29.0, 26.2, 26.4]} color={C.mint} minY={22} maxY={36} fmt={{ axis: (v) => v.toFixed(0), pt: (v) => v.toFixed(1) }} />
           <div className="cap">ลดลงหลัง 2024 สอดคล้องกับจำนวนที่ลด</div></div>
       </div>
 
-      <div className="mri-sech">การอ่านผลทางคลินิก</div>
+      <h2 className="mri-sech">การอ่านผลทางคลินิก</h2>
       <div className="mri-read">
         {READ.map(([t, c, d]) => (
           <div className="mri-item" key={t}>
-            <div className="t"><span className="dot" style={{ background: c }} />{t}</div>
+            <div className="t"><span className="dot" aria-hidden="true" style={{ background: c }} />{t}</div>
             <div className="d">{d}</div>
           </div>
         ))}
       </div>
 
-      <div className="mri-sech">วิธีการและความปลอดภัย</div>
+      <h2 className="mri-sech">วิธีการและความปลอดภัย</h2>
       <div className="mri-badges">
-        {BADGES.map(([e, t]) => (<span className="mri-badge" key={t}>{e} <span>{t}</span></span>))}
+        {BADGES.map(([e, t]) => (<span className="mri-badge" key={t}><span aria-hidden="true">{e}</span> <span>{t}</span></span>))}
       </div>
       <div className="mri-note">
         หมายเหตุ: หน้านี้เป็นการ<strong>สาธิตความสามารถ</strong>จากเคสตัวอย่างที่ปกปิดข้อมูลส่วนบุคคลแล้ว ไม่ใช่ช่องอัปโหลดสาธารณะ

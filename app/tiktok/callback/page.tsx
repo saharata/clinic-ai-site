@@ -82,7 +82,7 @@ export default async function TikTokCallbackPage({
 
       <hr className="my-8 border-slate-200" />
 
-      <section className="space-y-2 leading-relaxed text-slate-600">
+      <section className="space-y-2 leading-relaxed text-slate-600" lang="en">
         <h2 className="text-lg font-semibold text-slate-900">English</h2>
         <p>
           This page only receives the TikTok OAuth result for Sahawan

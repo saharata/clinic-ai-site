@@ -79,7 +79,9 @@ function ResultsTable({ lang }: { lang: "th" | "en" }) {
       <table className="w-full min-w-[34rem] border-collapse text-sm">
         <thead>
           <tr className="border-b-2 border-slate-300 text-left">
-            <th className="py-2 pr-3 font-semibold"></th>
+            <th className="py-2 pr-3 font-semibold">
+              <span className="sr-only">{th ? "วิธี" : "Method"}</span>
+            </th>
             <th className="py-2 pr-3 font-semibold">
               {th ? "จับเหตุการณ์ชักได้" : "Event sensitivity"}
             </th>
@@ -266,6 +268,8 @@ export default function EegMethodsPage() {
       </P>
 
       {/* ───────────────── English ───────────────── */}
+      {/* a11y: ส่วนภาษาอังกฤษประกาศ lang="en" ให้ screen reader เปลี่ยนเสียงอ่าน */}
+      <div lang="en">
 
       <hr className="my-12 border-slate-300" />
 
@@ -415,6 +419,8 @@ export default function EegMethodsPage() {
         case; the system only points to segments worth looking at first. Uploaded files are
         deleted immediately after processing and are never retained.
       </P>
+
+      </div>
 
       <p className="mt-12 border-t border-slate-200 pt-5 text-sm text-slate-500">
         นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์ — สหวรรณคลินิก

@@ -75,7 +75,7 @@ export default function TikTokTermsPage() {
 
       <hr className="my-8 border-slate-200" />
 
-      <section className="space-y-3 leading-relaxed">
+      <section className="space-y-3 leading-relaxed" lang="en">
         <h2 className="text-lg font-semibold text-slate-900">English</h2>
         <p>
           <strong>Sahawan Neuro Content</strong> is an internal publishing tool

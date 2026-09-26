@@ -64,7 +64,7 @@ export default function SymptomsPage() {
       <header className="navbar">
         <div className="container nav-inner">
           <Link href="/" className="brand">
-            <div className="brand-badge">N</div>
+            <div className="brand-badge" aria-hidden="true">N</div>
             <div>
               <div className="brand-title">สหวรรณคลินิก</div>
               <div className="brand-subtitle">คลินิกเวชกรรมเด็กและระบบประสาท</div>
@@ -112,7 +112,7 @@ export default function SymptomsPage() {
                 </div>
                 <div className="symptom-body">
                   <h2>
-                    <span className="symptom-icon">{s.icon}</span> {s.title}
+                    <span className="symptom-icon" aria-hidden="true">{s.icon}</span> {s.title}
                   </h2>
                   <p>{s.blurb}</p>
                   <p className="symptom-redflag">
@@ -181,12 +181,12 @@ export default function SymptomsPage() {
       <footer className="footer">
         <div className="container footer-grid">
           <div>
-            <h3>สหวรรณคลินิก</h3>
+            <h2 className="footer-title">สหวรรณคลินิก</h2>
             <p>คลินิกเวชกรรมเด็กและระบบประสาท</p>
             <p>101 หมู่บ้านประชานิเวศน์ 3 ถนนประชานิเวศน์ ต.ท่าทราย อ.เมืองนนทบุรี จ.นนทบุรี 11000</p>
           </div>
           <div>
-            <h4>ช่องทางติดต่อ</h4>
+            <h3 className="footer-subtitle">ช่องทางติดต่อ</h3>
             <ul className="footer-links">
               <li>
                 <a href={phoneTel}>โทร {phoneDisplay}</a>
