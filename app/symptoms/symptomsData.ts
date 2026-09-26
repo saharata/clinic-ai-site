@@ -38,6 +38,7 @@ export const symptoms: Symptom[] = [
   },
   {
     slug: "dizziness",
+    articleHref: "/symptoms/dizziness",
     icon: "💫",
     title: "เวียนศีรษะ บ้านหมุน ใช่สโตรกไหม",
     videoId: "p9EKQyzbPgk",
