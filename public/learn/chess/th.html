@@ -63,7 +63,7 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
 .mark .sub{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
 .topmeta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .rules-line{font-size:13px;color:var(--muted)}
-#btnHelp{min-height:38px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
+#btnHelp{min-height:44px;padding:6px 14px;font-size:13.5px;white-space:nowrap}
 #btnHelp[aria-expanded="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 
 .tip{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0;
@@ -82,7 +82,7 @@ body:not(.help-on) .tip{display:none}
 #stage canvas{display:block;width:100%;height:100%}
 #stage:focus-visible{outline:3px solid var(--seal);outline-offset:3px}
 .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.viewbar button{min-height:38px;padding:5px 12px;font-size:13px}
+.viewbar button{min-height:44px;padding:5px 12px;font-size:13px}
 .loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#e8e2d5;
   font-size:14px;background:rgba(10,10,14,.6)}
 
@@ -99,7 +99,7 @@ body:not(.help-on) .tip{display:none}
   border-radius:3px;padding:10px 12px}
 .coach-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .coach-head .k{font-family:var(--f-display);font-size:15px;font-weight:700}
-.coach-head button{min-height:34px;padding:4px 12px;font-size:12.5px}
+.coach-head button{min-height:44px;padding:4px 12px;font-size:12.5px}
 .coach-text{display:flex;flex-direction:column;gap:7px;margin:9px 0 0;font-size:13px;line-height:1.55}
 .coach-text span{border-left:3px solid var(--good);padding-left:9px;color:var(--muted)}
 .coach-text span:first-child{color:var(--ink);font-weight:600;border-left-color:var(--seal)}
@@ -125,7 +125,7 @@ button.seal{color:var(--seal);border-color:var(--seal)}
 .field:last-child{margin-bottom:0}
 .field .lbl{font-size:13px;color:var(--muted)}
 .seg{display:flex;border:1.5px solid var(--edge);border-radius:3px;overflow:hidden}
-.seg button{border:0;border-radius:0;padding:5px 10px;min-height:40px;font-size:13.5px;background:var(--panel)}
+.seg button{border:0;border-radius:0;padding:5px 10px;min-height:44px;font-size:13.5px;background:var(--panel)}
 .seg button+button{border-left:1.5px solid var(--edge)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
 
@@ -151,9 +151,15 @@ button.seal{color:var(--seal);border-color:var(--seal)}
 .howto section p{margin:0;font-size:13.5px;color:var(--muted)}
 footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edge);padding-top:12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;padding:13px 16px;border-radius:10px;font:600 16px/1.2 system-ui,sans-serif;text-decoration:underline}
+.skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
+#main:focus{outline:none}
+.viewbar button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.kbd-tip{display:block;margin-top:4px}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
 <nav class="sw-bar" aria-label="สหวรรณคลินิก">
   <a class="sw-brand" href="/">สหวรรณคลินิก</a><span class="sw-sep" aria-hidden="true">/</span>
   <a href="/learn">Body 101 ทุกบท</a>
@@ -161,7 +167,7 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
   <a href="/learn/makruk">หมากรุกไทย</a>
 </nav>
 
-<div class="wrap">
+<div class="wrap" id="main" role="main" tabindex="-1">
   <header class="top">
     <div class="mark">
       <h1>หมากรุกสากล สามมิติ</h1>
@@ -175,16 +181,21 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
 
   <div class="main">
     <div class="stagewrap">
-      <div id="stage" tabindex="0" role="application"
-        aria-label="กระดานหมากรุกสามมิติ ลากเพื่อหมุนมุมมอง คลิกตัวหมากเพื่อเลือก"></div>
+      <div id="stage" tabindex="0" role="application" aria-describedby="kbdTip"
+        aria-label="กระดานหมากรุกสามมิติ ใช้ปุ่มลูกศรเลื่อนไปทีละช่อง กด Enter หรือเว้นวรรคเพื่อเลือกตัวหมากหรือเดิน กด Esc เพื่อยกเลิก กด U เพื่อย้อนกลับ"></div>
       <div class="viewbar">
         <button type="button" id="btnView">มุมมองฝ่ายตรงข้าม</button>
         <button type="button" id="btnReset">รีเซ็ตมุมกล้อง</button>
         <button type="button" id="btnTop">มองจากด้านบน</button>
+        <button type="button" id="btnZoomIn" aria-label="ซูมเข้า">ซูม +</button>
+        <button type="button" id="btnZoomOut" aria-label="ซูมออก">ซูม −</button>
+        <button type="button" id="btnLock" aria-pressed="false">ล็อกกระดาน ไม่ให้หมุน</button>
       </div>
       <p class="tip" id="tipBoard"><b>กระดาน 3 มิติ</b> — ลากด้วยเมาส์หรือนิ้วเพื่อหมุนดูรอบกระดาน หมุนล้อเพื่อซูม
         · คลิกตัวหมากของฝ่ายที่ถึงตาเพื่อเลือก จุดเขียวคือช่องที่ไปได้ วงเขียวคือช่องที่กินได้ คลิกตัวเดิมซ้ำเพื่อยกเลิก
-        · ในโหมดสองคน กระดานจะหมุนไปฝั่งคนที่ถึงตาให้เองทุกครั้ง</p>
+        · ในโหมดสองคน กระดานจะหมุนไปฝั่งคนที่ถึงตาให้เองทุกครั้ง
+        · มือสั่นหรือกลัวกระดานหมุนตอนแตะ กด "ล็อกกระดาน" ได้ เครื่องหมาย: จุด = ช่องที่ไปได้ มุมสี่มุม = ช่องที่กินได้ กากบาทแดง = ช่องอันตราย วงเส้นประฟ้า = คำใบ้
+        <span class="kbd-tip" id="kbdTip">ใช้แป้นพิมพ์ได้: คลิกที่กระดานหรือกด Tab ไปที่กระดาน แล้วใช้ปุ่มลูกศรเลื่อนกรอบสี่เหลี่ยม กด Enter เพื่อเลือกหรือเดิน Esc เพื่อยกเลิก U เพื่อย้อนกลับ</span></p>
       <p class="sr" id="live" role="status" aria-live="polite"></p>
     </div>
 
@@ -289,9 +300,9 @@ footer.credit{font-size:12.5px;color:var(--muted);border-top:1px solid var(--edg
   </footer>
 </div>
 
-<div class="promo" id="promoBox" hidden>
+<div class="promo" id="promoBox" hidden role="dialog" aria-modal="true" aria-labelledby="promoTitle">
   <div class="box">
-    <h3>เบี้ยถึงแถวสุดท้าย เลือกตัวที่จะเลื่อนขั้น</h3>
+    <h3 id="promoTitle">เบี้ยถึงแถวสุดท้าย เลือกตัวที่จะเลื่อนขั้น</h3>
     <div class="opts">
       <button type="button" data-p="5">ควีน</button>
       <button type="button" data-p="4">เรือ</button>
@@ -318,6 +329,8 @@ var coachOn=true, coachBase=[], hintMove=null, hinting=false, riskySquares=[], d
 function loadPref(k,d){ try{ var v=localStorage.getItem(k); return v===null?d:v; }catch(e){ return d; } }
 function savePref(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 function say(t){ document.getElementById("live").textContent=t; }
+var RM=false; try{ RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+var cursor=-1, boardLocked=false, stageFocused=false;
 function isHumanTurn(){ return mode===2 || st.turn===humanColor; }
 
 /* ===================== ฉากสามมิติ ===================== */
@@ -465,7 +478,7 @@ function resize(){
 }
 function animate(){
   requestAnimationFrame(animate);
-  camYaw += (camTargetYaw-camYaw)*0.12;
+  camYaw = RM ? camTargetYaw : camYaw + (camTargetYaw-camYaw)*0.12;
   var cp=Math.max(0.22, Math.min(1.45, camPitch));
   var lx=Math.sin(camYaw)*1.1, lz=Math.cos(camYaw)*1.1;   /* เล็งไปทางฝั่งใกล้กล้อง กระดานจึงอยู่กลางเฟรม */
   camera.position.set(
@@ -506,32 +519,53 @@ function syncPieces(skipSq){
 function clearMarks(){
   while(markGroup.children.length) markGroup.remove(markGroup.children[0]);
 }
+function flatMat(color,opacity){ return new THREE.MeshBasicMaterial({color:color, transparent:opacity<1, opacity:opacity}); }
+function outline(size,thick,color){   /* กรอบสี่เหลี่ยม วาดในระนาบ XY แล้วค่อยพลิกลงพื้นทีเดียว */
+  var g=new THREE.Group(), mat=flatMat(color,1), h=size/2;
+  [[0,h-thick/2,size,thick],[0,-h+thick/2,size,thick],[h-thick/2,0,thick,size],[-h+thick/2,0,thick,size]].forEach(function(e){
+    var m=new THREE.Mesh(new THREE.PlaneGeometry(e[2],e[3]),mat); m.position.set(e[0],e[1],0); g.add(m);
+  });
+  return g;
+}
 function addMark(sq,kind){
-  var w=sqToWorld(sq), m;
+  var w=sqToWorld(sq), m, lift=0.015;
+  /* แยกความหมายด้วยรูปทรง ไม่ใช่สีอย่างเดียว (คนตาบอดสี/มองมัวแยกออก) */
   if(kind==="move"){
-    m=new THREE.Mesh(new THREE.CircleGeometry(SQ*0.17,20),
-      new THREE.MeshBasicMaterial({color:0x3ec98a, transparent:true, opacity:0.85}));
-  } else if(kind==="capture"){
-    m=new THREE.Mesh(new THREE.RingGeometry(SQ*0.36,SQ*0.44,26),
-      new THREE.MeshBasicMaterial({color:0x3ec98a, transparent:true, opacity:0.9}));
+    m=new THREE.Mesh(new THREE.CircleGeometry(SQ*0.17,20), flatMat(0x3ec98a,0.9));
+  } else if(kind==="capture"){                       /* มุมสี่มุม */
+    m=new THREE.Group();
+    var L=SQ*0.28, T=SQ*0.07, H=SQ*0.44, mc=flatMat(0x3ec98a,1);
+    [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(function(c){
+      var a1=new THREE.Mesh(new THREE.PlaneGeometry(L,T),mc); a1.position.set(c[0]*(H-L/2),c[1]*(H-T/2),0); m.add(a1);
+      var a2=new THREE.Mesh(new THREE.PlaneGeometry(T,L),mc); a2.position.set(c[0]*(H-T/2),c[1]*(H-L/2),0); m.add(a2);
+    });
   } else if(kind==="sel"){
-    m=new THREE.Mesh(new THREE.RingGeometry(SQ*0.40,SQ*0.48,26),
-      new THREE.MeshBasicMaterial({color:0xe0ae4a, transparent:true, opacity:0.95}));
-  } else if(kind==="risk"){
-    m=new THREE.Mesh(new THREE.RingGeometry(SQ*0.20,SQ*0.30,18),
-      new THREE.MeshBasicMaterial({color:0xd4452f, transparent:true, opacity:0.95}));
-  } else if(kind==="last"){
-    m=new THREE.Mesh(new THREE.PlaneGeometry(SQ*0.92,SQ*0.92),
-      new THREE.MeshBasicMaterial({color:0xe0ae4a, transparent:true, opacity:0.18}));
-  } else if(kind==="hint"){
-    m=new THREE.Mesh(new THREE.RingGeometry(SQ*0.30,SQ*0.38,26),
-      new THREE.MeshBasicMaterial({color:0x62d0ff, transparent:true, opacity:0.9}));
+    m=new THREE.Mesh(new THREE.RingGeometry(SQ*0.40,SQ*0.48,26), flatMat(0xe0ae4a,1));
+  } else if(kind==="risk"){                          /* กากบาท */
+    m=new THREE.Group();
+    var mr=flatMat(0xd4452f,1);
+    [Math.PI/4,-Math.PI/4].forEach(function(r){
+      var bar=new THREE.Mesh(new THREE.PlaneGeometry(SQ*0.62,SQ*0.1),mr); bar.rotation.z=r; m.add(bar);
+    });
+    lift=0.03;
+  } else if(kind==="last"){                          /* กรอบทึบสองชั้น เห็นได้ทั้งบนช่องสว่างและช่องเข้ม */
+    m=new THREE.Group();
+    m.add(outline(SQ*0.94,SQ*0.06,0xe0ae4a));
+    m.add(outline(SQ*0.82,SQ*0.035,0x1b140e));
+  } else if(kind==="hint"){                          /* วงเส้นประ */
+    m=new THREE.Group();
+    var mh=flatMat(0x62d0ff,1);
+    for(var k=0;k<10;k++) m.add(new THREE.Mesh(new THREE.RingGeometry(SQ*0.29,SQ*0.39,6,1,k*Math.PI/5,Math.PI/9),mh));
   } else if(kind==="check"){
-    m=new THREE.Mesh(new THREE.PlaneGeometry(SQ*0.92,SQ*0.92),
-      new THREE.MeshBasicMaterial({color:0xd4452f, transparent:true, opacity:0.3}));
+    m=new THREE.Mesh(new THREE.PlaneGeometry(SQ*0.92,SQ*0.92), flatMat(0xd4452f,0.35));
+  } else if(kind==="cursor"){                        /* กรอบแป้นพิมพ์ ขาวนอก ดำใน */
+    m=new THREE.Group();
+    m.add(outline(SQ*0.98,SQ*0.09,0xffffff));
+    m.add(outline(SQ*0.80,SQ*0.05,0x000000));
+    lift=0.04;
   }
   m.rotation.x=-Math.PI/2;
-  m.position.set(w.x,0.015,w.z);
+  m.position.set(w.x,lift,w.z);
   markGroup.add(m);
 }
 function refreshMarks(){
@@ -545,6 +579,7 @@ function refreshMarks(){
     for(var j=0;j<riskySquares.length;j++) addMark(riskySquares[j],"risk");
   }
   if(coachOn && hintMove){ addMark(hintMove.from,"hint"); addMark(hintMove.to,"hint"); }
+  if(stageFocused && cursor>=0) addMark(cursor,"cursor");
 }
 
 /* ===================== การควบคุมกล้อง ===================== */
@@ -556,6 +591,7 @@ function refreshMarks(){
     if(!dragging) return;
     var dx=x-lx, dy=y-ly;
     lx=x; ly=y; moved+=Math.abs(dx)+Math.abs(dy);
+    if(boardLocked || moved<22) return;   /* แตะที่สั่นเล็กน้อยไม่นับเป็นการหมุน */
     camTargetYaw -= dx*0.008;
     camYaw -= dx*0.008;
     camPitch = Math.max(0.22, Math.min(1.45, camPitch + dy*0.006));
@@ -565,7 +601,7 @@ function refreshMarks(){
   window.addEventListener("mousemove",function(e){ move(e.clientX,e.clientY); });
   window.addEventListener("mouseup",function(e){
     var m=up();
-    if(m<6 && e.target && e.target.tagName==="CANVAS") pick(e.clientX,e.clientY);
+    if(m<22 && e.target && e.target.tagName==="CANVAS") pick(e.clientX,e.clientY);
   });
   stage.addEventListener("touchstart",function(e){
     if(e.touches.length===1) down(e.touches[0].clientX, e.touches[0].clientY);
@@ -575,7 +611,7 @@ function refreshMarks(){
   },{passive:true});
   stage.addEventListener("touchend",function(e){
     var m=up();
-    if(m<8 && e.changedTouches.length) pick(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    if(m<22 && e.changedTouches.length) pick(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
   });
   stage.addEventListener("wheel",function(e){
     e.preventDefault();
@@ -621,6 +657,7 @@ function newGame(){
   else startDeep();
 }
 function selectSquare(sq){
+  cursor=sq;
   if(gameOver||thinking||!isHumanTurn()) return;
   var i;
   if(sel>=0){
@@ -648,7 +685,11 @@ function selectSquare(sq){
 }
 function askPromotion(options){
   pendingPromo=options;
-  document.getElementById("promoBox").hidden=false;
+  promoOpener=document.activeElement;
+  var box=document.getElementById("promoBox");
+  box.hidden=false;
+  box.querySelector("button[data-p='5']").focus();
+  say("เบี้ยถึงแถวสุดท้าย เลือกตัวที่จะเลื่อนขั้น");
 }
 function commitMove(m){
   var san=C.moveSAN(st,m);
@@ -666,7 +707,7 @@ function commitMove(m){
     else if(st.turn!==humanColor) setTimeout(startAI,220);
     else startDeep();
   };
-  if(mover){
+  if(mover && !RM){
     var anim={obj:mover, from:fromW, to:toW, t0:performance.now(), dur:320, done:finish};
     animating=anim;
     /* แท็บพื้นหลังหยุด requestAnimationFrame จึงต้องมีตัวจบสำรอง ไม่งั้นเกมค้างกลางตา */
@@ -923,6 +964,77 @@ document.getElementById("btnReset").addEventListener("click",function(){
 });
 document.getElementById("btnTop").addEventListener("click",function(){ camPitch=1.45; camDist=18; });
 
+/* ===================== แป้นพิมพ์ ===================== */
+(function keyboard(){
+  var stage=document.getElementById("stage");
+  function describe(sq){
+    var p=st.b[sq], t=C.sqName(sq)+" ";
+    t += p ? C.NAME_TH[C.typeOf(p)]+sideName(C.colorOf(p)) : "ว่าง";
+    if(sel>=0){
+      for(var i=0;i<selMoves.length;i++) if(selMoves[i].to===sq){ t += (selMoves[i].cap||selMoves[i].flag==="ep") ? " กินได้" : " เดินไปได้"; break; }
+      if(sq===sel) t += " ตัวที่เลือกอยู่";
+    }
+    if(riskySquares.indexOf(sq)>=0) t += " ช่องอันตราย";
+    return t;
+  }
+  function stepFor(key){
+    /* ทิศบนจอขึ้นกับมุมกล้องตอนนี้ แปลงเป็นทิศบนกระดานที่ใกล้ที่สุด */
+    var ux=-Math.sin(camYaw), uz=-Math.cos(camYaw), rx=Math.cos(camYaw), rz=-Math.sin(camYaw), vx, vz;
+    if(key==="ArrowUp"){ vx=ux; vz=uz; } else if(key==="ArrowDown"){ vx=-ux; vz=-uz; }
+    else if(key==="ArrowRight"){ vx=rx; vz=rz; } else { vx=-rx; vz=-rz; }
+    return Math.abs(vx)>=Math.abs(vz) ? [0, vx>0?1:-1] : [vz>0?1:-1, 0];
+  }
+  stage.addEventListener("focus",function(){
+    stageFocused=true;
+    if(cursor<0) cursor = (sel>=0) ? sel : C.rf2sq((mode===1&&humanColor===B)?1:6, 4);
+    refreshMarks(); say(describe(cursor));
+  });
+  stage.addEventListener("blur",function(){ stageFocused=false; refreshMarks(); });
+  stage.addEventListener("keydown",function(e){
+    if(!st) return;
+    var k=e.key;
+    if(k==="ArrowUp"||k==="ArrowDown"||k==="ArrowLeft"||k==="ArrowRight"){
+      e.preventDefault();
+      if(cursor<0) cursor=C.rf2sq(6,4);
+      var d=stepFor(k), r=(cursor>>4)+d[0], f=(cursor&15)+d[1];
+      if(r<0||r>7||f<0||f>7){ say("ขอบกระดาน"); return; }
+      cursor=C.rf2sq(r,f); refreshMarks(); say(describe(cursor));
+    } else if(k==="Enter"||k===" "){
+      e.preventDefault();
+      if(cursor<0) return;
+      if(gameOver){ say("เกมจบแล้ว กดเริ่มเกมใหม่"); return; }
+      if(thinking||!isHumanTurn()){ say("ยังไม่ถึงตาคุณ"); return; }
+      var before=sel, plies=st.hist.length;
+      selectSquare(cursor);
+      /* เดินสำเร็จหรือเลือกตัวได้ selectSquare/commitMove ประกาศเอง ที่เหลือบอกเหตุผล */
+      if(sel<0 && st.hist.length===plies && !pendingPromo)
+        say(before>=0 ? "ยกเลิกการเลือก" : describe(cursor)+" เลือกไม่ได้ ต้องเป็นหมากฝ่าย"+sideName(st.turn));
+    } else if(k==="Escape"){
+      if(sel>=0){ sel=-1; selMoves=[]; riskySquares=[]; refreshMarks(); updateUI(); say("ยกเลิกการเลือก"); }
+    } else if(k==="u"||k==="U"){
+      var ub=document.getElementById("btnUndo"); if(!ub.disabled) ub.click();
+    }
+  });
+})();
+
+document.getElementById("btnZoomIn").addEventListener("click",function(){ camDist=Math.max(9,camDist-2); });
+document.getElementById("btnZoomOut").addEventListener("click",function(){ camDist=Math.min(30,camDist+2); });
+document.getElementById("btnLock").addEventListener("click",function(){
+  boardLocked=!boardLocked;
+  this.setAttribute("aria-pressed", boardLocked?"true":"false");
+  this.textContent = boardLocked ? "ปลดล็อกกระดาน" : "ล็อกกระดาน ไม่ให้หมุน";
+  say(boardLocked ? "ล็อกกระดานแล้ว ลากแล้วกระดานจะไม่หมุน" : "ปลดล็อกกระดานแล้ว");
+});
+
+var promoOpener=null;
+document.getElementById("promoBox").addEventListener("keydown",function(e){
+  if(e.key==="Escape"){ pendingPromo=null; this.hidden=true; say("ยกเลิกการเลื่อนขั้น"); if(promoOpener) promoOpener.focus(); }
+  if(e.key==="Tab"){
+    var bs=this.querySelectorAll("button"), first=bs[0], last=bs[bs.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+});
 document.getElementById("promoBox").addEventListener("click",function(e){
   var b=e.target.closest("button[data-p]");
   if(!b || !pendingPromo) return;
@@ -930,6 +1042,7 @@ document.getElementById("promoBox").addEventListener("click",function(e){
   for(i=0;i<pendingPromo.length;i++) if(pendingPromo[i].promo===want) chosen=pendingPromo[i];
   pendingPromo=null;
   document.getElementById("promoBox").hidden=true;
+  if(promoOpener) promoOpener.focus();
   commitMove(chosen);
 });
 
@@ -964,6 +1077,7 @@ seg("segMode",function(v){ mode=v; newGame(); });
 seg("segLevel",function(v){ level=v; });
 seg("segColor",function(v){ humanColor=(v===2?B:W); newGame(); });
 
+try{ if(window.matchMedia("(pointer: coarse)").matches || window.innerWidth<600){ camPitch=1.45; camDist=18; } }catch(e){}
 initScene();
 newGame();
 })();
