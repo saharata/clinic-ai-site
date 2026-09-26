@@ -126,8 +126,12 @@ export default function EegMethodsPage() {
   return (
     <main id="main-content" tabIndex={-1} className="mx-auto max-w-3xl px-6 py-12 text-slate-800">
       <p className="text-sm text-slate-500">
-        <Link href="/ai/eeg" className="underline underline-offset-2 hover:text-slate-700">
-          ← กลับไปหน้าเครื่องมือ EEG
+        <Link
+          href="/ai/eeg"
+          className="underline underline-offset-2 hover:text-slate-700"
+          style={{ display: "inline-flex", alignItems: "center", minHeight: 44, textDecoration: "underline" }}
+        >
+          <span aria-hidden="true">←</span>&nbsp;กลับไปหน้าเครื่องมือ EEG
         </Link>
       </p>
 
