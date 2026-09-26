@@ -202,7 +202,7 @@ const faqJsonLd = {
 
 export default function HomePage() {
   return (
-    <main>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }}
@@ -222,7 +222,7 @@ export default function HomePage() {
       <header className="navbar">
         <div className="container nav-inner">
           <div className="brand">
-            <div className="brand-badge">N</div>
+            <div className="brand-badge" aria-hidden="true">N</div>
             <div>
               <div className="brand-title">สหวรรณคลินิก</div>
               <div className="brand-subtitle">คลินิกเวชกรรมเด็กและระบบประสาท</div>
@@ -251,6 +251,8 @@ export default function HomePage() {
           </nav>
         </div>
       </header>
+
+      <main id="main-content" tabIndex={-1}>
 
       <section className="hero">
         <div className="container hero-grid">
@@ -294,7 +296,7 @@ export default function HomePage() {
             </div>
 
             <div className="hero-card">
-              <h3>จุดเด่นของคลินิก</h3>
+              <h2 className="hero-card-title">จุดเด่นของคลินิก</h2>
               <ul>
                 <li>ดูแลทั้งกุมารแพทย์ทั่วไปและประสาทแพทย์</li>
                 <li>ติดตามอาการต่อเนื่องผ่าน LINE</li>
@@ -469,7 +471,7 @@ export default function HomePage() {
       <section id="doctors" className="section">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">Our Doctors</p>
+            <p className="eyebrow" lang="en">Our Doctors</p>
             <h2>ทีมแพทย์ของเรา</h2>
             <p>ดูแลผู้ป่วยด้วยแนวทางที่เป็นระบบ เข้าใจง่าย และต่อเนื่อง</p>
           </div>
@@ -521,7 +523,7 @@ export default function HomePage() {
       <section id="location" className="section alt">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">Location</p>
+            <p className="eyebrow" lang="en">Location</p>
             <h2>สถานที่และการเดินทาง</h2>
             <p>คลินิกออกแบบให้สะอาด สงบ และเหมาะกับการดูแลผู้ป่วยและครอบครัว</p>
           </div>
@@ -593,7 +595,7 @@ export default function HomePage() {
       <section className="section">
         <div className="container cta-box">
           <div>
-            <p className="eyebrow">AI for doctors</p>
+            <p className="eyebrow" lang="en">AI for doctors</p>
             <h2>เครื่องมือ AI สำหรับประสาทแพทย์</h2>
             <p>
               เรามีเครื่องมือที่สามารถลงทะเบียนและใช้งานได้ เพื่อช่วยประหยัดเวลาในการดูแลผู้ป่วยและงานคลินิก
@@ -610,7 +612,7 @@ export default function HomePage() {
       <section id="faq" className="section alt">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">FAQ</p>
+            <p className="eyebrow" lang="en">FAQ</p>
             <h2>คำถามที่พบบ่อย</h2>
             <p>รวมคำถามที่ผู้ป่วยและผู้ปกครองสอบถามบ่อย หากต้องการสอบถามเพิ่มเติม ทักผ่าน LINE หรือโทรได้เลย</p>
           </div>
@@ -635,17 +637,19 @@ export default function HomePage() {
         </div>
       </section>
 
+      </main>
+
       <footer id="contact" className="footer">
         <div className="container footer-grid">
           <div>
-            <h3>สหวรรณคลินิก — คลินิกเวชกรรมเด็กและระบบประสาท</h3>
+            <h2 className="footer-title">สหวรรณคลินิก — คลินิกเวชกรรมเด็กและระบบประสาท</h2>
             <p>ดูแลโดยแพทย์ พร้อมระบบติดตามอาการต่อเนื่องผ่าน LINE และ AI</p>
             <p>{clinicAddress}</p>
             <p>ใบอนุญาตประกอบกิจการสถานพยาบาลเลขที่ 12102000863</p>
           </div>
 
           <div>
-            <h4>ช่องทางติดต่อ</h4>
+            <h3 className="footer-subtitle">ช่องทางติดต่อ</h3>
             <ul className="footer-links">
               <li>
                 <a href={phoneTel}>โทร {phoneDisplay}</a>
@@ -681,6 +685,6 @@ export default function HomePage() {
           เวลาทำการ
         </a>
       </div>
-    </main>
+    </>
   );
 }

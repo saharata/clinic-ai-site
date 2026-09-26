@@ -76,13 +76,11 @@ export default function AiToolsPage() {
   }, []);
 
   const [user, setUser] = useState<User | null>(null);
-  const [loadingUser, setLoadingUser] = useState(true);
+  // ไม่มีการตั้งค่า Supabase = ไม่ต้องรอโหลดผู้ใช้ (กำหนดตั้งแต่แรก แทนการ setState ใน effect)
+  const [loadingUser, setLoadingUser] = useState(supabase !== null);
 
   useEffect(() => {
-    if (!supabase) {
-      setLoadingUser(false);
-      return;
-    }
+    if (!supabase) return;
 
     let mounted = true;
 

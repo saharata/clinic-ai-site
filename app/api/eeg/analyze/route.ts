@@ -13,11 +13,11 @@ export async function POST(req: Request) {
   try {
     body = await req.arrayBuffer();
   } catch {
-    return Response.json({ detail: "อ่านไฟล์อัปโหลดไม่สำเร็จ" }, { status: 400 });
+    return Response.json({ detail: "อ่านไฟล์อัปโหลดไม่สำเร็จ กรุณาเลือกไฟล์ .edf ใหม่แล้วลองอีกครั้ง" }, { status: 400 });
   }
 
   if (body.byteLength > 40 * 1024 * 1024) {
-    return Response.json({ detail: "ไฟล์ใหญ่เกิน 40 MB สำหรับโหมดสาธิต" }, { status: 413 });
+    return Response.json({ detail: "ไฟล์ใหญ่เกิน 40 MB สำหรับโหมดสาธิต กรุณาตัดไฟล์ให้สั้นลง หรือใช้แอปวิเคราะห์เต็มรูปแบบ" }, { status: 413 });
   }
 
   try {
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     const msg =
       e instanceof Error && e.name === "TimeoutError"
         ? "เซิร์ฟเวอร์วิจัยตอบช้าเกินไป (อาจกำลังตื่นจาก sleep) ลองใหม่อีกครั้ง"
-        : "เชื่อมต่อเซิร์ฟเวอร์วิจัยไม่สำเร็จ";
+        : "เชื่อมต่อเซิร์ฟเวอร์วิจัยไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้งในอีกสักครู่";
     return Response.json({ detail: msg }, { status: 504 });
   }
 }

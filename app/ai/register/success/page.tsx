@@ -1,6 +1,6 @@
 export default function RegisterSuccessPage() {
   return (
-    <main className="section">
+    <main id="main-content" tabIndex={-1} className="section">
       <div className="container" style={{ maxWidth: 720 }}>
         <div className="cta-box" style={{ padding: 32, textAlign: "center" }}>
           <p className="eyebrow">Registration</p>

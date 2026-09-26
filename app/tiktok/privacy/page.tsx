@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function TikTokPrivacyPage() {
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
+    <main id="main-content" tabIndex={-1} className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
       <h1 className="text-2xl font-bold text-slate-900">
         นโยบายความเป็นส่วนตัว — Sahawan Neuro Content
       </h1>
@@ -86,7 +86,7 @@ export default function TikTokPrivacyPage() {
 
       <hr className="my-8 border-slate-200" />
 
-      <section className="space-y-3 leading-relaxed">
+      <section className="space-y-3 leading-relaxed" lang="en">
         <h2 className="text-lg font-semibold text-slate-900">English</h2>
         <p>
           This policy covers <strong>Sahawan Neuro Content</strong>, the

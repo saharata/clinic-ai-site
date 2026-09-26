@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const COOKBOOK = "/SOAP_Cookbook_TH.pdf";
 const CONTACT_EMAIL = "saharatau@gmail.com";
@@ -20,6 +20,42 @@ export default function SoapGuidePage() {
   const allChecked = checked.every(Boolean);
   const [form, setForm] = useState({ name: "", role: "", org: "", email: "", note: "" });
   const [sent, setSent] = useState(false);
+  const openerRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // a11y (keyboard): เปิดกล่องแล้วย้าย focus เข้าไป, Esc ปิด, Tab วนอยู่ในกล่อง, ปิดแล้วคืน focus ที่ปุ่มเดิม
+  useEffect(() => {
+    if (!open) return;
+    const opener = openerRef.current;
+    closeRef.current?.focus();
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const items = dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled])'
+      );
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      opener?.focus();
+    };
+  }, [open]);
 
   const mailto = () => {
     const body = [
@@ -40,9 +76,9 @@ export default function SoapGuidePage() {
   };
 
   return (
-    <main className="soapPage">
+    <main id="main-content" tabIndex={-1} className="soapPage">
       <section className="soapHero">
-        <a href="/ai" className="soapBack">← กลับหน้าเครื่องมือ AI</a>
+        <a href="/ai" className="soapBack"><span aria-hidden="true">←</span> กลับหน้าเครื่องมือ AI</a>
         <p className="soapEyebrow">คู่มือการใช้งาน</p>
         <h1 className="soapTitle">SOAP Note ด้วย AI ที่รันในเครื่อง</h1>
         <p className="soapLead">
@@ -62,7 +98,7 @@ export default function SoapGuidePage() {
           <span className="soapBtnTop">ดาวน์โหลดคู่มือ (PDF)</span>
           <span className="soapBtnSub">อ่านได้ทันที ไม่ต้องลงทะเบียน</span>
         </a>
-        <button className="soapBtn" onClick={() => setOpen(true)}>
+        <button type="button" className="soapBtn" ref={openerRef} onClick={() => setOpen(true)}>
           <span className="soapBtnTop">ขอรับตัวโปรแกรม</span>
           <span className="soapBtnSub">สำหรับแพทย์และหน่วยงาน · ต้องรับทราบเงื่อนไข</span>
         </button>
@@ -96,11 +132,24 @@ export default function SoapGuidePage() {
 
       {/* ── กล่องรับทราบเงื่อนไข + ฟอร์มขอรับ ── */}
       {open && (
-        <div className="soapOverlay" onClick={() => setOpen(false)}>
-          <div className="soapDialog" onClick={(e) => e.stopPropagation()}>
+        // คลิกพื้นหลังเพื่อปิดเป็นทางลัดของเมาส์เท่านั้น คีย์บอร์ดใช้ Esc หรือปุ่ม "ปิด" ได้ (ดู useEffect ด้านบน)
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+        <div
+          className="soapOverlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setOpen(false);
+          }}
+        >
+          <div
+            className="soapDialog"
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="soap-dialog-title"
+          >
             <div className="soapDialogHead">
-              <h3>ขอรับตัวโปรแกรม</h3>
-              <button className="soapClose" onClick={() => setOpen(false)} aria-label="ปิด">×</button>
+              <h2 id="soap-dialog-title">ขอรับตัวโปรแกรม</h2>
+              <button type="button" className="soapClose" ref={closeRef} onClick={() => setOpen(false)} aria-label="ปิด">×</button>
             </div>
 
             {!sent ? (
@@ -121,20 +170,46 @@ export default function SoapGuidePage() {
                   ))}
                 </div>
 
-                <div className={`soapForm ${allChecked ? "" : "locked"}`}>
-                  <input placeholder="ชื่อ-นามสกุล" value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                  <input placeholder="ตำแหน่ง / สาขา (เช่น ประสาทแพทย์)" value={form.role}
-                    onChange={(e) => setForm({ ...form, role: e.target.value })} />
-                  <input placeholder="หน่วยงาน / สถานพยาบาล" value={form.org}
-                    onChange={(e) => setForm({ ...form, org: e.target.value })} />
-                  <input type="email" placeholder="อีเมลติดต่อกลับ" value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                  <textarea placeholder="ต้องการนำไปใช้กับงานลักษณะใด (โดยย่อ)" rows={3}
-                    value={form.note}
-                    onChange={(e) => setForm({ ...form, note: e.target.value })} />
-                </div>
+                {/* a11y (keyboard): เดิมล็อกด้วย pointer-events อย่างเดียว คีย์บอร์ดยัง Tab เข้าไปพิมพ์ได้ → ใช้ fieldset disabled */}
+                <fieldset className="soapForm" disabled={!allChecked}>
+                  {/* a11y (labels): เดิมมีแค่ placeholder ซึ่งหายไปเมื่อเริ่มพิมพ์ → มีป้ายกำกับถาวร */}
+                  <legend className="sr-only">ข้อมูลผู้ขอรับโปรแกรม</legend>
+                  <label className="soapField">
+                    <span>ชื่อ-นามสกุล <span aria-hidden="true">*</span></span>
+                    <input value={form.name} aria-required="true" autoComplete="name"
+                      onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                  </label>
+                  <label className="soapField">
+                    <span>ตำแหน่ง / สาขา</span>
+                    <input placeholder="เช่น ประสาทแพทย์" value={form.role} autoComplete="organization-title"
+                      onChange={(e) => setForm({ ...form, role: e.target.value })} />
+                  </label>
+                  <label className="soapField">
+                    <span>หน่วยงาน / สถานพยาบาล</span>
+                    <input value={form.org} autoComplete="organization"
+                      onChange={(e) => setForm({ ...form, org: e.target.value })} />
+                  </label>
+                  <label className="soapField">
+                    <span>อีเมลติดต่อกลับ <span aria-hidden="true">*</span></span>
+                    <input type="email" value={form.email} aria-required="true" autoComplete="email"
+                      onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                  </label>
+                  <label className="soapField">
+                    <span>ต้องการนำไปใช้กับงานลักษณะใด (โดยย่อ)</span>
+                    <textarea rows={3}
+                      value={form.note}
+                      onChange={(e) => setForm({ ...form, note: e.target.value })} />
+                  </label>
+                </fieldset>
 
+                {/* a11y (error suggestion): บอกว่าทำไมยังกดส่งไม่ได้ และต้องทำอะไรเพิ่ม */}
+                <p className="soapHint" aria-live="polite">
+                  {!allChecked
+                    ? "ติ๊กรับทราบเงื่อนไขให้ครบทุกข้อก่อน จึงจะกรอกข้อมูลได้"
+                    : !form.name || !form.email
+                      ? "กรอกชื่อ-นามสกุลและอีเมลติดต่อกลับ (ช่องที่มี *) แล้วจึงกดส่งได้"
+                      : "ข้อมูลครบแล้ว กดส่งคำขอได้เลย"}
+                </p>
                 <a
                   className={`soapBtn primary full ${
                     allChecked && form.name && form.email ? "" : "disabled"
@@ -155,7 +230,7 @@ export default function SoapGuidePage() {
               <div className="soapDone">
                 <p><strong>เปิดโปรแกรมอีเมลแล้ว</strong></p>
                 <p>กรุณากดส่งอีเมลเพื่อให้คำขอถึงผู้ดูแล จะติดต่อกลับตามอีเมลที่ให้ไว้</p>
-                <button className="soapBtn full" onClick={() => { setOpen(false); setSent(false); }}>
+                <button type="button" className="soapBtn full" onClick={() => { setOpen(false); setSent(false); }}>
                   ปิด
                 </button>
               </div>
@@ -167,14 +242,14 @@ export default function SoapGuidePage() {
       <style jsx>{`
         /* ── ออกแบบมือถือก่อน (mobile-first) แล้วค่อยขยายบนจอใหญ่ ── */
         .soapPage { max-width: 720px; margin: 0 auto; padding: 20px 16px 72px; }
-        .soapBack { display: inline-block; font-size: 14px; color: #2f6a5b;
+        .soapBack { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.875rem; color: #2f6a5b;
           text-decoration: none; margin-bottom: 18px; padding: 6px 0; }
-        .soapEyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+        .soapEyebrow { font-size: 0.75rem; letter-spacing: .16em; text-transform: uppercase;
           color: #6b7280; font-weight: 600; margin: 0 0 6px; }
-        .soapTitle { font-size: 26px; line-height: 1.25; margin: 0 0 12px; color: #0f172a; }
-        .soapLead { font-size: 16px; line-height: 1.7; color: #374151; margin: 0 0 16px; }
+        .soapTitle { font-size: 1.625rem; line-height: 1.25; margin: 0 0 12px; color: #0f172a; }
+        .soapLead { font-size: 1rem; line-height: 1.7; color: #374151; margin: 0 0 16px; }
         .soapTags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
-        .soapTag { font-size: 12.5px; padding: 5px 11px; border-radius: 999px;
+        .soapTag { font-size: 0.7812rem; padding: 5px 11px; border-radius: 999px;
           border: 1px solid #e5e7eb; color: #6b7280; }
         .soapTag.on { background: #eef3f0; border-color: #cfe0d8; color: #2f6a5b; }
         .soapTag.warn { background: #fdf6e7; border-color: #f0e2c4; color: #92660f; }
@@ -188,15 +263,15 @@ export default function SoapGuidePage() {
         .soapBtn.primary { background: #2f6a5b; border-color: #2f6a5b; color: #fff; }
         .soapBtn.full { width: 100%; margin-top: 6px; }
         .soapBtn.disabled { opacity: .45; pointer-events: none; }
-        .soapBtnTop { font-size: 16px; font-weight: 600; }
-        .soapBtnSub { font-size: 12.5px; opacity: .85; font-weight: 400; }
+        .soapBtnTop { font-size: 1rem; font-weight: 600; }
+        .soapBtnSub { font-size: 0.7812rem; opacity: .85; font-weight: 400; }
 
-        .soapBody h2 { font-size: 18px; margin: 28px 0 10px; color: #0f172a; }
+        .soapBody h2 { font-size: 1.125rem; margin: 28px 0 10px; color: #0f172a; }
         .soapBody ul, .soapBody ol { padding-left: 20px; margin: 0; }
-        .soapBody li { font-size: 15.5px; line-height: 1.75; color: #374151; margin: 4px 0; }
+        .soapBody li { font-size: 0.9688rem; line-height: 1.75; color: #374151; margin: 4px 0; }
         .soapNote { margin-top: 26px; background: #f8f7f3; border: 1px solid #e6e0d3;
           border-left: 3px solid #92660f; border-radius: 10px; padding: 14px 16px;
-          font-size: 14.5px; line-height: 1.7; color: #3f3f46; }
+          font-size: 0.9062rem; line-height: 1.7; color: #3f3f46; }
 
         /* ── กล่องเงื่อนไข: บนมือถือเป็น sheet เลื่อนขึ้นจากล่าง ── */
         .soapOverlay { position: fixed; inset: 0; background: rgba(15,23,42,.55);
@@ -206,27 +281,30 @@ export default function SoapGuidePage() {
           border-radius: 18px 18px 0 0; padding: 20px 18px calc(20px + env(safe-area-inset-bottom)); }
         .soapDialogHead { display: flex; align-items: center; justify-content: space-between;
           margin-bottom: 6px; }
-        .soapDialogHead h3 { margin: 0; font-size: 19px; color: #0f172a; }
-        .soapClose { background: none; border: none; font-size: 30px; line-height: 1;
-          color: #6b7280; cursor: pointer; padding: 0 6px; }
-        .soapDialogLead { font-size: 14px; color: #6b7280; margin: 0 0 14px; }
+        .soapDialogHead h2 { margin: 0; font-size: 1.1875rem; color: #0f172a; }
+        .soapClose { background: none; border: none; font-size: 1.875rem; line-height: 1;
+          color: #4b5563; cursor: pointer; padding: 0; min-width: 44px; min-height: 44px;
+          display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; }
+        .soapDialogLead { font-size: 0.875rem; color: #6b7280; margin: 0 0 14px; }
         .soapTerms { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-        .soapTerm { display: flex; gap: 11px; align-items: flex-start; font-size: 14.5px;
+        .soapTerm { display: flex; gap: 11px; align-items: flex-start; font-size: 0.9062rem;
           line-height: 1.6; color: #374151; cursor: pointer; }
         .soapTerm input { margin-top: 3px; width: 20px; height: 20px; flex: 0 0 auto;
           accent-color: #2f6a5b; }
-        .soapForm { display: flex; flex-direction: column; gap: 10px; }
-        .soapForm.locked { opacity: .4; pointer-events: none; }
-        .soapForm input, .soapForm textarea { width: 100%; padding: 13px 14px; font-size: 16px;
-          border: 1px solid #d1d5db; border-radius: 11px; font-family: inherit;
+        .soapForm { display: flex; flex-direction: column; gap: 10px; border: 0; padding: 0; margin: 0; min-width: 0; }
+        .soapForm:disabled { opacity: .4; }
+        .soapForm input, .soapForm textarea { width: 100%; padding: 13px 14px; font-size: 1rem;
+          border: 1px solid #6b7280; border-radius: 11px; font-family: inherit;
           color: #0f172a; background: #fff; }
-        .soapFine { font-size: 12.5px; color: #6b7280; line-height: 1.6; margin: 12px 0 0; }
+        .soapField { display: flex; flex-direction: column; gap: 4px; font-size: 0.9062rem; color: #374151; font-weight: 600; }
+        .soapHint { font-size: 0.9062rem; color: #374151; margin: 16px 0 4px; }
+        .soapFine { font-size: 0.7812rem; color: #6b7280; line-height: 1.6; margin: 12px 0 0; }
         .soapDone { text-align: center; padding: 14px 0; }
-        .soapDone p { font-size: 15px; line-height: 1.7; color: #374151; margin: 0 0 10px; }
+        .soapDone p { font-size: 0.9375rem; line-height: 1.7; color: #374151; margin: 0 0 10px; }
 
         @media (min-width: 720px) {
           .soapPage { padding: 40px 24px 90px; }
-          .soapTitle { font-size: 34px; }
+          .soapTitle { font-size: 2.125rem; }
           .soapActions { flex-direction: row; }
           .soapBtn { flex: 1; }
           .soapOverlay { align-items: center; padding: 24px; }

@@ -42,11 +42,11 @@ export const metadata: Metadata = {
 
 export default function VaccinePage() {
   return (
-    <main>
+    <>
       <header className="navbar">
         <div className="container nav-inner">
           <Link href="/" className="brand">
-            <div className="brand-badge">N</div>
+            <div className="brand-badge" aria-hidden="true">N</div>
             <div>
               <div className="brand-title">สหวรรณคลินิก</div>
               <div className="brand-subtitle">คลินิกเวชกรรมเด็กและระบบประสาท</div>
@@ -64,6 +64,8 @@ export default function VaccinePage() {
         </div>
       </header>
 
+      <main id="main-content" tabIndex={-1}>
+
       <section className="vaccine-hero">
         <div className="container">
           <p className="vaccine-eyebrow">รายการวัคซีนเด็กตามช่วงอายุ 2026</p>
@@ -73,10 +75,10 @@ export default function VaccinePage() {
           </p>
           <div className="vaccine-legend">
             <span>
-              <i className="dot core" /> วัคซีนหลัก
+              <i className="dot core" aria-hidden="true" /> วัคซีนหลัก
             </span>
             <span>
-              <i className="dot optional" /> วัคซีนเสริม
+              <i className="dot optional" aria-hidden="true" /> วัคซีนเสริม
             </span>
           </div>
         </div>
@@ -84,8 +86,10 @@ export default function VaccinePage() {
 
       <section className="section vaccine-section">
         <div className="container">
+          {/* a11y (screen reader): ช่วงอายุเป็นหัวข้อ (กระโดดทีละช่วงอายุได้) และรายการวัคซีนเป็น list
+              แถวหัวตารางเป็นป้ายสำหรับตาเท่านั้น จึงซ่อนจาก screen reader แล้วอ่าน "ราคา … บาท" ในแต่ละบรรทัดแทน */}
           <div className="vaccine-table">
-            <div className="vaccine-row vaccine-head">
+            <div className="vaccine-row vaccine-head" aria-hidden="true">
               <div className="vaccine-age">อายุ</div>
               <div className="vaccine-items">
                 <span>รายการวัคซีน</span>
@@ -93,20 +97,29 @@ export default function VaccinePage() {
               </div>
             </div>
 
-            {vaccineSchedule.map((group) => (
-              <div className="vaccine-row" key={group.age}>
-                <div className="vaccine-age">{group.age}</div>
-                <div className="vaccine-items">
+            {vaccineSchedule.map((group, gi) => (
+              <section className="vaccine-row" key={group.age} aria-labelledby={`age-${gi}`}>
+                <h2 className="vaccine-age" id={`age-${gi}`}>
+                  {group.age}
+                </h2>
+                <ul className="vaccine-items">
                   {group.items.map((item, i) => (
-                    <div className="vaccine-line" key={i}>
+                    <li className="vaccine-line" key={i}>
                       <span className="vaccine-name">
-                        <i className={`dot ${item.type}`} /> {item.name}
+                        <i className={`dot ${item.type}`} aria-hidden="true" /> {item.name}
+                        <span className="sr-only">
+                          {item.type === "core" ? " (วัคซีนหลัก)" : " (วัคซีนเสริม)"}
+                        </span>
                       </span>
-                      <span className="vaccine-line-price">{item.price}</span>
-                    </div>
+                      <span className="vaccine-line-price">
+                        <span className="sr-only">ราคา </span>
+                        {item.price}
+                        <span className="sr-only"> บาท</span>
+                      </span>
+                    </li>
                   ))}
-                </div>
-              </div>
+                </ul>
+              </section>
             ))}
           </div>
 
@@ -126,15 +139,17 @@ export default function VaccinePage() {
         </div>
       </section>
 
+      </main>
+
       <footer className="footer">
         <div className="container footer-grid">
           <div>
-            <h3>สหวรรณคลินิก</h3>
+            <h2 className="footer-title">สหวรรณคลินิก</h2>
             <p>คลินิกเวชกรรมเด็กและระบบประสาท</p>
             <p>101 หมู่บ้านประชานิเวศน์ 3 ถนนประชานิเวศน์ ต.ท่าทราย อ.เมืองนนทบุรี จ.นนทบุรี 11000</p>
           </div>
           <div>
-            <h4>ช่องทางติดต่อ</h4>
+            <h3 className="footer-subtitle">ช่องทางติดต่อ</h3>
             <ul className="footer-links">
               <li>
                 <a href={phoneTel}>โทร {phoneDisplay}</a>
@@ -153,6 +168,6 @@ export default function VaccinePage() {
           </div>
         </div>
       </footer>
-    </main>
+    </>
   );
 }
