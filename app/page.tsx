@@ -202,7 +202,7 @@ const faqJsonLd = {
 
 export default function HomePage() {
   return (
-    <main>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }}
@@ -251,6 +251,8 @@ export default function HomePage() {
           </nav>
         </div>
       </header>
+
+      <main id="main-content" tabIndex={-1}>
 
       <section className="hero">
         <div className="container hero-grid">
@@ -635,6 +637,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      </main>
+
       <footer id="contact" className="footer">
         <div className="container footer-grid">
           <div>
@@ -681,6 +685,6 @@ export default function HomePage() {
           เวลาทำการ
         </a>
       </div>
-    </main>
+    </>
   );
 }

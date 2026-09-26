@@ -56,6 +56,10 @@ export default function RootLayout({
   return (
     <html lang="th">
       <body>
+        {/* a11y (keyboard): ลิงก์ข้ามเมนู — ปุ่มแรกที่ Tab ถึง */}
+        <a href="#main-content" className="skip-link">
+          ข้ามไปยังเนื้อหาหลัก
+        </a>
         {children}
         <Analytics />
         <AnalyticsEvents />

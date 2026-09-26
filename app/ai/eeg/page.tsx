@@ -150,7 +150,7 @@ export default function EegDemoPage() {
   }
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <section className="hero small">
         <div className="container">
           <a href="/ai" className="eeg-back">← กลับไปหน้าเครื่องมือ AI</a>
@@ -221,7 +221,20 @@ export default function EegDemoPage() {
               </div>
             </div>
 
-            <div
+            {/* a11y (keyboard): พื้นที่วางไฟล์เดิมเป็น <div onClick> ที่ Tab ไม่ถึง → เป็น <button> ใช้ Enter/Space ได้
+                การลากวางยังใช้ได้ แต่ไม่ใช่ทางเดียว */}
+            <input
+              ref={inputRef}
+              id="edf-file"
+              type="file"
+              accept=".edf"
+              tabIndex={-1}
+              aria-hidden="true"
+              style={{ display: "none" }}
+              onChange={(e) => pickFile(e.target.files?.[0] || null)}
+            />
+            <button
+              type="button"
               className={"eeg-drop" + (over ? " over" : "")}
               onClick={() => inputRef.current?.click()}
               onDragOver={(e) => {
@@ -235,21 +248,16 @@ export default function EegDemoPage() {
                 if (e.dataTransfer.files[0]) pickFile(e.dataTransfer.files[0]);
               }}
             >
-              <input
-                ref={inputRef}
-                type="file"
-                accept=".edf"
-                style={{ display: "none" }}
-                onChange={(e) => pickFile(e.target.files?.[0] || null)}
-              />
-              <div className="ico">🧠</div>
-              <div className="big">
+              <span className="ico" aria-hidden="true">
+                🧠
+              </span>
+              <span className="big">
                 {file
                   ? `ไฟล์ที่เลือก: ${file.name} · ${(file.size / 1048576).toFixed(1)} MB`
-                  : "ลากไฟล์ .edf มาวาง หรือคลิกเพื่อเลือก"}
-              </div>
-              <div className="small">รองรับไฟล์ EDF มาตรฐาน</div>
-            </div>
+                  : "ลากไฟล์ .edf มาวาง หรือกดเพื่อเลือกไฟล์"}
+              </span>
+              <span className="small">รองรับไฟล์ EDF มาตรฐาน</span>
+            </button>
 
             <div className="eeg-samples">
               <span>ไม่มีไฟล์? ลองด้วยตัวอย่างจริง:</span>

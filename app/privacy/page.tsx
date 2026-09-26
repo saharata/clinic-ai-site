@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
+    <main id="main-content" tabIndex={-1} className="mx-auto max-w-2xl px-6 py-12 text-slate-800">
       <h1 className="text-2xl font-bold text-slate-900">
         นโยบายความเป็นส่วนตัว — แอป Sahawan Clinic
       </h1>

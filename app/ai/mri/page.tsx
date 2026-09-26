@@ -99,7 +99,7 @@ const BADGES = [
 
 export default function MriShowcasePage() {
   return (
-    <main className="mri-wrap">
+    <main id="main-content" tabIndex={-1} className="mri-wrap">
       <a href="/ai" className="mri-back">← กลับหน้าเครื่องมือ AI</a>
       <div className="mri-eyebrow">MRI LESION TRACKING · เคสตัวอย่าง (de-identified)</div>
       <h1 className="mri-h1">ติดตามการเปลี่ยนแปลงของสมองข้ามปี<br />ในผู้ป่วยปลอกประสาทเสื่อมแข็ง (MS)</h1>

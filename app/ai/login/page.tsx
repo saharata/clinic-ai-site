@@ -62,7 +62,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="section">
+    <main id="main-content" tabIndex={-1} className="section">
       <div className="container" style={{ maxWidth: 720 }}>
         <div className="section-head">
           <p className="eyebrow">Login</p>
