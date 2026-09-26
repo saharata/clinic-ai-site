@@ -132,14 +132,20 @@ export default function SoapGuidePage() {
 
       {/* ── กล่องรับทราบเงื่อนไข + ฟอร์มขอรับ ── */}
       {open && (
-        <div className="soapOverlay" onClick={() => setOpen(false)}>
+        // คลิกพื้นหลังเพื่อปิดเป็นทางลัดของเมาส์เท่านั้น คีย์บอร์ดใช้ Esc หรือปุ่ม "ปิด" ได้ (ดู useEffect ด้านบน)
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+        <div
+          className="soapOverlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setOpen(false);
+          }}
+        >
           <div
             className="soapDialog"
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="soap-dialog-title"
-            onClick={(e) => e.stopPropagation()}
           >
             <div className="soapDialogHead">
               <h2 id="soap-dialog-title">ขอรับตัวโปรแกรม</h2>
