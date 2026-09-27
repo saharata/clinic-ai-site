@@ -1341,6 +1341,12 @@ ul.vaccine-items {
   gap: 10px;
 }
 
+/* a11y (non-text contrast 1.4.11): ปุ่มขอบบาง (เมนูกระโดด, ช่อง YouTube) เดิมขอบ #cbd5e1 ได้แค่ 1.48:1 บนขาว
+   (1.36:1 บนพื้น hero) คนที่ contrast sensitivity ต่ำมองไม่เห็นว่าเป็นปุ่ม → ใช้สีเดียวกับขอบ .input (4.76:1 / 4.37:1) */
+.ms-page .btn-outline {
+  border-color: #64748b;
+}
+
 .ms-care-list,
 .ms-playlists {
   list-style: none;
