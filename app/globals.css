@@ -1328,6 +1328,18 @@ ul.vaccine-items {
   font-size: 1.1875rem;
 }
 
+/* a11y (screen reader): เครื่องหมาย +/– เป็นแค่ภาพ เดิม screen reader อ่านต่อท้ายคำถามว่า "…ได้ไหม บวก"
+   ใส่ข้อความแทนเป็นค่าว่าง (บรรทัดแรกเป็น fallback สำหรับเบราว์เซอร์เก่า) สถานะเปิด/ปิดยังอ่านจาก <details> เอง */
+.ms-page .faq-item summary::after {
+  content: "+";
+  content: "+" / "";
+}
+
+.ms-page .faq-item[open] summary::after {
+  content: "–";
+  content: "–" / "";
+}
+
 .ms-byline {
   font-size: 1.25rem;
   font-weight: 700;
