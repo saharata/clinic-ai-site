@@ -26,28 +26,28 @@ colors:
 typography:
   display:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "clamp(32px, 5vw, 52px)"
+    fontSize: "clamp(2rem, 5vw, 3.25rem)"
     fontWeight: 700
     lineHeight: 1.1
     letterSpacing: "normal"
   headline:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "32px"
+    fontSize: "2rem"
     fontWeight: 700
     lineHeight: 1.2
   title:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "22px"
+    fontSize: "1.375rem"
     fontWeight: 700
     lineHeight: 1.3
   body:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "18px"
+    fontSize: "1.125rem"
     fontWeight: 400
     lineHeight: 1.7
   label:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "14px"
+    fontSize: "0.875rem"
     fontWeight: 700
     letterSpacing: "0.02em"
 rounded:
@@ -139,7 +139,7 @@ components:
 
 **The One Voice Rule.** teal-น้ำเงินคือเสียงเดียวของแบรนด์ ใช้บนพื้นที่ไม่เกิน ~10% ของแต่ละหน้าจอ ความจำกัดคือสิ่งที่ทำให้มันมีพลัง
 
-**The 4.5:1 Rule (WCAG 2.2 AA).** ผู้อ่านหลักมีคนไข้หลัง optic neuritis (contrast sensitivity ต่ำ) และผู้สูงอายุ ตัวอักษรทุกจุดต้องมี contrast ≥4.5:1 กับพื้น (ตัวใหญ่ ≥24px หรือ ≥18.66px ตัวหนา ได้ ≥3:1) และไอคอน เส้นขอบช่องกรอก และแท่งกราฟ ≥3:1 ตรวจค่าก่อนเพิ่มสีใหม่ทุกครั้ง
+**The 4.5:1 Rule (WCAG 2.2 AA).** ผู้อ่านหลักมีคนไข้หลัง optic neuritis (contrast sensitivity ต่ำ) และผู้สูงอายุ ตัวอักษรทุกจุดต้องมี contrast ≥4.5:1 กับพื้น (ตัวใหญ่ ≥1.5rem (24px) หรือ ≥1.1667rem (18.66px) ตัวหนา ได้ ≥3:1) และไอคอน เส้นขอบช่องกรอก และแท่งกราฟ ≥3:1 ตรวจค่าก่อนเพิ่มสีใหม่ทุกครั้ง
 
 **The Not-Color-Alone Rule.** ห้ามสื่อความหมายด้วยสีอย่างเดียว ต้องมีรูปทรง ลาย หรือข้อความกำกับเสมอ เช่น วัคซีนหลัก = จุดทึบ วัคซีนเสริม = วงแหวนกลวง (พร้อมข้อความสำหรับ screen reader) · กราฟ EEG: แดงทึบ / ส้มลายขีด / เทาเข้ม · ลิงก์กลางประโยคต้องขีดเส้นใต้
 
@@ -152,19 +152,21 @@ components:
 **Character:** เรียบ อ่านง่าย เป็นกลาง ไม่มีบุคลิกแฟชั่น — เหมาะกับเนื้อหาการแพทย์ที่ต้องการความชัดเจนมากกว่าสไตล์ ลำดับชั้นสร้างด้วยขนาดและน้ำหนัก ไม่ใช่ด้วยการเปลี่ยนฟอนต์
 
 ### Hierarchy
-- **Display** (700, clamp 32–52px, lh 1.1): หัวเรื่อง hero หน้าเดียวต่อหน้า
-- **Headline** (700, 32px): หัวข้อ section
-- **Title** (700, 22px): หัวการ์ด หัวข้ออาการ
-- **Body** (400, 18px, lh 1.7): เนื้อความหลัก max-width ~760px เพื่อคงความยาวบรรทัดที่อ่านสบาย
-- **Label** (700, 14px, letter-spacing 0.02em): eyebrow, ป้ายกำกับ, badge — มักเป็นสี teal
+- **Display** (700, `clamp(2rem, 5vw, 3.25rem)` ≈ 32–52px, lh 1.1): หัวเรื่อง hero หน้าเดียวต่อหน้า
+- **Headline** (700, 2rem ≈ 32px): หัวข้อ section
+- **Title** (700, 1.375rem ≈ 22px): หัวการ์ด หัวข้ออาการ
+- **Body** (400, 1.125rem ≈ 18px, lh 1.7): เนื้อความหลัก max-width ~760px เพื่อคงความยาวบรรทัดที่อ่านสบาย
+- **Label** (700, 0.875rem ≈ 14px, letter-spacing 0.02em): eyebrow, ป้ายกำกับ, badge — มักเป็นสี teal
 
-**The Legible-First Rule.** เนื้อความหลักไม่เล็กกว่า 16px และคง line-height ≥1.7 เพราะผู้อ่านจำนวนมากเป็นผู้สูงอายุที่มีอาการทางระบบประสาท
+**The Legible-First Rule.** เนื้อความหลักไม่เล็กกว่า 1rem (16px) และคง line-height ≥1.7 เพราะผู้อ่านจำนวนมากเป็นผู้สูงอายุที่มีอาการทางระบบประสาท
+
+**The Rem-Only Rule.** ขนาดตัวอักษรทุกจุดใช้ `rem` (หรือ `em`/`clamp()` ที่ค่าต่ำสุดเป็น rem) ห้ามใช้ `px` เพราะ px ไม่ขยายตามการตั้งค่าขนาดตัวอักษรของเบราว์เซอร์/Android (WCAG 1.4.4) · ค่า ≈px ในเอกสารนี้คิดจาก root 16px · ต้องขยายตัวอักษร 200% ที่จอกว้าง 320px ได้โดยไม่ต้องเลื่อนแนวนอน (WCAG 1.4.10)
 
 ## Layout
 
 คอนเทนเนอร์กว้าง `min(1120px, 100% − 32px)` กึ่งกลางหน้า · section เว้นบน-ล่าง 64px, hero 72px · grid เนื้อหาเป็นการ์ดในกริด 2–3 คอลัมน์ (`cards.two` / `cards.three`) · hero เป็นกริด 1.2fr / 0.8fr (เนื้อหา / การ์ดรูปแพทย์)
 
-**Responsive:** ที่ ≤900px กริดทั้งหมดยุบเป็นคอลัมน์เดียว · ที่ ≤720px ซ่อนลิงก์ข้อความในเมนู เหลือปุ่มโทร/LINE และแสดง **แถบปุ่มลอยล่างจอ** (โทร/LINE/เวลาทำการ, min-height 48px) พร้อมเว้น padding-bottom 76px กันปุ่มบังเนื้อหา
+**Responsive:** ที่ ≤900px กริดทั้งหมดยุบเป็นคอลัมน์เดียว · ที่ ≤720px ซ่อนลิงก์ข้อความในเมนู เหลือปุ่มโทร/LINE และแสดง **แถบปุ่มลอยล่างจอ** (โทร/LINE/เวลาทำการ, min-height 48px) พร้อมเว้น `padding-bottom: calc(4.75rem + env(safe-area-inset-bottom))` กันปุ่มบังเนื้อหา (เป็น rem เพื่อให้พอเมื่อขยายตัวอักษร)
 
 **The Card-Is-The-Unit Rule.** ทุกบล็อกเนื้อหา (บริการ อาการ FAQ คลิป ราคาวัคซีน) อยู่ในการ์ดขาวขอบ `border` เสมอ ความสม่ำเสมอนี้คือโครงของทั้งเว็บ
 
