@@ -1471,7 +1471,19 @@ ul.vaccine-items {
   overflow-wrap: anywhere;
 }
 
+/* a11y (focus visible): .btn เดิม transition ทุก property → วงแหวน focus ค่อย ๆ หนาขึ้น 0.2s ให้ขึ้นทันที เหลือแค่การยกตัวตอน hover */
+.ms-page .btn {
+  transition-property: transform;
+}
+
 @media (max-width: 720px) {
+  /* a11y (focus not obscured 2.4.11 / reflow 1.4.10): แถบบนสูง 137px ตั้งแต่ขนาดปกติ และ 365px (57% ของจอ)
+     เมื่อขยายตัวอักษร 200% ทำให้สิ่งที่ focus อยู่และหัวข้อถูกบัง · บนมือถือมีแถบปุ่มล่าง (โทร/LINE) อยู่แล้ว
+     จึงให้แถบบนเลื่อนไปกับหน้า หน้าตาตอนเปิดหน้าเหมือนเดิม */
+  .ms-page .navbar {
+    position: static;
+  }
+
   .ms-page .nav-links .btn {
     font-size: 0.9375rem;
     padding: 0 12px;
