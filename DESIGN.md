@@ -15,36 +15,39 @@ colors:
   surface: "#ffffff"
   hero-tint: "#eff6ff"
   section-alt: "#eef2ff"
-  line-green: "#22c55e"
-  vaccine-amber: "#f59e0b"
-  vaccine-orange: "#f97316"
+  line-green: "#15803d"
+  vaccine-amber: "#b45309"
+  vaccine-orange: "#c2410c"
+  vaccine-optional-light: "#fde68a"
+  focus-ring: "#1d4ed8"
+  focus-ring-on-dark: "#fde68a"
   danger: "#ef4444"
   danger-deep: "#b91c1c"
 typography:
   display:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "clamp(32px, 5vw, 52px)"
+    fontSize: "clamp(2rem, 5vw, 3.25rem)"
     fontWeight: 700
     lineHeight: 1.1
     letterSpacing: "normal"
   headline:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "32px"
+    fontSize: "2rem"
     fontWeight: 700
     lineHeight: 1.2
   title:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "22px"
+    fontSize: "1.375rem"
     fontWeight: 700
     lineHeight: 1.3
   body:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "18px"
+    fontSize: "1.125rem"
     fontWeight: 400
     lineHeight: 1.7
   label:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "14px"
+    fontSize: "0.875rem"
     fontWeight: 700
     letterSpacing: "0.02em"
 rounded:
@@ -122,17 +125,23 @@ components:
 ### Neutral
 - **Ink** (`ink` #0f172a): หัวข้อหลัก ข้อความเข้ม พื้นหลัง footer ปุ่มดำ
 - **Body Slate / Muted Slate** (`body-slate` #334155 / `muted-slate` #475569): เนื้อความ ย่อหน้า
-- **Soft / Faint Slate** (`soft-slate` #64748b / `faint-slate` #94a3b8): คำอธิบายรอง meta ข้อความ mono
+- **Soft Slate** (`soft-slate` #64748b): คำอธิบายรอง meta ข้อความ mono — **ใช้บนพื้นขาว/`page-bg` เท่านั้น** (4.76:1 บนขาว แต่เหลือ 4.26:1 บน `section-alt` ซึ่งไม่ผ่าน) บนพื้นสีอ่อนอื่นให้ใช้ `muted-slate` แทน
+- **Faint Slate** (`faint-slate` #94a3b8): **ห้ามใช้เป็นสีตัวอักษรหรือไอคอน** (2.56:1 บนขาว) ใช้ได้เฉพาะเส้นตกแต่ง/พื้นหลังที่ไม่สื่อความหมาย ข้อความรองที่เคยใช้สีนี้เปลี่ยนเป็น `muted-slate` #475569 (7.2:1)
 - **Border** (`border` #e2e8f0): เส้นขอบการ์ดและตาราง เส้นคั่นทุกจุด
 - **Page BG / Surface** (`page-bg` #f8fafc / `surface` #ffffff): พื้นหน้าเว็บ / พื้นการ์ด
 - **Hero Tint / Section Alt** (`hero-tint` #eff6ff / `section-alt` #eef2ff): แถบพื้นหลังอ่อนสลับส่วน
 
 ### Tertiary (บริบทเฉพาะ — ห้ามใช้นอกบริบท)
-- **LINE Green** (`line-green` #22c55e): ปุ่ม LINE เท่านั้น (สีแบรนด์ LINE)
-- **Vaccine Amber / Orange** (`vaccine-amber` #f59e0b / `vaccine-orange` #f97316): เฉพาะหน้า `/vaccine` (hero, หัวตาราง, ราคา)
+- **LINE Green** (`line-green` #15803d): ปุ่ม LINE เท่านั้น — เดิม #22c55e แต่ตัวอักษรขาวบนสีนั้นได้แค่ 2.27:1 จึงใช้เขียวเข้มโทนเดิม (5.02:1) ห้ามกลับไปใช้เขียวสว่างกับตัวอักษรขาว
+- **Vaccine Amber / Orange** (`vaccine-amber` #b45309 / `vaccine-orange` #c2410c): เฉพาะหน้า `/vaccine` (hero gradient, หัวตาราง, ราคา, วงแหวนวัคซีนเสริม) — เดิม #f59e0b / #f97316 แต่ตัวอักษรขาวบนสีเหล่านั้นได้แค่ 2.2–2.8:1 โทนเข้มนี้ได้ ≥5:1
+- **Vaccine Optional Light** (`vaccine-optional-light` #fde68a): วงแหวน "วัคซีนเสริม" บน hero สีส้ม
 - **Danger / Danger Deep** (`danger` #ef4444 / `danger-deep` #b91c1c): เฉพาะกล่องเตือน red flag ของอาการอันตราย
 
 **The One Voice Rule.** teal-น้ำเงินคือเสียงเดียวของแบรนด์ ใช้บนพื้นที่ไม่เกิน ~10% ของแต่ละหน้าจอ ความจำกัดคือสิ่งที่ทำให้มันมีพลัง
+
+**The 4.5:1 Rule (WCAG 2.2 AA).** ผู้อ่านหลักมีคนไข้หลัง optic neuritis (contrast sensitivity ต่ำ) และผู้สูงอายุ ตัวอักษรทุกจุดต้องมี contrast ≥4.5:1 กับพื้น (ตัวใหญ่ ≥1.5rem (24px) หรือ ≥1.1667rem (18.66px) ตัวหนา ได้ ≥3:1) และไอคอน เส้นขอบช่องกรอก และแท่งกราฟ ≥3:1 ตรวจค่าก่อนเพิ่มสีใหม่ทุกครั้ง
+
+**The Not-Color-Alone Rule.** ห้ามสื่อความหมายด้วยสีอย่างเดียว ต้องมีรูปทรง ลาย หรือข้อความกำกับเสมอ เช่น วัคซีนหลัก = จุดทึบ วัคซีนเสริม = วงแหวนกลวง (พร้อมข้อความสำหรับ screen reader) · กราฟ EEG: แดงทึบ / ส้มลายขีด / เทาเข้ม · ลิงก์กลางประโยคต้องขีดเส้นใต้
 
 **The Red-Means-Danger Rule.** สีแดงใช้ได้เฉพาะสัญญาณอันตรายทางคลินิก (อาการที่ต้องไปห้องฉุกเฉิน) ห้ามใช้แดงเป็นสีตกแต่งหรือปุ่ม CTA เด็ดขาด
 
@@ -143,19 +152,21 @@ components:
 **Character:** เรียบ อ่านง่าย เป็นกลาง ไม่มีบุคลิกแฟชั่น — เหมาะกับเนื้อหาการแพทย์ที่ต้องการความชัดเจนมากกว่าสไตล์ ลำดับชั้นสร้างด้วยขนาดและน้ำหนัก ไม่ใช่ด้วยการเปลี่ยนฟอนต์
 
 ### Hierarchy
-- **Display** (700, clamp 32–52px, lh 1.1): หัวเรื่อง hero หน้าเดียวต่อหน้า
-- **Headline** (700, 32px): หัวข้อ section
-- **Title** (700, 22px): หัวการ์ด หัวข้ออาการ
-- **Body** (400, 18px, lh 1.7): เนื้อความหลัก max-width ~760px เพื่อคงความยาวบรรทัดที่อ่านสบาย
-- **Label** (700, 14px, letter-spacing 0.02em): eyebrow, ป้ายกำกับ, badge — มักเป็นสี teal
+- **Display** (700, `clamp(2rem, 5vw, 3.25rem)` ≈ 32–52px, lh 1.1): หัวเรื่อง hero หน้าเดียวต่อหน้า
+- **Headline** (700, 2rem ≈ 32px): หัวข้อ section
+- **Title** (700, 1.375rem ≈ 22px): หัวการ์ด หัวข้ออาการ
+- **Body** (400, 1.125rem ≈ 18px, lh 1.7): เนื้อความหลัก max-width ~760px เพื่อคงความยาวบรรทัดที่อ่านสบาย
+- **Label** (700, 0.875rem ≈ 14px, letter-spacing 0.02em): eyebrow, ป้ายกำกับ, badge — มักเป็นสี teal
 
-**The Legible-First Rule.** เนื้อความหลักไม่เล็กกว่า 16px และคง line-height ≥1.7 เพราะผู้อ่านจำนวนมากเป็นผู้สูงอายุที่มีอาการทางระบบประสาท
+**The Legible-First Rule.** เนื้อความหลักไม่เล็กกว่า 1rem (16px) และคง line-height ≥1.7 เพราะผู้อ่านจำนวนมากเป็นผู้สูงอายุที่มีอาการทางระบบประสาท
+
+**The Rem-Only Rule.** ขนาดตัวอักษรทุกจุดใช้ `rem` (หรือ `em`/`clamp()` ที่ค่าต่ำสุดเป็น rem) ห้ามใช้ `px` เพราะ px ไม่ขยายตามการตั้งค่าขนาดตัวอักษรของเบราว์เซอร์/Android (WCAG 1.4.4) · ค่า ≈px ในเอกสารนี้คิดจาก root 16px · ต้องขยายตัวอักษร 200% ที่จอกว้าง 320px ได้โดยไม่ต้องเลื่อนแนวนอน (WCAG 1.4.10)
 
 ## Layout
 
 คอนเทนเนอร์กว้าง `min(1120px, 100% − 32px)` กึ่งกลางหน้า · section เว้นบน-ล่าง 64px, hero 72px · grid เนื้อหาเป็นการ์ดในกริด 2–3 คอลัมน์ (`cards.two` / `cards.three`) · hero เป็นกริด 1.2fr / 0.8fr (เนื้อหา / การ์ดรูปแพทย์)
 
-**Responsive:** ที่ ≤900px กริดทั้งหมดยุบเป็นคอลัมน์เดียว · ที่ ≤720px ซ่อนลิงก์ข้อความในเมนู เหลือปุ่มโทร/LINE และแสดง **แถบปุ่มลอยล่างจอ** (โทร/LINE/เวลาทำการ, min-height 48px) พร้อมเว้น padding-bottom 76px กันปุ่มบังเนื้อหา
+**Responsive:** ที่ ≤900px กริดทั้งหมดยุบเป็นคอลัมน์เดียว · ที่ ≤720px ซ่อนลิงก์ข้อความในเมนู เหลือปุ่มโทร/LINE และแสดง **แถบปุ่มลอยล่างจอ** (โทร/LINE/เวลาทำการ, min-height 48px) พร้อมเว้น `padding-bottom: calc(4.75rem + env(safe-area-inset-bottom))` กันปุ่มบังเนื้อหา (เป็น rem เพื่อให้พอเมื่อขยายตัวอักษร)
 
 **The Card-Is-The-Unit Rule.** ทุกบล็อกเนื้อหา (บริการ อาการ FAQ คลิป ราคาวัคซีน) อยู่ในการ์ดขาวขอบ `border` เสมอ ความสม่ำเสมอนี้คือโครงของทั้งเว็บ
 
@@ -166,6 +177,11 @@ components:
 ### Shadow Vocabulary
 - **Signature Card Shadow** (`box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05)`): การ์ด กล่อง CTA ตาราง แกลเลอรี — เงาเดียวที่ใช้ทั่วเว็บ
 - **Navbar/Mobile-bar Blur** (`backdrop-filter: blur(10px)` บนพื้นขาว 95–97%): แถบนำทางบนและแถบปุ่มลอยล่าง
+
+### Focus Ring
+- **Default** (`focus-ring` #1d4ed8): `outline: 3px solid; outline-offset: 3px` ผ่าน `:focus-visible` (6.7:1 บนขาว)
+- **บนพื้นเข้ม** (`focus-ring-on-dark` #fde68a): footer, hero เข้มของ `/learn`, hero วัคซีน — เพราะสีน้ำเงินบน `ink` ได้แค่ 2.66:1
+- ห้ามใส่ `outline: none` กับสิ่งที่กดได้
 
 **The One-Shadow Rule.** ใช้เงา signature ค่าเดียวทั้งเว็บ ห้ามเพิ่มระดับเงาหลายชั้น ความสม่ำเสมอทำให้ดูสงบและมืออาชีพ
 
@@ -178,9 +194,9 @@ components:
 ### Buttons
 - **Shape:** แคปซูล (`pill` 999px), min-height 44px (ขนาดใหญ่ big 50px), font-weight 700
 - **Call (primary CTA):** พื้น `primary-teal` ตัวอักษรขาว — ปุ่มโทร ปุ่มหลักของคลินิก
-- **LINE:** พื้น `line-green` ตัวอักษรขาว
+- **LINE:** พื้น `line-green` (#15803d) ตัวอักษรขาว
 - **Dark / Outline:** ดำ `ink` ตัวขาว / ขาวขอบ `border` ตัว `ink`
-- **Hover:** ยกขึ้น `translateY(-1px)` transition 0.2s ease (ไม่เปลี่ยนสีรุนแรง)
+- **Hover:** ยกขึ้น `translateY(-1px)` transition 0.2s ease (ไม่เปลี่ยนสีรุนแรง) · ปิดเมื่อผู้ใช้ตั้ง `prefers-reduced-motion`
 
 ### Cards / Containers
 - **Corner:** `xl` 24px (บางจุด `xxl` 28px)
@@ -212,4 +228,5 @@ components:
 - **Don't** ใช้คำว่า **"นักลงทุน" / "หมอลงทุน"** ในทุกส่วนของเว็บ
 - **Don't** ใช้ gradient ม่วง การ์ดซ้อนการ์ด หรือลายเซ็น "AI ทำ" ที่ทำให้ดูไม่น่าเชื่อถือ
 - **Don't** ใช้สีแดงหรือสีอุ่น (ส้ม/เหลือง) นอกบริบทที่กำหนด (แดง = red flag, อุ่น = หน้าวัคซีน)
+- **Don't** วางตัวอักษรขาวบนสีสว่าง (เขียว #22c55e, ส้ม #f59e0b/#f97316) หรือใช้ `faint-slate` #94a3b8 เป็นสีตัวอักษร — contrast ไม่ผ่านสำหรับผู้อ่านสายตาเลือนราง
 - **Don't** เพิ่มระดับเงาหลายชั้นหรือเงาหนัก — คงระบบแบนนุ่มชั้นเดียว
