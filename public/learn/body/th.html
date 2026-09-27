@@ -25,7 +25,7 @@
   img{max-width:100%}
   [hidden]{display:none!important}
   .sw-bar{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;padding:6px 20px;min-height:48px;
-    background:#ffffff;border-bottom:1px solid #e2e8f0;font:600 15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+    background:#ffffff;border-bottom:1px solid #e2e8f0;font:600 0.9375rem/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
   .sw-bar a{color:#0f766e;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
   .sw-bar a:hover{text-decoration:underline}
   .sw-bar .sw-brand{color:#0f172a;font-weight:700}
@@ -128,7 +128,7 @@
     background:var(--paper);
     color:var(--ink);
     font-family:var(--f-body);
-    font-size:16px;
+    font-size:1rem;
     line-height:1.65;
     -webkit-font-smoothing:antialiased;
   }
@@ -140,11 +140,11 @@
 
   /* ---------- header ---------- */
   .masthead{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px 28px;justify-content:space-between;margin-bottom:26px}
-  .eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--eyebrow,var(--accent));margin-bottom:8px}
-  h1{font-size:clamp(29px,4.6vw,44px);letter-spacing:-.01em}
-  .lede{color:var(--ink-2);max-width:46ch;margin-top:8px;font-size:15.5px}
+  .eyebrow{font-family:var(--f-mono);font-size:0.71875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--eyebrow,var(--accent));margin-bottom:8px}
+  h1{font-size:clamp(1.8125rem,4.6vw,2.75rem);letter-spacing:-.01em}
+  .lede{color:var(--ink-2);max-width:46ch;margin-top:8px;font-size:0.96875rem}
   .hint{display:flex;align-items:center;gap:9px;background:var(--accent-wash);color:var(--ink);
-        border-radius:999px;padding:8px 15px 8px 11px;font-size:13.5px;font-weight:500}
+        border-radius:999px;padding:8px 15px 8px 11px;font-size:0.84375rem;font-weight:500}
   .hint .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;animation:blip 2.2s infinite}
   @keyframes blip{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.45}}
 
@@ -161,15 +161,15 @@
   .layer[aria-pressed="true"]{border-color:var(--hue);background:var(--panel);box-shadow:var(--shadow)}
   .layer[aria-pressed="true"]::before{opacity:1;height:6px}
   .layer .glyph{width:34px;height:34px;color:var(--hue);margin-top:4px}
-  .layer .name{font-family:var(--f-display);font-size:15.5px;line-height:1.2}
-  .layer .num{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);letter-spacing:.02em}
+  .layer .name{font-family:var(--f-display);font-size:0.96875rem;line-height:1.2}
+  .layer .num{font-family:var(--f-mono);font-size:0.6875rem;color:var(--ink-2);letter-spacing:.02em}
   .layer[aria-pressed="true"] .name{color:var(--hue)}
 
   /* ---------- stage ---------- */
   .stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:16px;align-items:stretch}
   .card{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
   .figure-card{padding:10px 10px 14px;display:flex;flex-direction:column;gap:8px;position:relative}
-  .figure-card .caption{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  .figure-card .caption{font-family:var(--f-mono);font-size:0.6875rem;letter-spacing:.1em;text-transform:uppercase;
     color:var(--ink-2);text-align:center}
   .bodysvg{width:100%;height:auto;max-height:60vh;display:block;margin:0 auto;touch-action:manipulation}
 
@@ -212,43 +212,43 @@
   .hotring{fill:none;stroke:currentColor;stroke-width:2;opacity:0}
   .hot.on + .hotring{opacity:.5;animation:ring 1.6s ease-out infinite}
   @keyframes ring{0%{r:9;opacity:.5}100%{r:20;opacity:0}}
-  .hotlabel{font-family:var(--f-mono);font-size:9px;font-weight:600;fill:var(--paper);pointer-events:none;text-anchor:middle;dominant-baseline:central}
+  .hotlabel{font-family:var(--f-mono);font-size:0.5625rem;font-weight:600;fill:var(--paper);pointer-events:none;text-anchor:middle;dominant-baseline:central}
 
   /* ---------- info panel ---------- */
   .info{padding:20px 22px 22px;display:flex;flex-direction:column;gap:14px}
-  .info .tag{align-self:flex-start;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  .info .tag{align-self:flex-start;font-family:var(--f-mono);font-size:0.6875rem;letter-spacing:.12em;text-transform:uppercase;
     color:var(--hue);border:1.5px solid var(--hue);border-radius:999px;padding:3px 10px}
-  .info h2{font-size:24px}
-  .info .latin{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);letter-spacing:.04em;margin-top:-8px}
-  .info .body{font-size:15.5px;color:var(--ink)}
-  .info .wow{background:var(--panel-2);border-radius:10px;padding:12px 14px;font-size:14.5px;display:flex;gap:10px;align-items:flex-start}
+  .info h2{font-size:1.5rem}
+  .info .latin{font-family:var(--f-mono);font-size:0.75rem;color:var(--ink-2);letter-spacing:.04em;margin-top:-8px}
+  .info .body{font-size:0.96875rem;color:var(--ink)}
+  .info .wow{background:var(--panel-2);border-radius:10px;padding:12px 14px;font-size:0.90625rem;display:flex;gap:10px;align-items:flex-start}
   .info .wow b{font-family:var(--f-display);color:var(--hue);white-space:nowrap}
   .figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);
     border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:auto}
   .fig{background:var(--panel);padding:11px 13px}
-  .fig .v{font-family:var(--f-mono);font-size:20px;font-weight:600;color:var(--hue);font-variant-numeric:tabular-nums;line-height:1.2}
-  .fig .k{font-size:12.5px;color:var(--ink-2);line-height:1.4}
+  .fig .v{font-family:var(--f-mono);font-size:1.25rem;font-weight:600;color:var(--hue);font-variant-numeric:tabular-nums;line-height:1.2}
+  .fig .k{font-size:0.78125rem;color:var(--ink-2);line-height:1.4}
 
   /* ---------- lab bench ---------- */
   .bench{margin-top:16px;padding:20px 22px 22px;display:grid;gap:16px}
   .bench-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-  .bench-head h3{font-size:19px}
-  .bench-head .sub{color:var(--ink-2);font-size:14px}
+  .bench-head h3{font-size:1.1875rem}
+  .bench-head .sub{color:var(--ink-2);font-size:0.875rem}
   .toy{display:none;gap:18px;align-items:center}
   .toy.on{display:flex;flex-wrap:wrap}
   .btn{background:var(--accent);color:var(--accent-ink);border:none;border-radius:10px;padding:11px 20px;
-    font-family:var(--f-display);font-size:15px;transition:filter .15s,transform .1s}
+    font-family:var(--f-display);font-size:0.9375rem;transition:filter .15s,transform .1s}
   .btn:hover{filter:brightness(1.08)}
   .btn:active{transform:translateY(1px)}
   .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-family:var(--f-body);font-weight:600}
-  .readout{font-family:var(--f-mono);font-size:15px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-  .readout b{font-size:26px;color:var(--hue);font-weight:600}
+  .readout{font-family:var(--f-mono);font-size:0.9375rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .readout b{font-size:1.625rem;color:var(--hue);font-weight:600}
 
   /* bone toy */
   .agebar{display:flex;gap:0;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
-  .agebar button{background:var(--panel);border:none;padding:10px 16px;font-weight:600;font-size:14.5px}
+  .agebar button{background:var(--panel);border:none;padding:10px 16px;font-weight:600;font-size:0.90625rem}
   .agebar button[aria-pressed="true"]{background:var(--c-bone);color:var(--paper)}
-  .counter{font-family:var(--f-mono);font-size:42px;font-weight:600;color:var(--c-bone);font-variant-numeric:tabular-nums;line-height:1}
+  .counter{font-family:var(--f-mono);font-size:2.625rem;font-weight:600;color:var(--c-bone);font-variant-numeric:tabular-nums;line-height:1}
 
   /* muscle toy */
   .armbox{width:190px;height:150px;flex:none}
@@ -267,11 +267,11 @@
   @keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.16)}26%{transform:scale(1)}38%{transform:scale(1.08)}52%{transform:scale(1)}}
   input[type=range]{width:min(260px,60vw);accent-color:var(--c-blood)}
   .slider-wrap{display:flex;flex-direction:column;gap:6px}
-  .slider-wrap label{font-size:14px;color:var(--ink-2)}
+  .slider-wrap label{font-size:0.875rem;color:var(--ink-2)}
 
   /* nerve toy */
   .rt{width:150px;height:150px;border-radius:20px;border:none;display:grid;place-items:center;
-    background:var(--panel-2);color:var(--ink);font-family:var(--f-display);font-size:17px;text-align:center;padding:10px;
+    background:var(--panel-2);color:var(--ink);font-family:var(--f-display);font-size:1.0625rem;text-align:center;padding:10px;
     white-space:pre-line;line-height:1.4;
     transition:background .12s,color .12s;flex:none}
   .rt[data-state="wait"]{background:var(--c-blood);color:#fff}
@@ -287,31 +287,31 @@
   /* digestion toy */
   .journey{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
   .stopbtn{display:flex;align-items:center;gap:7px;background:var(--panel);border:1.5px solid var(--line);
-    border-radius:999px;padding:6px 13px;font-size:14px;font-weight:600}
+    border-radius:999px;padding:6px 13px;font-size:0.875rem;font-weight:600}
   .stopbtn .sw{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none}
   .stopbtn[aria-pressed="true"]{border-color:var(--c-dig);color:var(--c-dig)}
   .stopbtn[aria-pressed="true"] .sw{background:var(--c-dig)}
-  .stoparrow{color:var(--ink-2);font-family:var(--f-mono);font-size:13px}
+  .stoparrow{color:var(--ink-2);font-family:var(--f-mono);font-size:0.8125rem}
   .stopcard{background:var(--panel-2);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
   .stopcard .row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .stopcard h4{margin:0;font-family:var(--f-display);font-size:18px;font-weight:500}
-  .stopcard .time{font-family:var(--f-mono);font-size:13px;color:var(--c-dig);font-weight:600}
-  .stopcard p{font-size:14.5px;color:var(--ink-2)}
+  .stopcard h4{margin:0;font-family:var(--f-display);font-size:1.125rem;font-weight:500}
+  .stopcard .time{font-family:var(--f-mono);font-size:0.8125rem;color:var(--c-dig);font-weight:600}
+  .stopcard p{font-size:0.90625rem;color:var(--ink-2)}
 
   /* kidney toy */
   .shades{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1.5px solid var(--line)}
   .shade{width:52px;height:62px;border:none;position:relative;transition:transform .15s}
   .shade:hover{transform:translateY(-3px)}
-  .shade span{position:absolute;left:0;right:0;bottom:5px;font-family:var(--f-mono);font-size:11px;color:#3A2A08}
+  .shade span{position:absolute;left:0;right:0;bottom:5px;font-family:var(--f-mono);font-size:0.6875rem;color:#3A2A08}
   .shade[aria-pressed="true"]::after{content:"";position:absolute;inset:0;border:3px solid var(--ink);border-radius:2px}
-  .hydra{background:var(--panel-2);border-radius:12px;padding:13px 16px;font-size:14.5px;flex:1 1 260px}
+  .hydra{background:var(--panel-2);border-radius:12px;padding:13px 16px;font-size:0.90625rem;flex:1 1 260px}
   .hydra b{font-family:var(--f-display);display:block;margin-bottom:3px;color:var(--c-kidney)}
 
   /* skin toy */
   .skinsvg{width:100%;height:auto;color:var(--c-skin)}
   .skinpart{cursor:pointer;transition:opacity .2s}
   .skinpart:hover{opacity:.85}
-  .ticker{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:26px;font-weight:600;color:var(--c-skin)}
+  .ticker{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:1.625rem;font-weight:600;color:var(--c-skin)}
 
   /* eye + ear toys */
   .eyesvg{width:100%;height:auto;color:var(--c-eye)}
@@ -321,7 +321,7 @@
   .pupilsvg{width:132px;height:85px;color:var(--c-eye);flex:none}
   .tones{display:flex;gap:7px;flex-wrap:wrap}
   .tonebtn{background:var(--panel);border:1.5px solid var(--line);border-radius:9px;padding:8px 13px;
-    font-family:var(--f-mono);font-size:13.5px;font-weight:600;transition:border-color .15s,background .15s}
+    font-family:var(--f-mono);font-size:0.84375rem;font-weight:600;transition:border-color .15s,background .15s}
   .tonebtn:hover{border-color:var(--c-ear)}
   .tonebtn.playing{background:var(--c-ear);color:var(--paper);border-color:var(--c-ear)}
 
@@ -333,33 +333,33 @@
   .lobe.on{opacity:1}
   .lobelist{display:flex;flex-direction:column;gap:5px}
   .lobebtn{display:flex;align-items:center;gap:10px;background:transparent;border:1.5px solid transparent;
-    border-radius:9px;padding:7px 10px;text-align:left;font-size:14.5px;font-weight:600;width:100%}
+    border-radius:9px;padding:7px 10px;text-align:left;font-size:0.90625rem;font-weight:600;width:100%}
   .lobebtn .sw{width:14px;height:14px;border-radius:4px;flex:none}
   .lobebtn[aria-pressed="true"]{border-color:var(--line);background:var(--panel-2)}
-  .lobedesc{font-size:14.5px;color:var(--ink-2);margin-top:8px;min-height:3.2em}
+  .lobedesc{font-size:0.90625rem;color:var(--ink-2);margin-top:8px;min-height:3.2em}
   .lobedesc b{color:var(--ink)}
 
   /* ---------- quiz ---------- */
   .quiz{margin-top:34px}
   .quiz-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
-  .quiz-head h2{font-size:24px}
-  .score{font-family:var(--f-mono);font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .quiz-head h2{font-size:1.5rem}
+  .score{font-family:var(--f-mono);font-size:0.875rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
   .qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
   .q{padding:16px 18px 18px;display:flex;flex-direction:column;gap:11px}
-  .q .qn{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--ink-2)}
-  .q .qt{font-family:var(--f-display);font-size:16.5px;line-height:1.5}
+  .q .qn{font-family:var(--f-mono);font-size:0.6875rem;letter-spacing:.14em;color:var(--ink-2)}
+  .q .qt{font-family:var(--f-display);font-size:1.03125rem;line-height:1.5}
   .opts{display:flex;flex-direction:column;gap:7px}
   .opt{background:var(--panel);border:1.5px solid var(--line);border-radius:9px;padding:9px 13px;text-align:left;
-    font-size:14.5px;transition:border-color .15s,background .15s}
+    font-size:0.90625rem;transition:border-color .15s,background .15s}
   .opt:hover:not(:disabled){border-color:var(--accent)}
   .opt:disabled{cursor:default}
   .opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent);font-weight:600}
   .opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent);text-decoration:line-through}
-  .feedback{font-size:14px;color:var(--ink-2);min-height:1.4em}
+  .feedback{font-size:0.875rem;color:var(--ink-2);min-height:1.4em}
   .feedback.shown{color:var(--ink)}
 
   footer{margin-top:44px;padding-top:18px;border-top:1.5px solid var(--line);
-    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:var(--ink-2);font-size:13.5px}
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:var(--ink-2);font-size:0.84375rem}
   footer b{font-family:var(--f-display);font-weight:500;color:var(--ink)}
 
   @media (max-width:900px){
@@ -452,9 +452,9 @@
       </div>
       <div>
         <div class="counter" id="boneCount">206</div>
-        <div class="readout" style="font-size:14px" id="boneNote">กระดูกของผู้ใหญ่ 206 ชิ้น</div>
+        <div class="readout" style="font-size:0.875rem" id="boneNote">กระดูกของผู้ใหญ่ 206 ชิ้น</div>
       </div>
-      <p style="flex:1 1 260px;font-size:14.5px;color:var(--ink-2);min-width:240px" id="boneExplain">
+      <p style="flex:1 1 260px;font-size:0.90625rem;color:var(--ink-2);min-width:240px" id="boneExplain">
         ตอนเกิด กระดูกหลายชิ้นยังแยกกันอยู่เพื่อให้ตัวเราโค้งงอและโตได้ พอโตขึ้นกระดูกบางชิ้นจะเชื่อมติดกันเป็นชิ้นเดียว จำนวนเลยลดลง
       </p>
     </div>
@@ -476,7 +476,7 @@
       </svg>
       <div style="display:flex;flex-direction:column;gap:10px;flex:1 1 280px">
         <button class="btn" type="button" id="flexBtn">งอแขน</button>
-        <p style="font-size:14.5px;color:var(--ink-2)" id="flexText">
+        <p style="font-size:0.90625rem;color:var(--ink-2)" id="flexText">
           กล้ามเนื้อ “ดึง” ได้อย่างเดียว ดันไม่ได้ มันเลยต้องทำงานเป็นคู่เสมอ กดปุ่มแล้วดูว่ามัดไหนหดตัว
         </p>
       </div>
@@ -496,7 +496,7 @@
       </div>
       <div style="flex:1 1 220px">
         <div class="readout"><b id="perDay">115,200</b></div>
-        <div class="readout" style="font-size:13.5px">ครั้งต่อวัน ถ้าเต้นเท่านี้ตลอดยี่สิบสี่ชั่วโมง</div>
+        <div class="readout" style="font-size:0.84375rem">ครั้งต่อวัน ถ้าเต้นเท่านี้ตลอดยี่สิบสี่ชั่วโมง</div>
       </div>
     </div>
 
@@ -504,8 +504,8 @@
     <div class="toy" data-toy="nerve" style="--hue:var(--c-nerve)">
       <button class="rt" type="button" id="rtBtn" data-state="idle">กดเพื่อเริ่ม</button>
       <div style="flex:1 1 280px;display:flex;flex-direction:column;gap:8px">
-        <div class="readout"><b id="rtBest" style="color:var(--c-nerve)">—</b> <span style="font-size:14px">มิลลิวินาที (เร็วที่สุดของหนู)</span></div>
-        <p style="font-size:14.5px;color:var(--ink-2)" id="rtText">
+        <div class="readout"><b id="rtBest" style="color:var(--c-nerve)">—</b> <span style="font-size:0.875rem">มิลลิวินาที (เร็วที่สุดของหนู)</span></div>
+        <p style="font-size:0.90625rem;color:var(--ink-2)" id="rtText">
           กดเริ่ม แล้วรอ พอกล่องเปลี่ยนเป็นสีเขียวให้กดทันที เวลาที่ได้คือเวลาที่แสงเดินทางเข้าตา สัญญาณวิ่งไปสมอง สมองสั่งกลับมาที่นิ้ว ครบวงจร
         </p>
       </div>
@@ -519,9 +519,9 @@
       </svg>
       <div style="flex:1 1 280px;display:flex;flex-direction:column;gap:9px">
         <button class="btn" type="button" id="breathBtn">เริ่มจับจังหวะหายใจ</button>
-        <div class="readout"><b id="breathPhase" style="color:var(--c-lung);font-size:20px">พร้อมเมื่อไหร่ก็กดเลย</b></div>
-        <div class="readout" style="font-size:13.5px">หายใจช้าๆ ไปแล้ว <span id="breathCount">0</span> รอบ</div>
-        <p style="font-size:14.5px;color:var(--ink-2)">
+        <div class="readout"><b id="breathPhase" style="color:var(--c-lung);font-size:1.25rem">พร้อมเมื่อไหร่ก็กดเลย</b></div>
+        <div class="readout" style="font-size:0.84375rem">หายใจช้าๆ ไปแล้ว <span id="breathCount">0</span> รอบ</div>
+        <p style="font-size:0.90625rem;color:var(--ink-2)">
           วงกลมโตขึ้นให้หายใจเข้า วงกลมเล็กลงให้หายใจออก จังหวะนี้ตั้งใจให้ช้ากว่าปกติ เลยช่วยให้ใจเย็นลงได้
           ปกติเด็กนั่งเฉยๆ จะหายใจราวยี่สิบครั้งต่อนาที หรือราวสองหมื่นครั้งต่อวัน โดยไม่ต้องสั่งเลยสักครั้ง
         </p>
@@ -538,7 +538,7 @@
         </div>
         <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
           <button class="btn" type="button" id="nextStop">สถานีถัดไป</button>
-          <span class="readout" style="font-size:13.5px">ตลอดทางตั้งแต่ปากจนออก <b style="font-size:15px;color:var(--c-dig)">1 ถึง 3 วัน</b></span>
+          <span class="readout" style="font-size:0.84375rem">ตลอดทางตั้งแต่ปากจนออก <b style="font-size:0.9375rem;color:var(--c-dig)">1 ถึง 3 วัน</b></span>
         </div>
       </div>
     </div>
@@ -547,7 +547,7 @@
     <div class="toy" data-toy="kidney" style="--hue:var(--c-kidney)">
       <div style="display:flex;flex-direction:column;gap:8px">
         <div class="shades" id="shades" role="group" aria-label="ตารางสีปัสสาวะ"></div>
-        <span class="readout" style="font-size:12.5px">กดสีที่ใกล้เคียงที่สุด</span>
+        <span class="readout" style="font-size:0.78125rem">กดสีที่ใกล้เคียงที่สุด</span>
       </div>
       <div class="hydra">
         <b id="hydraTitle">เลือกสีดูสิ</b>
@@ -555,7 +555,7 @@
       </div>
       <div style="flex:1 1 180px">
         <div class="readout"><b>180 ลิตร</b></div>
-        <div class="readout" style="font-size:13.5px">คือเลือดที่ไตกรองในหนึ่งวัน แต่ออกมาเป็นฉี่แค่ราวหนึ่งลิตรครึ่ง ที่เหลือถูกทำความสะอาดแล้วเก็บกลับ</div>
+        <div class="readout" style="font-size:0.84375rem">คือเลือดที่ไตกรองในหนึ่งวัน แต่ออกมาเป็นฉี่แค่ราวหนึ่งลิตรครึ่ง ที่เหลือถูกทำความสะอาดแล้วเก็บกลับ</div>
       </div>
     </div>
 
@@ -576,7 +576,7 @@
           <p class="lobedesc" id="skindesc"></p>
           <div style="margin-top:10px">
             <div class="ticker" id="shedTicker">0</div>
-            <div class="readout" style="font-size:13px">เซลล์ผิวที่หลุดร่วงไปแล้ว นับตั้งแต่เปิดหน้านี้</div>
+            <div class="readout" style="font-size:0.8125rem">เซลล์ผิวที่หลุดร่วงไปแล้ว นับตั้งแต่เปิดหน้านี้</div>
           </div>
         </div>
       </div>
@@ -604,7 +604,7 @@
             <div class="slider-wrap">
               <label for="lightLevel">ห้องสว่างแค่ไหน <b id="lightLabel" style="color:var(--c-eye)">แสงกลางวันปกติ</b></label>
               <input type="range" id="lightLevel" min="0" max="100" value="55" step="1" style="accent-color:var(--c-eye)">
-              <span class="readout" style="font-size:13px">ลากไปทางมืด แล้วดูรูม่านตาเบิกกว้างขึ้น</span>
+              <span class="readout" style="font-size:0.8125rem">ลากไปทางมืด แล้วดูรูม่านตาเบิกกว้างขึ้น</span>
             </div>
           </div>
         </div>
@@ -629,9 +629,9 @@
           <div class="lobelist" id="earlist"></div>
           <p class="lobedesc" id="eardesc"></p>
           <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
-            <span class="readout" style="font-size:13.5px">หรี่เสียงลงก่อน แล้วค่อยกดฟังทีละเสียง</span>
+            <span class="readout" style="font-size:0.84375rem">หรี่เสียงลงก่อน แล้วค่อยกดฟังทีละเสียง</span>
             <div class="tones" id="tones"></div>
-            <span class="readout" style="font-size:13px" id="toneNote">ผู้ใหญ่มักไม่ได้ยินเสียงสูงสุดแล้ว หูเรามีเซลล์ขนชุดเดียวตลอดชีวิต ฟังเพลงเบาๆ ไว้นะ</span>
+            <span class="readout" style="font-size:0.8125rem" id="toneNote">ผู้ใหญ่มักไม่ได้ยินเสียงสูงสุดแล้ว หูเรามีเซลล์ขนชุดเดียวตลอดชีวิต ฟังเพลงเบาๆ ไว้นะ</span>
           </div>
         </div>
       </div>
@@ -674,7 +674,7 @@
     <div class="qgrid" id="qgrid"></div>
   </section>
 
-  <section class="ch" id="ch-arena-cta"><div class="card pad stack"><h2 style="font-size:23px;margin:0">อยากลองเล่นเกมทบทวนบทนี้ไหม</h2><p>คำถามทั้งหมดของบทนี้อยู่ในสนามแข่ง Body 101 เลือกได้ว่าจะแข่งกับเวลา ปะทะกับคนที่บ้าน ช่วยกันเล่นเป็นทีม ล้มบอส หรือฝึกซ้อมแบบไม่จับเวลา</p><div class="row"><a class="btn" href="/learn/play?topic=body">เล่นเกมเฉพาะเรื่องนี้</a><a class="btn ghost" href="/learn/play">สนามแข่งรวมทุกบท</a></div></div></section>
+  <section class="ch" id="ch-arena-cta"><div class="card pad stack"><h2 style="font-size:1.4375rem;margin:0">อยากลองเล่นเกมทบทวนบทนี้ไหม</h2><p>คำถามทั้งหมดของบทนี้อยู่ในสนามแข่ง Body 101 เลือกได้ว่าจะแข่งกับเวลา ปะทะกับคนที่บ้าน ช่วยกันเล่นเป็นทีม ล้มบอส หรือฝึกซ้อมแบบไม่จับเวลา</p><div class="row"><a class="btn" href="/learn/play?topic=body">เล่นเกมเฉพาะเรื่องนี้</a><a class="btn ghost" href="/learn/play">สนามแข่งรวมทุกบท</a></div></div></section>
   <footer>
     <span>สื่อการเรียนรู้เรื่องร่างกายมนุษย์สำหรับเด็กประถม · ภาพประกอบเป็นแผนผังอย่างง่าย ไม่ใช่ภาพกายวิภาคตามสัดส่วนจริง</span>
     <span>เรียบเรียงโดย <b>นพ. สหรัฐ อังศุมาศ</b> · ประสาทแพทย์</span>
@@ -1427,8 +1427,8 @@
 .wrap3{--pg1:#e0e7ff;--pg2:#fbcfe8}
 /* shared tap-gallery (was only defined in the life lesson) */
 .gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px}
-.gal button{border:1.5px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:10px;min-height:78px;display:grid;gap:4px;justify-items:center;align-content:center;text-align:center;font-weight:600;font-size:14.5px;cursor:pointer}
-.gal button .em{font-size:26px;line-height:1}
+.gal button{border:1.5px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:10px;min-height:78px;display:grid;gap:4px;justify-items:center;align-content:center;text-align:center;font-weight:600;font-size:0.90625rem;cursor:pointer}
+.gal button .em{font-size:1.625rem;line-height:1}
 .gal button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-wash)}
 /* Body 101 visual polish — injected into every lesson page by site_build.py.
    Only decoration: layout, colour tokens and behaviour stay as each lesson defines them. */
@@ -1520,7 +1520,7 @@
 
 /* skip link + main landmark (the link itself is written by site_build) */
 .skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;padding:12px 16px;border-radius:10px;
-  font:600 16px/1.2 system-ui,-apple-system,sans-serif;text-decoration:underline}
+  font:600 1rem/1.2 system-ui,-apple-system,sans-serif;text-decoration:underline}
 .skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
 #main:focus{outline:none}
 
@@ -1573,6 +1573,12 @@ svg .bp-hit{fill:transparent;stroke:none} /* inherits pointer-events, so hidden 
 html.b101-untimed .bp-timeread{display:none}
 html.b101-untimed .bp-untimed-note{display:inline}
 .bp-untimed-btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent)}
+
+/* very large browser text (150%): let button groups, game grids and list rows shrink/wrap instead of pushing the page sideways */
+.wrap3 .seg{flex-wrap:wrap;max-width:100%}
+.wrap3 .gmap>*{min-width:0}
+.wrap3 li>*{min-width:0}
+.wrap3 .lo-team i{white-space:normal}
 </style>
 
 <script>
@@ -1784,15 +1790,15 @@ html.b101-untimed .bp-untimed-note{display:inline}
   var css = document.createElement("style");
   css.textContent =
     ".ra-fab{position:fixed;right:16px;bottom:16px;z-index:70;border:none;border-radius:999px;padding:13px 18px;min-height:48px;" +
-    "font:600 15.5px/1 system-ui,-apple-system,sans-serif;background:#0f766e;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.22);cursor:pointer}" +
+    "font:600 0.96875rem/1 system-ui,-apple-system,sans-serif;background:#0f766e;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.22);cursor:pointer}" +
     ".ra-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:70;display:none;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;" +
     "background:#0f172a;color:#fff;border-radius:16px;padding:9px 12px;box-shadow:0 8px 26px rgba(0,0,0,.3);max-width:min(96vw,560px)}" +
     ".ra-bar.on{display:flex}.ra-fab.hide{display:none}" +
     ".ra-bar button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;min-height:44px;min-width:44px;padding:6px 12px;" +
-    "font:600 14.5px/1 system-ui,-apple-system,sans-serif;cursor:pointer}" +
+    "font:600 0.90625rem/1 system-ui,-apple-system,sans-serif;cursor:pointer}" +
     ".ra-bar button:hover{background:rgba(255,255,255,.2)}" +
-    ".ra-bar .ra-rate{font:600 13px/1 ui-monospace,monospace;opacity:.85;min-width:42px;text-align:center}" +
-    ".ra-hint{font:400 12.5px/1.3 system-ui,sans-serif;opacity:.75;flex-basis:100%;text-align:center}" +
+    ".ra-bar .ra-rate{font:600 0.8125rem/1 ui-monospace,monospace;opacity:.85;min-width:42px;text-align:center}" +
+    ".ra-hint{font:400 0.78125rem/1.3 system-ui,sans-serif;opacity:.75;flex-basis:100%;text-align:center}" +
     ".ra-on{background:rgba(15,118,110,.12);outline:3px solid #0f766e;outline-offset:4px;border-radius:6px}" +
     ".ra-bar button:focus-visible{outline:3px solid #fde047;outline-offset:2px}" +
     ".ra-fab:focus-visible{outline:3px solid #0f172a;outline-offset:3px;box-shadow:0 0 0 6px #fff}" +
