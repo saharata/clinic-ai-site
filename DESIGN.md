@@ -15,9 +15,12 @@ colors:
   surface: "#ffffff"
   hero-tint: "#eff6ff"
   section-alt: "#eef2ff"
-  line-green: "#22c55e"
-  vaccine-amber: "#f59e0b"
-  vaccine-orange: "#f97316"
+  line-green: "#15803d"
+  vaccine-amber: "#b45309"
+  vaccine-orange: "#c2410c"
+  vaccine-optional-light: "#fde68a"
+  focus-ring: "#1d4ed8"
+  focus-ring-on-dark: "#fde68a"
   danger: "#ef4444"
   danger-deep: "#b91c1c"
 typography:
@@ -122,17 +125,23 @@ components:
 ### Neutral
 - **Ink** (`ink` #0f172a): หัวข้อหลัก ข้อความเข้ม พื้นหลัง footer ปุ่มดำ
 - **Body Slate / Muted Slate** (`body-slate` #334155 / `muted-slate` #475569): เนื้อความ ย่อหน้า
-- **Soft / Faint Slate** (`soft-slate` #64748b / `faint-slate` #94a3b8): คำอธิบายรอง meta ข้อความ mono
+- **Soft Slate** (`soft-slate` #64748b): คำอธิบายรอง meta ข้อความ mono — **ใช้บนพื้นขาว/`page-bg` เท่านั้น** (4.76:1 บนขาว แต่เหลือ 4.26:1 บน `section-alt` ซึ่งไม่ผ่าน) บนพื้นสีอ่อนอื่นให้ใช้ `muted-slate` แทน
+- **Faint Slate** (`faint-slate` #94a3b8): **ห้ามใช้เป็นสีตัวอักษรหรือไอคอน** (2.56:1 บนขาว) ใช้ได้เฉพาะเส้นตกแต่ง/พื้นหลังที่ไม่สื่อความหมาย ข้อความรองที่เคยใช้สีนี้เปลี่ยนเป็น `muted-slate` #475569 (7.2:1)
 - **Border** (`border` #e2e8f0): เส้นขอบการ์ดและตาราง เส้นคั่นทุกจุด
 - **Page BG / Surface** (`page-bg` #f8fafc / `surface` #ffffff): พื้นหน้าเว็บ / พื้นการ์ด
 - **Hero Tint / Section Alt** (`hero-tint` #eff6ff / `section-alt` #eef2ff): แถบพื้นหลังอ่อนสลับส่วน
 
 ### Tertiary (บริบทเฉพาะ — ห้ามใช้นอกบริบท)
-- **LINE Green** (`line-green` #22c55e): ปุ่ม LINE เท่านั้น (สีแบรนด์ LINE)
-- **Vaccine Amber / Orange** (`vaccine-amber` #f59e0b / `vaccine-orange` #f97316): เฉพาะหน้า `/vaccine` (hero, หัวตาราง, ราคา)
+- **LINE Green** (`line-green` #15803d): ปุ่ม LINE เท่านั้น — เดิม #22c55e แต่ตัวอักษรขาวบนสีนั้นได้แค่ 2.27:1 จึงใช้เขียวเข้มโทนเดิม (5.02:1) ห้ามกลับไปใช้เขียวสว่างกับตัวอักษรขาว
+- **Vaccine Amber / Orange** (`vaccine-amber` #b45309 / `vaccine-orange` #c2410c): เฉพาะหน้า `/vaccine` (hero gradient, หัวตาราง, ราคา, วงแหวนวัคซีนเสริม) — เดิม #f59e0b / #f97316 แต่ตัวอักษรขาวบนสีเหล่านั้นได้แค่ 2.2–2.8:1 โทนเข้มนี้ได้ ≥5:1
+- **Vaccine Optional Light** (`vaccine-optional-light` #fde68a): วงแหวน "วัคซีนเสริม" บน hero สีส้ม
 - **Danger / Danger Deep** (`danger` #ef4444 / `danger-deep` #b91c1c): เฉพาะกล่องเตือน red flag ของอาการอันตราย
 
 **The One Voice Rule.** teal-น้ำเงินคือเสียงเดียวของแบรนด์ ใช้บนพื้นที่ไม่เกิน ~10% ของแต่ละหน้าจอ ความจำกัดคือสิ่งที่ทำให้มันมีพลัง
+
+**The 4.5:1 Rule (WCAG 2.2 AA).** ผู้อ่านหลักมีคนไข้หลัง optic neuritis (contrast sensitivity ต่ำ) และผู้สูงอายุ ตัวอักษรทุกจุดต้องมี contrast ≥4.5:1 กับพื้น (ตัวใหญ่ ≥24px หรือ ≥18.66px ตัวหนา ได้ ≥3:1) และไอคอน เส้นขอบช่องกรอก และแท่งกราฟ ≥3:1 ตรวจค่าก่อนเพิ่มสีใหม่ทุกครั้ง
+
+**The Not-Color-Alone Rule.** ห้ามสื่อความหมายด้วยสีอย่างเดียว ต้องมีรูปทรง ลาย หรือข้อความกำกับเสมอ เช่น วัคซีนหลัก = จุดทึบ วัคซีนเสริม = วงแหวนกลวง (พร้อมข้อความสำหรับ screen reader) · กราฟ EEG: แดงทึบ / ส้มลายขีด / เทาเข้ม · ลิงก์กลางประโยคต้องขีดเส้นใต้
 
 **The Red-Means-Danger Rule.** สีแดงใช้ได้เฉพาะสัญญาณอันตรายทางคลินิก (อาการที่ต้องไปห้องฉุกเฉิน) ห้ามใช้แดงเป็นสีตกแต่งหรือปุ่ม CTA เด็ดขาด
 
@@ -167,6 +176,11 @@ components:
 - **Signature Card Shadow** (`box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05)`): การ์ด กล่อง CTA ตาราง แกลเลอรี — เงาเดียวที่ใช้ทั่วเว็บ
 - **Navbar/Mobile-bar Blur** (`backdrop-filter: blur(10px)` บนพื้นขาว 95–97%): แถบนำทางบนและแถบปุ่มลอยล่าง
 
+### Focus Ring
+- **Default** (`focus-ring` #1d4ed8): `outline: 3px solid; outline-offset: 3px` ผ่าน `:focus-visible` (6.7:1 บนขาว)
+- **บนพื้นเข้ม** (`focus-ring-on-dark` #fde68a): footer, hero เข้มของ `/learn`, hero วัคซีน — เพราะสีน้ำเงินบน `ink` ได้แค่ 2.66:1
+- ห้ามใส่ `outline: none` กับสิ่งที่กดได้
+
 **The One-Shadow Rule.** ใช้เงา signature ค่าเดียวทั้งเว็บ ห้ามเพิ่มระดับเงาหลายชั้น ความสม่ำเสมอทำให้ดูสงบและมืออาชีพ
 
 ## Shapes
@@ -178,9 +192,9 @@ components:
 ### Buttons
 - **Shape:** แคปซูล (`pill` 999px), min-height 44px (ขนาดใหญ่ big 50px), font-weight 700
 - **Call (primary CTA):** พื้น `primary-teal` ตัวอักษรขาว — ปุ่มโทร ปุ่มหลักของคลินิก
-- **LINE:** พื้น `line-green` ตัวอักษรขาว
+- **LINE:** พื้น `line-green` (#15803d) ตัวอักษรขาว
 - **Dark / Outline:** ดำ `ink` ตัวขาว / ขาวขอบ `border` ตัว `ink`
-- **Hover:** ยกขึ้น `translateY(-1px)` transition 0.2s ease (ไม่เปลี่ยนสีรุนแรง)
+- **Hover:** ยกขึ้น `translateY(-1px)` transition 0.2s ease (ไม่เปลี่ยนสีรุนแรง) · ปิดเมื่อผู้ใช้ตั้ง `prefers-reduced-motion`
 
 ### Cards / Containers
 - **Corner:** `xl` 24px (บางจุด `xxl` 28px)
@@ -212,4 +226,5 @@ components:
 - **Don't** ใช้คำว่า **"นักลงทุน" / "หมอลงทุน"** ในทุกส่วนของเว็บ
 - **Don't** ใช้ gradient ม่วง การ์ดซ้อนการ์ด หรือลายเซ็น "AI ทำ" ที่ทำให้ดูไม่น่าเชื่อถือ
 - **Don't** ใช้สีแดงหรือสีอุ่น (ส้ม/เหลือง) นอกบริบทที่กำหนด (แดง = red flag, อุ่น = หน้าวัคซีน)
+- **Don't** วางตัวอักษรขาวบนสีสว่าง (เขียว #22c55e, ส้ม #f59e0b/#f97316) หรือใช้ `faint-slate` #94a3b8 เป็นสีตัวอักษร — contrast ไม่ผ่านสำหรับผู้อ่านสายตาเลือนราง
 - **Don't** เพิ่มระดับเงาหลายชั้นหรือเงาหนัก — คงระบบแบนนุ่มชั้นเดียว
