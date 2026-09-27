@@ -1439,6 +1439,24 @@ ul.vaccine-items {
 
 .ms-nowrap {
   display: inline-block;
+  /* a11y (reflow 1.4.10): ไม่ขึ้นบรรทัดใหม่กลางวลีเมื่อพอ แต่ถ้าจอแคบจริง (320px + ตัวอักษร 200%) ให้ตัดภายในวลีได้ */
+  max-width: 100%;
+}
+
+/* a11y (reflow 1.4.10): ที่ 320px + ตัวอักษร 200% คอลัมน์การ์ดเดิมถูกคำยาวที่ตัดไม่ได้ (www.sso.go.th,
+   fa-equipment.bangkok.go.th) ดันให้กว้างเกินจอ → หน้าเลื่อนแนวนอน · ให้การ์ดหดได้ และให้ข้อความในปุ่มตัดบรรทัดได้ */
+.ms-page .card {
+  min-width: 0;
+}
+
+.ms-page .btn {
+  max-width: 100%;
+  /* 999px ทำให้ปุ่มที่ขึ้น 2–3 บรรทัดกลายเป็นวงรีและตัดตัวอักษรขอบ → 1.5rem เท่ากับครึ่งความสูงปุ่ม 48px จึงยังเป็นแคปซูลเหมือนเดิม */
+  border-radius: 1.5rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 720px) {
@@ -1447,9 +1465,17 @@ ul.vaccine-items {
     padding: 0 12px;
   }
 
+  /* a11y (reflow): ตั้ง Font size ใหญ่มากแล้วปุ่ม "แอด LINE" เดิมดันแถบล่างให้กว้างเกินจอ → 3 ช่องเท่ากันเสมอ ข้อความตัดบรรทัดได้ */
+  .ms-page .mobile-bar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .ms-page .mobile-bar-btn {
     min-height: 52px;
+    padding: 0.25rem 4px;
     font-size: 1.0625rem;
+    text-align: center;
+    overflow-wrap: anywhere;
   }
 
   .ms-jump .btn {

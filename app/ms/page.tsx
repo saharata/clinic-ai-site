@@ -263,7 +263,7 @@ export default function MsPage() {
                   <li>เลือก รพ.ที่มีประสาทแพทย์และเข้าถึง MRI ได้</li>
                   <li>เปลี่ยนได้ปีละ 1 ครั้ง ช่วง <strong>16 ธ.ค. ถึง 31 มี.ค.</strong> มีผลวันที่ 1 ของเดือนถัดไป</li>
                   <li>ย้ายบ้านหรือย้ายที่ทำงาน ยื่นเปลี่ยนนอกรอบได้ภายใน 30 วัน</li>
-                  <li>ช่องทาง: LINE @ssothai · แอป SSO Plus · แอปทางรัฐ · www.sso.go.th · สำนักงานประกันสังคม</li>
+                  <li>ช่องทาง: LINE @ssothai · แอป SSO Plus · แอปทางรัฐ · www.<wbr />sso.<wbr />go.th · สำนักงานประกันสังคม</li>
                 </ul>
               </div>
 
@@ -354,7 +354,7 @@ export default function MsPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    ยื่นคำขอ fa-equipment.bangkok.go.th
+                    ยื่นคำขอ fa-equipment.<wbr />bangkok.<wbr />go.th
                   </a>
                 </p>
               </div>
