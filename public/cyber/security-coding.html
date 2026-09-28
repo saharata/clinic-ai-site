@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>เขียนโปรแกรมสาย Security ด้วย Python | สหวรรณคลินิก</title>
+<meta name="description" content="เขียนสคริปต์เล็ก ๆ สายตรวจสอบและป้องกัน เช่น ตรวจความแข็งแรงรหัสผ่าน แฮชและตรวจสอบ อ่าน log และเข้าใจ hashing vs encryption">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/cyber/security-coding">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/cyber/security-coding">
+<meta property="og:title" content="เขียนโปรแกรมสาย Security ด้วย Python">
+<meta property="og:description" content="เขียนสคริปต์เล็ก ๆ สายตรวจสอบและป้องกัน เช่น ตรวจความแข็งแรงรหัสผ่าน แฮชและตรวจสอบ อ่าน log และเข้าใจ hashing vs encryption">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f6f8fb; --panel:#ffffff; --panel-2:#eef2f7; --ink:#0f172a; --ink-2:#475569;
+  --line:#d0d8e2; --accent:#1d4ed8; --accent-ink:#ffffff;
+  --def-bg:#e7f6ee; --def-line:#15803d; --def-title:#14532d;
+  --lab-bg:#e7f0fb; --lab-line:#1d4ed8; --lab-title:#1e3a8a;
+  --warn-bg:#fdf0d9; --warn-line:#b45309; --warn-title:#7c2d12;
+  --code-bg:#0f172a; --code-ink:#e6edf6;
+  --hero-a:#0b2447; --hero-b:#123a6b; --hero-gold:#f7c948;
+  --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1220; --panel:#131c2e; --panel-2:#1b2740; --ink:#e6edf6; --ink-2:#a9b6c9;
+  --line:#26324a; --accent:#7aa2ff; --accent-ink:#08131f;
+  --def-bg:rgba(34,197,94,.12); --def-line:#4ade80; --def-title:#86efac;
+  --lab-bg:rgba(59,130,246,.12); --lab-line:#60a5fa; --lab-title:#93c5fd;
+  --warn-bg:rgba(245,158,11,.12); --warn-line:#fbbf24; --warn-title:#fcd34d;
+  --code-bg:#060b16; --code-ink:#e6edf6;
+  --hero-a:#060d1c; --hero-b:#0e2647;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --panel:#131c2e; --panel-2:#1b2740; --ink:#e6edf6; --ink-2:#a9b6c9;
+  --line:#26324a; --accent:#7aa2ff; --accent-ink:#08131f;
+  --def-bg:rgba(34,197,94,.12); --def-line:#4ade80; --def-title:#86efac;
+  --lab-bg:rgba(59,130,246,.12); --lab-line:#60a5fa; --lab-title:#93c5fd;
+  --warn-bg:rgba(245,158,11,.12); --warn-line:#fbbf24; --warn-title:#fcd34d;
+  --code-bg:#060b16; --code-ink:#e6edf6;
+  --hero-a:#060d1c; --hero-b:#0e2647;
+}
+html{scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);
+  font-size:1.0625rem;line-height:1.7;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+h1,h2,h3{overflow-wrap:anywhere;line-height:1.25}
+a{color:var(--accent)}
+main :is(p,li) a{text-decoration:underline;text-underline-offset:3px}
+.skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;
+  padding:0.8rem 1rem;border-radius:10px;font-weight:700;text-decoration:underline}
+.skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+#main:focus{outline:none}
+
+/* top bar */
+.sw-bar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:0.4rem 1rem;flex-wrap:wrap;
+  padding:0.4rem 1.1rem;min-height:3rem;background:var(--panel);border-bottom:1px solid var(--line);
+  font-weight:600;font-size:0.9375rem}
+.sw-bar a{color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 0.3rem}
+.sw-bar a:hover{text-decoration:underline}
+.sw-bar .brand{color:var(--ink);font-weight:700}
+.sw-bar .sep{color:var(--ink-2)}
+@media (max-width:520px){.sw-bar .sep{display:none}}
+
+.wrap{width:min(52rem,calc(100% - 2rem));margin:0 auto;padding:1.5rem 0 4rem}
+.container{width:min(60rem,calc(100% - 2rem));margin:0 auto}
+
+/* hero */
+.hero{position:relative;border-radius:1.25rem;overflow:hidden;margin:1rem 0 1.5rem;
+  min-height:11rem;display:flex;align-items:flex-end;
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-b))}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero .veil{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(6,13,28,.15) 0%,rgba(6,13,28,.55) 60%,rgba(6,13,28,.85) 100%)}
+.hero .htext{position:relative;z-index:2;padding:1.4rem 1.5rem;color:#fff}
+.hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hero-gold);margin:0 0 0.35rem}
+.hero h1{margin:0;font-size:clamp(1.5rem,4.5vw,2.1rem);color:#fff}
+.hero .byline{margin:0.5rem 0 0;font-size:0.9375rem;color:#e6edf6}
+@media (max-width:600px){.hero{min-height:8.5rem}}
+
+section.ch{margin:2rem 0}
+section.ch>h2{font-size:1.5rem;margin:0 0 0.4rem;padding-bottom:0.3rem;border-bottom:3px solid var(--accent);display:inline-block}
+.lede{font-size:1.125rem;color:var(--ink-2);margin:0.6rem 0 1rem}
+h3{font-size:1.15rem;margin:0 0 0.4rem}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:0.9rem;padding:1.1rem 1.2rem;margin:1rem 0;
+  box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+.card.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr));gap:0.9rem;background:none;border:0;box-shadow:none;padding:0}
+.card.grid .tile{background:var(--panel);border:1px solid var(--line);border-radius:0.8rem;padding:1rem;min-width:0}
+.card.grid .tile h3{margin-top:0}
+.card.defend{background:var(--def-bg);border:1px solid var(--def-line);border-left:5px solid var(--def-line)}
+.card.defend h3{color:var(--def-title)}
+.card.lab{background:var(--lab-bg);border:1px solid var(--lab-line);border-left:5px solid var(--lab-line)}
+.card.lab h3{color:var(--lab-title)}
+.card.warn{background:var(--warn-bg);border:1px solid var(--warn-line);border-left:5px solid var(--warn-line)}
+.card.warn h3{color:var(--warn-title)}
+.card :last-child{margin-bottom:0}
+.card :first-child{margin-top:0}
+
+.code-cap{font-size:0.9375rem;color:var(--ink-2);margin:1rem 0 0.3rem}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:0.7rem;padding:0.9rem 1rem;overflow-x:auto;
+  font-family:var(--f-mono);font-size:0.875rem;line-height:1.55;margin:0.3rem 0 1rem}
+pre code{font-family:inherit}
+:not(pre)>code{background:var(--panel-2);border-radius:0.3rem;padding:0.1rem 0.35rem;font-family:var(--f-mono);font-size:0.9em}
+
+.tscroll{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:0.9375rem}
+th,td{border:1px solid var(--line);padding:0.5rem 0.7rem;text-align:left;vertical-align:top;min-width:0}
+th{background:var(--panel-2)}
+
+details.q{background:var(--panel);border:1px solid var(--line);border-radius:0.7rem;margin:0.6rem 0}
+details.q summary{cursor:pointer;padding:0.85rem 1rem;font-weight:600;min-height:44px;display:flex;align-items:center}
+details.q summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+details.q .a{padding:0 1rem 1rem;color:var(--ink-2)}
+
+ul,ol{padding-left:1.4rem}
+li{margin:0.25rem 0}
+
+/* lesson nav */
+.lnav{display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:space-between;margin:2.5rem 0 0;border-top:1px solid var(--line);padding-top:1.3rem}
+.lnav a,.hub-back{display:inline-flex;align-items:center;min-height:44px;padding:0.5rem 1rem;border:1px solid var(--line);
+  border-radius:999px;text-decoration:none;color:var(--accent);font-weight:600;background:var(--panel)}
+.lnav a:hover,.hub-back:hover{border-color:var(--accent)}
+
+footer.credit{border-top:1px solid var(--line);margin-top:2.5rem;padding:1.3rem 0 0;color:var(--ink-2);font-size:0.875rem}
+
+/* hub */
+.hub-hero{background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:#fff;border-radius:1.25rem;padding:2rem 1.6rem;margin:1rem 0 1.5rem}
+.hub-hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-gold);margin:0 0 0.4rem}
+.hub-hero h1{margin:0 0 0.6rem;font-size:clamp(1.7rem,5vw,2.4rem);color:#fff}
+.hub-hero p{margin:0.3rem 0;color:#e6edf6;max-width:44rem}
+.lesson-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(17rem,100%),1fr));gap:1rem;margin:1.3rem 0}
+.lcard{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:0.9rem;
+  overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+.lcard:hover{border-color:var(--accent)}
+.lcard:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.lcard .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));position:relative;display:flex;align-items:flex-end}
+.lcard .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lcard .thumb .num{position:relative;z-index:1;margin:0.6rem 0.8rem;font-family:var(--f-mono);font-weight:600;color:var(--hero-gold);
+  background:rgba(6,13,28,.6);padding:0.15rem 0.6rem;border-radius:999px;font-size:0.8125rem}
+.lcard .body{padding:0.9rem 1rem}
+.lcard .body h2{font-size:1.1rem;margin:0 0 0.35rem;border:0;display:block}
+.lcard .body p{margin:0;color:var(--ink-2);font-size:0.9375rem}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
+<nav class="sw-bar" aria-label="เมนูหลัก">
+  <a class="brand" href="/">สหวรรณคลินิก</a><span class="sep" aria-hidden="true">/</span>
+  <a href="/cyber">Cyber 101 ทุกบท</a>
+</nav>
+<main id="main" tabindex="-1">
+<div class="wrap">
+  <div class="hero">
+    <div class="veil"></div>
+    <div class="htext">
+      <p class="eyebrow">Cyber 101 · บทที่ 6</p>
+      <h1>เขียนโปรแกรมสาย Security ด้วย Python</h1>
+      <p class="byline">นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+    </div>
+  </div>
+<section class="ch" id="security-coding-1" aria-labelledby="security-coding-1-h">
+  <h2 id="security-coding-1-h">ทำไมคนสายป้องกันต้องเขียนโค้ดเป็น</h2>
+  <p class="lede">ในบทก่อน ๆ เราใช้เครื่องมือสำเร็จรูปอย่าง Burp หรือ nmap กับแล็บของเรา แต่พอถึงจุดหนึ่งคุณจะเจองานซ้ำ ๆ ที่มนุษย์ทำเองไม่ไหว เช่น อ่าน log เป็นหมื่นบรรทัด หรือตรวจว่ารหัสผ่านของทั้งองค์กรอ่อนแอตรงไหน งานแบบนี้แหละที่ภาษาโปรแกรมช่วยได้ และภาษาที่คนสาย security ทั่วโลกใช้มากที่สุดคือ Python เพราะอ่านง่าย มีไลบรารีพร้อม และเขียนสคริปต์สั้น ๆ ได้เร็ว บทนี้เราจะเขียนโค้ด "ฝั่งป้องกัน" เท่านั้น คือเครื่องมือที่เอาไว้ตรวจ ตั้งรับ และอุดช่องโหว่ของระบบที่เราดูแลเอง ไม่ใช่เครื่องมือเจาะระบบคนอื่น</p>
+
+  <div class="card">
+    <h3>Python พื้นฐานที่ใช้บ่อยในงาน security</h3>
+    <p>คุณไม่ต้องเป็นโปรแกรมเมอร์เต็มตัวก็เริ่มได้ ขอแค่เข้าใจก้อนความรู้ไม่กี่อย่าง ได้แก่ ตัวแปรและสตริง (ข้อความ), ลูป <code>for</code> เพื่อทำซ้ำกับข้อมูลหลายบรรทัด, เงื่อนไข <code>if</code>, ฟังก์ชันเพื่อจัดโค้ดเป็นก้อน และการเรียกใช้ไลบรารีมาตรฐาน สามตัวที่จะเจอตลอดในบทนี้คือ <code>hashlib</code> (ทำแฮช), <code>secrets</code> (สุ่มค่าแบบปลอดภัย) และ <code>hmac</code> (เทียบค่าลับแบบปลอดภัย)</p>
+    <p class="code-cap">ตัวอย่างเล็ก ๆ ที่รวมพื้นฐานหลายอย่างไว้ด้วยกัน</p>
+    <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code>import hashlib, secrets
+
+# สุ่ม token สำหรับ session อย่างปลอดภัย (ใช้ secrets ไม่ใช่ random)
+token = secrets.token_hex(16)
+
+# ทำ SHA-256 เพื่อตรวจความถูกต้องของไฟล์ (integrity) ไม่ใช่เก็บรหัสผ่าน
+digest = hashlib.sha256(b"hello lab").hexdigest()
+print(token, digest)</code></pre>
+    <p>จุดสำคัญตั้งแต่บรรทัดแรก: เวลาต้องสุ่มอะไรที่เกี่ยวกับความปลอดภัย เช่น token หรือรหัสผ่านชั่วคราว ให้ใช้โมดูล <code>secrets</code> เสมอ อย่าใช้ <code>random</code> ธรรมดา เพราะ <code>random</code> คาดเดาได้และไม่ได้ออกแบบมาเพื่องานลับ</p>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>ติดตั้ง Python ในเครื่องหรือใน VM แล็บของคุณ เปิดไฟล์ใหม่ชื่อ <code>lab.py</code> แล้วพิมพ์โค้ดด้านบนลงไป รันด้วย <code>python3 lab.py</code> สังเกตว่าทุกครั้งที่รัน ค่า token จะเปลี่ยน แต่ค่า digest ของข้อความเดิมจะเท่ากันเสมอ นี่คือธรรมชาติของแฮชที่เราจะคุยกันต่อในหัวข้อถัดไป ทำทั้งหมดนี้บนเครื่องของคุณเองเท่านั้น</p>
+  </div>
+</section>
+
+<section class="ch" id="security-coding-2" aria-labelledby="security-coding-2-h">
+  <h2 id="security-coding-2-h">Hashing กับ Encryption ต่างกันตรงไหน</h2>
+  <p class="lede">คนมักสับสนสองคำนี้ แต่มันคนละงานกันคนละทิศทาง เข้าใจผิดเมื่อไรระบบพังทันที เช่น เอา encryption ไปเก็บรหัสผ่าน หรือคิดว่า hashing คือการเข้ารหัส สรุปสั้น ๆ คือ hashing เป็นทางเดียว (แปลงกลับไม่ได้) ส่วน encryption เป็นสองทาง (มีกุญแจไว้ถอดกลับ)</p>
+
+  <div class="card">
+    <h3>เทียบให้เห็นภาพ</h3>
+    <div class="tscroll" tabindex="0" role="region" aria-label="ตาราง เลื่อนแนวนอนเพื่อดูเพิ่มได้"><table>
+      <thead><tr><th>หัวข้อ</th><th>Hashing</th><th>Encryption</th></tr></thead>
+      <tbody>
+        <tr><td>ทิศทาง</td><td>ทางเดียว แปลงกลับไม่ได้</td><td>สองทาง ถอดกลับได้ด้วยกุญแจ</td></tr>
+        <tr><td>ใช้ทำอะไร</td><td>เก็บรหัสผ่าน, ตรวจ integrity ของไฟล์</td><td>ปกป้องข้อมูลระหว่างส่งหรือตอนเก็บ ที่ต้องอ่านกลับ</td></tr>
+        <tr><td>มีกุญแจไหม</td><td>ไม่มี (แต่ควรมี salt)</td><td>มี ต้องเก็บกุญแจให้ปลอดภัย</td></tr>
+        <tr><td>ตัวอย่าง</td><td>bcrypt, argon2, SHA-256</td><td>AES, RSA, TLS ตอนเปิดเว็บ https</td></tr>
+      </tbody>
+    </table></div>
+    <p>กฎง่าย ๆ ที่จำไว้: <strong>รหัสผ่านต้อง hash ไม่ใช่ encrypt</strong> เพราะเราไม่จำเป็นต้องรู้รหัสผ่านจริงของผู้ใช้เลย เราแค่ต้องตรวจว่า "ตรงกันไหม" ก็พอ ส่วนข้อมูลที่ต้องอ่านกลับ เช่น เลขบัตรที่ต้องเอามาใช้ต่อ ถึงจะใช้ encryption</p>
+  </div>
+
+  <div class="card warn">
+    <h3>⚠️ จริยธรรมและกฎหมาย</h3>
+    <p>เรื่องการเข้ารหัสข้อมูลส่วนบุคคลไม่ใช่แค่เทคนิค แต่เกี่ยวกับกฎหมายด้วย พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA) กำหนดให้ผู้เก็บข้อมูลต้องมีมาตรการรักษาความมั่นคงปลอดภัยที่เหมาะสม การเก็บรหัสผ่านหรือข้อมูลอ่อนไหวแบบ plaintext จึงไม่ใช่แค่เขียนโค้ดไม่ดี แต่อาจเป็นการละเลยหน้าที่ตามกฎหมาย ข้อความนี้เป็นความรู้ทั่วไป ไม่ใช่คำแนะนำทางกฎหมาย</p>
+  </div>
+</section>
+
+<section class="ch" id="security-coding-3" aria-labelledby="security-coding-3-h">
+  <h2 id="security-coding-3-h">เครื่องมือฝั่งป้องกัน 1: ตรวจรหัสผ่านและแฮชให้ถูกวิธี</h2>
+  <p class="lede">งานแรกที่คนสายป้องกันเขียนบ่อยที่สุดคือเรื่องรหัสผ่าน ทั้งการช่วยผู้ใช้ตั้งรหัสให้แข็งแรง และการเก็บรหัสให้ปลอดภัยฝั่งเซิร์ฟเวอร์ เราจะทำสองเครื่องมือเล็ก ๆ นี้ในแล็บของเราเอง</p>
+
+  <div class="card">
+    <h3>เครื่องมือที่ 1: ตัวตรวจความแข็งแรงของรหัสผ่าน</h3>
+    <p>สคริปต์นี้รับรหัสผ่านเข้ามา แล้วบอกว่ามันอ่อนตรงไหน เพื่อช่วยผู้ใช้ของเราตั้งรหัสให้ดีขึ้น มันเป็นเครื่องมือป้องกัน ไม่ใช่เครื่องเดารหัสของคนอื่น</p>
+    <p class="code-cap">ตรวจเกณฑ์เบื้องต้นของรหัสผ่านหนึ่งตัว</p>
+    <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code>import re
+
+def check_strength(pw):
+    problems = []
+    if len(pw) &lt; 12:
+        problems.append("สั้นเกินไป ควรยาวอย่างน้อย 12 ตัว")
+    if not re.search(r"[A-Z]", pw):
+        problems.append("ไม่มีตัวพิมพ์ใหญ่")
+    if not re.search(r"[0-9]", pw):
+        problems.append("ไม่มีตัวเลข")
+    return problems  # ลิสต์ว่าง = ผ่านเกณฑ์เบื้องต้น</code></pre>
+    <p>ความยาวสำคัญกว่าความซับซ้อน รหัสยาว ๆ ที่จำได้อย่างวลีหลายคำต่อกัน มักแข็งแรงกว่ารหัสสั้นที่มีอักขระพิเศษเยอะ ในงานจริงเรายังควรเทียบกับรายการรหัสที่รั่วบ่อย (เช่นชุด rockyou ที่ใช้ศึกษากันทั่วไป) เพื่อกันไม่ให้ผู้ใช้ตั้งรหัสที่โลกรู้กันหมดแล้ว</p>
+  </div>
+
+  <div class="card">
+    <h3>เครื่องมือที่ 2: แฮชรหัสผ่านด้วย bcrypt</h3>
+    <p>ตอนผู้ใช้สมัคร เราจะไม่เก็บรหัสจริง แต่เก็บค่าที่แฮชแล้ว ตอนล็อกอินก็เอารหัสที่พิมพ์มาแฮชแล้วเทียบ วิธีที่ถูกต้องคือใช้อัลกอริทึมที่ออกแบบมาเพื่อรหัสผ่านโดยเฉพาะ เช่น bcrypt หรือ argon2 ซึ่งใส่ salt ให้อัตโนมัติและ "ช้าโดยตั้งใจ"</p>
+    <p class="code-cap">แบบผิด อย่าทำ: เก็บรหัสตรง ๆ หรือแฮชเร็วเปล่า ๆ</p>
+    <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code># plaintext = อันตรายสุด
+db_save(username, password)
+
+# แฮชเร็วไม่มี salt ก็ยังเสี่ยงต่อ rainbow table
+bad = hashlib.md5(password.encode()).hexdigest()</code></pre>
+    <p class="code-cap">แบบถูก: bcrypt มี salt ในตัวและตั้งใจให้แฮชช้า</p>
+    <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code>import bcrypt
+
+# ตอนสมัคร
+hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+db_save(username, hashed)
+
+# ตอนล็อกอิน เทียบแบบปลอดภัย
+ok = bcrypt.checkpw(attempt.encode(), hashed)</code></pre>
+  </div>
+
+  <div class="card defend">
+    <h3>🛡️ วิธีป้องกัน</h3>
+    <p>สรุปการเก็บรหัสผ่านให้ปลอดภัย: (1) อย่าเก็บ plaintext เด็ดขาด (2) ใช้ bcrypt หรือ argon2 ไม่ใช่ MD5/SHA-1 เปล่า ๆ เพราะแฮชที่เร็วเกินไปเปิดช่องให้เดาทีละล้านค่าต่อวินาที (3) salt ที่มากับ bcrypt ทำให้ตารางแฮชสำเร็จรูป (rainbow table) ใช้ไม่ได้ เพราะรหัสเดียวกันของคนละคนจะได้ค่าแฮชต่างกัน (4) ใช้ <code>bcrypt.checkpw</code> ในการเทียบ อย่าเขียนเทียบสตริงเอง เพราะการเทียบทีละตัวอักษรอาจรั่วข้อมูลผ่านเวลาที่ใช้ (timing attack) ถ้าต้องเทียบค่าลับอื่น ๆ ให้ใช้ <code>hmac.compare_digest</code> ซึ่งใช้เวลาเท่ากันเสมอ</p>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>ติดตั้งไลบรารีด้วย <code>pip install bcrypt</code> ในแล็บ แล้วเขียนสคริปต์เล็ก ๆ ที่รับรหัสผ่านทดสอบ (ตั้งขึ้นเองล้วน ๆ ไม่ใช่รหัสจริงของใคร) ผ่าน <code>check_strength</code> ก่อน ถ้าผ่านเกณฑ์ค่อยส่งเข้า <code>bcrypt.hashpw</code> แล้วลองพิมพ์รหัสผิดกับรหัสถูกเข้า <code>checkpw</code> เพื่อดูว่ามันตอบ True/False ถูกต้องไหม เก็บทุกอย่างไว้ในเครื่องคุณ อย่าเอารหัสจริงของบัญชีที่ใช้งานอยู่มาทดสอบ</p>
+  </div>
+</section>
+
+<section class="ch" id="security-coding-4" aria-labelledby="security-coding-4-h">
+  <h2 id="security-coding-4-h">เครื่องมือฝั่งป้องกัน 2: อ่าน log และทำ honeypot ง่าย ๆ</h2>
+  <p class="lede">ผู้บุกรุกมักทิ้งร่องรอยไว้ใน log เสมอ เช่น พยายามล็อกอินผิดซ้ำ ๆ จาก IP เดิม การเขียนสคริปต์อ่าน log อัตโนมัติจึงเป็นทักษะหัวใจของสายป้องกัน (blue team) เพราะช่วยให้เราเห็นสัญญาณโจมตีก่อนที่มันจะสำเร็จ</p>
+
+  <div class="card">
+    <h3>เข้าใจการโจมตีเพื่ออ่าน log ให้ออก: brute force</h3>
+    <p>brute force คือการลองรหัสผ่านทีละค่าเรื่อย ๆ จนเจอ หรือลองบัญชีเดิมด้วยรหัสยอดฮิตหลายตัว (credential stuffing) ในแง่ผู้ป้องกัน สิ่งที่เราสนใจไม่ใช่วิธีทำ แต่คือ "หน้าตาของมันใน log" ซึ่งมักเป็นการล็อกอินล้มเหลวจำนวนมากในเวลาสั้น ๆ จาก IP เดียว</p>
+    <p class="code-cap">นับจำนวนการล็อกอินล้มเหลวแยกตาม IP จากไฟล์ log ของเครื่องเราเอง</p>
+    <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code>from collections import Counter
+
+fails = Counter()
+for line in open("auth.log"):
+    if "Failed password" in line:
+        ip = line.split("from ")[1].split()[0]
+        fails[ip] += 1
+
+# IP ที่พลาดบ่อยผิดปกติ = ควรสงสัยไว้ก่อน
+for ip, n in fails.most_common(5):
+    print(ip, n)</code></pre>
+    <p>สคริปต์นี้เปลี่ยน log ดิบเป็นสรุปที่คนอ่านได้ใน 5 บรรทัด ในงานจริงเราจะต่อยอดให้มันส่งแจ้งเตือนอัตโนมัติเมื่อ IP ไหนพลาดเกินเกณฑ์</p>
+  </div>
+
+  <div class="card defend">
+    <h3>🛡️ วิธีป้องกัน brute force</h3>
+    <p>นอกจากตรวจ log แล้ว ระบบควรตั้งรับหลายชั้น: (1) จำกัดจำนวนครั้งที่ล็อกอินได้ต่อช่วงเวลา (rate limiting) (2) ล็อกบัญชีชั่วคราวหรือเพิ่มดีเลย์หลังพลาดหลายครั้ง (3) เปิด multi-factor authentication เพื่อให้แค่รหัสผ่านไม่พอที่จะเข้าได้ (4) ใช้ CAPTCHA เมื่อสงสัย (5) นำ IP ที่ยิงถี่ผิดปกติเข้าลิสต์เฝ้าระวังหรือบล็อก การผสมหลายชั้นแบบนี้คือแนวคิด defense in depth ที่เราจะเจออีกในบทถัดไป</p>
+  </div>
+
+  <div class="card">
+    <h3>honeypot คืออะไร</h3>
+    <p>honeypot คือ "กับดักน้ำผึ้ง" เป็นบริการหลอกที่เราตั้งขึ้นในเครือข่ายของเราเอง เพื่อล่อให้ผู้บุกรุกเข้ามายุ่ง ของจริงไม่มีใครควรมาต่อ ดังนั้นถ้ามีการเชื่อมต่อเข้ามาที่ honeypot เมื่อไร แปลว่ามีบางอย่างผิดปกติแน่ ๆ มันเป็นเครื่องมือ "ตรวจจับ" ล้วน ๆ ไม่ได้ไปโจมตีใคร</p>
+    <p class="code-cap">honeypot อย่างง่ายที่แค่จดว่าใครมาต่อ ผูกกับ localhost ในแล็บเท่านั้น</p>
+    <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code>import socket, datetime
+
+s = socket.socket()
+s.bind(("127.0.0.1", 2222))   # localhost ในแล็บเท่านั้น
+s.listen()
+while True:
+    conn, addr = s.accept()
+    print(datetime.datetime.now(), "มีการเชื่อมต่อจาก", addr)
+    conn.close()</code></pre>
+  </div>
+
+  <div class="card defend">
+    <h3>🛡️ วิธีป้องกัน: เอา honeypot และ log มาใช้จริง</h3>
+    <p>honeypot มีค่าก็ต่อเมื่อมีคนดูผลของมัน ดังนั้นควรต่อ honeypot หรือ log monitor เข้ากับระบบแจ้งเตือน เช่น เขียนไฟล์บันทึกแยก แล้วให้สคริปต์อีกตัวคอยอ่านและส่งข้อความหาเราเมื่อเจอเหตุการณ์ นอกจากนี้ควรเก็บ log ไว้ในที่ที่ผู้บุกรุกแก้ไม่ได้ (เช่น ส่งออกไปเซิร์ฟเวอร์ log กลาง) เพราะสิ่งแรก ๆ ที่ผู้บุกรุกทำคือลบร่องรอยของตัวเองใน log</p>
+  </div>
+
+  <div class="card warn">
+    <h3>⚠️ จริยธรรมและกฎหมาย</h3>
+    <p>honeypot และ log monitor ต้องรันในเครือข่ายหรือเครื่องที่เราเป็นเจ้าของหรือได้รับมอบหมายให้ดูแลเท่านั้น การเอาไปวางดักในระบบคนอื่นถือว่าเข้าถึงระบบโดยไม่ได้รับอนุญาต และ log มักมีข้อมูลส่วนบุคคล เช่น IP หรือชื่อผู้ใช้ จึงอยู่ภายใต้ PDPA ต้องเก็บเท่าที่จำเป็นและมีมาตรการปกป้อง อีกเรื่องที่ต้องระวังคือ honeypot ต้องไม่กลายเป็นฐานให้คนอื่นใช้โจมตีต่อ (อย่าเปิดช่องให้มันถูกยึดไปใช้งาน) ทั้งหมดนี้เป็นความรู้ทั่วไป ไม่ใช่คำแนะนำทางกฎหมาย</p>
+  </div>
+</section>
+
+<section class="ch" id="security-coding-5" aria-labelledby="security-coding-5-h">
+  <h2 id="security-coding-5-h">กติกาของคนเขียนเครื่องมือ และสรุปบท</h2>
+  <p class="lede">โค้ดชุดเดียวกันอาจเป็นได้ทั้งเครื่องมือป้องกันและอาวุธ ขึ้นกับว่าเราชี้มันไปที่ระบบของใคร เส้นแบ่งนี้ชัดและสำคัญมาก บทนี้เราจึงเขียนแต่เครื่องมือฝั่งตรวจและตั้งรับกับระบบของเราเองล้วน ๆ</p>
+
+  <div class="card">
+    <h3>เข็มทิศเวลาเขียนเครื่องมือ security</h3>
+    <p>ถามตัวเองสามข้อก่อนรันสคริปต์ทุกครั้ง: หนึ่ง เป้าหมายเป็นของเราหรือแล็บของเราไหม สอง จุดประสงค์คือการตรวจ ป้องกัน หรือทำความเข้าใจ ไม่ใช่ทำลายหรือขโมยใช่ไหม สาม ถ้าเจ้าของระบบเห็นสิ่งที่เราทำ เขาจะโอเคไหม ถ้าตอบไม่ผ่านข้อใดข้อหนึ่ง ให้หยุด เครื่องมือที่จุดประสงค์หลักคือเจาะระบบคนอื่นที่ไม่ยินยอม เราไม่เขียนและไม่ใช้</p>
+    <p>ข่าวดีคือทักษะเขียนโค้ดฝั่งป้องกันในบทนี้ ทั้งการแฮชที่ถูกต้อง การตรวจรหัสผ่าน และการอ่าน log ล้วนเป็นทักษะที่ตลาดงานต้องการจริง และฝึกได้เต็มที่บนแพลตฟอร์มถูกกฎหมายอย่าง <a href="https://picoctf.org">picoCTF</a> หรือกับเว็บฝึกที่จงใจมีช่องโหว่อย่าง OWASP Juice Shop ที่คุณติดตั้งเองในแล็บ</p>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>รวมสามเครื่องมือของบทนี้เป็นชุดเดียว: เขียนสคริปต์ที่ (1) ตรวจความแข็งแรงของรหัสทดสอบ (2) แฮชด้วย bcrypt แล้วเทียบกลับ (3) อ่านไฟล์ log ตัวอย่างที่คุณสร้างเองแล้วนับ IP ที่ล็อกอินพลาดบ่อย ลองสร้างไฟล์ <code>auth.log</code> ปลอมด้วยมือเพื่อทดสอบ logic ของตัวนับ ทั้งหมดรันในเครื่องคุณ ไม่ต่อกับระบบภายนอกใด ๆ</p>
+  </div>
+
+  <div class="card">
+    <h3>คำถามทบทวนท้ายบท</h3>
+    <details class="q">
+      <summary>❓ คำถาม: ทำไมต้องเก็บรหัสผ่านด้วย hashing ไม่ใช่ encryption</summary>
+      <div class="a">เฉลย: เพราะเราไม่จำเป็นต้องรู้รหัสผ่านจริงของผู้ใช้ ต้องการแค่ตรวจว่า "ตรงกันไหม" hashing เป็นทางเดียวแปลงกลับไม่ได้ ต่อให้ฐานข้อมูลรั่ว ผู้บุกรุกก็ไม่ได้รหัสจริงไปตรง ๆ ส่วน encryption ถอดกลับได้ ถ้ากุญแจรั่วก็เท่ากับรหัสรั่วทั้งหมด อีกทั้งควรใช้ bcrypt หรือ argon2 ที่มี salt และช้าโดยตั้งใจ ไม่ใช่ MD5/SHA-1 เปล่า ๆ</div>
+    </details>
+    <details class="q">
+      <summary>❓ คำถาม: salt ช่วยป้องกันอะไร และเพราะอะไร</summary>
+      <div class="a">เฉลย: salt คือค่าสุ่มที่เติมเข้าไปก่อนแฮช ทำให้ผู้ใช้สองคนที่ตั้งรหัสเหมือนกันได้ค่าแฮชต่างกัน ผลคือตารางแฮชสำเร็จรูป (rainbow table) ที่คำนวณไว้ล่วงหน้าใช้ไม่ได้ ผู้บุกรุกต้องไล่เดาใหม่ทีละบัญชี ซึ่งเสียเวลามหาศาลเมื่อรวมกับแฮชที่ช้าอย่าง bcrypt</div>
+    </details>
+    <details class="q">
+      <summary>❓ คำถาม: การล็อกอินล้มเหลวจำนวนมากจาก IP เดียวใน log บอกอะไร และควรตั้งรับอย่างไร</summary>
+      <div class="a">เฉลย: เป็นสัญญาณคลาสสิกของการโจมตีแบบ brute force หรือ credential stuffing วิธีตั้งรับที่ควรทำร่วมกันคือ จำกัดจำนวนครั้ง (rate limiting), ล็อกบัญชีชั่วคราวหรือเพิ่มดีเลย์หลังพลาดหลายครั้ง, เปิด multi-factor authentication, ใช้ CAPTCHA เมื่อสงสัย และนำ IP ที่ผิดปกติเข้าเฝ้าระวังหรือบล็อก คือแนวคิด defense in depth ตั้งรับหลายชั้น</div>
+    </details>
+    <details class="q">
+      <summary>❓ คำถาม: honeypot ต่างจากเครื่องมือโจมตีอย่างไร และมีข้อควรระวังทางกฎหมายไหม</summary>
+      <div class="a">เฉลย: honeypot เป็นบริการหลอกที่เราตั้งในเครือข่ายของเราเองเพื่อ "ตรวจจับ" ผู้บุกรุก ไม่ได้ออกไปโจมตีใคร ของจริงไม่ควรมีใครมาต่อ ดังนั้นการเชื่อมต่อเข้ามาคือสัญญาณผิดปกติ ข้อควรระวังคือต้องรันบนระบบที่เราเป็นเจ้าของหรือดูแลเท่านั้น log ที่ได้มักมีข้อมูลส่วนบุคคลจึงอยู่ใต้ PDPA และต้องไม่ปล่อยให้ honeypot ถูกยึดไปเป็นฐานโจมตีต่อ</div>
+    </details>
+  </div>
+</section>
+  <nav class="lnav" aria-label="ไปบทเรียนอื่น"><a href="/cyber/tools" rel="prev">← บทที่ 5: เครื่องมือสาย Security (ใช้ในแล็บของเรา)</a><a href="/cyber/cryptography" rel="next">บทที่ 7: การเข้ารหัสเบื้องต้น →</a></nav>
+  <footer class="credit">คอร์สนี้จัดทำเพื่อการศึกษาด้านความมั่นคงปลอดภัยไซเบอร์เชิงป้องกัน (ethical security) ให้ฝึกเฉพาะกับระบบหรือแล็บที่เป็นของคุณเอง หรือที่ได้รับอนุญาตเป็นลายลักษณ์อักษรเท่านั้น การเข้าถึงหรือทดสอบระบบของผู้อื่นโดยไม่ได้รับอนุญาตผิดกฎหมาย เนื้อหาเป็นความรู้ทั่วไป ไม่ใช่คำแนะนำทางกฎหมาย · จัดทำโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ · สหวรรณคลินิก</footer>
+</div>
+</main>
+</body>
+</html>

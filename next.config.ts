@@ -10,6 +10,17 @@ const nextConfig: NextConfig = {
   async rewrites() {
     // สื่อการเรียนรู้สำหรับเด็ก — static ใน public/learn/
     return [
+      { source: "/cyber", destination: "/cyber/index.html" },
+      { source: "/cyber/foundations", destination: "/cyber/foundations.html" },
+      { source: "/cyber/systems-networks", destination: "/cyber/systems-networks.html" },
+      { source: "/cyber/how-web-works", destination: "/cyber/how-web-works.html" },
+      { source: "/cyber/web-vulns-injection", destination: "/cyber/web-vulns-injection.html" },
+      { source: "/cyber/web-vulns-auth", destination: "/cyber/web-vulns-auth.html" },
+      { source: "/cyber/tools", destination: "/cyber/tools.html" },
+      { source: "/cyber/security-coding", destination: "/cyber/security-coding.html" },
+      { source: "/cyber/cryptography", destination: "/cyber/cryptography.html" },
+      { source: "/cyber/defense-hardening", destination: "/cyber/defense-hardening.html" },
+      { source: "/cyber/path-to-pro", destination: "/cyber/path-to-pro.html" },
       { source: "/learn/cells", destination: "/learn/cells/th.html" },
       { source: "/learn/cells/en", destination: "/learn/cells/en.html" },
       { source: "/learn/body", destination: "/learn/body/th.html" },
