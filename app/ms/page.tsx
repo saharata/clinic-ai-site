@@ -63,7 +63,12 @@ const selfCare = [
   {
     icon: "🌡️",
     title: "ร่างกายร้อน อาการเดิมอาจแย่ลงชั่วคราว",
-    text: "อากาศร้อน อาบน้ำร้อน มีไข้ หรือออกกำลังหนัก อาจทำให้อาการเดิมเป็นมากขึ้นชั่วคราว (เรียกว่า Uhthoff) เมื่อพักให้ร่างกายเย็นลงมักดีขึ้น ไม่จำเป็นต้องเป็นการกำเริบใหม่ แต่ถ้าไม่ดีขึ้น ปรึกษาแพทย์",
+    text: (
+      <>
+        อากาศร้อน อาบน้ำร้อน มีไข้ หรือออกกำลังหนัก อาจทำให้อาการเดิมเป็นมากขึ้นชั่วคราว (เรียกว่า{" "}
+        <span lang="en">Uhthoff</span>) เมื่อพักให้ร่างกายเย็นลงมักดีขึ้น ไม่จำเป็นต้องเป็นการกำเริบใหม่ แต่ถ้าไม่ดีขึ้น ปรึกษาแพทย์
+      </>
+    ),
   },
   {
     icon: "🚶",
@@ -173,9 +178,13 @@ export default function MsPage() {
             <Link href="/">หน้าแรก</Link>
             <a href={phoneTel} className="btn btn-call">
               โทร {phoneDisplay}
+              <span className="sr-only"> สหวรรณคลินิก</span>
             </a>
             <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
-              แอด LINE
+              <span>
+                แอด <span lang="en">LINE</span>
+              </span>
+              <span className="sr-only"> สหวรรณคลินิก (เปิดในแท็บใหม่)</span>
             </a>
           </nav>
         </div>
@@ -196,7 +205,7 @@ export default function MsPage() {
               สรุปสั้น ๆ สิ่งที่ทำเองได้ทุกวัน และสิทธิประกันสังคมที่ควรรู้ เพื่อให้การรักษาต่อเนื่อง
               ไม่สะดุดเพราะสิทธิขาด
             </p>
-            <nav className="ms-jump" aria-label="ไปยังหัวข้อ">
+            <nav className="ms-jump" aria-label="ไปยังหัวข้อในหน้านี้">
               <a href="#selfcare" className="btn btn-outline">ดูแลตัวเอง</a>
               <a href="#rights" className="btn btn-outline">สิทธิประกันสังคม</a>
               <a href="#equipment" className="btn btn-outline">ยืมอุปกรณ์ฟรี</a>
@@ -263,7 +272,13 @@ export default function MsPage() {
                   <li>เลือก รพ.ที่มีประสาทแพทย์และเข้าถึง MRI ได้</li>
                   <li>เปลี่ยนได้ปีละ 1 ครั้ง ช่วง <strong>16 ธ.ค. ถึง 31 มี.ค.</strong> มีผลวันที่ 1 ของเดือนถัดไป</li>
                   <li>ย้ายบ้านหรือย้ายที่ทำงาน ยื่นเปลี่ยนนอกรอบได้ภายใน 30 วัน</li>
-                  <li>ช่องทาง: LINE @ssothai · แอป SSO Plus · แอปทางรัฐ · www.sso.go.th · สำนักงานประกันสังคม</li>
+                  <li>
+                    ช่องทาง: LINE @ssothai · แอป <span lang="en">SSO Plus</span> · แอปทางรัฐ ·{" "}
+                    <span lang="en">
+                      www.<wbr />sso.<wbr />go.th
+                    </span>{" "}
+                    · สำนักงานประกันสังคม
+                  </li>
                 </ul>
               </div>
 
@@ -321,7 +336,11 @@ export default function MsPage() {
             <div className="card ms-hotline top-gap">
               <h3>ไม่แน่ใจเรื่องสิทธิ ถามได้ที่</h3>
               <p>
-                สายด่วนประกันสังคม <a href="tel:1506">โทร 1506</a> · LINE @ssothai · แอป SSO Plus
+                สายด่วนประกันสังคม{" "}
+                <a href="tel:1506">
+                  โทร 1506<span className="sr-only"> สายด่วนประกันสังคม</span>
+                </a>{" "}
+                · LINE @ssothai · แอป <span lang="en">SSO Plus</span>
               </p>
             </div>
           </div>
@@ -334,7 +353,7 @@ export default function MsPage() {
               <h2>ยืมอุปกรณ์การแพทย์ฟรี</h2>
               <p>
                 สำหรับผู้สูงอายุ คนพิการ และผู้ป่วยที่มีภาวะพึ่งพิง เช่น เตียงผู้ป่วย รถเข็น เครื่องผลิตออกซิเจน
-                เครื่องดูดเสมหะ ไม้เท้า walker ไม้ค้ำยัน
+                เครื่องดูดเสมหะ ไม้เท้า <span lang="en">walker</span> ไม้ค้ำยัน
               </p>
             </div>
 
@@ -354,7 +373,13 @@ export default function MsPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    ยื่นคำขอ fa-equipment.bangkok.go.th
+                    <span>
+                      ยื่นคำขอ{" "}
+                      <span lang="en">
+                        fa-equipment.<wbr />bangkok.<wbr />go.th
+                      </span>
+                    </span>
+                    <span className="sr-only"> (เปิดในแท็บใหม่)</span>
                   </a>
                 </p>
               </div>
@@ -376,7 +401,14 @@ export default function MsPage() {
             <div className="card ms-hotline top-gap">
               <h3>ไม่รู้จะเริ่มที่ไหน ถามได้ที่</h3>
               <p>
-                สายด่วน สปสช. <a href="tel:1330">โทร 1330</a> · สายด่วน พม. <a href="tel:1300">โทร 1300</a>
+                สายด่วน สปสช.{" "}
+                <a href="tel:1330">
+                  โทร 1330<span className="sr-only"> สายด่วน สปสช.</span>
+                </a>{" "}
+                · สายด่วน พม.{" "}
+                <a href="tel:1300">
+                  โทร 1300<span className="sr-only"> สายด่วน พม.</span>
+                </a>
               </p>
             </div>
           </div>
@@ -412,7 +444,7 @@ export default function MsPage() {
                     rel="noreferrer"
                     className="btn btn-dark big"
                   >
-                    เปิดเพลย์ลิสต์<span className="sr-only"> {p.title} (เปิดใน YouTube)</span>
+                    เปิดเพลย์ลิสต์<span className="sr-only"> {p.title} (เปิด YouTube ในแท็บใหม่)</span>
                   </a>
                 </li>
               ))}
@@ -420,7 +452,10 @@ export default function MsPage() {
 
             <div className="cta-actions top-gap">
               <a href={channelUrl} target="_blank" rel="noreferrer" className="btn btn-outline big">
-                ไปที่ช่อง YouTube @saharatau
+                <span>
+                  ไปที่ช่อง <span lang="en">YouTube @saharatau</span>
+                </span>
+                <span className="sr-only"> (เปิดในแท็บใหม่)</span>
               </a>
             </div>
           </div>
@@ -452,10 +487,14 @@ export default function MsPage() {
             </div>
             <div className="cta-actions">
               <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line big">
-                นัดตรวจผ่าน LINE
+                <span>
+                  นัดตรวจผ่าน <span lang="en">LINE</span>
+                </span>
+                <span className="sr-only"> สหวรรณคลินิก (เปิดในแท็บใหม่)</span>
               </a>
               <a href={phoneTel} className="btn btn-call big">
                 โทร {phoneDisplay}
+                <span className="sr-only"> สหวรรณคลินิก</span>
               </a>
             </div>
           </div>
@@ -477,11 +516,15 @@ export default function MsPage() {
             <h3 className="footer-subtitle">ช่องทางติดต่อ</h3>
             <ul className="footer-links">
               <li>
-                <a href={phoneTel}>โทร {phoneDisplay}</a>
+                <a href={phoneTel}>
+                  โทร {phoneDisplay}
+                  <span className="sr-only"> สหวรรณคลินิก</span>
+                </a>
               </li>
               <li>
                 <a href={lineUrl} target="_blank" rel="noreferrer">
-                  LINE Official
+                  <span lang="en">LINE Official</span>
+                  <span className="sr-only"> สหวรรณคลินิก (เปิดในแท็บใหม่)</span>
                 </a>
               </li>
               <li>
@@ -492,17 +535,21 @@ export default function MsPage() {
         </div>
       </footer>
 
-      <div className="mobile-bar">
+      {/* a11y: แถบล่างเป็น landmark (เดิมอยู่นอก landmark ใด ๆ) และชื่อปุ่มบอกครบว่าโทรหาใคร ไปที่ไหน */}
+      <nav className="mobile-bar" aria-label="ทางลัดติดต่อ">
         <a href={phoneTel} className="mobile-bar-btn call">
-          โทร
+          โทร<span className="sr-only"> สหวรรณคลินิก {phoneDisplay}</span>
         </a>
         <a href={lineUrl} target="_blank" rel="noreferrer" className="mobile-bar-btn line">
-          แอด LINE
+          <span>
+            แอด <span lang="en">LINE</span>
+          </span>
+          <span className="sr-only"> สหวรรณคลินิก (เปิดในแท็บใหม่)</span>
         </a>
         <a href="#rights" className="mobile-bar-btn hours">
-          สิทธิ
+          สิทธิ<span className="sr-only">ประกันสังคม</span>
         </a>
-      </div>
+      </nav>
     </div>
   );
 }
