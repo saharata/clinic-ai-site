@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>การเข้ารหัสเบื้องต้น | สหวรรณคลินิก</title>
+<meta name="description" content="เข้าใจ symmetric/asymmetric encryption, hashing, TLS, digital signatures และทำไมไม่ควรเขียน crypto เอง">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/cyber/cryptography">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/cyber/cryptography">
+<meta property="og:title" content="การเข้ารหัสเบื้องต้น">
+<meta property="og:description" content="เข้าใจ symmetric/asymmetric encryption, hashing, TLS, digital signatures และทำไมไม่ควรเขียน crypto เอง">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f6f8fb; --panel:#ffffff; --panel-2:#eef2f7; --ink:#0f172a; --ink-2:#475569;
+  --line:#d0d8e2; --accent:#1d4ed8; --accent-ink:#ffffff;
+  --def-bg:#e7f6ee; --def-line:#15803d; --def-title:#14532d;
+  --lab-bg:#e7f0fb; --lab-line:#1d4ed8; --lab-title:#1e3a8a;
+  --warn-bg:#fdf0d9; --warn-line:#b45309; --warn-title:#7c2d12;
+  --code-bg:#0f172a; --code-ink:#e6edf6;
+  --hero-a:#0b2447; --hero-b:#123a6b; --hero-gold:#f7c948;
+  --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1220; --panel:#131c2e; --panel-2:#1b2740; --ink:#e6edf6; --ink-2:#a9b6c9;
+  --line:#26324a; --accent:#7aa2ff; --accent-ink:#08131f;
+  --def-bg:rgba(34,197,94,.12); --def-line:#4ade80; --def-title:#86efac;
+  --lab-bg:rgba(59,130,246,.12); --lab-line:#60a5fa; --lab-title:#93c5fd;
+  --warn-bg:rgba(245,158,11,.12); --warn-line:#fbbf24; --warn-title:#fcd34d;
+  --code-bg:#060b16; --code-ink:#e6edf6;
+  --hero-a:#060d1c; --hero-b:#0e2647;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --panel:#131c2e; --panel-2:#1b2740; --ink:#e6edf6; --ink-2:#a9b6c9;
+  --line:#26324a; --accent:#7aa2ff; --accent-ink:#08131f;
+  --def-bg:rgba(34,197,94,.12); --def-line:#4ade80; --def-title:#86efac;
+  --lab-bg:rgba(59,130,246,.12); --lab-line:#60a5fa; --lab-title:#93c5fd;
+  --warn-bg:rgba(245,158,11,.12); --warn-line:#fbbf24; --warn-title:#fcd34d;
+  --code-bg:#060b16; --code-ink:#e6edf6;
+  --hero-a:#060d1c; --hero-b:#0e2647;
+}
+html{scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);
+  font-size:1.0625rem;line-height:1.7;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+h1,h2,h3{overflow-wrap:anywhere;line-height:1.25}
+a{color:var(--accent)}
+main :is(p,li) a{text-decoration:underline;text-underline-offset:3px}
+.skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;
+  padding:0.8rem 1rem;border-radius:10px;font-weight:700;text-decoration:underline}
+.skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+#main:focus{outline:none}
+
+/* top bar */
+.sw-bar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:0.4rem 1rem;flex-wrap:wrap;
+  padding:0.4rem 1.1rem;min-height:3rem;background:var(--panel);border-bottom:1px solid var(--line);
+  font-weight:600;font-size:0.9375rem}
+.sw-bar a{color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 0.3rem}
+.sw-bar a:hover{text-decoration:underline}
+.sw-bar .brand{color:var(--ink);font-weight:700}
+.sw-bar .sep{color:var(--ink-2)}
+@media (max-width:520px){.sw-bar .sep{display:none}}
+
+.wrap{width:min(52rem,calc(100% - 2rem));margin:0 auto;padding:1.5rem 0 4rem}
+.container{width:min(60rem,calc(100% - 2rem));margin:0 auto}
+
+/* hero */
+.hero{position:relative;border-radius:1.25rem;overflow:hidden;margin:1rem 0 1.5rem;
+  min-height:11rem;display:flex;align-items:flex-end;
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-b))}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero .veil{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(6,13,28,.15) 0%,rgba(6,13,28,.55) 60%,rgba(6,13,28,.85) 100%)}
+.hero .htext{position:relative;z-index:2;padding:1.4rem 1.5rem;color:#fff}
+.hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hero-gold);margin:0 0 0.35rem}
+.hero h1{margin:0;font-size:clamp(1.5rem,4.5vw,2.1rem);color:#fff}
+.hero .byline{margin:0.5rem 0 0;font-size:0.9375rem;color:#e6edf6}
+@media (max-width:600px){.hero{min-height:8.5rem}}
+
+section.ch{margin:2rem 0}
+section.ch>h2{font-size:1.5rem;margin:0 0 0.4rem;padding-bottom:0.3rem;border-bottom:3px solid var(--accent);display:inline-block}
+.lede{font-size:1.125rem;color:var(--ink-2);margin:0.6rem 0 1rem}
+h3{font-size:1.15rem;margin:0 0 0.4rem}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:0.9rem;padding:1.1rem 1.2rem;margin:1rem 0;
+  box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+.card.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr));gap:0.9rem;background:none;border:0;box-shadow:none;padding:0}
+.card.grid .tile{background:var(--panel);border:1px solid var(--line);border-radius:0.8rem;padding:1rem;min-width:0}
+.card.grid .tile h3{margin-top:0}
+.card.defend{background:var(--def-bg);border:1px solid var(--def-line);border-left:5px solid var(--def-line)}
+.card.defend h3{color:var(--def-title)}
+.card.lab{background:var(--lab-bg);border:1px solid var(--lab-line);border-left:5px solid var(--lab-line)}
+.card.lab h3{color:var(--lab-title)}
+.card.warn{background:var(--warn-bg);border:1px solid var(--warn-line);border-left:5px solid var(--warn-line)}
+.card.warn h3{color:var(--warn-title)}
+.card :last-child{margin-bottom:0}
+.card :first-child{margin-top:0}
+
+.code-cap{font-size:0.9375rem;color:var(--ink-2);margin:1rem 0 0.3rem}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:0.7rem;padding:0.9rem 1rem;overflow-x:auto;
+  font-family:var(--f-mono);font-size:0.875rem;line-height:1.55;margin:0.3rem 0 1rem}
+pre code{font-family:inherit}
+:not(pre)>code{background:var(--panel-2);border-radius:0.3rem;padding:0.1rem 0.35rem;font-family:var(--f-mono);font-size:0.9em}
+
+.tscroll{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:0.9375rem}
+th,td{border:1px solid var(--line);padding:0.5rem 0.7rem;text-align:left;vertical-align:top;min-width:0}
+th{background:var(--panel-2)}
+
+details.q{background:var(--panel);border:1px solid var(--line);border-radius:0.7rem;margin:0.6rem 0}
+details.q summary{cursor:pointer;padding:0.85rem 1rem;font-weight:600;min-height:44px;display:flex;align-items:center}
+details.q summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+details.q .a{padding:0 1rem 1rem;color:var(--ink-2)}
+
+ul,ol{padding-left:1.4rem}
+li{margin:0.25rem 0}
+
+/* lesson nav */
+.lnav{display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:space-between;margin:2.5rem 0 0;border-top:1px solid var(--line);padding-top:1.3rem}
+.lnav a,.hub-back{display:inline-flex;align-items:center;min-height:44px;padding:0.5rem 1rem;border:1px solid var(--line);
+  border-radius:999px;text-decoration:none;color:var(--accent);font-weight:600;background:var(--panel)}
+.lnav a:hover,.hub-back:hover{border-color:var(--accent)}
+
+footer.credit{border-top:1px solid var(--line);margin-top:2.5rem;padding:1.3rem 0 0;color:var(--ink-2);font-size:0.875rem}
+
+/* hub */
+.hub-hero{background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:#fff;border-radius:1.25rem;padding:2rem 1.6rem;margin:1rem 0 1.5rem}
+.hub-hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-gold);margin:0 0 0.4rem}
+.hub-hero h1{margin:0 0 0.6rem;font-size:clamp(1.7rem,5vw,2.4rem);color:#fff}
+.hub-hero p{margin:0.3rem 0;color:#e6edf6;max-width:44rem}
+.lesson-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(17rem,100%),1fr));gap:1rem;margin:1.3rem 0}
+.lcard{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:0.9rem;
+  overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+.lcard:hover{border-color:var(--accent)}
+.lcard:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.lcard .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));position:relative;display:flex;align-items:flex-end}
+.lcard .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lcard .thumb .num{position:relative;z-index:1;margin:0.6rem 0.8rem;font-family:var(--f-mono);font-weight:600;color:var(--hero-gold);
+  background:rgba(6,13,28,.6);padding:0.15rem 0.6rem;border-radius:999px;font-size:0.8125rem}
+.lcard .body{padding:0.9rem 1rem}
+.lcard .body h2{font-size:1.1rem;margin:0 0 0.35rem;border:0;display:block}
+.lcard .body p{margin:0;color:var(--ink-2);font-size:0.9375rem}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
+<nav class="sw-bar" aria-label="เมนูหลัก">
+  <a class="brand" href="/">สหวรรณคลินิก</a><span class="sep" aria-hidden="true">/</span>
+  <a href="/cyber">Cyber 101 ทุกบท</a>
+</nav>
+<main id="main" tabindex="-1">
+<div class="wrap">
+  <div class="hero">
+    <div class="veil"></div>
+    <div class="htext">
+      <p class="eyebrow">Cyber 101 · บทที่ 7</p>
+      <h1>การเข้ารหัสเบื้องต้น</h1>
+      <p class="byline">นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+    </div>
+  </div>
+<section class="ch" id="cryptography-1" aria-labelledby="cryptography-1-h">
+      <h2 id="cryptography-1-h">การเข้ารหัสคืออะไร และมีกี่แบบ</h2>
+      <p class="lede">การเข้ารหัส (cryptography) คือศาสตร์ของการเปลี่ยนข้อมูลให้อ่านไม่ออกสำหรับคนที่ไม่มีกุญแจ เพื่อรักษาความลับ ความถูกต้อง และยืนยันตัวตน มันคือกระดูกสันหลังที่ทำให้เราส่งรหัสผ่าน โอนเงิน และแชตกันได้อย่างปลอดภัยบนอินเทอร์เน็ต บทนี้เราจะเข้าใจว่ามันทำงานอย่างไรในระดับแนวคิด เพื่อจะได้ใช้มันป้องกันระบบของเราเองได้ถูกต้อง</p>
+
+      <div class="card">
+        <h3>คำศัพท์ 4 คำที่ต้องรู้ก่อน</h3>
+        <p>ก่อนไปต่อ ให้จำสี่คำนี้ให้ขึ้นใจ เพราะจะใช้ตลอดทั้งบท</p>
+        <ul>
+          <li><strong>Plaintext</strong> — ข้อความต้นฉบับที่อ่านออก เช่น "โอนเงินให้แม่ 500 บาท"</li>
+          <li><strong>Ciphertext</strong> — ข้อความที่เข้ารหัสแล้ว อ่านไม่รู้เรื่อง</li>
+          <li><strong>Key (กุญแจ)</strong> — ความลับที่ใช้เข้าและถอดรหัส ความปลอดภัยอยู่ที่กุญแจ ไม่ใช่ที่อัลกอริทึม</li>
+          <li><strong>Algorithm (อัลกอริทึม)</strong> — สูตรคณิตศาสตร์ที่ใช้แปลง เช่น AES, RSA ซึ่งเป็นสาธารณะและถูกตรวจสอบมาแล้ว</li>
+        </ul>
+        <p>หลักสำคัญคือ <em>Kerckhoffs's principle</em>: ระบบที่ดีต้องปลอดภัยแม้ศัตรูจะรู้อัลกอริทึมทุกอย่าง ตราบใดที่กุญแจยังเป็นความลับ นี่คือเหตุผลว่าทำไมการ "ปิดบังอัลกอริทึม" (security through obscurity) จึงไม่ใช่ความปลอดภัยจริง</p>
+      </div>
+
+      <div class="card grid">
+        <div class="tile">
+          <h3>Symmetric (กุญแจสมมาตร)</h3>
+          <p>ใช้กุญแจ <em>ดอกเดียวกัน</em> ทั้งเข้าและถอดรหัส เร็วมาก เหมาะกับข้อมูลปริมาณมาก เช่น AES-256 ตัวอย่างจริงคือการเข้ารหัสไฟล์ในฮาร์ดดิสก์ ปัญหาคือ "จะส่งกุญแจให้อีกฝ่ายอย่างปลอดภัยได้อย่างไร" โดยไม่ถูกดักระหว่างทาง</p>
+        </div>
+        <div class="tile">
+          <h3>Asymmetric (กุญแจอสมมาตร)</h3>
+          <p>มีกุญแจ <em>คู่</em>: กุญแจสาธารณะ (public key) แจกใครก็ได้ และกุญแจส่วนตัว (private key) เก็บเป็นความลับสุดชีวิต ข้อมูลที่ล็อกด้วย public key จะเปิดได้ด้วย private key เท่านั้น เช่น RSA, ECC ช้ากว่าแบบสมมาตรมาก แต่แก้ปัญหาการส่งกุญแจได้</p>
+        </div>
+        <div class="tile">
+          <h3>Hybrid (แบบผสม)</h3>
+          <p>ของจริงเกือบทั้งหมด (รวม HTTPS) ใช้แบบผสม: ใช้ asymmetric เพื่อ "ตกลงกุญแจลับร่วมกัน" อย่างปลอดภัยตอนเริ่มต้น แล้วสลับไปใช้ symmetric ที่เร็วกว่าในการรับส่งข้อมูลจริง ได้ทั้งความเร็วและความปลอดภัย</p>
+        </div>
+      </div>
+
+      <p class="code-cap">ตัวอย่างเชิงแนวคิด: เข้ารหัสไฟล์ของเราเองด้วยไลบรารีที่ผ่านการตรวจสอบ (Fernet ใช้ AES ข้างใน) โค้ดนี้เพื่อ "ปกป้องข้อมูลของเรา" ไม่ใช่โจมตีใคร</p>
+      <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code>from cryptography.fernet import Fernet
+
+key = Fernet.generate_key()      # เก็บกุญแจนี้ให้ดีที่สุด
+f = Fernet(key)
+token = f.encrypt(b"my secret note")   # ได้ ciphertext
+plain = f.decrypt(token)               # ถอดกลับด้วยกุญแจเดิม</code></pre>
+
+      <div class="card">
+        <h3>แนวคิดการโจมตี: brute force และอัลกอริทึมที่ล้าสมัย</h3>
+        <p>วิธีโจมตีการเข้ารหัสที่ตรงไปตรงมาที่สุดคือ <em>brute force</em> คือลองกุญแจทุกความเป็นไปได้จนเจอ ถ้ากุญแจสั้นเกินไป (เช่น DES ที่ยาว 56 บิต) คอมพิวเตอร์สมัยนี้เดาได้ในเวลาไม่นาน นอกจากนี้อัลกอริทึมเก่าอย่าง DES, RC4 หรือโหมด ECB มีจุดอ่อนเชิงคณิตศาสตร์ที่ทำให้เดาบางส่วนได้โดยไม่ต้องลองทุกกุญแจ การเข้าใจว่าอะไรอ่อนแอ คือก้าวแรกของการเลือกใช้ของที่แข็งแรง</p>
+      </div>
+
+      <div class="card defend">
+        <h3>🛡️ วิธีป้องกัน</h3>
+        <ul>
+          <li>ใช้อัลกอริทึมมาตรฐานที่ยังแข็งแรง: <strong>AES-256</strong> สำหรับ symmetric และ <strong>RSA 2048 บิตขึ้นไป</strong> หรือ <strong>ECC (Curve25519)</strong> สำหรับ asymmetric</li>
+          <li>เลือกโหมดที่ปลอดภัย เช่น AES-GCM (ให้ทั้งความลับและตรวจการถูกแก้ไข) เลี่ยงโหมด ECB เด็ดขาด</li>
+          <li>กุญแจยิ่งยาวยิ่งดี ทุกบิตที่เพิ่มคือเวลาที่ผู้โจมตีต้องใช้เพิ่มเป็นเท่าตัว</li>
+          <li>อย่าฮาร์ดโค้ดกุญแจไว้ในซอร์สโค้ด ให้เก็บใน environment variable หรือ secret manager</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="ch" id="cryptography-2" aria-labelledby="cryptography-2-h">
+      <h2 id="cryptography-2-h">Hashing และ Salt สำหรับรหัสผ่าน</h2>
+      <p class="lede">คนมักสับสนระหว่าง hashing กับ encryption แต่มันคนละเรื่องกัน และการเข้าใจผิดตรงนี้คือสาเหตุอันดับต้น ๆ ที่ทำให้ฐานข้อมูลรหัสผ่านรั่วแล้วถูกถอดได้ทั้งหมด บทนี้จะสอนวิธีเก็บรหัสผ่านที่ "ถูกต้อง" ซึ่งเป็นสิ่งที่เว็บของคุณเองต้องทำ</p>
+
+      <div class="card">
+        <h3>Hashing ต่างจาก Encryption อย่างไร</h3>
+        <p><strong>Encryption</strong> เป็นแบบ "สองทาง" เข้ารหัสแล้วถอดกลับได้ถ้ามีกุญแจ ส่วน <strong>Hashing</strong> เป็นแบบ "ทางเดียว" คือแปลงข้อมูลเป็นสตริงความยาวคงที่ (เช่น SHA-256) แล้ว <em>ถอดกลับไม่ได้</em> โดยตั้งใจ ข้อมูลเดิมเหมือนกันจะได้ค่า hash เท่ากันเสมอ แต่เปลี่ยนแค่ตัวอักษรเดียวค่าจะเปลี่ยนไปทั้งหมด</p>
+        <p>เราจึงไม่ควร "เข้ารหัส" รหัสผ่านผู้ใช้ (เพราะถ้ากุญแจรั่ว รหัสผ่านทั้งหมดเปิดหมด) แต่ให้ <strong>hash</strong> แทน เวลาผู้ใช้ล็อกอิน เราก็ hash สิ่งที่เขาพิมพ์แล้วเทียบกับค่าที่เก็บไว้ ตัวเราเองก็ไม่มีทางรู้รหัสผ่านจริงของผู้ใช้</p>
+      </div>
+
+      <div class="card">
+        <h3>แนวคิดการโจมตี: rainbow table และ offline brute force</h3>
+        <p>ถ้าฐานข้อมูลรั่ว ผู้โจมตีจะได้ค่า hash ไปทั้งชุด เขาจะไม่นั่งเดาทีละอัน แต่ใช้ <em>rainbow table</em> คือตารางที่คำนวณ hash ของรหัสผ่านยอดฮิตนับพันล้านไว้ล่วงหน้า แล้วเทียบหาค่าที่ตรงกัน ยิ่งถ้าเว็บใช้ hash ที่เร็วอย่าง MD5 หรือ SHA-1 การ์ดจอตัวเดียวเดาได้หลายพันล้านครั้งต่อวินาที รหัสผ่านง่าย ๆ จึงถูกถอดในไม่กี่วินาที นี่คือเหตุผลที่รหัสผ่านซ้ำกันหลายเว็บอันตรายมาก</p>
+      </div>
+
+      <div class="card defend">
+        <h3>🛡️ วิธีป้องกัน</h3>
+        <ul>
+          <li><strong>ใส่ salt</strong> — ค่าสุ่มเฉพาะของผู้ใช้แต่ละคน นำไปผสมก่อน hash ทำให้ rainbow table สำเร็จรูปใช้ไม่ได้ และผู้ใช้ที่รหัสผ่านเหมือนกันจะได้ hash ต่างกัน (ไลบรารีที่ดีสร้าง salt ให้อัตโนมัติและฝังไว้ในผลลัพธ์)</li>
+          <li><strong>ใช้ hash ที่ออกแบบมาให้ "ช้า" โดยตั้งใจ</strong> เช่น <strong>bcrypt, scrypt, argon2</strong> ซึ่งปรับความหนักได้ (work factor) ทำให้การเดาทีละล้านครั้งกลายเป็นเรื่องแพงเกินคุ้ม อย่าใช้ MD5/SHA-1/SHA-256 เปล่า ๆ กับรหัสผ่าน</li>
+          <li>เพิ่ม <strong>pepper</strong> (ค่าลับระดับระบบ เก็บแยกจากฐานข้อมูล) เป็นชั้นเสริม</li>
+          <li>บังคับรหัสผ่านที่ยาวพอและเปิด MFA เพื่อลดผลกระทบแม้ hash หลุด</li>
+        </ul>
+      </div>
+
+      <p class="code-cap">เทียบวิธีผิดกับวิธีถูกในการเก็บรหัสผ่าน (ฝั่งป้องกันของเว็บเราเอง)</p>
+      <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code># ผิด: เก็บดิบ หรือ hash เร็วไม่มี salt
+db.save(user, password)                 # เก็บ plaintext อันตรายสุด
+db.save(user, md5(password))            # ถอดด้วย rainbow table ได้ง่าย
+
+# ถูก: ใช้ไลบรารีที่ตรวจสอบแล้ว มี salt + ช้าโดยตั้งใจ
+import bcrypt
+hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+db.save(user, hashed)                   # ตอนล็อกอินใช้ bcrypt.checkpw() เทียบ</code></pre>
+
+      <div class="card lab">
+        <h3>🧪 ลองในแล็บของคุณ</h3>
+        <p>ทำบนเครื่องหรือ VM ของคุณเองเท่านั้น</p>
+        <ul>
+          <li>ติดตั้ง Python แล้วลอง hash คำว่า <code>password123</code> ด้วย SHA-256 หลาย ๆ รอบ สังเกตว่าได้ค่าเดิมทุกครั้ง แล้วลอง bcrypt สังเกตว่าได้ค่าต่างกันทุกครั้งเพราะ salt</li>
+          <li>เปิด <a href="https://gchq.github.io/CyberChef/">CyberChef</a> (เครื่องมือวิเคราะห์ในเบราว์เซอร์) ลองใส่ข้อความแล้วดู hash แบบต่าง ๆ เพื่อเห็นภาพ</li>
+          <li>ลองโจทย์หมวด crypto บน <a href="https://picoctf.org/">picoCTF</a> ซึ่งเป็นสนามฝึกถูกกฎหมายที่ออกแบบมาให้แก้โจทย์</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="ch" id="cryptography-3" aria-labelledby="cryptography-3-h">
+      <h2 id="cryptography-3-h">TLS/HTTPS และใบรับรอง (Certificate)</h2>
+      <p class="lede">ทุกครั้งที่คุณเห็นแม่กุญแจหน้าเว็บและ https:// นั่นคือ TLS กำลังทำงาน มันคือส่วนผสมของทุกอย่างในบทนี้: asymmetric เพื่อตกลงกุญแจ, symmetric เพื่อรับส่งข้อมูล, hashing เพื่อตรวจความถูกต้อง และ certificate เพื่อยืนยันว่าเรากำลังคุยกับเว็บตัวจริง</p>
+
+      <div class="card">
+        <h3>TLS handshake ทำงานอย่างไร (แบบย่อ)</h3>
+        <ol>
+          <li>เบราว์เซอร์ทักไปที่เซิร์ฟเวอร์ เซิร์ฟเวอร์ส่ง <strong>certificate</strong> กลับมา ซึ่งข้างในมี public key และข้อมูลว่าเป็นของโดเมนอะไร</li>
+          <li>เบราว์เซอร์ตรวจว่า certificate นี้ถูกเซ็นรับรองโดย <strong>CA (Certificate Authority)</strong> ที่เชื่อถือได้หรือไม่ และตรงกับโดเมนที่กำลังเข้าไหม (ระบบ chain of trust)</li>
+          <li>ทั้งสองฝ่ายใช้ asymmetric เพื่อ "ตกลงกุญแจลับร่วม" อย่างปลอดภัย</li>
+          <li>จากนั้นสลับไปใช้ symmetric ที่เร็วกว่าในการรับส่งข้อมูลจริงทั้งหมด</li>
+        </ol>
+        <p>ผลลัพธ์คือคนที่ดักฟังกลางทางเห็นแต่ ciphertext อ่านอะไรไม่ได้ และมั่นใจได้ว่าเว็บไม่ได้ถูกสวมรอย</p>
+      </div>
+
+      <div class="card">
+        <h3>แนวคิดการโจมตี: MITM และ downgrade</h3>
+        <p>ถ้าไม่มี TLS หรือ TLS ถูกทำให้อ่อนลง ผู้โจมตีที่อยู่ "ตรงกลาง" (Man-in-the-Middle) เช่นบน Wi-Fi สาธารณะที่เขาคุม อาจแอบอ่านหรือแก้ไขข้อมูลระหว่างทางได้ เทคนิคที่พบคือการบังคับให้เชื่อมต่อแบบ http ธรรมดา (downgrade) หรือยัด certificate ปลอมให้เหยื่อกด "ยอมรับความเสี่ยง" การเข้าใจกลไกนี้ทำให้เรารู้ว่าทำไม "อย่ากดข้ามคำเตือน certificate" จึงสำคัญมาก — เรื่องนี้เพื่อป้องกันตัวเราและผู้ใช้ของเรา ไม่ใช่เพื่อดักผู้อื่น</p>
+      </div>
+
+      <div class="card defend">
+        <h3>🛡️ วิธีป้องกัน</h3>
+        <ul>
+          <li>เปิด <strong>HTTPS ทุกหน้า</strong> ของเว็บเรา และตั้ง <strong>HSTS</strong> เพื่อบังคับให้เบราว์เซอร์ใช้ https เสมอ กัน downgrade</li>
+          <li>ใช้ TLS 1.2 เป็นอย่างต่ำ แนะนำ TLS 1.3 และปิดโปรโตคอลเก่า (SSL, TLS 1.0/1.1)</li>
+          <li>ต่ออายุ certificate อัตโนมัติ (เช่นผ่าน Let's Encrypt) อย่าปล่อยให้หมดอายุ</li>
+          <li>ในฐานะผู้ใช้: อย่ากรอกข้อมูลสำคัญบนหน้า http และอย่ากดข้ามคำเตือน certificate เด็ดขาด</li>
+        </ul>
+      </div>
+
+      <div class="card lab">
+        <h3>🧪 ลองในแล็บของคุณ</h3>
+        <p>สำรวจ certificate ของเว็บที่ <em>คุณเป็นเจ้าของ</em> หรือ localhost ของคุณเอง</p>
+        <ul>
+          <li>เปิดเว็บของคุณแล้วคลิกแม่กุญแจในเบราว์เซอร์ ดูว่าใครออก certificate หมดอายุเมื่อไร</li>
+          <li>บนเครื่องคุณลองคำสั่งดูรายละเอียด certificate ของเซิร์ฟเวอร์ตัวเอง</li>
+        </ul>
+        <p class="code-cap">อ่านข้อมูล certificate ของเซิร์ฟเวอร์ที่คุณดูแลเอง</p>
+        <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code>openssl s_client -connect localhost:443 -servername localhost
+# หรือดูไฟล์ cert ที่มีอยู่
+openssl x509 -in mycert.pem -text -noout</code></pre>
+      </div>
+    </section>
+
+    <section class="ch" id="cryptography-4" aria-labelledby="cryptography-4-h">
+      <h2 id="cryptography-4-h">ลายเซ็นดิจิทัลและความถูกต้องของข้อมูล</h2>
+      <p class="lede">การเข้ารหัสดูแลเรื่อง "ความลับ" ส่วนลายเซ็นดิจิทัล (digital signature) ดูแลอีกสองเรื่องที่สำคัญไม่แพ้กัน คือ "ข้อมูลนี้ไม่ถูกแก้ไข" (integrity) และ "มาจากคนที่อ้างจริง" (authenticity) นี่คือสิ่งที่ทำให้เรามั่นใจได้ว่าไฟล์ที่ดาวน์โหลดมาไม่ได้ถูกฝังของแปลกปลอม</p>
+
+      <div class="card">
+        <h3>ลายเซ็นดิจิทัลทำงานกลับด้านกับการเข้ารหัส</h3>
+        <p>ผู้ส่งใช้ <strong>private key</strong> ของตัวเองเซ็นข้อมูล (จริง ๆ คือเซ็นค่า hash ของข้อมูล) ใครก็ตามที่มี <strong>public key</strong> ของผู้ส่งจะตรวจสอบได้ว่าลายเซ็นนี้ถูกต้องและข้อมูลไม่ถูกแก้ไขแม้แต่บิตเดียว ถ้ามีคนแก้ไฟล์กลางทาง ค่า hash จะเปลี่ยน ลายเซ็นจะไม่ผ่านทันที นี่ให้ทั้ง integrity, authenticity และ <em>non-repudiation</em> (ผู้เซ็นปฏิเสธไม่ได้ว่าไม่ได้เซ็น)</p>
+      </div>
+
+      <div class="card">
+        <h3>แนวคิดการโจมตี: การปลอมแปลงและ supply chain</h3>
+        <p>ถ้าซอฟต์แวร์หรืออัปเดตไม่มีการเซ็น ผู้โจมตีอาจสลับไฟล์จริงด้วยไฟล์ที่ฝังโค้ดอันตราย แล้วผู้ใช้ก็ติดตั้งไปโดยไม่รู้ตัว การโจมตีแบบนี้เรียกว่า supply chain attack ซึ่งเกิดขึ้นจริงกับหลายโปรเจกต์ใหญ่ การตรวจ checksum และลายเซ็นก่อนติดตั้งจึงเป็นนิสัยที่ควรมี</p>
+      </div>
+
+      <div class="card defend">
+        <h3>🛡️ วิธีป้องกัน</h3>
+        <ul>
+          <li>ตรวจ <strong>checksum</strong> (เช่น SHA-256) ของไฟล์ที่ดาวน์โหลดกับค่าที่ผู้พัฒนาประกาศไว้ ก่อนติดตั้ง</li>
+          <li>ตรวจ <strong>ลายเซ็น GPG/PGP</strong> ของแพ็กเกจหรือ release ถ้าผู้พัฒนามีให้</li>
+          <li>สำหรับซอฟต์แวร์ที่เราปล่อยเอง ควรทำ <strong>code signing</strong> เพื่อให้ผู้ใช้ตรวจสอบต้นทางได้</li>
+          <li>ดึง dependency จากแหล่งทางการและล็อกเวอร์ชัน (เช่น lockfile) เพื่อลดความเสี่ยงถูกสลับของ</li>
+        </ul>
+      </div>
+
+      <p class="code-cap">ตรวจ checksum ของไฟล์ที่ดาวน์โหลดมาไว้ใช้เอง (ฝั่งป้องกัน)</p>
+      <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code># คำนวณ hash ของไฟล์แล้วเทียบด้วยตากับค่าที่เว็บทางการประกาศ
+shasum -a 256 downloaded-file.iso</code></pre>
+
+      <div class="card lab">
+        <h3>🧪 ลองในแล็บของคุณ</h3>
+        <ul>
+          <li>ดาวน์โหลดไฟล์โอเพนซอร์สที่มีการประกาศ SHA-256 (เช่นอิมเมจ Linux) แล้วลองคำนวณ checksum เทียบดูว่าตรงไหม ลองแก้ไฟล์นิดเดียวแล้วคำนวณใหม่ สังเกตว่าค่าเปลี่ยนทันที</li>
+          <li>สร้างกุญแจ GPG ของตัวเอง เซ็นไฟล์ข้อความสั้น ๆ แล้วให้เพื่อนที่ยินยอมลองตรวจด้วย public key ของคุณ</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="ch" id="cryptography-5" aria-labelledby="cryptography-5-h">
+      <h2 id="cryptography-5-h">กฎเหล็ก: อย่าเขียน Crypto เอง และเส้นทางฝึกต่อ</h2>
+      <p class="lede">ถึงตอนนี้คุณเข้าใจภาพรวมของการเข้ารหัสแล้ว แต่มีกฎข้อหนึ่งที่แม้แต่โปรแกรมเมอร์เก่ง ๆ ก็ต้องเคารพ นั่นคือ "อย่าประดิษฐ์ crypto ขึ้นใช้เอง"</p>
+
+      <div class="card">
+        <h3>ทำไมห้ามเขียน crypto เอง</h3>
+        <p>อัลกอริทึมมาตรฐานอย่าง AES หรือ RSA ผ่านการตรวจสอบจากนักคณิตศาสตร์และนักวิจัยทั่วโลกมาหลายสิบปี ในขณะที่โค้ดที่เราเขียนเองมักมีจุดพลาดเล็ก ๆ ที่มองไม่เห็น เช่น การใช้ nonce/IV ซ้ำ, การสุ่มที่ไม่สุ่มจริง, หรือช่องโหว่ timing attack ที่ทำให้ความลับรั่วโดยที่ผังตรรกะดู "ถูกต้อง" ทุกอย่าง จุดพลาดพวกนี้ทำลายความปลอดภัยทั้งระบบได้ กฎคือ: ใช้ไลบรารีที่ผ่านการตรวจสอบและยังได้รับการดูแล อย่าเขียนเอง อย่าดัดแปลงแกนของมันเอง</p>
+      </div>
+
+      <div class="card grid">
+        <div class="tile"><h3>libsodium</h3><p>ไลบรารีที่ออกแบบให้ใช้ยากที่จะพลาด เหมาะกับงานทั่วไปหลายภาษา</p></div>
+        <div class="tile"><h3>cryptography (Python)</h3><p>ครอบคลุมและมี "recipe" ระดับสูงอย่าง Fernet ให้ใช้ปลอดภัยตั้งแต่แกะกล่อง</p></div>
+        <div class="tile"><h3>Web Crypto API</h3><p>มากับเบราว์เซอร์ ใช้ทำ crypto ฝั่ง client โดยไม่ต้องพึ่งโค้ดของเราเอง</p></div>
+      </div>
+
+      <div class="card lab">
+        <h3>🧪 ลองในแล็บของคุณ</h3>
+        <ul>
+          <li>ลองโจทย์หมวด crypto บน <a href="https://cryptohack.org/">CryptoHack</a> และ <a href="https://picoctf.org/">picoCTF</a> ซึ่งออกแบบมาให้เรียนรู้แบบแก้โจทย์ที่ถูกกฎหมาย ส่วนใหญ่คือการหาจุดที่ crypto ถูกใช้ผิดวิธี</li>
+          <li>ฝึกใช้ CyberChef เพื่อถอด encoding พื้นฐาน (base64, hex, ROT13) ให้ชิน — จำไว้ว่า encoding ไม่ใช่ encryption มันไม่ได้ให้ความลับ</li>
+          <li>ลองเขียนสคริปต์เล็ก ๆ ที่ <em>ใช้</em> ไลบรารีมาตรฐานเข้ารหัสไฟล์ของคุณเอง แล้วถอดกลับ เพื่อฝึกใช้ของจริงให้ถูกวิธี</li>
+        </ul>
+      </div>
+
+      <div class="card warn">
+        <h3>⚠️ จริยธรรมและกฎหมาย</h3>
+        <p>ความรู้เรื่องการเข้ารหัสมีไว้เพื่อปกป้องข้อมูลของเราและผู้ใช้ของเรา ไม่ใช่เพื่อเข้าถึงข้อมูลของผู้อื่น การดักฟัง แก้ไข หรือถอดรหัสข้อมูลของคนอื่นโดยไม่ได้รับอนุญาต เข้าข่ายความผิดตาม <strong>พ.ร.บ.ว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. 2560</strong> เช่น การเข้าถึงระบบหรือข้อมูลของผู้อื่นโดยมิชอบ และการดักรับข้อมูลระหว่างส่ง ซึ่งมีทั้งโทษปรับและจำคุก ข้อความนี้เป็นความรู้ทั่วไป ไม่ใช่คำแนะนำทางกฎหมาย ให้ฝึกทุกอย่างเฉพาะบนระบบของคุณเอง แล็บ localhost หรือสนามฝึกที่อนุญาตเท่านั้น</p>
+      </div>
+
+      <details class="q">
+        <summary>❓ คำถาม: hashing กับ encryption ต่างกันอย่างไร และควรใช้อะไรกับรหัสผ่านผู้ใช้</summary>
+        <div class="a">เฉลย: encryption เป็นแบบสองทาง ถอดกลับได้ถ้ามีกุญแจ ส่วน hashing เป็นแบบทางเดียว ถอดกลับไม่ได้ รหัสผ่านผู้ใช้ควร <strong>hash</strong> (ด้วย bcrypt/argon2 พร้อม salt) ไม่ใช่ encrypt เพราะถ้ากุญแจของ encryption รั่ว รหัสผ่านทั้งหมดจะถูกเปิด แต่ hash ที่ทำถูกวิธีถอดกลับไม่ได้แม้ฐานข้อมูลจะหลุด</div>
+      </details>
+
+      <details class="q">
+        <summary>❓ คำถาม: salt ช่วยป้องกัน rainbow table ได้อย่างไร</summary>
+        <div class="a">เฉลย: salt คือค่าสุ่มเฉพาะของผู้ใช้แต่ละคนที่นำไปผสมก่อน hash ทำให้ rainbow table ที่คำนวณ hash ของรหัสยอดฮิตไว้ล่วงหน้าใช้ไม่ได้ (เพราะทุก hash ในระบบเราไม่ซ้ำตารางสำเร็จรูป) และทำให้ผู้ใช้ที่ตั้งรหัสผ่านเหมือนกันได้ค่า hash ต่างกัน ผู้โจมตีจึงต้องเดาทีละคน ซึ่งเมื่อรวมกับ hash ที่ช้าโดยตั้งใจ ทำให้ไม่คุ้มที่จะทำ</div>
+      </details>
+
+      <details class="q">
+        <summary>❓ คำถาม: ในการเชื่อมต่อ HTTPS ทำไมถึงใช้ทั้ง asymmetric และ symmetric</summary>
+        <div class="a">เฉลย: asymmetric ปลอดภัยสำหรับการ "ตกลงกุญแจลับร่วมกัน" ตอนเริ่มต้นโดยไม่ต้องส่งกุญแจตรง ๆ แต่มันช้า ส่วน symmetric เร็วมากแต่มีปัญหาเรื่องการส่งกุญแจ HTTPS จึงใช้แบบผสม: ใช้ asymmetric ตกลงกุญแจตอน handshake แล้วสลับไปใช้ symmetric ที่เร็วกว่าในการรับส่งข้อมูลจริง ได้ทั้งความปลอดภัยและความเร็ว</div>
+      </details>
+
+      <details class="q">
+        <summary>❓ คำถาม: ทำไมจึงไม่ควรเขียนอัลกอริทึมเข้ารหัสขึ้นใช้เอง</summary>
+        <div class="a">เฉลย: อัลกอริทึมมาตรฐานผ่านการตรวจสอบจากผู้เชี่ยวชาญทั่วโลกมานาน ในขณะที่โค้ดที่เขียนเองมักมีจุดพลาดที่มองไม่เห็น เช่น ใช้ nonce/IV ซ้ำ สุ่มไม่สุ่มจริง หรือมีช่องโหว่ timing attack จุดพลาดเหล่านี้ทำลายความปลอดภัยทั้งระบบได้แม้ตรรกะจะดูถูกต้อง จึงควรใช้ไลบรารีที่ผ่านการตรวจสอบและยังได้รับการดูแลอยู่เสมอ</div>
+      </details>
+    </section>
+  <nav class="lnav" aria-label="ไปบทเรียนอื่น"><a href="/cyber/security-coding" rel="prev">← บทที่ 6: เขียนโปรแกรมสาย Security ด้วย Python</a><a href="/cyber/defense-hardening" rel="next">บทที่ 8: การป้องกันและ Hardening (Blue Team) →</a></nav>
+  <footer class="credit">คอร์สนี้จัดทำเพื่อการศึกษาด้านความมั่นคงปลอดภัยไซเบอร์เชิงป้องกัน (ethical security) ให้ฝึกเฉพาะกับระบบหรือแล็บที่เป็นของคุณเอง หรือที่ได้รับอนุญาตเป็นลายลักษณ์อักษรเท่านั้น การเข้าถึงหรือทดสอบระบบของผู้อื่นโดยไม่ได้รับอนุญาตผิดกฎหมาย เนื้อหาเป็นความรู้ทั่วไป ไม่ใช่คำแนะนำทางกฎหมาย · จัดทำโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ · สหวรรณคลินิก</footer>
+</div>
+</main>
+</body>
+</html>
