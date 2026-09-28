@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>เครื่องมือสาย Security (ใช้ในแล็บของเรา) | สหวรรณคลินิก</title>
+<meta name="description" content="รู้จัก Burp Suite, nmap, browser dev tools และการอ่านเขียน HTTP ด้วยมือ โดยใช้กับระบบของตัวเองหรือแล็บเท่านั้น">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/cyber/tools">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/cyber/tools">
+<meta property="og:title" content="เครื่องมือสาย Security (ใช้ในแล็บของเรา)">
+<meta property="og:description" content="รู้จัก Burp Suite, nmap, browser dev tools และการอ่านเขียน HTTP ด้วยมือ โดยใช้กับระบบของตัวเองหรือแล็บเท่านั้น">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f6f8fb; --panel:#ffffff; --panel-2:#eef2f7; --ink:#0f172a; --ink-2:#475569;
+  --line:#d0d8e2; --accent:#1d4ed8; --accent-ink:#ffffff;
+  --def-bg:#e7f6ee; --def-line:#15803d; --def-title:#14532d;
+  --lab-bg:#e7f0fb; --lab-line:#1d4ed8; --lab-title:#1e3a8a;
+  --warn-bg:#fdf0d9; --warn-line:#b45309; --warn-title:#7c2d12;
+  --code-bg:#0f172a; --code-ink:#e6edf6;
+  --hero-a:#0b2447; --hero-b:#123a6b; --hero-gold:#f7c948;
+  --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1220; --panel:#131c2e; --panel-2:#1b2740; --ink:#e6edf6; --ink-2:#a9b6c9;
+  --line:#26324a; --accent:#7aa2ff; --accent-ink:#08131f;
+  --def-bg:rgba(34,197,94,.12); --def-line:#4ade80; --def-title:#86efac;
+  --lab-bg:rgba(59,130,246,.12); --lab-line:#60a5fa; --lab-title:#93c5fd;
+  --warn-bg:rgba(245,158,11,.12); --warn-line:#fbbf24; --warn-title:#fcd34d;
+  --code-bg:#060b16; --code-ink:#e6edf6;
+  --hero-a:#060d1c; --hero-b:#0e2647;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --panel:#131c2e; --panel-2:#1b2740; --ink:#e6edf6; --ink-2:#a9b6c9;
+  --line:#26324a; --accent:#7aa2ff; --accent-ink:#08131f;
+  --def-bg:rgba(34,197,94,.12); --def-line:#4ade80; --def-title:#86efac;
+  --lab-bg:rgba(59,130,246,.12); --lab-line:#60a5fa; --lab-title:#93c5fd;
+  --warn-bg:rgba(245,158,11,.12); --warn-line:#fbbf24; --warn-title:#fcd34d;
+  --code-bg:#060b16; --code-ink:#e6edf6;
+  --hero-a:#060d1c; --hero-b:#0e2647;
+}
+html{scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);
+  font-size:1.0625rem;line-height:1.7;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+h1,h2,h3{overflow-wrap:anywhere;line-height:1.25}
+a{color:var(--accent)}
+main :is(p,li) a{text-decoration:underline;text-underline-offset:3px}
+.skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;
+  padding:0.8rem 1rem;border-radius:10px;font-weight:700;text-decoration:underline}
+.skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+#main:focus{outline:none}
+
+/* top bar */
+.sw-bar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:0.4rem 1rem;flex-wrap:wrap;
+  padding:0.4rem 1.1rem;min-height:3rem;background:var(--panel);border-bottom:1px solid var(--line);
+  font-weight:600;font-size:0.9375rem}
+.sw-bar a{color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 0.3rem}
+.sw-bar a:hover{text-decoration:underline}
+.sw-bar .brand{color:var(--ink);font-weight:700}
+.sw-bar .sep{color:var(--ink-2)}
+@media (max-width:520px){.sw-bar .sep{display:none}}
+
+.wrap{width:min(52rem,calc(100% - 2rem));margin:0 auto;padding:1.5rem 0 4rem}
+.container{width:min(60rem,calc(100% - 2rem));margin:0 auto}
+
+/* hero */
+.hero{position:relative;border-radius:1.25rem;overflow:hidden;margin:1rem 0 1.5rem;
+  min-height:11rem;display:flex;align-items:flex-end;
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-b))}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero .veil{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(6,13,28,.15) 0%,rgba(6,13,28,.55) 60%,rgba(6,13,28,.85) 100%)}
+.hero .htext{position:relative;z-index:2;padding:1.4rem 1.5rem;color:#fff}
+.hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hero-gold);margin:0 0 0.35rem}
+.hero h1{margin:0;font-size:clamp(1.5rem,4.5vw,2.1rem);color:#fff}
+.hero .byline{margin:0.5rem 0 0;font-size:0.9375rem;color:#e6edf6}
+@media (max-width:600px){.hero{min-height:8.5rem}}
+
+section.ch{margin:2rem 0}
+section.ch>h2{font-size:1.5rem;margin:0 0 0.4rem;padding-bottom:0.3rem;border-bottom:3px solid var(--accent);display:inline-block}
+.lede{font-size:1.125rem;color:var(--ink-2);margin:0.6rem 0 1rem}
+h3{font-size:1.15rem;margin:0 0 0.4rem}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:0.9rem;padding:1.1rem 1.2rem;margin:1rem 0;
+  box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+.card.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr));gap:0.9rem;background:none;border:0;box-shadow:none;padding:0}
+.card.grid .tile{background:var(--panel);border:1px solid var(--line);border-radius:0.8rem;padding:1rem;min-width:0}
+.card.grid .tile h3{margin-top:0}
+.card.defend{background:var(--def-bg);border:1px solid var(--def-line);border-left:5px solid var(--def-line)}
+.card.defend h3{color:var(--def-title)}
+.card.lab{background:var(--lab-bg);border:1px solid var(--lab-line);border-left:5px solid var(--lab-line)}
+.card.lab h3{color:var(--lab-title)}
+.card.warn{background:var(--warn-bg);border:1px solid var(--warn-line);border-left:5px solid var(--warn-line)}
+.card.warn h3{color:var(--warn-title)}
+.card :last-child{margin-bottom:0}
+.card :first-child{margin-top:0}
+
+.code-cap{font-size:0.9375rem;color:var(--ink-2);margin:1rem 0 0.3rem}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:0.7rem;padding:0.9rem 1rem;overflow-x:auto;
+  font-family:var(--f-mono);font-size:0.875rem;line-height:1.55;margin:0.3rem 0 1rem}
+pre code{font-family:inherit}
+:not(pre)>code{background:var(--panel-2);border-radius:0.3rem;padding:0.1rem 0.35rem;font-family:var(--f-mono);font-size:0.9em}
+
+.tscroll{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:0.9375rem}
+th,td{border:1px solid var(--line);padding:0.5rem 0.7rem;text-align:left;vertical-align:top;min-width:0}
+th{background:var(--panel-2)}
+
+details.q{background:var(--panel);border:1px solid var(--line);border-radius:0.7rem;margin:0.6rem 0}
+details.q summary{cursor:pointer;padding:0.85rem 1rem;font-weight:600;min-height:44px;display:flex;align-items:center}
+details.q summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+details.q .a{padding:0 1rem 1rem;color:var(--ink-2)}
+
+ul,ol{padding-left:1.4rem}
+li{margin:0.25rem 0}
+
+/* lesson nav */
+.lnav{display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:space-between;margin:2.5rem 0 0;border-top:1px solid var(--line);padding-top:1.3rem}
+.lnav a,.hub-back{display:inline-flex;align-items:center;min-height:44px;padding:0.5rem 1rem;border:1px solid var(--line);
+  border-radius:999px;text-decoration:none;color:var(--accent);font-weight:600;background:var(--panel)}
+.lnav a:hover,.hub-back:hover{border-color:var(--accent)}
+
+footer.credit{border-top:1px solid var(--line);margin-top:2.5rem;padding:1.3rem 0 0;color:var(--ink-2);font-size:0.875rem}
+
+/* hub */
+.hub-hero{background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:#fff;border-radius:1.25rem;padding:2rem 1.6rem;margin:1rem 0 1.5rem}
+.hub-hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-gold);margin:0 0 0.4rem}
+.hub-hero h1{margin:0 0 0.6rem;font-size:clamp(1.7rem,5vw,2.4rem);color:#fff}
+.hub-hero p{margin:0.3rem 0;color:#e6edf6;max-width:44rem}
+.lesson-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(17rem,100%),1fr));gap:1rem;margin:1.3rem 0}
+.lcard{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:0.9rem;
+  overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+.lcard:hover{border-color:var(--accent)}
+.lcard:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.lcard .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));position:relative;display:flex;align-items:flex-end}
+.lcard .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lcard .thumb .num{position:relative;z-index:1;margin:0.6rem 0.8rem;font-family:var(--f-mono);font-weight:600;color:var(--hero-gold);
+  background:rgba(6,13,28,.6);padding:0.15rem 0.6rem;border-radius:999px;font-size:0.8125rem}
+.lcard .body{padding:0.9rem 1rem}
+.lcard .body h2{font-size:1.1rem;margin:0 0 0.35rem;border:0;display:block}
+.lcard .body p{margin:0;color:var(--ink-2);font-size:0.9375rem}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
+<nav class="sw-bar" aria-label="เมนูหลัก">
+  <a class="brand" href="/">สหวรรณคลินิก</a><span class="sep" aria-hidden="true">/</span>
+  <a href="/cyber">Cyber 101 ทุกบท</a>
+</nav>
+<main id="main" tabindex="-1">
+<div class="wrap">
+  <div class="hero">
+    <div class="veil"></div>
+    <div class="htext">
+      <p class="eyebrow">Cyber 101 · บทที่ 5</p>
+      <h1>เครื่องมือสาย Security (ใช้ในแล็บของเรา)</h1>
+      <p class="byline">นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+    </div>
+  </div>
+<section class="ch" id="tools-1" aria-labelledby="tools-1-h">
+  <h2 id="tools-1-h">กล่องเครื่องมือของสายป้องกัน และกฎเหล็กก่อนจับเครื่องมือ</h2>
+  <p class="lede">มาถึงบทที่หลายคนรอ นั่นคือ "เครื่องมือ" ที่มืออาชีพสายความปลอดภัยใช้กันจริง แต่ขอย้ำก่อนเลยว่าเครื่องมือเหล่านี้เป็นแค่ไขควงกับประแจ ตัวมันเองไม่ดีไม่ชั่ว สิ่งที่ตัดสินคือเราหันมันไปทางไหน ในบทนี้เราจะรู้จักสามเครื่องมือหลักที่ใช้ได้ตลอดชีวิตการทำงาน ได้แก่ proxy อย่าง Burp Suite เครื่องสแกนพอร์ตอย่าง nmap และการคุยกับเว็บด้วยมือผ่าน curl พร้อมชุดเครื่องมือสำเร็จรูปอย่าง Kali หรือ Parrot ทุกอย่างในบทนี้ให้ลองกับระบบของเราเองหรือแล็บที่เราตั้งขึ้นเท่านั้น</p>
+
+  <div class="card">
+    <h3>เครื่องมือคือส่วนขยายของความเข้าใจ ไม่ใช่ปุ่มเวทมนตร์</h3>
+    <p>คนใหม่มักคิดว่าพอมีเครื่องมือแรง ๆ แล้วจะเก่งขึ้นทันที ความจริงคือเครื่องมือช่วยให้เรา "มองเห็น" สิ่งที่ปกติซ่อนอยู่ เช่น เห็นข้อมูลที่เบราว์เซอร์ส่งจริง ๆ เห็นว่าเครื่องเราเปิดบริการอะไรทิ้งไว้บ้าง แต่การตีความว่าสิ่งที่เห็นแปลว่าอะไร ต้องอาศัยความเข้าใจพื้นฐานจากบทก่อน ๆ เรื่องเว็บ เครือข่าย และช่องโหว่ เครื่องมือจึงขยายสมองเรา ไม่ได้แทนสมองเรา</p>
+  </div>
+
+  <div class="card grid">
+    <div class="tile"><h3>Proxy ดักฟัง (Burp Suite)</h3><p>นั่งคั่นกลางระหว่างเบราว์เซอร์กับแอป ทำให้เราอ่านและแก้คำขอ HTTP ของแอปตัวเองได้ทุกบรรทัด เหมาะกับการเข้าใจว่าแอปเราเชื่อข้อมูลจากฝั่งผู้ใช้มากเกินไปหรือเปล่า</p></div>
+    <div class="tile"><h3>Scanner สแกนพอร์ต (nmap)</h3><p>ถามเครื่องปลายทางว่าเปิดประตูอะไรทิ้งไว้บ้าง ใช้สำรวจว่าแล็บหรือเซิร์ฟเวอร์ของเราเองมีบริการอะไรโผล่ออกมาเกินจำเป็น</p></div>
+    <div class="tile"><h3>HTTP client ด้วยมือ (curl)</h3><p>ส่งคำขอเองทีละบรรทัดโดยไม่ต้องผ่านเบราว์เซอร์ ทำให้เห็นชัดว่า HTTP แท้จริงเป็นแค่ข้อความ และช่วยทดสอบว่า API ของเราตรวจสิทธิถูกต้องไหม</p></div>
+  </div>
+
+  <div class="card warn">
+    <h3>⚠️ จริยธรรมและกฎหมาย: เครื่องมือแรงไม่ใช่ใบอนุญาต</h3>
+    <p>ทุกเครื่องมือในบทนี้ ใช้ได้เฉพาะกับระบบที่เราเป็นเจ้าของ หรือมีหนังสืออนุญาตเป็นลายลักษณ์อักษรพร้อมขอบเขตชัดเจนเท่านั้น การสแกนพอร์ต ดักคำขอ หรือยิงคำขอไปยังเว็บ เซิร์ฟเวอร์ หรือเครือข่ายของผู้อื่นโดยไม่ได้รับอนุญาต เข้าข่ายการเข้าถึงระบบคอมพิวเตอร์โดยมิชอบตาม พ.ร.บ.ว่าด้วยการกระทำผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ.2560 ซึ่งมีทั้งโทษปรับและจำคุก ข้อความนี้เป็นความรู้ทั่วไปเพื่อเตือนสติ ไม่ใช่คำแนะนำทางกฎหมาย ถ้าไม่แน่ใจว่าเป้าหมายได้รับอนุญาตหรือยัง คำตอบที่ปลอดภัยคือ "อย่าเพิ่ง"</p>
+  </div>
+</section>
+
+<section class="ch" id="tools-2" aria-labelledby="tools-2-h">
+  <h2 id="tools-2-h">Burp Suite และแนวคิด proxy ดักฟัง HTTP</h2>
+  <p class="lede">Burp Suite คือเครื่องมือยอดนิยมของสายทดสอบเว็บ หัวใจของมันคือการทำตัวเป็น proxy หรือคนกลาง เมื่อเราตั้งให้เบราว์เซอร์ส่งทุกคำขอผ่าน Burp ก่อน เราจะหยุดคำขอนั้นไว้กลางทาง อ่านมันทั้งหมด และถ้าอยากลองก็แก้ก่อนปล่อยไปยังแอปของเราเองได้ นี่คือวิธีเข้าใจแบบเห็นกับตาว่า สิ่งที่ผู้ใช้ "ส่งจริง" กับสิ่งที่หน้าเว็บ "แสดงให้เห็น" เป็นคนละเรื่องกัน</p>
+
+  <div class="card">
+    <h3>proxy คั่นกลางทำงานอย่างไร</h3>
+    <p>ปกติเบราว์เซอร์คุยกับเซิร์ฟเวอร์ตรง ๆ แต่เมื่อมี proxy คั่น เส้นทางจะกลายเป็น เบราว์เซอร์ → Burp → เซิร์ฟเวอร์ ทุกคำขอที่วิ่งผ่านจะโผล่ในหน้าต่างของ Burp ให้เราเห็นทั้ง method, path, headers, cookies และ body มีโหมด Intercept ที่หยุดคำขอไว้ให้เราดูทีละอัน กับ HTTP history ที่บันทึกทุกอย่างที่ผ่านไปแล้ว จุดสำคัญคือมันเผยให้เห็นว่าค่าที่หน้าเว็บ "ล็อกไว้ไม่ให้แก้" เช่นราคาสินค้าหรือรหัสผู้ใช้ จริง ๆ แล้วเป็นแค่ข้อความในคำขอที่แก้ได้ ถ้าแอปฝั่งเซิร์ฟเวอร์ไม่ตรวจซ้ำก็จะเชื่อค่าที่ถูกแก้นั้นทันที นี่คือบทเรียนล้ำค่าสำหรับคนเขียนโปรแกรม</p>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>ติดตั้ง OWASP Juice Shop ไว้บนเครื่องตัวเอง (รันบน localhost) ซึ่งเป็นเว็บที่จงใจสร้างมาให้ฝึกอย่างถูกกฎหมาย จากนั้น</p>
+    <p>1. เปิด Burp Suite เวอร์ชัน Community (ฟรี) แล้วตั้งเบราว์เซอร์ให้ส่งทราฟฟิกผ่าน proxy ของ Burp<br>2. เข้า Juice Shop ที่รันบนเครื่องเรา แล้วดูใน HTTP history ว่าเวลากดปุ่มต่าง ๆ เบราว์เซอร์ส่งคำขออะไรออกไปบ้าง<br>3. เปิดโหมด Intercept หยุดคำขอสักอันแล้วอ่านทีละบรรทัด สังเกตว่า cookie และ header หน้าตาเป็นอย่างไร</p>
+    <p>เป้าหมายของแล็บนี้คือ "อ่านให้ออก" ไม่ใช่ทำลายอะไร แค่เข้าใจว่าคำขอจริงหน้าตาเป็นอย่างไร ก็ถือว่าได้ครบแล้ว และทำเฉพาะกับ Juice Shop ของเราเองเท่านั้น</p>
+  </div>
+
+  <div class="card defend">
+    <h3>🛡️ วิธีป้องกัน</h3>
+    <p>เมื่อเรารู้ว่าใคร ๆ ก็ดักและแก้คำขอได้ บทเรียนสำหรับฝั่งพัฒนาคือ อย่าไว้ใจข้อมูลจากฝั่งผู้ใช้เด็ดขาด</p>
+    <p>• ตรวจสอบและตัดสินใจสำคัญทุกอย่างที่ฝั่งเซิร์ฟเวอร์เสมอ เช่น ราคา สิทธิ์ และจำนวน ห้ามเชื่อค่าที่ส่งมาจากเบราว์เซอร์<br>• บังคับใช้ HTTPS ทั้งเว็บ เพื่อให้คนที่นั่งดักกลางทางในเครือข่ายจริงอ่านเนื้อหาไม่ได้ (proxy อ่านได้เพราะเราตั้งใจติดตั้งใบรับรองของมันบนเครื่องตัวเองเท่านั้น)<br>• สำหรับแอปมือถือที่อ่อนไหว พิจารณา certificate pinning เพื่อกันการดักด้วย proxy ปลอม<br>• ตรวจ input ทุกช่องตามชนิดข้อมูลที่คาดหวัง ไม่ใช่แค่ซ่อนช่องไว้ในหน้าเว็บ</p>
+  </div>
+</section>
+
+<section class="ch" id="tools-3" aria-labelledby="tools-3-h">
+  <h2 id="tools-3-h">nmap: มองเห็นประตูที่เปิดทิ้งไว้</h2>
+  <p class="lede">nmap ย่อมาจาก Network Mapper เป็นเครื่องมือสแกนพอร์ตที่ใช้กันทั่วโลก หน้าที่ของมันคือถามเครื่องปลายทางว่า "เปิดประตูหมายเลขไหนไว้บ้าง และหลังประตูนั้นเป็นบริการอะไร" สำหรับสายป้องกัน nmap คือกระจกส่องตัวเอง ช่วยให้เราเห็นว่าเซิร์ฟเวอร์หรือแล็บของเราเผลอเปิดบริการอะไรทิ้งไว้เกินจำเป็น เพราะทุกพอร์ตที่เปิด คือประตูที่ต้องคอยดูแล</p>
+
+  <div class="card">
+    <h3>อ่านผลลัพธ์ของ nmap ให้เป็น</h3>
+    <p>เวลาสแกน แต่ละพอร์ตจะถูกรายงานเป็นสามสถานะหลัก คือ open หมายถึงมีบริการรับการเชื่อมต่ออยู่ closed หมายถึงเครื่องตอบกลับแต่ไม่มีบริการฟังพอร์ตนั้น และ filtered หมายถึงมีไฟร์วอลล์บังไว้จน nmap ไม่แน่ใจ ตัวเลือก -sV ช่วยเดาเวอร์ชันของบริการหลังพอร์ต ซึ่งมีประโยชน์มากในแง่ป้องกัน เพราะถ้าเห็นว่าเราเปิดบริการเวอร์ชันเก่าที่มีช่องโหว่รู้กันแล้ว ก็จะได้รีบอัปเดตหรือปิด สิ่งที่ควรตกใจไม่ใช่การถูกสแกน แต่คือการที่เราเปิดพอร์ตไว้เยอะโดยไม่รู้ตัว</p>
+    <p class="code-cap">สแกนเครื่องของตัวเอง เพื่อดูว่าเราเปิดบริการอะไรทิ้งไว้ (รันบนเครื่องเราเอง)</p>
+    <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code>nmap -sV 127.0.0.1
+
+# ตัวอย่างผลลัพธ์
+PORT     STATE  SERVICE  VERSION
+22/tcp   open   ssh      OpenSSH 8.9
+3000/tcp open   http     Node.js Express
+5432/tcp open   postgres PostgreSQL 14</code></pre>
+    <p>จากผลตัวอย่าง เราจะเห็นทันทีว่าฐานข้อมูล postgres เปิดออกมาให้มองเห็น ซึ่งโดยปกติไม่ควรเปิดสู่ภายนอก นี่คือสิ่งที่การสแกนตัวเองช่วยให้เราจับได้ก่อนคนอื่น</p>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>ในแล็บที่แยกออกจากเครือข่ายบ้าน (host-only ตามบทตั้งแล็บ) ให้ลอง</p>
+    <p>1. สแกนเครื่องตัวเองด้วย nmap 127.0.0.1 แล้วจดว่าเปิดพอร์ตอะไรบ้าง<br>2. ปิดบริการที่ไม่ได้ใช้ แล้วสแกนใหม่ ดูว่าพอร์ตหายไปจริงไหม<br>3. ลองใส่ -sV เพื่อดูเวอร์ชันบริการ แล้วฝึกตั้งคำถามว่าอันไหนควรอัปเดต</p>
+    <p>ทำเฉพาะกับเครื่องหรือ VM ของเราเองในแล็บเท่านั้น ห้ามสแกน IP ของเว็บไซต์ หน่วยงาน หรือเครือข่ายที่เราไม่ได้เป็นเจ้าของโดยเด็ดขาด</p>
+  </div>
+
+  <div class="card defend">
+    <h3>🛡️ วิธีป้องกัน</h3>
+    <p>เมื่อเข้าใจว่าพอร์ตที่เปิดคือพื้นที่ให้ถูกโจมตี การป้องกันคือลดพื้นที่นั้นให้เหลือน้อยที่สุด</p>
+    <p>• ปิดทุกบริการที่ไม่ได้ใช้ เปิดเฉพาะพอร์ตที่จำเป็นจริง ๆ (หลัก least attack surface)<br>• ตั้งไฟร์วอลล์ให้ฐานข้อมูลและบริการภายใน มองเห็นได้เฉพาะจากเครื่องที่ควรเข้าถึง ไม่เปิดสู่อินเทอร์เน็ต<br>• อัปเดตเวอร์ชันบริการสม่ำเสมอ ปิดช่องโหว่ที่ประกาศแล้ว<br>• เฝ้าดู log การเชื่อมต่อผิดปกติ และพิจารณาเครื่องมืออย่าง fail2ban เพื่อชะลอการเดาซ้ำ ๆ</p>
+  </div>
+
+  <div class="card warn">
+    <h3>⚠️ จริยธรรมและกฎหมาย</h3>
+    <p>การสแกนพอร์ตของระบบผู้อื่นโดยไม่ได้รับอนุญาต แม้จะไม่ได้เจาะเข้าไป ก็อาจถูกตีความว่าเป็นการสำรวจเพื่อเข้าถึงระบบโดยมิชอบ และหลายองค์กรถือเป็นสัญญาณเตือนภัยที่ต้องดำเนินคดี ถ้าอยากฝึกสแกนกับเป้าที่ยินยอม ให้ใช้เครื่องหรือแล็บของเราเอง หรือเป้าหมายที่แพลตฟอร์มฝึกจัดให้โดยเฉพาะ อย่าเอา IP สาธารณะขององค์กรใดมาลองเล่นเด็ดขาด</p>
+  </div>
+</section>
+
+<section class="ch" id="tools-4" aria-labelledby="tools-4-h">
+  <h2 id="tools-4-h">curl: คุยกับเว็บด้วยมือ</h2>
+  <p class="lede">curl คือเครื่องมือบรรทัดคำสั่งสำหรับส่งคำขอ HTTP ด้วยตัวเอง ไม่ต้องผ่านหน้าเว็บสวย ๆ เลย พอเราส่งคำขอเองได้ เราจะเข้าใจความจริงข้อหนึ่งที่สำคัญมาก นั่นคือ HTTP แท้จริงเป็นแค่ข้อความไม่กี่บรรทัด ประกอบด้วย method, path, headers และ body เท่านั้น เบราว์เซอร์แค่ช่วยห่อข้อความนี้ให้สวยงาม แต่ใครก็สร้างข้อความนี้ขึ้นเองได้ ซึ่งเป็นทั้งพลังในการทดสอบและเป็นเหตุผลว่าทำไมเซิร์ฟเวอร์ห้ามไว้ใจฝั่งผู้ใช้</p>
+
+  <div class="card">
+    <h3>อ่านและเขียน HTTP ทีละบรรทัด</h3>
+    <p>ด้วย curl เราเลือก method ได้ด้วย -X ใส่ header เองด้วย -H แนบข้อมูลด้วย -d และดู header ที่ตอบกลับมาด้วย -i ทั้งหมดนี้ทำให้เราทดสอบพฤติกรรมของ API ตัวเองได้ตรงจุด เช่น ลองเรียกหน้าที่ควรต้องล็อกอินก่อน แล้วดูว่าเซิร์ฟเวอร์ตอบ 401 หรือ 403 อย่างที่ควรไหม หรือลองส่งข้อมูลผิดชนิดเพื่อดูว่าระบบตรวจสอบและปฏิเสธถูกต้องหรือเปล่า</p>
+    <p class="code-cap">คุยกับแอปของเราเองบน localhost เพื่อดู header และสถานะที่ตอบกลับ</p>
+    <pre tabindex="0" role="group" aria-label="ตัวอย่างโค้ด เลื่อนแนวนอนเพื่อดูเพิ่มได้"><code># ดู header และ status code ที่แอปเราตอบกลับ
+curl -i http://localhost:3000/
+
+# ส่งคำขอแบบมี header เอง ไปยัง API ของเราเอง
+curl -X POST http://localhost:3000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"user":"test","pass":"test"}'</code></pre>
+    <p>สังเกตว่าเราชี้ไปที่ localhost ซึ่งคือเครื่องของเราเอง การฝึก curl ที่ดีคือใช้ตรวจสอบว่าแอปที่เรากำลังพัฒนา ตอบสนองอย่างถูกต้องปลอดภัยในทุกกรณี ไม่ใช่การยิงคำขอไปหาเว็บของคนอื่น</p>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>รันเว็บแอปเล็ก ๆ ของตัวเอง หรือ Juice Shop บน localhost แล้ว</p>
+    <p>1. ใช้ curl -i เรียกหน้าแรก อ่าน status code และ header ด้านความปลอดภัย เช่น มี Content-Security-Policy หรือ Set-Cookie ตั้งค่าอย่างไร<br>2. ลองเรียก endpoint ที่ควรต้องล็อกอินก่อน โดยไม่แนบ token ดูว่าเซิร์ฟเวอร์ปฏิเสธถูกต้องไหม<br>3. เปรียบเทียบผลลัพธ์ที่ได้จาก curl กับที่เห็นในเบราว์เซอร์ เพื่อยืนยันว่าเข้าใจตรงกัน</p>
+    <p>ทุกคำสั่งชี้ไปที่ localhost หรือแล็บของเราเองเท่านั้น</p>
+  </div>
+
+  <div class="card defend">
+    <h3>🛡️ วิธีป้องกัน</h3>
+    <p>เพราะใคร ๆ ก็ประดิษฐ์คำขอเองได้ด้วย curl การป้องกันจึงต้องอยู่ที่เซิร์ฟเวอร์เสมอ</p>
+    <p>• ตรวจสิทธิและ token ทุกครั้งที่ฝั่งเซิร์ฟเวอร์ ไม่ว่าคำขอจะมาจากเบราว์เซอร์หรือเครื่องมือใด<br>• ตรวจความถูกต้องของ input ตามชนิดและช่วงที่ยอมรับได้ แล้วปฏิเสธส่วนที่ผิด<br>• จำกัดอัตราคำขอ (rate limiting) เพื่อกันการยิงซ้ำจำนวนมาก<br>• ตั้ง security headers ให้ครบ และไม่เปิดเผยรายละเอียด error ที่มากเกินจำเป็นในคำตอบ</p>
+  </div>
+</section>
+
+<section class="ch" id="tools-5" aria-labelledby="tools-5-h">
+  <h2 id="tools-5-h">Kali และ Parrot: กล่องเครื่องมือสำเร็จรูปในแล็บ</h2>
+  <p class="lede">แทนที่จะติดตั้งเครื่องมือทีละตัว มีระบบปฏิบัติการที่รวบรวมเครื่องมือสายความปลอดภัยมาให้พร้อมใช้ ที่นิยมที่สุดคือ Kali Linux และ Parrot OS วิธีใช้ที่ถูกต้องคือเอามันไปติดตั้งเป็น VM ในแล็บของเรา แล้วใช้เป็น "โต๊ะทำงาน" สำหรับฝึกกับเป้าหมายที่เราเป็นเจ้าของหรือได้รับอนุญาตเท่านั้น การมีกล่องเครื่องมือครบ ไม่ได้เปลี่ยนกติกาเรื่องเป้าหมายเลยแม้แต่น้อย</p>
+
+  <div class="card grid">
+    <div class="tile"><h3>Kali Linux</h3><p>distro ที่ได้รับความนิยมสูงสุด มีเครื่องมือครบและเอกสารเยอะ เหมาะกับผู้เริ่มที่อยากมีสภาพแวดล้อมมาตรฐานที่คนส่วนใหญ่ใช้กัน ติดตั้งเป็น VM แล้วทำ snapshot ไว้ย้อนกลับได้</p></div>
+    <div class="tile"><h3>Parrot OS</h3><p>ทางเลือกที่เบากว่าเล็กน้อย มาพร้อมเครื่องมือคล้ายกันและเน้นเรื่องความเป็นส่วนตัว เหมาะกับเครื่องที่ทรัพยากรจำกัด ใช้แนวคิดเดียวกันคือรันในแล็บที่แยกออกมา</p></div>
+    <div class="tile"><h3>ติดตั้งเองบน distro ปกติ</h3><p>ถ้าใช้ Ubuntu หรือ distro ที่ถนัดอยู่แล้ว ก็ติดตั้งเฉพาะเครื่องมือที่ต้องใช้ได้ วิธีนี้ช่วยให้เข้าใจว่าแต่ละเครื่องมือทำอะไร แทนที่จะได้มาทั้งกล่องโดยไม่รู้จัก</p></div>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>1. ติดตั้ง Kali หรือ Parrot เป็น VM ใน VirtualBox โดยตั้งเครือข่ายแบบ host-only เพื่อแยกออกจากเครือข่ายบ้าน<br>2. ทำ snapshot ทันทีหลังติดตั้งเสร็จ เพื่อให้ย้อนกลับสู่สภาพสะอาดได้เสมอ<br>3. ตั้ง VM เป้าหมายที่จงใจมีช่องโหว่ (เช่น Juice Shop หรือ DVWA) ไว้อีกเครื่องในแล็บเดียวกัน แล้วฝึก Burp, nmap และ curl กับเป้าหมายในแล็บของเราเองเท่านั้น</p>
+    <p>แล็บสองเครื่องที่คุยกันเองในเครือข่ายปิด คือสนามซ้อมที่ปลอดภัยและถูกกฎหมายที่สุด</p>
+  </div>
+
+  <div class="card warn">
+    <h3>⚠️ จริยธรรมและกฎหมาย</h3>
+    <p>การติดตั้ง Kali หรือ Parrot ไม่ผิดกฎหมาย มันเป็นเพียงเครื่องมือ แต่การเอาเครื่องมือในนั้นไปใช้กับระบบของผู้อื่นโดยไม่ได้รับอนุญาต ผิดกฎหมายเต็มขั้นตาม พ.ร.บ.คอมพิวเตอร์ ขอย้ำหลักเดิมที่ใช้ได้กับทั้งบท คือ เป้าหมายต้องเป็นของเรา หรือได้รับอนุญาตเป็นลายลักษณ์อักษรพร้อมขอบเขตชัดเจน ถ้าอยากฝึกกับเป้าหมายจริงที่ยินยอม ให้ไปที่แพลตฟอร์มฝึกที่ถูกกฎหมายในบทสุดท้าย เช่น PortSwigger Web Security Academy หรือ picoCTF ซึ่งเปิดให้ลองได้อย่างสบายใจ</p>
+  </div>
+</section>
+
+<section class="ch" id="tools-6" aria-labelledby="tools-6-h">
+  <h2 id="tools-6-h">สรุปบทและคำถามทบทวน</h2>
+  <p class="lede">เครื่องมือทั้งสามคือชุดพื้นฐานที่ใช้ได้ตลอดเส้นทาง Burp ช่วยให้เห็นว่าคำขอจริงเป็นอย่างไรและแก้ได้ nmap ช่วยให้เห็นว่าเราเปิดประตูอะไรทิ้งไว้ และ curl ช่วยให้คุยกับเว็บด้วยมือจนเข้าใจว่า HTTP เป็นแค่ข้อความ ทั้งหมดนี้มีคุณค่ามหาศาลเมื่อใช้เพื่อตรวจและอุดช่องโหว่ของระบบเราเอง และกลายเป็นเรื่องผิดกฎหมายทันทีเมื่อหันไปหาระบบของผู้อื่นโดยไม่ได้รับอนุญาต</p>
+
+  <div class="card">
+    <h3>ทบทวนความเข้าใจ</h3>
+    <details class="q"><summary>❓ คำถาม: proxy อย่าง Burp Suite ทำให้เราเห็นอะไร และบทเรียนสำหรับคนเขียนโปรแกรมคืออะไร</summary><div class="a">เฉลย: Burp ทำตัวเป็นคนกลางระหว่างเบราว์เซอร์กับแอป ทำให้เราอ่านและแก้คำขอ HTTP ของแอปตัวเองได้ทุกบรรทัด ทั้ง method, headers, cookies และ body บทเรียนคือ ค่าที่หน้าเว็บดูเหมือนล็อกไว้จริง ๆ แล้วเป็นแค่ข้อความในคำขอที่แก้ได้ ดังนั้นเซิร์ฟเวอร์ต้องตรวจและตัดสินใจสำคัญทุกอย่างเองเสมอ ห้ามไว้ใจข้อมูลจากฝั่งผู้ใช้</div></details>
+    <details class="q"><summary>❓ คำถาม: nmap รายงานพอร์ตเป็นสถานะ open, closed และ filtered แต่ละอย่างหมายถึงอะไร และเราใช้ประโยชน์เชิงป้องกันได้อย่างไร</summary><div class="a">เฉลย: open คือมีบริการฟังอยู่ closed คือเครื่องตอบแต่ไม่มีบริการที่พอร์ตนั้น filtered คือมีไฟร์วอลล์บังจนไม่แน่ใจ เชิงป้องกันเราสแกนเครื่องตัวเองเพื่อดูว่าเปิดบริการอะไรเกินจำเป็น แล้วปิดสิ่งที่ไม่ใช้ อัปเดตเวอร์ชันที่มีช่องโหว่ และตั้งไฟร์วอลล์ไม่ให้บริการภายในโผล่สู่ภายนอก</div></details>
+    <details class="q"><summary>❓ คำถาม: ทำไมการใช้ curl ส่งคำขอเองได้ ถึงเป็นเหตุผลว่าเซิร์ฟเวอร์ต้องตรวจสิทธิและ input ที่ฝั่งเซิร์ฟเวอร์เสมอ</summary><div class="a">เฉลย: เพราะ curl แสดงให้เห็นว่า HTTP เป็นแค่ข้อความที่ใครก็ประดิษฐ์ขึ้นเองได้ ไม่จำเป็นต้องผ่านหน้าเว็บของเรา การซ่อนปุ่มหรือช่องในหน้าเว็บจึงกันอะไรไม่ได้ เซิร์ฟเวอร์ต้องตรวจ token, สิทธิ์ และความถูกต้องของ input ทุกครั้ง พร้อมจำกัดอัตราคำขอ เพราะนั่นคือจุดเดียวที่ผู้โจมตีเลี่ยงไม่ได้</div></details>
+    <details class="q"><summary>❓ คำถาม: การติดตั้ง Kali Linux ผิดกฎหมายหรือไม่ และกติกาข้อไหนที่ต้องยึดไม่ว่าเราจะมีเครื่องมือแรงแค่ไหน</summary><div class="a">เฉลย: การติดตั้ง Kali ไม่ผิดกฎหมาย มันเป็นเพียงกล่องเครื่องมือ แต่กติกาที่ต้องยึดเสมอคือ ใช้ได้เฉพาะกับระบบที่เราเป็นเจ้าของ หรือได้รับอนุญาตเป็นลายลักษณ์อักษรพร้อมขอบเขตชัดเจนเท่านั้น การนำเครื่องมือไปใช้กับระบบผู้อื่นโดยไม่ได้รับอนุญาตผิด พ.ร.บ.คอมพิวเตอร์ ถ้าอยากฝึกกับเป้าหมายจริง ให้ใช้แพลตฟอร์มฝึกที่ถูกกฎหมายหรือแล็บของเราเอง</div></details>
+  </div>
+</section>
+  <nav class="lnav" aria-label="ไปบทเรียนอื่น"><a href="/cyber/web-vulns-auth" rel="prev">← บทที่ 4: ช่องโหว่เว็บ 2: Authentication และ Access Control</a><a href="/cyber/security-coding" rel="next">บทที่ 6: เขียนโปรแกรมสาย Security ด้วย Python →</a></nav>
+  <footer class="credit">คอร์สนี้จัดทำเพื่อการศึกษาด้านความมั่นคงปลอดภัยไซเบอร์เชิงป้องกัน (ethical security) ให้ฝึกเฉพาะกับระบบหรือแล็บที่เป็นของคุณเอง หรือที่ได้รับอนุญาตเป็นลายลักษณ์อักษรเท่านั้น การเข้าถึงหรือทดสอบระบบของผู้อื่นโดยไม่ได้รับอนุญาตผิดกฎหมาย เนื้อหาเป็นความรู้ทั่วไป ไม่ใช่คำแนะนำทางกฎหมาย · จัดทำโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ · สหวรรณคลินิก</footer>
+</div>
+</main>
+</body>
+</html>

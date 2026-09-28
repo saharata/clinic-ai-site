@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>เส้นทางสู่ระดับโปร: CTF ใบรับรอง และอาชีพ | สหวรรณคลินิก</title>
+<meta name="description" content="แพลตฟอร์มฝึกถูกกฎหมาย เส้นทาง bug bounty แบบ responsible disclosure ใบรับรองสายงาน และเส้นทางอาชีพด้านความปลอดภัย">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/cyber/path-to-pro">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/cyber/path-to-pro">
+<meta property="og:title" content="เส้นทางสู่ระดับโปร: CTF ใบรับรอง และอาชีพ">
+<meta property="og:description" content="แพลตฟอร์มฝึกถูกกฎหมาย เส้นทาง bug bounty แบบ responsible disclosure ใบรับรองสายงาน และเส้นทางอาชีพด้านความปลอดภัย">
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f6f8fb; --panel:#ffffff; --panel-2:#eef2f7; --ink:#0f172a; --ink-2:#475569;
+  --line:#d0d8e2; --accent:#1d4ed8; --accent-ink:#ffffff;
+  --def-bg:#e7f6ee; --def-line:#15803d; --def-title:#14532d;
+  --lab-bg:#e7f0fb; --lab-line:#1d4ed8; --lab-title:#1e3a8a;
+  --warn-bg:#fdf0d9; --warn-line:#b45309; --warn-title:#7c2d12;
+  --code-bg:#0f172a; --code-ink:#e6edf6;
+  --hero-a:#0b2447; --hero-b:#123a6b; --hero-gold:#f7c948;
+  --f-body:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1220; --panel:#131c2e; --panel-2:#1b2740; --ink:#e6edf6; --ink-2:#a9b6c9;
+  --line:#26324a; --accent:#7aa2ff; --accent-ink:#08131f;
+  --def-bg:rgba(34,197,94,.12); --def-line:#4ade80; --def-title:#86efac;
+  --lab-bg:rgba(59,130,246,.12); --lab-line:#60a5fa; --lab-title:#93c5fd;
+  --warn-bg:rgba(245,158,11,.12); --warn-line:#fbbf24; --warn-title:#fcd34d;
+  --code-bg:#060b16; --code-ink:#e6edf6;
+  --hero-a:#060d1c; --hero-b:#0e2647;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --panel:#131c2e; --panel-2:#1b2740; --ink:#e6edf6; --ink-2:#a9b6c9;
+  --line:#26324a; --accent:#7aa2ff; --accent-ink:#08131f;
+  --def-bg:rgba(34,197,94,.12); --def-line:#4ade80; --def-title:#86efac;
+  --lab-bg:rgba(59,130,246,.12); --lab-line:#60a5fa; --lab-title:#93c5fd;
+  --warn-bg:rgba(245,158,11,.12); --warn-line:#fbbf24; --warn-title:#fcd34d;
+  --code-bg:#060b16; --code-ink:#e6edf6;
+  --hero-a:#060d1c; --hero-b:#0e2647;
+}
+html{scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);
+  font-size:1.0625rem;line-height:1.7;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+h1,h2,h3{overflow-wrap:anywhere;line-height:1.25}
+a{color:var(--accent)}
+main :is(p,li) a{text-decoration:underline;text-underline-offset:3px}
+.skip-link{position:absolute;left:8px;top:-80px;z-index:100;background:#0f172a;color:#fff;
+  padding:0.8rem 1rem;border-radius:10px;font-weight:700;text-decoration:underline}
+.skip-link:focus{top:8px;outline:3px solid #fde047;outline-offset:2px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+#main:focus{outline:none}
+
+/* top bar */
+.sw-bar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:0.4rem 1rem;flex-wrap:wrap;
+  padding:0.4rem 1.1rem;min-height:3rem;background:var(--panel);border-bottom:1px solid var(--line);
+  font-weight:600;font-size:0.9375rem}
+.sw-bar a{color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 0.3rem}
+.sw-bar a:hover{text-decoration:underline}
+.sw-bar .brand{color:var(--ink);font-weight:700}
+.sw-bar .sep{color:var(--ink-2)}
+@media (max-width:520px){.sw-bar .sep{display:none}}
+
+.wrap{width:min(52rem,calc(100% - 2rem));margin:0 auto;padding:1.5rem 0 4rem}
+.container{width:min(60rem,calc(100% - 2rem));margin:0 auto}
+
+/* hero */
+.hero{position:relative;border-radius:1.25rem;overflow:hidden;margin:1rem 0 1.5rem;
+  min-height:11rem;display:flex;align-items:flex-end;
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-b))}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero .veil{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(6,13,28,.15) 0%,rgba(6,13,28,.55) 60%,rgba(6,13,28,.85) 100%)}
+.hero .htext{position:relative;z-index:2;padding:1.4rem 1.5rem;color:#fff}
+.hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hero-gold);margin:0 0 0.35rem}
+.hero h1{margin:0;font-size:clamp(1.5rem,4.5vw,2.1rem);color:#fff}
+.hero .byline{margin:0.5rem 0 0;font-size:0.9375rem;color:#e6edf6}
+@media (max-width:600px){.hero{min-height:8.5rem}}
+
+section.ch{margin:2rem 0}
+section.ch>h2{font-size:1.5rem;margin:0 0 0.4rem;padding-bottom:0.3rem;border-bottom:3px solid var(--accent);display:inline-block}
+.lede{font-size:1.125rem;color:var(--ink-2);margin:0.6rem 0 1rem}
+h3{font-size:1.15rem;margin:0 0 0.4rem}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:0.9rem;padding:1.1rem 1.2rem;margin:1rem 0;
+  box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+.card.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr));gap:0.9rem;background:none;border:0;box-shadow:none;padding:0}
+.card.grid .tile{background:var(--panel);border:1px solid var(--line);border-radius:0.8rem;padding:1rem;min-width:0}
+.card.grid .tile h3{margin-top:0}
+.card.defend{background:var(--def-bg);border:1px solid var(--def-line);border-left:5px solid var(--def-line)}
+.card.defend h3{color:var(--def-title)}
+.card.lab{background:var(--lab-bg);border:1px solid var(--lab-line);border-left:5px solid var(--lab-line)}
+.card.lab h3{color:var(--lab-title)}
+.card.warn{background:var(--warn-bg);border:1px solid var(--warn-line);border-left:5px solid var(--warn-line)}
+.card.warn h3{color:var(--warn-title)}
+.card :last-child{margin-bottom:0}
+.card :first-child{margin-top:0}
+
+.code-cap{font-size:0.9375rem;color:var(--ink-2);margin:1rem 0 0.3rem}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:0.7rem;padding:0.9rem 1rem;overflow-x:auto;
+  font-family:var(--f-mono);font-size:0.875rem;line-height:1.55;margin:0.3rem 0 1rem}
+pre code{font-family:inherit}
+:not(pre)>code{background:var(--panel-2);border-radius:0.3rem;padding:0.1rem 0.35rem;font-family:var(--f-mono);font-size:0.9em}
+
+.tscroll{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:0.9375rem}
+th,td{border:1px solid var(--line);padding:0.5rem 0.7rem;text-align:left;vertical-align:top;min-width:0}
+th{background:var(--panel-2)}
+
+details.q{background:var(--panel);border:1px solid var(--line);border-radius:0.7rem;margin:0.6rem 0}
+details.q summary{cursor:pointer;padding:0.85rem 1rem;font-weight:600;min-height:44px;display:flex;align-items:center}
+details.q summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+details.q .a{padding:0 1rem 1rem;color:var(--ink-2)}
+
+ul,ol{padding-left:1.4rem}
+li{margin:0.25rem 0}
+
+/* lesson nav */
+.lnav{display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:space-between;margin:2.5rem 0 0;border-top:1px solid var(--line);padding-top:1.3rem}
+.lnav a,.hub-back{display:inline-flex;align-items:center;min-height:44px;padding:0.5rem 1rem;border:1px solid var(--line);
+  border-radius:999px;text-decoration:none;color:var(--accent);font-weight:600;background:var(--panel)}
+.lnav a:hover,.hub-back:hover{border-color:var(--accent)}
+
+footer.credit{border-top:1px solid var(--line);margin-top:2.5rem;padding:1.3rem 0 0;color:var(--ink-2);font-size:0.875rem}
+
+/* hub */
+.hub-hero{background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:#fff;border-radius:1.25rem;padding:2rem 1.6rem;margin:1rem 0 1.5rem}
+.hub-hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-gold);margin:0 0 0.4rem}
+.hub-hero h1{margin:0 0 0.6rem;font-size:clamp(1.7rem,5vw,2.4rem);color:#fff}
+.hub-hero p{margin:0.3rem 0;color:#e6edf6;max-width:44rem}
+.lesson-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(17rem,100%),1fr));gap:1rem;margin:1.3rem 0}
+.lcard{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:0.9rem;
+  overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+.lcard:hover{border-color:var(--accent)}
+.lcard:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.lcard .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));position:relative;display:flex;align-items:flex-end}
+.lcard .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lcard .thumb .num{position:relative;z-index:1;margin:0.6rem 0.8rem;font-family:var(--f-mono);font-weight:600;color:var(--hero-gold);
+  background:rgba(6,13,28,.6);padding:0.15rem 0.6rem;border-radius:999px;font-size:0.8125rem}
+.lcard .body{padding:0.9rem 1rem}
+.lcard .body h2{font-size:1.1rem;margin:0 0 0.35rem;border:0;display:block}
+.lcard .body p{margin:0;color:var(--ink-2);font-size:0.9375rem}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
+<nav class="sw-bar" aria-label="เมนูหลัก">
+  <a class="brand" href="/">สหวรรณคลินิก</a><span class="sep" aria-hidden="true">/</span>
+  <a href="/cyber">Cyber 101 ทุกบท</a>
+</nav>
+<main id="main" tabindex="-1">
+<div class="wrap">
+  <div class="hero">
+    <div class="veil"></div>
+    <div class="htext">
+      <p class="eyebrow">Cyber 101 · บทที่ 9</p>
+      <h1>เส้นทางสู่ระดับโปร: CTF ใบรับรอง และอาชีพ</h1>
+      <p class="byline">นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+    </div>
+  </div>
+<section class="ch" id="path-to-pro-1" aria-labelledby="path-to-pro-1-h">
+  <h2 id="path-to-pro-1-h">จากผู้เรียนสู่มืออาชีพ: แผนที่เส้นทางทั้งเส้น</h2>
+  <p class="lede">ถ้าคุณเดินทางมาถึงบทนี้ แปลว่าคุณผ่านพื้นฐานมาครบแล้ว ทั้งจริยธรรม เครือข่าย เว็บ ช่องโหว่ เครื่องมือ การเขียนโปรแกรมสายป้องกัน การเข้ารหัส และการทำ hardening บทสุดท้ายนี้ไม่ได้สอนเทคนิคใหม่ แต่จะช่วยตอบคำถามว่า "แล้วต่อจากนี้ไปทางไหน" คำตอบสั้น ๆ คือ ฝึกให้เยอะในสนามที่ถูกกฎหมาย สะสมหลักฐานความสามารถ แล้วค่อย ๆ ขยับเข้าสู่โจทย์จริงที่มีคนยินยอม ทั้งหมดนี้ทำได้โดยไม่ต้องแตะระบบของใครเลยแม้แต่ครั้งเดียว</p>
+
+  <div class="card">
+    <h3>ความจริงที่ต้องรู้ก่อนออกเดินทาง</h3>
+    <p>วงการนี้ไม่มีทางลัดแบบ "เก่งใน 30 วัน" คนที่ไปได้ไกลคือคนที่ฝึกสม่ำเสมอเป็นปี ๆ และสนุกกับการเรียนรู้มากกว่าการอวด สิ่งที่ทำให้คุณได้งานไม่ใช่คำพูดว่าเก่ง แต่คือหลักฐานที่จับต้องได้ เช่น โจทย์ CTF ที่แก้ได้ บันทึกวิธีคิดที่เขียนไว้ดี ๆ หรือช่องโหว่ที่รายงานอย่างมีมารยาทผ่านโครงการที่เปิดรับ ที่สำคัญที่สุด ทุกก้าวบนเส้นทางนี้เดินได้อย่างสุจริตและถูกกฎหมาย ถ้าใครบอกให้คุณ "ลองยิงเว็บจริงดูสักหน่อยจะได้เก่งเร็ว" นั่นคือคำแนะนำที่ผิดทั้งด้านกฎหมายและด้านอาชีพ</p>
+  </div>
+
+  <div class="card grid">
+    <div class="tile"><h3>ขั้นฝึกฝน</h3><p>เก็บชั่วโมงบินในแพลตฟอร์มฝึกที่ออกแบบมาให้ลองได้อย่างถูกกฎหมาย ทำซ้ำจนพื้นฐานแน่น</p></div>
+    <div class="tile"><h3>ขั้นแข่งขัน</h3><p>ลงแข่ง CTF เพื่อฝึกแก้โจทย์ภายใต้เวลา และเจอแนวคิดหลากหลายที่ห้องเรียนไม่มี</p></div>
+    <div class="tile"><h3>ขั้นโจทย์จริง</h3><p>เข้าโครงการ bug bounty ที่มีขอบเขตชัดและได้รับอนุญาตอย่างเป็นทางการ ฝึกรายงานอย่างมืออาชีพ</p></div>
+  </div>
+
+  <div class="card warn">
+    <h3>⚠️ จริยธรรมและกฎหมาย: เส้นแบ่งที่ต้องท่องให้ขึ้นใจ</h3>
+    <p>ทุกกิจกรรมในบทนี้ตั้งอยู่บนหลักเดิมของคอร์ส คือฝึกได้เฉพาะระบบที่เป็นของเรา หรือเป้าหมายที่เจ้าของอนุญาตเป็นลายลักษณ์อักษรพร้อมขอบเขตชัดเจน เช่น แล็บของเราเอง แพลตฟอร์มฝึกที่จัดเป้าให้ หรือโครงการ bug bounty ที่ประกาศขอบเขตไว้ การเข้าถึง สแกน หรือทดสอบระบบของผู้อื่นโดยไม่ได้รับอนุญาต แม้จะอ้างว่าหวังดีหรือแค่อยากฝึก ก็เข้าข่ายความผิดตาม พ.ร.บ.ว่าด้วยการกระทำผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ.2560 ซึ่งมีทั้งโทษปรับและจำคุก ข้อความนี้เป็นความรู้ทั่วไปเพื่อเตือนสติ ไม่ใช่คำแนะนำทางกฎหมาย เมื่อไม่แน่ใจว่าได้รับอนุญาตแล้วหรือยัง คำตอบที่ปลอดภัยเสมอคือ "อย่าเพิ่ง"</p>
+  </div>
+</section>
+
+<section class="ch" id="path-to-pro-2" aria-labelledby="path-to-pro-2-h">
+  <h2 id="path-to-pro-2-h">แพลตฟอร์มฝึกที่ถูกกฎหมาย: สนามซ้อมของเรา</h2>
+  <p class="lede">ข่าวดีที่สุดสำหรับคนอยากฝึกคือ เราไม่จำเป็นต้องไปแตะระบบของใครเลย เพราะมีแพลตฟอร์มมากมายที่จงใจสร้างเป้าหมายที่มีช่องโหว่ขึ้นมาให้เราลองได้อย่างสบายใจและถูกกฎหมาย เป้าเหล่านี้อยู่ในสภาพแวดล้อมที่ควบคุมแล้ว การเล่นกับมันจึงไม่กระทบใครและไม่ผิดกฎหมาย นี่คือที่ที่คุณควรใช้เวลาส่วนใหญ่ในช่วงสร้างพื้นฐาน</p>
+
+  <div class="card grid">
+    <div class="tile"><h3>OverTheWire (Bandit)</h3><p>เกม wargame สำหรับฝึกคอมมานด์ไลน์ Linux ตั้งแต่ศูนย์ เหมาะเป็นก้าวแรกสุดก่อนไปเรื่องอื่น</p></div>
+    <div class="tile"><h3>PortSwigger Web Security Academy</h3><p>ห้องเรียนช่องโหว่เว็บที่ละเอียดและฟรี มีทั้งทฤษฎีและแล็บให้ลองจริงในเป้าที่เขาจัดให้ เหมาะกับสายเว็บมาก</p></div>
+    <div class="tile"><h3>picoCTF</h3><p>สนาม CTF สำหรับผู้เริ่มต้นโดยเฉพาะ มีโจทย์ไล่ระดับและเปิดให้เล่นย้อนหลังได้ตลอด เป็นจุดเริ่มที่อบอุ่นที่สุด</p></div>
+    <div class="tile"><h3>TryHackMe</h3><p>เรียนเป็นเส้นทาง (learning path) มีคำใบ้และเครื่องพร้อมใช้ในเบราว์เซอร์ เหมาะกับคนที่อยากมีมือจับนำทีละขั้น</p></div>
+    <div class="tile"><h3>HackTheBox</h3><p>สนามที่ท้าทายขึ้น เน้นให้แก้เครื่องเป้าหมายด้วยตัวเองแบบไม่มีคำใบ้มาก เหมาะเมื่อพื้นฐานเริ่มแน่นแล้ว</p></div>
+    <div class="tile"><h3>OWASP Juice Shop / DVWA</h3><p>เว็บที่จงใจมีช่องโหว่ ติดตั้งบนเครื่องเราเองแล้วฝึกได้ไม่จำกัด เป็นแล็บส่วนตัวที่ควบคุมได้ทั้งหมด</p></div>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>เลือกหนึ่งแพลตฟอร์มให้ตรงกับระดับตอนนี้ของคุณ แล้วทำจริง</p>
+    <p>1. ถ้าเพิ่งเริ่ม เปิด <a href="https://overthewire.org/wargames/bandit/">OverTheWire Bandit</a> แล้วไล่ทำจากด่านศูนย์ จดคำสั่งที่ได้เรียนรู้ลงสมุดของตัวเอง<br>2. ถ้าสนใจสายเว็บ สมัคร <a href="https://portswigger.net/web-security">PortSwigger Web Security Academy</a> แล้วทำแล็บหมวด SQL injection หรือ XSS ในเป้าที่เขาจัดให้ ทบทวนกับบทช่องโหว่เว็บที่เราเรียนมา<br>3. ถ้าอยากลองบรรยากาศ CTF เปิด <a href="https://picoctf.org/">picoCTF</a> แล้วเลือกโจทย์ระดับง่ายสักสองสามข้อ</p>
+    <p>เป้าทั้งหมดนี้อยู่บนแพลตฟอร์มที่อนุญาตให้ลองได้อยู่แล้ว ไม่ต้องขออนุญาตเพิ่ม และไม่มีทางไปกระทบระบบของใครนอกเหนือจากที่เขาจัดไว้ให้</p>
+  </div>
+</section>
+
+<section class="ch" id="path-to-pro-3" aria-labelledby="path-to-pro-3-h">
+  <h2 id="path-to-pro-3-h">CTF คืออะไร และเริ่มอย่างไร</h2>
+  <p class="lede">CTF ย่อมาจาก Capture The Flag เป็นการแข่งขันแก้โจทย์ด้านความปลอดภัย เป้าหมายคือหา "ธง" ซึ่งเป็นข้อความลับที่ซ่อนอยู่ในโจทย์ เมื่อหาเจอก็ส่งเพื่อรับคะแนน เสน่ห์ของ CTF คือทุกโจทย์อยู่ในสภาพแวดล้อมที่จัดเตรียมมาให้เล่นโดยเฉพาะ เราจึงได้ฝึกคิดแบบผู้โจมตีเพื่อเข้าใจกลไก โดยไม่ต้องไปแตะระบบจริงของใครเลย มันคือวิธีเรียนรู้ที่สนุกและปลอดภัยที่สุดอย่างหนึ่ง</p>
+
+  <div class="card grid">
+    <div class="tile"><h3>Web</h3><p>โจทย์เกี่ยวกับช่องโหว่เว็บ เช่น การจัดการ input หรือสิทธิ์ ต่อยอดตรงจากบทช่องโหว่เว็บที่เราเรียนมา</p></div>
+    <div class="tile"><h3>Crypto</h3><p>โจทย์ถอดหรือวิเคราะห์การเข้ารหัสที่ตั้งใจทำให้อ่อน เพื่อเข้าใจว่าทำไมเราถึงไม่ควรเขียน crypto เอง</p></div>
+    <div class="tile"><h3>Forensics</h3><p>สืบหาหลักฐานจากไฟล์ ภาพ หรือ log ฝึกสายตาแบบนักสืบดิจิทัล เชื่อมกับงาน blue team โดยตรง</p></div>
+    <div class="tile"><h3>Pwn (Binary)</h3><p>วิเคราะห์โปรแกรมระดับหน่วยความจำ เป็นสายที่ลึกและต้องใช้พื้นฐานระบบมาก มักเริ่มทีหลัง</p></div>
+    <div class="tile"><h3>Reversing</h3><p>แกะการทำงานของโปรแกรมที่คอมไพล์แล้ว เพื่อเข้าใจว่าข้างในทำอะไร ฝึกความอดทนและความช่างสังเกต</p></div>
+    <div class="tile"><h3>Misc / OSINT</h3><p>โจทย์เบ็ดเตล็ดและการหาข้อมูลจากแหล่งเปิด สนุกและมักเป็นประตูให้มือใหม่เก็บคะแนนแรก</p></div>
+  </div>
+
+  <div class="card">
+    <h3>วิธีเริ่มแบบไม่ท้อ</h3>
+    <p>เคล็ดลับของมือใหม่คือ อย่าเริ่มจากโจทย์ยาก เลือกงานแข่งหรือชุดโจทย์ที่ระบุว่าเหมาะกับผู้เริ่มต้น เช่น picoCTF แล้วตั้งเป้าแค่แก้ให้ได้วันละหนึ่งข้อ เมื่อแก้ได้หรือแก้ไม่ได้ก็ตาม ให้เขียน writeup คือบันทึกว่าเราคิดอย่างไร ลองอะไรไปบ้าง และสุดท้ายเฉลยคืออะไร การเขียน writeup ทำสองอย่างพร้อมกัน คือช่วยให้เราเข้าใจลึกขึ้น และค่อย ๆ กลายเป็นพอร์ตโฟลิโอที่พิสูจน์ความสามารถของเราได้จริง การเล่นเป็นทีมก็ช่วยได้มาก เพราะแต่ละคนถนัดคนละสาย</p>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>1. สมัคร picoCTF แล้วเลือกโจทย์หมวด General Skills หรือ Web ระดับง่ายมาหนึ่งข้อ<br>2. ตั้งเวลาให้ตัวเองลองด้วยตัวเองก่อนอย่างน้อยยี่สิบนาที ก่อนเปิดคำใบ้<br>3. ไม่ว่าจะแก้ได้หรือไม่ ให้เขียน writeup สั้น ๆ เก็บไว้ในโฟลเดอร์ของตัวเอง บันทึกสิ่งที่ได้เรียนรู้</p>
+    <p>ทุกอย่างเกิดขึ้นในสนามที่แพลตฟอร์มจัดให้ ไม่มีการแตะระบบภายนอกใด ๆ</p>
+  </div>
+</section>
+
+<section class="ch" id="path-to-pro-4" aria-labelledby="path-to-pro-4-h">
+  <h2 id="path-to-pro-4-h">Bug bounty และ responsible disclosure: โจทย์จริงที่ยินยอม</h2>
+  <p class="lede">เมื่อพื้นฐานแน่นแล้ว หลายคนอยากลองกับระบบจริง คำตอบที่ถูกต้องไม่ใช่การแอบไปทดสอบเว็บที่เราชอบ แต่คือการเข้าโครงการ bug bounty ซึ่งเป็นข้อตกลงที่องค์กรเปิดออกมาบอกว่า "ยินดีให้ทดสอบภายในขอบเขตนี้ และถ้าเจอช่องโหว่แล้วรายงานอย่างถูกต้อง เรามีรางวัลให้" นี่คือสะพานที่ถูกกฎหมายและได้รับการยินยอมอย่างชัดเจน เชื่อมโลกของการฝึกกับโลกของงานจริงเข้าด้วยกัน</p>
+
+  <div class="card">
+    <h3>ขอบเขต (scope) คือหัวใจของความถูกต้อง</h3>
+    <p>ทุกโครงการ bug bounty จะมีหน้าที่เรียกว่า policy หรือ program page ระบุชัดว่าโดเมนหรือแอปใดบ้างที่อยู่ในขอบเขตให้ทดสอบได้ (in scope) และอะไรที่ห้ามแตะ (out of scope) รวมถึงเทคนิคที่ห้ามใช้ เช่น การทดสอบที่อาจทำให้ระบบล่ม หรือการเข้าถึงข้อมูลผู้ใช้จริง หน้าที่แรกและสำคัญที่สุดของนักล่าช่องโหว่คือ อ่านและเคารพขอบเขตนี้อย่างเคร่งครัด การทดสอบนอกขอบเขต แม้จะอยู่ภายใต้ชื่อโครงการเดียวกัน ก็ถือว่าไม่ได้รับอนุญาตและอาจผิดกฎหมายทันที แพลตฟอร์มหลักที่รวบรวมโครงการเหล่านี้ไว้คือ <a href="https://hackerone.com/">HackerOne</a> และ <a href="https://www.bugcrowd.com/">Bugcrowd</a></p>
+  </div>
+
+  <div class="card">
+    <h3>responsible disclosure: เจอแล้วทำอย่างไรให้ถูก</h3>
+    <p>responsible disclosure หรือการเปิดเผยช่องโหว่อย่างรับผิดชอบ คือกระบวนการที่เมื่อพบช่องโหว่ เราจะแจ้งเจ้าของระบบเป็นการภายในก่อน ให้เวลาเขาแก้ไข แล้วจึงค่อยเปิดเผยต่อสาธารณะเมื่อเหมาะสม โดยตลอดกระบวนการ เราจะไม่ใช้ช่องโหว่นั้นทำอันตราย ไม่ขโมยหรือทำลายข้อมูล และไม่เรียกร้องเงินแบบข่มขู่ หลักคิดคือ เราพบปัญหาเพื่อช่วยให้เขาปลอดภัยขึ้น ไม่ใช่เพื่อฉวยโอกาส การรายงานที่ดีจะอธิบายว่าช่องโหว่คืออะไร ทำซ้ำได้อย่างไร และกระทบอะไร พร้อมข้อเสนอแนะการแก้ไข เขียนให้สุภาพ ชัดเจน และตรงประเด็น</p>
+  </div>
+
+  <div class="card defend">
+    <h3>🛡️ วิธีป้องกัน</h3>
+    <p>มองจากฝั่งองค์กร การมีช่องทางรับรายงานช่องโหว่คือเกราะป้องกันชั้นดี เพราะทำให้คนที่หวังดีมีที่ให้แจ้งแทนที่จะเงียบหรือเผยแพร่มั่ว</p>
+    <p>• จัดทำนโยบายเปิดเผยช่องโหว่ (vulnerability disclosure policy) และหน้า security.txt ให้คนภายนอกรู้ว่าจะรายงานได้ทางไหน<br>• กำหนดขอบเขตและกติกาที่ชัดเจน พร้อมสัญญาว่าจะไม่ดำเนินคดีกับผู้ที่รายงานโดยสุจริตภายในขอบเขต (safe harbor)<br>• มีกระบวนการรับ ยืนยัน และแก้ไขที่รวดเร็ว พร้อมแจ้งผลกลับให้ผู้รายงาน<br>• เก็บสถิติช่องโหว่ที่ได้รับ เพื่อนำไปปรับปรุงกระบวนการพัฒนาให้ปลอดภัยตั้งแต่ต้นน้ำ</p>
+  </div>
+
+  <div class="card warn">
+    <h3>⚠️ จริยธรรมและกฎหมาย</h3>
+    <p>bug bounty ปลอดภัยทางกฎหมายก็ต่อเมื่อเราอยู่ใน "ขอบเขตที่ประกาศไว้" เท่านั้น การอ้างว่า "เว็บนี้ไม่มีโครงการ แต่ฉันเจอช่องโหว่เลยอยากช่วย" แล้วลงมือทดสอบเอง ยังคงเข้าข่ายการเข้าถึงระบบโดยมิชอบตาม พ.ร.บ.คอมพิวเตอร์ เพราะไม่มีการยินยอมล่วงหน้า ถ้าอยากช่วยเว็บที่ไม่มีโครงการ ให้ติดต่อเจ้าของผ่านช่องทางทางการเพื่อขออนุญาตก่อน อย่าทดสอบก่อนแล้วค่อยแจ้ง และห้ามเรียกเงินแลกกับการปิดปากเรื่องช่องโหว่โดยเด็ดขาด เพราะนั่นเข้าข่ายข่มขู่กรรโชกซึ่งเป็นคนละเรื่องกับ responsible disclosure โดยสิ้นเชิง</p>
+  </div>
+</section>
+
+<section class="ch" id="path-to-pro-5" aria-labelledby="path-to-pro-5-h">
+  <h2 id="path-to-pro-5-h">ใบรับรองสายความปลอดภัย เหมาะกับใคร</h2>
+  <p class="lede">ใบรับรองไม่ใช่ทุกอย่าง และไม่ใช่เงื่อนไขบังคับก่อนเริ่มเรียนรู้ แต่ในโลกการทำงานจริง มันช่วยสองอย่าง คือเป็นแผนที่การเรียนที่มีโครงสร้าง และเป็นภาษากลางที่ฝ่ายบุคคลใช้คัดกรอง หัวใจคือเลือกให้ตรงกับเป้าหมายอาชีพและระดับของตัวเอง ไม่ใช่สะสมให้ครบทุกใบ ค่อย ๆ ลงทุนตามจังหวะที่พร้อม และจำไว้ว่าประสบการณ์จริงกับพอร์ตโฟลิโอมักมีน้ำหนักไม่แพ้ใบรับรอง</p>
+
+  <div class="card grid">
+    <div class="tile"><h3>CompTIA Security+</h3><p>ใบพื้นฐานที่ครอบคลุมแนวคิดกว้าง เหมาะกับคนเพิ่งเริ่มต้นสายความปลอดภัยโดยรวม เป็นบันไดขั้นแรกที่นายจ้างหลายแห่งรู้จัก</p></div>
+    <div class="tile"><h3>eJPT</h3><p>เน้นภาคปฏิบัติระดับเริ่มต้นสาย pentest ราคาเข้าถึงได้ เหมาะกับคนที่อยากพิสูจน์ว่าลงมือทำเป็น ไม่ใช่แค่ท่องทฤษฎี</p></div>
+    <div class="tile"><h3>OSCP</h3><p>ใบภาคปฏิบัติที่ท้าทายและได้รับการยอมรับสูงในสาย offensive ต้องสอบแบบลงมือแก้เครื่องจริงในเวลาจำกัด เหมาะกับคนที่พื้นฐานแน่นและตั้งใจไปสาย pentest จริงจัง</p></div>
+    <div class="tile"><h3>CEH</h3><p>เน้นความรู้เชิงกว้างเกี่ยวกับเทคนิคและเครื่องมือ องค์กรบางแห่งระบุเป็นคุณสมบัติ เหมาะกับคนที่ต้องการใบที่ตรงชื่อกับประกาศรับสมัครงาน</p></div>
+  </div>
+
+  <div class="card">
+    <h3>เลือกอย่างไรไม่ให้เสียเวลาและเงิน</h3>
+    <p>ถ้าเพิ่งเริ่มและยังไม่แน่ใจว่าชอบสายไหน เริ่มที่ Security+ เพื่อปูภาพรวมก่อน ถ้ารู้ตัวว่าชอบการลงมือแก้โจทย์ ให้ลอง eJPT ที่เน้นปฏิบัติแต่ยังไม่โหดเกินไป เมื่อพร้อมและตั้งใจไปสาย pentest จริง ค่อยขยับสู่ OSCP ซึ่งใช้เวลาเตรียมตัวหลายเดือน ระหว่างทางอย่าลืมว่าความรู้ที่ใช้สอบ คือความรู้ชุดเดียวกับที่เราฝึกในแพลตฟอร์มถูกกฎหมายและ CTF อยู่แล้ว การฝึกกับการเตรียมสอบจึงเสริมกัน ไม่ใช่คนละเรื่อง</p>
+  </div>
+</section>
+
+<section class="ch" id="path-to-pro-6" aria-labelledby="path-to-pro-6-h">
+  <h2 id="path-to-pro-6-h">เส้นทางอาชีพ และการสร้างพอร์ตอย่างถูกกฎหมาย</h2>
+  <p class="lede">คำว่า "ทำงานสายความปลอดภัย" ครอบคลุมหลายอาชีพที่ต่างกันมาก บางคนชอบเจาะเพื่อหาช่อง บางคนชอบเฝ้าและป้องกัน บางคนชอบออกแบบระบบให้แข็งแรงตั้งแต่ต้น การรู้จักแต่ละเส้นทางช่วยให้เราลงแรงฝึกได้ตรงจุด และไม่ว่าจะเลือกทางไหน สิ่งที่ทำให้คุณโดดเด่นคือพอร์ตโฟลิโอที่สร้างขึ้นอย่างสุจริตและถูกกฎหมาย</p>
+
+  <div class="card grid">
+    <div class="tile"><h3>Penetration Tester</h3><p>สาย red team ที่ทดสอบเจาะระบบตามสัญญาว่าจ้างที่มีขอบเขตชัด เพื่อรายงานช่องโหว่ให้ลูกค้าอุด ทำงานภายใต้การยินยอมเสมอ</p></div>
+    <div class="tile"><h3>Blue Team / SOC</h3><p>สายเฝ้าระวังและตอบสนอง อ่าน log จับความผิดปกติ และรับมือเหตุการณ์ ต่อยอดตรงจากบท hardening ที่เราเรียนมา</p></div>
+    <div class="tile"><h3>Security Engineer</h3><p>ออกแบบและสร้างระบบให้ปลอดภัยตั้งแต่ต้น ฝัง secure coding, security headers และ pipeline ที่ปลอดภัยเข้าไปในงานพัฒนา</p></div>
+    <div class="tile"><h3>DFIR</h3><p>นิติวิทยาศาสตร์ดิจิทัลและการตอบสนองเหตุ สืบสวนหลังเกิดเหตุว่าเกิดอะไร อย่างไร และจะป้องกันซ้ำอย่างไร เชื่อมกับสาย forensics</p></div>
+  </div>
+
+  <div class="card">
+    <h3>พอร์ตโฟลิโอที่พูดแทนเราได้</h3>
+    <p>สิ่งที่นายจ้างอยากเห็นไม่ใช่คำว่าเก่ง แต่คือหลักฐาน วิธีสร้างพอร์ตที่ปลอดภัยและน่าเชื่อถือมีหลายแบบ เช่น รวบรวม writeup ของโจทย์ CTF ที่เราแก้ได้ เขียนบล็อกอธิบายแนวคิดช่องโหว่ที่เราเข้าใจ ทำโปรเจกต์เครื่องมือสายป้องกันด้วยตัวเอง (เช่น ตัวตรวจความแข็งแรงรหัสผ่านหรือตัวอ่าน log จากบทเขียนโปรแกรม) มีส่วนร่วมในโครงการโอเพนซอร์ส หรือรายงานช่องโหว่ผ่านโครงการ bug bounty ที่ถูกต้อง ทุกชิ้นล้วนเกิดจากการทำงานในสนามที่ได้รับอนุญาต จึงเป็นพอร์ตที่ยิ่งโชว์ยิ่งได้เปรียบ ไม่ใช่ระเบิดเวลาที่ซ่อนอยู่</p>
+  </div>
+
+  <div class="card lab">
+    <h3>🧪 ลองในแล็บของคุณ</h3>
+    <p>1. สร้างที่เก็บพอร์ตของตัวเอง เช่น repository สาธารณะหรือบล็อกส่วนตัว แล้วตั้งชื่อให้เป็นระเบียบ<br>2. หยิบสิ่งที่เคยทำในคอร์สนี้มาเรียบเรียงเป็นชิ้นงาน เช่น สรุปสิ่งที่ได้จากแล็บ Juice Shop ของเราเอง หรือเครื่องมือ Python สายตรวจสอบที่เขียนไว้<br>3. เขียน writeup ของโจทย์ CTF ที่แก้ได้อย่างน้อยหนึ่งข้อ ให้คนอื่นอ่านตามได้</p>
+    <p>ทุกชิ้นงานต้องมาจากแล็บของเราเอง แพลตฟอร์มฝึก หรือโจทย์ที่เปิดให้เล่นเท่านั้น อย่านำภาพหน้าจอหรือข้อมูลจากระบบผู้อื่นที่เราไม่ได้รับอนุญาตมาใส่ในพอร์ตเด็ดขาด เพราะนั่นเปลี่ยนพอร์ตให้กลายเป็นหลักฐานมัดตัวทันที</p>
+  </div>
+
+  <div class="card warn">
+    <h3>⚠️ จริยธรรมและกฎหมาย</h3>
+    <p>อาชีพสายความปลอดภัยทุกสาขา ตั้งอยู่บนความไว้วางใจ นายจ้างและลูกค้ามอบกุญแจบ้านให้เรา เพราะเชื่อว่าเราจะไม่เอาไปใช้ในทางที่ผิด ประวัติการทำผิดกฎหมาย แม้จะอ้างว่าทำเพื่อฝึกฝน มักปิดประตูอาชีพนี้มากกว่าจะเปิด การสร้างชื่อเสียงที่ดีจึงเริ่มตั้งแต่วันนี้ ด้วยการฝึกอย่างถูกกฎหมายทุกครั้ง เคารพขอบเขตเสมอ และปฏิบัติต่อข้อมูลของผู้อื่นอย่างที่เราอยากให้คนอื่นปฏิบัติต่อข้อมูลของเรา นี่คือสินทรัพย์ที่มีค่าที่สุดในสายงานนี้</p>
+  </div>
+</section>
+
+<section class="ch" id="path-to-pro-7" aria-labelledby="path-to-pro-7-h">
+  <h2 id="path-to-pro-7-h">สรุปบทและคำถามทบทวน</h2>
+  <p class="lede">เส้นทางสู่ระดับโปรไม่ใช่การกระโดดข้ามขั้น แต่คือการฝึกในสนามที่ถูกกฎหมายจนพื้นฐานแน่น ลองแข่ง CTF เพื่อฝึกคิดใต้เวลา ขยับสู่โจทย์จริงผ่าน bug bounty ที่มีขอบเขตและได้รับอนุญาต เลือกใบรับรองให้ตรงเป้าหมาย และค่อย ๆ สร้างพอร์ตที่สุจริตจนพูดแทนเราได้ ตลอดทั้งเส้นทางมีหลักเดียวที่ไม่เคยเปลี่ยน คือแตะได้เฉพาะสิ่งที่เป็นของเราหรือได้รับอนุญาตชัดเจนเท่านั้น และนั่นคือสิ่งที่แยกมืออาชีพที่ยั่งยืนออกจากคนที่หมดอนาคตตั้งแต่ยังไม่ทันเริ่ม</p>
+
+  <div class="card">
+    <h3>ทบทวนความเข้าใจ</h3>
+    <details class="q"><summary>❓ คำถาม: ถ้าเราอยากฝึกกับระบบจริง ๆ ไม่ใช่แค่แล็บ ทางที่ถูกกฎหมายที่สุดคืออะไร และต้องระวังอะไรเป็นอันดับแรก</summary><div class="a">เฉลย: ทางที่ถูกต้องคือเข้าร่วมโครงการ bug bounty ผ่านแพลตฟอร์มอย่าง HackerOne หรือ Bugcrowd ซึ่งองค์กรประกาศยินยอมให้ทดสอบไว้แล้ว สิ่งที่ต้องระวังเป็นอันดับแรกคือ "ขอบเขต" (scope) ต้องอ่านและทดสอบเฉพาะโดเมนหรือแอปที่ระบุว่าอยู่ในขอบเขตเท่านั้น การทดสอบนอกขอบเขตถือว่าไม่ได้รับอนุญาตและอาจผิด พ.ร.บ.คอมพิวเตอร์ทันที</div></details>
+    <details class="q"><summary>❓ คำถาม: responsible disclosure คืออะไร และต่างจากการข่มขู่เรียกเงินอย่างไร</summary><div class="a">เฉลย: responsible disclosure คือการแจ้งช่องโหว่ให้เจ้าของระบบเป็นการภายในก่อน ให้เวลาแก้ไข แล้วค่อยเปิดเผยเมื่อเหมาะสม โดยไม่ใช้ช่องโหว่ทำอันตราย ไม่ขโมยหรือทำลายข้อมูล จุดต่างสำคัญคือ ถ้ามีการเรียกเงินแลกกับการไม่เปิดเผยหรือไม่โจมตี นั่นคือการข่มขู่กรรโชก ซึ่งเป็นความผิดคนละเรื่องโดยสิ้นเชิง responsible disclosure ทำเพื่อช่วยให้ระบบปลอดภัยขึ้น ไม่ใช่เพื่อหาผลประโยชน์โดยมิชอบ</div></details>
+    <details class="q"><summary>❓ คำถาม: CTF มีหมวดอะไรบ้าง และมือใหม่ควรเริ่มอย่างไรให้ไม่ท้อ</summary><div class="a">เฉลย: หมวดที่พบบ่อยได้แก่ Web, Crypto, Forensics, Pwn (binary), Reversing และ Misc/OSINT มือใหม่ควรเริ่มจากแพลตฟอร์มที่ออกแบบสำหรับผู้เริ่มต้น เช่น picoCTF เลือกโจทย์ระดับง่าย ตั้งเป้าเล็ก ๆ เช่นวันละหนึ่งข้อ และเขียน writeup บันทึกวิธีคิดทุกครั้งไม่ว่าจะแก้ได้หรือไม่ เพราะ writeup ช่วยให้เข้าใจลึกขึ้นและกลายเป็นพอร์ตโฟลิโอไปในตัว</div></details>
+    <details class="q"><summary>❓ คำถาม: ในการสร้างพอร์ตโฟลิโอสายความปลอดภัย มีกฎเหล็กข้อไหนที่ห้ามฝ่าฝืน และเพราะอะไร</summary><div class="a">เฉลย: กฎเหล็กคือ ทุกชิ้นงานในพอร์ตต้องมาจากแล็บของเราเอง แพลตฟอร์มฝึก หรือโจทย์ที่เปิดให้เล่นอย่างถูกกฎหมายเท่านั้น ห้ามนำภาพหน้าจอหรือข้อมูลจากระบบของผู้อื่นที่เราไม่ได้รับอนุญาตมาใส่ในพอร์ต เพราะแทนที่จะเป็นหลักฐานความสามารถ มันจะกลายเป็นหลักฐานว่าเราทำผิดกฎหมาย ซึ่งปิดประตูอาชีพที่ตั้งอยู่บนความไว้วางใจนี้ทันที</div></details>
+    <details class="q"><summary>❓ คำถาม: ใบรับรองอย่าง Security+, eJPT และ OSCP เหมาะกับใครต่างกันอย่างไร</summary><div class="a">เฉลย: Security+ เหมาะกับผู้เริ่มต้นที่ต้องการปูภาพรวมความปลอดภัยและมีใบพื้นฐานที่นายจ้างรู้จัก eJPT เหมาะกับคนที่อยากพิสูจน์ทักษะภาคปฏิบัติสาย pentest ในระดับเริ่มต้นด้วยราคาที่เข้าถึงได้ ส่วน OSCP เหมาะกับคนที่พื้นฐานแน่นและตั้งใจไปสาย pentest จริงจัง เพราะต้องสอบลงมือแก้เครื่องจริงในเวลาจำกัดและใช้เวลาเตรียมตัวหลายเดือน ควรเลือกให้ตรงเป้าหมายอาชีพ ไม่ใช่สะสมให้ครบทุกใบ</div></details>
+  </div>
+</section>
+  <nav class="lnav" aria-label="ไปบทเรียนอื่น"><a href="/cyber/defense-hardening" rel="prev">← บทที่ 8: การป้องกันและ Hardening (Blue Team)</a><a href="/cyber">จบคอร์ส · กลับหน้ารวม →</a></nav>
+  <footer class="credit">คอร์สนี้จัดทำเพื่อการศึกษาด้านความมั่นคงปลอดภัยไซเบอร์เชิงป้องกัน (ethical security) ให้ฝึกเฉพาะกับระบบหรือแล็บที่เป็นของคุณเอง หรือที่ได้รับอนุญาตเป็นลายลักษณ์อักษรเท่านั้น การเข้าถึงหรือทดสอบระบบของผู้อื่นโดยไม่ได้รับอนุญาตผิดกฎหมาย เนื้อหาเป็นความรู้ทั่วไป ไม่ใช่คำแนะนำทางกฎหมาย · จัดทำโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ · สหวรรณคลินิก</footer>
+</div>
+</main>
+</body>
+</html>
