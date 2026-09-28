@@ -235,6 +235,7 @@ export default function HomePage() {
             <a href="#vaccine">ราคาวัคซีนเด็ก</a>
             <Link href="/symptoms">อาการที่พบบ่อย</Link>
             <Link href="/learn">Body 101</Link>
+            <a href="/cyber">Cyber 101</a>
             <a href="#doctors">แพทย์</a>
             <a href="#location">สถานที่</a>
             <a href="#faq">คำถามที่พบบ่อย</a>
@@ -431,6 +432,25 @@ export default function HomePage() {
             </a>
             <a href="/learn/chess" className="btn big">
               หมากรุกสากล 3 มิติ
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="cyber-teaser" className="section">
+        <div className="container cta-box">
+          <div>
+            <p className="eyebrow">สื่อการเรียนรู้สำหรับวัยรุ่นและผู้ใหญ่</p>
+            <h2>Cyber 101 เส้นทางแฮกเกอร์สายขาว</h2>
+            <p>
+              เรียนความมั่นคงปลอดภัยไซเบอร์ 10 บท ตั้งแต่พื้นฐานจนถึงระดับลงสนาม CTF
+              เข้าใจการโจมตีเพื่อป้องกันตัว ฝึกเฉพาะในแล็บของตัวเอง และรู้ขอบเขตทางกฎหมาย
+              ใช้ฟรี ไม่ต้องสมัคร
+            </p>
+          </div>
+          <div className="cta-actions">
+            <a href="/cyber" className="btn btn-dark big">
+              เปิด Cyber 101
             </a>
           </div>
         </div>
