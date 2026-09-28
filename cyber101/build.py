@@ -80,10 +80,22 @@ main :is(p,li) a{text-decoration:underline;text-underline-offset:3px}
 .hero{position:relative;border-radius:1.25rem;overflow:hidden;margin:1rem 0 1.5rem;
   min-height:11rem;display:flex;align-items:flex-end;
   background:linear-gradient(135deg,var(--hero-a),var(--hero-b))}
-.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  color:transparent;font-size:0} /* if the image fails, don't paint its alt text over the title (screen readers still get it) */
 .hero .veil{position:absolute;inset:0;z-index:1;
   background:linear-gradient(180deg,rgba(6,13,28,.15) 0%,rgba(6,13,28,.55) 60%,rgba(6,13,28,.85) 100%)}
-.hero .htext{position:relative;z-index:2;padding:1.4rem 1.5rem;color:#fff}
+/* text sits on its own dark glass panel so contrast never depends on the picture (>=6:1 even over white pixels) */
+.hero .htext{position:relative;z-index:2;margin:1rem;padding:1rem 1.2rem;color:#fff;max-width:40rem;
+  background:rgba(6,13,28,.8);border-radius:0.9rem;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+@media (max-width:600px){.hero .htext{margin:0.75rem;padding:0.85rem 1rem}}
+/* with a picture: show it properly — taller on wide screens; on phones the picture sits on top at 16:9
+   and the text panel overlaps only its lower edge */
+.hero.has-img{min-height:clamp(15rem,34vw,20rem)}
+@media (max-width:600px){
+  .hero.has-img{display:block;min-height:0;padding-top:56.25%}
+  .hero.has-img img,.hero.has-img .veil{inset:0 0 auto 0;height:auto;aspect-ratio:16/9}
+  .hero.has-img .htext{margin:-2.25rem 0.75rem 0.75rem}
+}
 .hero .eyebrow{font-family:var(--f-mono);font-size:0.8125rem;letter-spacing:.12em;text-transform:uppercase;
   color:var(--hero-gold);margin:0 0 0.35rem}
 .hero h1{margin:0;font-size:clamp(1.5rem,4.5vw,2.1rem);color:#fff}
@@ -147,9 +159,9 @@ footer.credit{border-top:1px solid var(--line);margin-top:2.5rem;padding:1.3rem 
 .lcard:hover{border-color:var(--accent)}
 .lcard:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .lcard .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));position:relative;display:flex;align-items:flex-end}
-.lcard .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lcard .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;color:transparent;font-size:0}
 .lcard .thumb .num{position:relative;z-index:1;margin:0.6rem 0.8rem;font-family:var(--f-mono);font-weight:600;color:var(--hero-gold);
-  background:rgba(6,13,28,.6);padding:0.15rem 0.6rem;border-radius:999px;font-size:0.8125rem}
+  background:rgba(6,13,28,.85);padding:0.15rem 0.6rem;border-radius:999px;font-size:0.8125rem}
 .lcard .body{padding:0.9rem 1rem}
 .lcard .body h2{font-size:1.1rem;margin:0 0 0.35rem;border:0;display:block}
 .lcard .body p{margin:0;color:var(--ink-2);font-size:0.9375rem}
@@ -198,11 +210,16 @@ def head(title, desc, url, extra=""):
 """
 
 
+ALTS_PATH = SCR / "art" / "alts.json"
+ALTS = json.loads(ALTS_PATH.read_text(encoding="utf-8")) if ALTS_PATH.exists() else {}
+
+
 def hero(L):
     img = OUT / "img" / f"{L['slug']}.jpg"
-    imgtag = (f'<img src="/cyber/img/{L["slug"]}.jpg" alt="ภาพประกอบบท {L["n"]} {html.escape(L["title"])}">'
+    alt = ALTS.get(L["slug"]) or f"ภาพประกอบบทที่ {L['n']}"
+    imgtag = (f'<img src="/cyber/img/{L["slug"]}.jpg" alt="{html.escape(alt)}" decoding="async">'
               if img.exists() else "")
-    return f"""  <div class="hero">
+    return f"""  <div class="hero{' has-img' if imgtag else ''}">
     {imgtag}<div class="veil"></div>
     <div class="htext">
       <p class="eyebrow">{html.escape(COURSE)} · บทที่ {L['n']}</p>
@@ -272,7 +289,7 @@ def build_hub():
 """
     for L in LESSONS:
         img = OUT / "img" / f"{L['slug']}.jpg"
-        imgtag = (f'<img src="/cyber/img/{L["slug"]}.jpg" alt="">' if img.exists() else "")
+        imgtag = (f'<img src="/cyber/img/{L["slug"]}.jpg" alt="" loading="lazy" decoding="async">' if img.exists() else "")
         out += f"""    <a class="lcard" href="/cyber/{L['slug']}">
       <span class="thumb">{imgtag}<span class="num">บทที่ {L['n']}</span></span>
       <span class="body"><h2>{html.escape(L['title'])}</h2><p>{html.escape(L['desc'])}</p></span>
