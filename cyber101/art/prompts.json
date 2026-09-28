@@ -1,0 +1,15 @@
+{
+  "style": "Realistic cinematic illustration for a cybersecurity lesson on an educational website. Dark clean navy background, subtle depth of field, soft cool blue tones with warm golden highlights, like a modern textbook cover. Keep the lower third darker and uncluttered so a title can be placed over it. No text, no labels, no letters, no numbers, no digits, no code characters, no logos anywhere in the image. No people, no human faces, no hands. 16:9 landscape.",
+  "items": [
+    {"file": "foundations", "prompt": "A glowing golden shield standing on a polished stone pedestal, with a small brass balance scale beside it, set above a softly lit landscape shaped like a circuit board that fades into the distance."},
+    {"file": "systems-networks", "prompt": "A tidy server rack and a network switch in a quiet data room, neat glowing cables running from the switch to softly floating round nodes connected by thin lines of light, like a calm network map in the air."},
+    {"file": "how-web-works", "prompt": "Two stylized glass devices facing each other, a blank browser window on the left and a small server tower on the right, with glowing packets of light travelling along a curved path between them in both directions."},
+    {"file": "web-vulns-injection", "prompt": "A metal database cylinder protected by a golden padlock, with a stream of glowing particles flowing towards it through a fine golden mesh filter that catches dark jagged fragments while clean light passes through."},
+    {"file": "web-vulns-auth", "prompt": "A long calm corridor of closed doors, each with a small keycard reader glowing blue, and one door at the end sealed with a warm golden lock, a blank access card hovering in front of it."},
+    {"file": "tools", "prompt": "An organized dark workbench tray holding abstract tools: a brass magnifying glass hovering over a glowing network map, a small radar dish sweeping a soft circle of light, and a compass, all neatly arranged."},
+    {"file": "security-coding", "prompt": "A laptop on a wooden desk at night, its screen showing only soft coloured blocks and bars with no characters, a small yellow rubber duck beside it, and a translucent golden padlock floating above the keyboard."},
+    {"file": "cryptography", "prompt": "An ornate antique brass key resting next to a smooth brass cipher wheel with plain unmarked segments, beside a modern glowing padlock made of light, with tiny drifting specks of golden light in the dark air."},
+    {"file": "defense-hardening", "prompt": "A fortified wall made of interlocking glowing hexagon shields protecting a small calm village at night, a watchtower on the wall casting a gentle golden searchlight across the dark sky."},
+    {"file": "path-to-pro", "prompt": "A winding mountain path lit by small golden lanterns, climbing through layered blue hills towards a summit where a plain golden flag waves under a starry night sky."}
+  ]
+}
