@@ -112,7 +112,9 @@ export default function SymptomsPage() {
                 </div>
                 <div className="symptom-body">
                   <h2>
-                    <span className="symptom-icon" aria-hidden="true">{s.icon}</span> {s.title}
+                    <Link href={`/symptoms/${s.slug}`} className="symptom-title-link">
+                      <span className="symptom-icon" aria-hidden="true">{s.icon}</span> {s.title}
+                    </Link>
                   </h2>
                   <p>{s.blurb}</p>
                   <p className="symptom-redflag">
@@ -125,6 +127,9 @@ export default function SymptomsPage() {
                     <a href={phoneTel} className="btn btn-outline">
                       โทร {phoneDisplay}
                     </a>
+                    <Link href={`/symptoms/${s.slug}`} className="btn btn-outline">
+                      อ่านต่อ<span className="sr-only">: {s.title}</span>
+                    </Link>
                   </div>
                 </div>
               </article>

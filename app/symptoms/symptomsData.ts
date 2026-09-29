@@ -6,6 +6,16 @@ export type Symptom = {
   videoTitle: string;
   blurb: string; // อธิบายสั้นแบบหมอ
   redFlag: string; // ควรพบแพทย์เมื่อไร
+  // ── ส่วนที่แพทย์เขียนเพิ่มสำหรับหน้าแยกของแต่ละอาการ (/symptoms/[slug]) ──
+  // เว้นว่างไว้ได้ หน้าจะแสดงเฉพาะส่วนที่มีข้อมูล ห้ามใส่ข้อความที่แพทย์ไม่ได้เขียน/ตรวจทาน
+  details?: string[]; // คำอธิบายละเอียด ทีละย่อหน้า
+  faq?: SymptomFaq[]; // คำถามที่พบบ่อยของอาการนี้ (ใช้ทำ FAQPage schema ด้วย)
+  reviewed?: string; // วันที่แพทย์ตรวจทานล่าสุด รูปแบบ YYYY-MM-DD
+};
+
+export type SymptomFaq = {
+  q: string;
+  a: string;
 };
 
 export type ShortClip = {

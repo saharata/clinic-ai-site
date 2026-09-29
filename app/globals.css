@@ -774,6 +774,100 @@ ul.vaccine-items {
   }
 }
 
+/* ===== Symptom detail page (/symptoms/[slug]) ===== */
+.breadcrumb ol {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  color: #475569;
+}
+
+.breadcrumb li + li::before {
+  content: "›";
+  margin-right: 8px;
+  color: #475569;
+}
+
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.breadcrumb [aria-current="page"] {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.symptom-page-title .symptom-icon {
+  font-size: 0.8em;
+}
+
+.symptom-byline {
+  margin: 0;
+  color: #475569;
+  font-weight: 700;
+}
+
+.symptom-page {
+  max-width: 860px;
+}
+
+.symptom-page-block {
+  margin-top: 24px;
+}
+
+.symptom-details h2,
+.symptom-page-block > h2 {
+  margin: 0 0 12px;
+  font-size: 1.375rem;
+}
+
+.symptom-details p {
+  color: #334155;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  margin: 0 0 14px;
+}
+
+.symptom-title-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.symptom-related {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 12px;
+}
+
+.symptom-related a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  height: 100%;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  font-weight: 700;
+}
+
+.symptom-related a:hover {
+  border-color: #0f766e;
+}
+
 /* ===== Clinic gallery ===== */
 .gallery-title {
   margin: 0 0 16px;
