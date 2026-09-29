@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import MobileMenu from "../MobileMenu";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
 const facebookUrl = "https://facebook.com/saharat.aungsumart.52";
@@ -384,6 +385,7 @@ export default function LearnPage() {
             <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
               แอด LINE
             </a>
+            <MobileMenu />
           </nav>
         </div>
       </header>
