@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import MobileMenu from "../MobileMenu";
 
 // หน้าปลายทาง QR ของงานให้ความรู้ผู้ป่วย MS/NMOSD 9 พ.ย. 2569 — URL ต้องเป็น /ms ห้ามเปลี่ยน
 // ข้อมูลสิทธิ ณ ก.ย. 2569 (ที่มา: ms_talk_2026_11_09/BRIEFING_ประกันสังคม_MS.md)
@@ -186,6 +187,7 @@ export default function MsPage() {
               </span>
               <span className="sr-only"> สหวรรณคลินิก (เปิดในแท็บใหม่)</span>
             </a>
+            <MobileMenu />
           </nav>
         </div>
       </header>

@@ -1,5 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import ClinicStatus from "./ClinicStatus";
+import PrepareChecklist from "./PrepareChecklist";
+import MobileMenu from "./MobileMenu";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
 const facebookUrl = "https://facebook.com/saharat.aungsumart.52";
@@ -249,11 +252,14 @@ export default function HomePage() {
             <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
               แอด LINE
             </a>
+            <MobileMenu />
           </nav>
         </div>
       </header>
 
       <main id="main-content" tabIndex={-1}>
+
+      <ClinicStatus />
 
       <section className="hero">
         <div className="container hero-grid">
@@ -503,6 +509,12 @@ export default function HomePage() {
               โทร {phoneDisplay}
             </a>
           </div>
+        </div>
+      </section>
+
+      <section id="prepare" className="section">
+        <div className="container">
+          <PrepareChecklist />
         </div>
       </section>
 
