@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ClinicStatus from "./ClinicStatus";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
 const facebookUrl = "https://facebook.com/saharat.aungsumart.52";
@@ -254,6 +255,8 @@ export default function HomePage() {
       </header>
 
       <main id="main-content" tabIndex={-1}>
+
+      <ClinicStatus />
 
       <section className="hero">
         <div className="container hero-grid">
