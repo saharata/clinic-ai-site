@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { symptoms } from "../symptomsData";
 import PrepareChecklist from "../../PrepareChecklist";
+import MobileMenu from "../../MobileMenu";
 
 const siteUrl = "https://www.sahawanclinic.clinic";
 const lineUrl = "https://lin.ee/7Y8onWN";
@@ -125,6 +126,7 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
             <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
               แอด LINE
             </a>
+            <MobileMenu />
           </nav>
         </div>
       </header>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { symptoms, shorts } from "./symptomsData";
+import MobileMenu from "../MobileMenu";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
 const phoneDisplay = "065-480-8771";
@@ -78,6 +79,7 @@ export default function SymptomsPage() {
             <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
               แอด LINE
             </a>
+            <MobileMenu />
           </nav>
         </div>
       </header>
