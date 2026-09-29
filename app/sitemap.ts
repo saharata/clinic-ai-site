@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { symptoms } from "./symptoms/symptomsData";
 
 const siteUrl = "https://www.sahawanclinic.clinic";
 
@@ -23,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    ...symptoms.map((sym) => ({
+      url: `${siteUrl}/symptoms/${sym.slug}`,
+      lastModified: sym.reviewed ? new Date(sym.reviewed) : now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     {
       url: `${siteUrl}/ms`,
       lastModified: now,
