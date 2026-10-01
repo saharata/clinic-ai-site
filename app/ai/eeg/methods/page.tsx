@@ -124,7 +124,7 @@ function ResultsTable({ lang }: { lang: "th" | "en" }) {
 
 export default function EegMethodsPage() {
   return (
-    <main id="main-content" tabIndex={-1} className="mx-auto max-w-3xl px-6 py-12 text-slate-800">
+    <main id="main-content" tabIndex={-1} className="tw-page mx-auto max-w-3xl px-6 py-12 text-slate-800">
       <p className="text-sm text-slate-500">
         <Link
           href="/ai/eeg"
