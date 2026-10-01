@@ -1,3 +1,30 @@
+/* Tailwind (เฉพาะ theme + utilities ไม่มี preflight) สำหรับ 5 หน้าที่เขียนด้วย class ของ Tailwind
+   (privacy, tiktok ×3, ai/eeg/methods) — เดิมไม่ได้ import จึงแสดงเป็นตัวหนังสือดิบ
+   ไม่เปิด preflight เพราะจะรีเซ็ตหัวข้อ/ลิสต์/ปุ่มทั้งเว็บ · สร้าง class จากไฟล์ที่ระบุเท่านั้น (source(none))
+   utilities ไม่อยู่ใน layer เพื่อให้ชนะกฎทั่วไปอย่าง `a { text-decoration: none }` ได้ */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" source(none);
+@source "./privacy/page.tsx";
+@source "./tiktok/privacy/page.tsx";
+@source "./tiktok/terms/page.tsx";
+@source "./tiktok/callback/page.tsx";
+@source "./ai/eeg/methods/page.tsx";
+
+/* แทน preflight เฉพาะในหน้าเหล่านั้น: ให้ class border-* ของ Tailwind แสดงเส้นได้ (อยู่ใน layer จึงแพ้ utilities) */
+@layer tw-base {
+  .tw-page *,
+  .tw-page ::before,
+  .tw-page ::after {
+    border: 0 solid;
+  }
+
+  .tw-page hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -969,6 +996,52 @@ ul.vaccine-items {
   .symptom-card:nth-child(even) .symptom-video {
     order: 0;
   }
+}
+
+/* ===== YouTube: ภาพปก + ปุ่มเล่น (โหลดตัวเล่นเมื่อกด) ===== */
+.yt-lite {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: #0f172a;
+  cursor: pointer;
+}
+
+.yt-lite img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.yt-lite-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 3.25rem;
+  padding-left: 0.25rem;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+
+.yt-lite:hover .yt-lite-play {
+  background: #0f766e;
+}
+
+/* วงแหวน focus อยู่ด้านในกรอบ (กรอบวิดีโอตัดขอบด้านนอก) */
+.yt-lite:focus-visible {
+  outline: 4px solid #fde68a;
+  outline-offset: -6px;
 }
 
 /* ===== Symptom detail page (/symptoms/[slug]) ===== */
