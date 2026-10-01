@@ -29,6 +29,28 @@
 ## การนัดหมาย
 นัดหมายผ่าน LINE (https://lin.ee/7Y8onWN) หรือโทร 065-480-8771
 
+## ความรู้เรื่องอาการทางระบบประสาท (อธิบายโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์)
+แต่ละหน้ามีวิดีโอของแพทย์ คำอธิบาย และอาการที่ควรรีบพบแพทย์ — เพื่อความเข้าใจเบื้องต้น ไม่ใช่การวินิจฉัย
+- หน้ารวมอาการที่พบบ่อยและคลิปสั้น "ถามหมอประสาท": https://www.sahawanclinic.clinic/symptoms
+- ปวดศีรษะ / ไมเกรน แบบไหนอันตราย: https://www.sahawanclinic.clinic/symptoms/headache
+- เวียนศีรษะ บ้านหมุน ใช่สโตรกไหม: https://www.sahawanclinic.clinic/symptoms/dizziness
+- หูอื้อ มีเสียงในหู อันตรายไหม: https://www.sahawanclinic.clinic/symptoms/tinnitus
+- มือชา เท้าชา เกิดจากอะไร: https://www.sahawanclinic.clinic/symptoms/numbness
+- เหม่อลอย เกร็งกระตุก ใช่ลมชักไหม: https://www.sahawanclinic.clinic/symptoms/seizure
+- กล้ามเนื้อกระตุก ใช่โรคกล้ามเนื้ออ่อนแรงไหม: https://www.sahawanclinic.clinic/symptoms/twitching
+- ลุกแล้วหน้ามืด ใจสั่น วูบ: https://www.sahawanclinic.clinic/symptoms/faint
+
+## MS · NMOSD ดูแลตัวเองได้ รู้สิทธิไม่ให้ขาด
+คู่มือสั้นสำหรับผู้ป่วยโรคปลอกประสาทเสื่อมแข็ง (MS) และ NMOSD: ดูแลตัวเองในชีวิตประจำวัน และสรุปสิทธิประกันสังคม ม.33 ม.39 ม.40 โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ — https://www.sahawanclinic.clinic/ms
+
+## ราคาวัคซีนเด็ก
+ตารางราคาวัคซีนเด็กตามช่วงอายุ 2 เดือน ถึง 12 ปี ราคารวมค่าแพทย์และค่าบริการแล้ว ฉีดและประเมินพัฒนาการโดยกุมารแพทย์ (ราคาอาจปรับตามต้นทุน กรุณาสอบถามราคาล่าสุด) — https://www.sahawanclinic.clinic/vaccine
+
+## เครื่องมือ AI สำหรับแพทย์
+- หน้ารวมเครื่องมือ (Neuro Note, NeuroCoach, AI EEG และอื่น ๆ): https://www.sahawanclinic.clinic/ai
+- AI EEG (SpikeSense) ช่วยคัดกรองคลื่นชักและ IED จากไฟล์ EDF — เครื่องมือเพื่อการวิจัย ไม่ใช่เครื่องมือวินิจฉัย: https://www.sahawanclinic.clinic/ai/eeg
+- วิธีการและผลการประเมินของโมเดล (ไทย / English): https://www.sahawanclinic.clinic/ai/eeg/methods
+
 ## Body 101 — สื่อการเรียนรู้เรื่องร่างกายสำหรับเด็ก (ใช้ฟรี)
 - บทที่ 1 จากเซลล์สู่ร่างกาย: เซลล์ ออร์แกเนลล์ เซลล์พืชและสัตว์ ห้องทดลองจำลอง ระดับการจัดระบบ — https://www.sahawanclinic.clinic/learn/cells (English: https://www.sahawanclinic.clinic/learn/cells/en)
 - บทที่ 2 ร่างกายของเรา ทีละชั้น: อวัยวะและระบบในร่างกาย 11 ชั้น — https://www.sahawanclinic.clinic/learn/body (English: https://www.sahawanclinic.clinic/learn/body/en)
@@ -50,3 +72,6 @@
 - บทที่ 16 บทพิเศษ AI ขั้นสูงและหุ่นยนต์ จากศูนย์ถึงสร้างเอง พร้อม 3 โครงงานและโค้ด Arduino (อายุ 10 ถึง 13 ปี) — https://www.sahawanclinic.clinic/learn/robot (English: https://www.sahawanclinic.clinic/learn/robot/en)
 - บทที่ 17 บทพิเศษ AI กับหุ่นยนต์ ทีมเดียวกัน สมอง AI กับร่างกายหุ่นยนต์ทำงานเป็นวงเดียว พร้อมโครงงาน AI ขับรถ (อายุ 10 ถึง 13 ปี) — https://www.sahawanclinic.clinic/learn/airobot (English: https://www.sahawanclinic.clinic/learn/airobot/en)
 - หน้ารวม Body 101: https://www.sahawanclinic.clinic/learn
+
+## Cyber 101
+เส้นทางแฮกเกอร์สายขาว เข้าใจการโจมตีเพื่อป้องกันตัว — https://www.sahawanclinic.clinic/cyber
