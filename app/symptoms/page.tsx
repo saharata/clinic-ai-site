@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { symptoms, shorts } from "./symptomsData";
 import MobileMenu from "../MobileMenu";
+import LiteYouTube from "./LiteYouTube";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
 const phoneDisplay = "065-480-8771";
@@ -103,14 +104,7 @@ export default function SymptomsPage() {
             {symptoms.map((s) => (
               <article id={s.slug} key={s.slug} className="symptom-card">
                 <div className="symptom-video">
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${s.videoId}`}
-                    title={s.videoTitle}
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
+                  <LiteYouTube videoId={s.videoId} title={s.videoTitle} />
                 </div>
                 <div className="symptom-body">
                   <h2>
@@ -153,14 +147,7 @@ export default function SymptomsPage() {
               {shorts.map((s) => (
                 <div className="short-card" key={s.videoId}>
                   <div className="short-video">
-                    <iframe
-                      src={`https://www.youtube-nocookie.com/embed/${s.videoId}`}
-                      title={s.title}
-                      loading="lazy"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                    />
+                    <LiteYouTube videoId={s.videoId} title={s.title} />
                   </div>
                   <p className="short-title">{s.title}</p>
                 </div>
