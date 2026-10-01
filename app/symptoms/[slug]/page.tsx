@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { symptoms } from "../symptomsData";
 import PrepareChecklist from "../../PrepareChecklist";
 import MobileMenu from "../../MobileMenu";
+import LiteYouTube from "../LiteYouTube";
 
 const siteUrl = "https://www.sahawanclinic.clinic";
 const lineUrl = "https://lin.ee/7Y8onWN";
@@ -171,14 +172,7 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
         <section className="section">
           <div className="container symptom-page">
             <div className="symptom-video">
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${s.videoId}`}
-                title={s.videoTitle}
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
+              <LiteYouTube videoId={s.videoId} title={s.videoTitle} />
             </div>
 
             <p className="symptom-redflag symptom-page-block">
