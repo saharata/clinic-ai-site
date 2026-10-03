@@ -12,7 +12,7 @@ const getMinute = () => Math.floor(Date.now() / 60_000);
 // หน้าเว็บ build แบบ static เวลาตอน build ไม่ใช่เวลาจริง → ฝั่ง server แสดงตารางเวลาแทน
 const getServerMinute = () => null;
 
-export default function ClinicStatus() {
+export default function ClinicStatus({ mapsUrl }: { mapsUrl: string }) {
   const minute = useSyncExternalStore(subscribe, getMinute, getServerMinute);
   const now = minute === null ? null : bangkokNow(new Date(minute * 60_000));
 
@@ -36,9 +36,16 @@ export default function ClinicStatus() {
             );
           })}
         </ul>
-        <a href="#hours" className="clinic-status-link">
-          ดูเวลาทำการทั้งหมด
-        </a>
+        <div className="clinic-status-links">
+          <a href="#hours" className="clinic-status-link">
+            ดูเวลาทำการทั้งหมด
+          </a>
+          {/* คนที่เห็นว่าคลินิกเปิดอยู่ มักอยากรู้ทางมาต่อทันที */}
+          <a href={mapsUrl} target="_blank" rel="noreferrer" className="btn btn-outline clinic-status-maps">
+            <span aria-hidden="true">📍</span> เส้นทางไปคลินิก
+            <span className="sr-only"> (Google Maps เปิดในแท็บใหม่)</span>
+          </a>
+        </div>
       </div>
     </section>
   );

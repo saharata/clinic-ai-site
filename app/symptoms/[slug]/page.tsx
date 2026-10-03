@@ -50,6 +50,11 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
   const s = findSymptom(slug);
   const url = `${siteUrl}/symptoms/${s.slug}`;
   const others = symptoms.filter((x) => x.slug !== s.slug);
+  // คำอธิบายละเอียดและ FAQ เผยแพร่เฉพาะเมื่อแพทย์ตรวจทานแล้ว (มีวันที่ reviewed)
+  // ร่างที่ยังไม่ผ่านการตรวจจะอยู่ในโค้ดแต่ไม่แสดงบนเว็บและไม่อยู่ใน schema
+  const published = Boolean(s.reviewed);
+  const details = published ? s.details : undefined;
+  const faq = published ? s.faq : undefined;
 
   const author = {
     "@type": "Physician",
@@ -87,11 +92,11 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
           { "@type": "ListItem", position: 3, name: s.title, item: url },
         ],
       },
-      ...(s.faq?.length
+      ...(faq?.length
         ? [
             {
               "@type": "FAQPage",
-              mainEntity: s.faq.map((f) => ({
+              mainEntity: faq.map((f) => ({
                 "@type": "Question",
                 name: f.q,
                 acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -179,20 +184,20 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
               <strong>ควรพบแพทย์เมื่อไร:</strong> {s.redFlag}
             </p>
 
-            {s.details?.length ? (
+            {details?.length ? (
               <div className="symptom-details symptom-page-block">
                 <h2>คำอธิบายจากแพทย์</h2>
-                {s.details.map((d, i) => (
+                {details.map((d, i) => (
                   <p key={i}>{d}</p>
                 ))}
               </div>
             ) : null}
 
-            {s.faq?.length ? (
+            {faq?.length ? (
               <div className="symptom-page-block">
                 <h2>คำถามที่พบบ่อย</h2>
                 <div className="faq-list">
-                  {s.faq.map((f) => (
+                  {faq.map((f) => (
                     <details key={f.q} className="faq-item">
                       <summary>{f.q}</summary>
                       <p>{f.a}</p>

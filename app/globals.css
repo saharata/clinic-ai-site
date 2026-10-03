@@ -505,6 +505,17 @@ main td a:not([class]) {
   border-color: #15803d;
 }
 
+.clinic-status-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+
+.clinic-status-maps {
+  gap: 6px;
+}
+
 .clinic-status-link {
   display: inline-flex;
   align-items: center;
