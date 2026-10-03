@@ -719,7 +719,7 @@ export default function HomePage() {
         </div>
       </footer>
 
-      <div className="mobile-bar">
+      <nav className="mobile-bar" aria-label="ติดต่อคลินิกด่วน">
         <a href={phoneTel} className="mobile-bar-btn call">
           โทร
         </a>
@@ -734,7 +734,7 @@ export default function HomePage() {
         <a href="#hours" className="mobile-bar-btn hours">
           เวลาทำการ
         </a>
-      </div>
+      </nav>
     </>
   );
 }
