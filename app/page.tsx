@@ -259,7 +259,7 @@ export default function HomePage() {
 
       <main id="main-content" tabIndex={-1}>
 
-      <ClinicStatus />
+      <ClinicStatus mapsUrl={mapsDirectionsUrl} />
 
       <section className="hero">
         <div className="container hero-grid">
