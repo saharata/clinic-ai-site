@@ -505,6 +505,18 @@ main td a:not([class]) {
   border-color: #15803d;
 }
 
+/* แจ้งวันหยุดล่วงหน้า: โทน teal ของแบรนด์ (DESIGN.md สงวนแดงไว้สำหรับอาการอันตราย และสีอุ่นไว้หน้าวัคซีน) */
+.clinic-status-notice {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 8px 12px;
+  border-left: 4px solid #0f766e;
+  border-radius: 8px;
+  background: #f0fdfa;
+  color: #134e4a;
+  line-height: 1.6;
+}
+
 .clinic-status-links {
   display: flex;
   flex-wrap: wrap;
