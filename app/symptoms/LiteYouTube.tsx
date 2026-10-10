@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@vercel/analytics";
 
 // แสดงภาพปกก่อน โหลดตัวเล่น YouTube จริงเมื่อกดเท่านั้น
 // ตัวเล่นเต็มหนักหลายร้อย KB ต่อคลิป หน้า /symptoms มี ~10 คลิป บนเน็ตมือถือจึงช้ามาก
@@ -22,7 +23,15 @@ export default function LiteYouTube({ videoId, title }: { videoId: string; title
   }
 
   return (
-    <button type="button" className="yt-lite" onClick={() => setPlaying(true)}>
+    <button
+      type="button"
+      className="yt-lite"
+      onClick={() => {
+        setPlaying(true);
+        // วัดว่าคลิปไหนมีคนกดดูจริง (Vercel Analytics → Events)
+        track("video_play", { video: videoId, location: window.location.pathname });
+      }}
+    >
       {/* ภาพปกมาจาก CDN ของ YouTube ซึ่งย่อขนาดมาแล้ว ไม่ต้องผ่าน next/image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
