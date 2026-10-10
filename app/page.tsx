@@ -55,7 +55,8 @@ const clinicJsonLd = {
       description: "คลินิกระบบประสาท (ผู้ใหญ่)",
     },
   ],
-  sameAs: [facebookUrl],
+  // ช่องทางทางการของคลินิก ช่วยให้ Google เชื่อมเว็บ แผนที่ และช่องเหล่านี้เป็นคลินิกเดียวกัน
+  sameAs: [facebookUrl, "https://www.youtube.com/@saharatau", lineUrl],
   identifier: {
     "@type": "PropertyValue",
     name: "ใบอนุญาตประกอบกิจการสถานพยาบาล",

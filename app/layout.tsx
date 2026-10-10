@@ -42,6 +42,14 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // ยืนยันความเป็นเจ้าของเว็บกับ Google Search Console / Bing Webmaster Tools
+  // ใส่รหัสใน Vercel → Settings → Environment Variables แล้ว redeploy (ไม่ใส่ = ไม่มี meta tag)
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION }
+      : undefined,
+  },
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
