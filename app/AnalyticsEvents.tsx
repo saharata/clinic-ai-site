@@ -17,6 +17,8 @@ export default function AnalyticsEvents() {
         track("line_click", { location: window.location.pathname });
       } else if (href.includes("facebook.com")) {
         track("facebook_click", { location: window.location.pathname });
+      } else if (href.includes("google.com/maps")) {
+        track("maps_click", { location: window.location.pathname });
       }
     }
     document.addEventListener("click", onClick);
