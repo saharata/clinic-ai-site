@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "ลงทะเบียนเรียบร้อยแล้ว",
+  alternates: { canonical: "https://www.sahawanclinic.clinic/ai/register/success" },
+  robots: { index: false, follow: true },
+};
+
 export default function RegisterSuccessPage() {
   return (
     <main id="main-content" tabIndex={-1} className="section">

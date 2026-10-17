@@ -25,9 +25,8 @@ export const metadata: Metadata = {
     "โรคลมชัก",
     "สหวรรณคลินิก",
   ],
-  alternates: {
-    canonical: siteUrl,
-  },
+  // canonical ประกาศในแต่ละหน้าเอง — ถ้าใส่ที่นี่ ทุกหน้าที่ไม่ได้ประกาศจะสืบทอด canonical ของหน้าแรก
+  // และ Google จะมองว่าเป็นหน้าซ้ำของหน้าแรก (เคยเกิดกับ /ai)
   openGraph: {
     type: "website",
     locale: "th_TH",

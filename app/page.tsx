@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import ClinicStatus from "./ClinicStatus";
+import { doctorPath, physicianJsonLd, publicationsJsonLd } from "./doctorData";
 import PrepareChecklist from "./PrepareChecklist";
 import MobileMenu from "./MobileMenu";
 
@@ -62,94 +64,10 @@ const clinicJsonLd = {
     name: "ใบอนุญาตประกอบกิจการสถานพยาบาล",
     value: "12102000863",
   },
-  // E-E-A-T: ผูกคลินิกกับแพทย์ผู้เชี่ยวชาญ (Google/AI รู้ว่าใครดูแล + เชี่ยวชาญอะไร)
-  physician: {
-    "@type": "Physician",
-    "@id": "https://www.sahawanclinic.clinic/#physician-saharat",
-    name: "นพ. สหรัฐ อังศุมาศ",
-    honorificPrefix: "นายแพทย์",
-    honorificSuffix: "Ph.D. (Biochemistry), Ph.D. (Health Technology Assessment)",
-    jobTitle: "ประสาทแพทย์ (Neurologist)",
-    medicalSpecialty: "Neurologic",
-    // ORCID: ยืนยันตัวตนนักวิจัย — Google/AI ตรวจสอบ author + publications ได้ (E-E-A-T แข็งสุด)
-    sameAs: ["https://orcid.org/0000-0002-8183-348X"],
-    identifier: {
-      "@type": "PropertyValue",
-      propertyID: "ORCID",
-      value: "0000-0002-8183-348X",
-      url: "https://orcid.org/0000-0002-8183-348X",
-    },
-    knowsAbout: [
-      "Functional Neurological Disorder (FND)",
-      "ไมเกรนและอาการปวดศีรษะ",
-      "Multiple Sclerosis (MS) โรคปลอกประสาทเสื่อมแข็ง",
-      "Neuromyelitis Optica Spectrum Disorder (NMOSD)",
-      "Neuroimmunology",
-      "โรคลมชัก",
-      "เวียนศีรษะและความผิดปกติของการทรงตัว",
-    ],
-    // E-E-A-T: วุฒิการศึกษาจริง (MD เกียรตินิยม + PhD 2 ใบ) — จุดแข็งที่คลินิกทั่วไปไม่มี
-    hasCredential: [
-      {
-        "@type": "EducationalOccupationalCredential",
-        credentialCategory: "degree",
-        educationalLevel: "MD",
-        name: "แพทยศาสตรบัณฑิต (เกียรตินิยม) — Doctor of Medicine, first-class honors",
-        recognizedBy: { "@type": "CollegeOrUniversity", name: "มหาวิทยาลัยมหิดล (Mahidol University)" },
-      },
-      {
-        "@type": "EducationalOccupationalCredential",
-        credentialCategory: "degree",
-        educationalLevel: "PhD",
-        name: "Ph.D. in Biochemistry",
-        recognizedBy: { "@type": "CollegeOrUniversity", name: "มหาวิทยาลัยมหิดล (Mahidol University)" },
-      },
-      {
-        "@type": "EducationalOccupationalCredential",
-        credentialCategory: "degree",
-        educationalLevel: "PhD",
-        name: "Ph.D. in Health Technology Assessment",
-        recognizedBy: { "@type": "CollegeOrUniversity", name: "มหาวิทยาลัยมหิดล (Mahidol University)" },
-      },
-    ],
-    alumniOf: [
-      { "@type": "CollegeOrUniversity", name: "คณะแพทยศาสตร์วชิรพยาบาล มหาวิทยาลัยมหิดล" },
-      { "@type": "CollegeOrUniversity", name: "มหาวิทยาลัยมหิดล (Mahidol University)" },
-    ],
-  },
+  // E-E-A-T: ผูกคลินิกกับแพทย์ผู้เชี่ยวชาญ (ข้อมูลอยู่ใน app/doctorData.ts)
+  physician: physicianJsonLd,
 };
 
-// ผลงานวิชาการตีพิมพ์นานาชาติ (เลือกที่ตรงสาขาคลินิก — MS / NMOSD / neuroimmunology)
-// E-E-A-T "Expertise": หลักฐานความเชี่ยวชาญจริง ผูก author กับ Physician @id
-const publicationsJsonLd = [
-  {
-    title: "Use of disease-modifying therapy to prevent disability progression in multiple sclerosis in Thailand",
-    journal: "Journal of the Medical Association of Thailand",
-    year: "2023",
-  },
-  {
-    title: "Prevalence and predictive factors of painful tonic spasm in neuromyelitis optica spectrum disorder (NMOSD)",
-    journal: "Journal of the Medical Association of Thailand",
-    year: "2020",
-  },
-  {
-    title: "Abnormal level of consciousness predicts outcomes of patients with anti-NMDA receptor encephalitis",
-    journal: "Journal of Clinical Neuroscience",
-    year: "2019",
-  },
-  {
-    title: "Pilot study of GPO cannabis extract for spasticity in multiple sclerosis in Thailand",
-    journal: "Journal of the Medical Association of Thailand",
-    year: "2021",
-  },
-].map((p) => ({
-  "@context": "https://schema.org",
-  "@type": "ScholarlyArticle",
-  headline: p.title,
-  isPartOf: { "@type": "Periodical", name: p.journal },
-  datePublished: p.year,
-  author: { "@id": "https://www.sahawanclinic.clinic/#physician-saharat" },
-}));
 
 const faqs = [
   {
@@ -202,6 +120,10 @@ const faqJsonLd = {
     name: f.q,
     acceptedAnswer: { "@type": "Answer", text: f.a },
   })),
+};
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://www.sahawanclinic.clinic" },
 };
 
 export default function HomePage() {
@@ -545,6 +467,9 @@ export default function HomePage() {
                   ดูแลผู้ป่วยที่มีอาการทางระบบประสาท เช่น ปวดศีรษะ ไมเกรน เวียนศีรษะ
                   ชัก ชา อ่อนแรง และโรคระบบประสาทที่ต้องติดตามต่อเนื่อง
                 </p>
+                <Link href={doctorPath} className="btn btn-outline">
+                  ประวัติและคุณวุฒิ<span className="sr-only"> นพ. สหรัฐ อังศุมาศ</span>
+                </Link>
               </div>
             </div>
 

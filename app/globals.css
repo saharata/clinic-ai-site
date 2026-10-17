@@ -1067,6 +1067,107 @@ ul.vaccine-items {
   outline-offset: -6px;
 }
 
+/* ===== Doctor profile (/doctors/...) ===== */
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.profile-hours {
+  margin: 0 0 20px;
+  font-size: 1.0625rem;
+  color: #334155;
+}
+
+.profile-hours strong {
+  color: #0f766e;
+}
+
+.profile-h2 {
+  margin: 0 0 14px;
+  font-size: 1.375rem;
+}
+
+.profile-list {
+  margin: 0;
+  padding-left: 20px;
+  color: #334155;
+  line-height: 1.7;
+}
+
+.profile-list li + li {
+  margin-top: 8px;
+}
+
+.profile-list strong,
+.profile-list span {
+  display: block;
+}
+
+.profile-list span {
+  color: #475569;
+}
+
+.profile-note {
+  margin: 16px 0 0;
+  color: #475569;
+}
+
+.profile-note a,
+.symptom-byline a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.profile-pubs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.profile-pubs li {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  line-height: 1.6;
+}
+
+.profile-pubs li > span:last-child {
+  min-width: 0;
+}
+
+/* ศัพท์อังกฤษยาว ๆ (Neuroimmunology, disease-modifying) ต้องตัดบรรทัดได้เมื่อขยายตัวอักษร 200% บนจอ 320px */
+.profile-list,
+.profile-pubs {
+  overflow-wrap: anywhere;
+}
+
+.profile-pub-year {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.profile-pub-journal {
+  display: block;
+  color: #475569;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ===== Symptom detail page (/symptoms/[slug]) ===== */
 .breadcrumb ol {
   list-style: none;
