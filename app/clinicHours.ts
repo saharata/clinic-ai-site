@@ -26,7 +26,9 @@ export const clinics: Clinic[] = [
 //   { date: "2026-11-11", clinic: "neuro", note: "แพทย์ไปประชุมวิชาการ" },
 export type Closure = { date: string; clinic?: Clinic["key"]; note?: string };
 
-export const closures: Closure[] = [];
+export const closures: Closure[] = [
+  { date: "2027-01-01", note: "วันขึ้นปีใหม่" },
+];
 
 export const thaiDays = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"];
 
