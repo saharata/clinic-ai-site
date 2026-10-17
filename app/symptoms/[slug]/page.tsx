@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { symptoms } from "../symptomsData";
 import PrepareChecklist from "../../PrepareChecklist";
+import { doctorPath } from "../../doctorData";
 import MobileMenu from "../../MobileMenu";
 import LiteYouTube from "../LiteYouTube";
 
@@ -160,7 +161,7 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
             </h1>
             <p className="hero-text narrow">{s.blurb}</p>
             <p className="symptom-byline">
-              โดย นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์
+              โดย <Link href={doctorPath}>นพ. สหรัฐ อังศุมาศ</Link> · ประสาทแพทย์
               {s.reviewed && (
                 <>
                   {" "}

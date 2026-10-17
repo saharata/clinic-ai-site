@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${siteUrl}/doctors/saharat-aungsumart`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     ...symptoms.map((sym) => ({
       url: `${siteUrl}/symptoms/${sym.slug}`,
       lastModified: sym.reviewed ? new Date(sym.reviewed) : now,
