@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
   async rewrites() {
     // สื่อการเรียนรู้สำหรับเด็ก — static ใน public/learn/
     return [
+      { source: "/fnd-book", destination: "/fnd-book/index.html" },
+      { source: "/fnd-book.html", destination: "/fnd-book/index.html" },
       { source: "/cyber", destination: "/cyber/index.html" },
       { source: "/cyber/foundations", destination: "/cyber/foundations.html" },
       { source: "/cyber/systems-networks", destination: "/cyber/systems-networks.html" },
