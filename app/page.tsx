@@ -5,6 +5,7 @@ import ClinicStatus from "./ClinicStatus";
 import { doctorPath, physicianJsonLd, publicationsJsonLd } from "./doctorData";
 import PrepareChecklist from "./PrepareChecklist";
 import MobileMenu from "./MobileMenu";
+import LineLink from "./LineLink";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
 const facebookUrl = "https://facebook.com/saharat.aungsumart.52";
@@ -260,9 +261,9 @@ export default function HomePage() {
                 <a href="#vaccine" className="btn btn-dark">
                   ดูราคาวัคซีนเด็ก
                 </a>
-                <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
+                <LineLink message="สวัสดี สนใจนัดตรวจคลินิกเด็ก" className="btn btn-line">
                   นัดหมายผ่าน LINE
-                </a>
+                </LineLink>
               </div>
             </div>
 
@@ -274,9 +275,9 @@ export default function HomePage() {
               </p>
               <p className="card-hours">เปิดทำการ พุธ &amp; ศุกร์ 17:00–20:00 น.</p>
               <div className="card-actions">
-                <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line">
+                <LineLink message="สวัสดี สนใจนัดตรวจคลินิกประสาท" className="btn btn-line">
                   นัดหมายผ่าน LINE
-                </a>
+                </LineLink>
                 <a href={phoneTel} className="btn btn-outline">
                   โทรนัด
                 </a>

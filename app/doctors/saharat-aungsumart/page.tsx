@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import MobileMenu from "../../MobileMenu";
+import LineLink from "../../LineLink";
 import { clinics, hhmm, thaiDays } from "../../clinicHours";
 import {
   doctorUrl,
@@ -125,9 +126,9 @@ export default function DoctorProfilePage() {
                   ตรวจที่สหวรรณคลินิก <strong>วัน{neuroHours}</strong>
                 </p>
                 <div className="hero-actions">
-                  <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line big">
+                  <LineLink message="สวัสดี สนใจนัดตรวจกับ นพ. สหรัฐ (คลินิกประสาท)" className="btn btn-line big">
                     นัดตรวจผ่าน LINE
-                  </a>
+                  </LineLink>
                   <a href={phoneTel} className="btn btn-call big">
                     โทร {phoneDisplay}
                   </a>
