@@ -282,5 +282,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/cyber/defense-hardening`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${siteUrl}/cyber/path-to-pro`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
 
+    {
+      url: `${siteUrl}/fnd-book`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
   ];
 }

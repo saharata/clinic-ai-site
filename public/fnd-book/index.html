@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>หนังสือ FND · ตรวจทุกอย่างปกติ หมอบอกไม่เป็นอะไร แต่ฉันยังป่วย · ดร. นพ. สหรัฐ อังศุมาศ</title>
+  <meta name="description" content="หนังสือทำความเข้าใจ Functional Neurological Disorder (FND) ฉบับสำหรับผู้ป่วยและครอบครัว โดย ดร. นพ. สหรัฐ อังศุมาศ ประสาทแพทย์ — 117 หน้า 10 บท ภาษาเข้าใจง่าย" />
+  <meta property="og:title" content="ตรวจทุกอย่างปกติ หมอบอกไม่เป็นอะไร แต่ฉันยังป่วย" />
+  <meta property="og:description" content="หนังสือเข้าใจ FND ฉบับผู้ป่วยและครอบครัว โดย ดร. นพ. สหรัฐ อังศุมาศ ประสาทแพทย์" />
+  <meta property="og:image" content="https://www.sahawanclinic.clinic/fnd-book/fnd_cover.jpg" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://www.sahawanclinic.clinic/fnd-book" />
+  <link rel="canonical" href="https://www.sahawanclinic.clinic/fnd-book" />
+  <style>
+    :root{--bg:#0d1117;--card:#161b22;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--gold:#e3b341;--border:#30363d;--ok:#3fb950;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,"Noto Sans Thai",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+    a{color:var(--accent);}
+    .wrap{max-width:960px;margin:0 auto;padding:0 1.25rem;}
+
+    /* HERO */
+    .hero{display:flex;gap:2.5rem;align-items:center;padding:3.5rem 0 2.5rem;flex-wrap:wrap;justify-content:center;}
+    .hero img{width:280px;max-width:72vw;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.55);}
+    .hero .d{flex:1;min-width:280px;}
+    .badge{display:inline-block;background:rgba(88,166,255,.12);border:1px solid var(--accent);color:var(--accent);font-size:.8rem;padding:.25rem .7rem;border-radius:20px;margin-bottom:1rem;}
+    .hero h1{font-size:1.9rem;line-height:1.35;margin-bottom:.6rem;}
+    .hero .sub{color:var(--muted);font-size:1.05rem;margin-bottom:1rem;}
+    .hero .author{font-size:.98rem;margin-bottom:1.5rem;}
+    .hero .author b{color:var(--gold);}
+    .price{display:flex;align-items:baseline;gap:.6rem;margin-bottom:1.25rem;}
+    .price .n{font-size:2.6rem;font-weight:800;color:var(--gold);}
+    .price .u{font-size:1.1rem;color:var(--muted);}
+    .price .meta{color:var(--muted);font-size:.9rem;margin-left:.5rem;}
+    .cta{display:inline-block;background:var(--gold);color:#1a1200;font-weight:700;padding:.85rem 2rem;border-radius:8px;text-decoration:none;font-size:1.05rem;transition:transform .15s,filter .15s;}
+    .cta:hover{transform:translateY(-2px);filter:brightness(1.08);}
+    .cta.secondary{background:transparent;border:1px solid var(--border);color:var(--text);margin-left:.6rem;}
+
+    section{padding:2.5rem 0;border-top:1px solid var(--border);}
+    h2{font-size:1.4rem;margin-bottom:1.2rem;color:var(--text);}
+    h2 .e{margin-right:.4rem;}
+    .who{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;}
+    .who .it{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem;}
+    .who .it b{color:var(--accent);}
+    .toc{list-style:none;counter-reset:c;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:.5rem;}
+    .toc li{counter-increment:c;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;position:relative;padding-left:2.6rem;font-size:.95rem;}
+    .toc li::before{content:counter(c);position:absolute;left:.8rem;top:.7rem;color:var(--gold);font-weight:700;}
+    .bio{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.6rem;display:flex;gap:1.2rem;flex-wrap:wrap;}
+    .bio .t{flex:1;min-width:260px;}
+    .bio h3{color:var(--gold);margin-bottom:.5rem;}
+    .bio ul{margin:.6rem 0 0 1.1rem;color:var(--muted);font-size:.92rem;}
+
+    /* BUY */
+    .buy{background:linear-gradient(160deg,#161b22,#11151c);border:1px solid var(--gold);border-radius:14px;padding:2rem;}
+    .steps{counter-reset:s;list-style:none;margin-top:1rem;}
+    .steps li{counter-increment:s;position:relative;padding:.6rem 0 .6rem 2.4rem;border-bottom:1px solid var(--border);}
+    .steps li:last-child{border-bottom:none;}
+    .steps li::before{content:counter(s);position:absolute;left:0;top:.6rem;width:1.6rem;height:1.6rem;background:var(--gold);color:#1a1200;border-radius:50%;text-align:center;line-height:1.6rem;font-weight:700;font-size:.9rem;}
+    .pp{display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;margin-top:1.2rem;background:#fff;color:#222;border-radius:10px;padding:1.2rem;}
+    .pp .qr{width:150px;height:150px;background:#f0f0f0;border:1px dashed #aaa;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;color:#888;font-size:.8rem;padding:.5rem;}
+    .pp .qr img{width:100%;height:100%;object-fit:contain;border-radius:8px;}
+    .pp .info b{color:#1a6;}
+    .note{background:rgba(227,179,65,.08);border-left:3px solid var(--gold);padding:.8rem 1rem;border-radius:6px;margin-top:1rem;font-size:.9rem;color:var(--muted);}
+    .contact a{display:inline-block;margin:.4rem .6rem .4rem 0;padding:.5rem 1.1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);}
+
+    footer{padding:2.5rem 1.25rem;text-align:center;color:var(--muted);border-top:1px solid var(--border);font-size:.85rem;}
+    .disc{max-width:680px;margin:1rem auto 0;font-size:.8rem;line-height:1.6;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- HERO -->
+    <div class="hero">
+      <img src="/fnd-book/fnd_cover.jpg" alt="ปกหนังสือ ตรวจทุกอย่างปกติ หมอบอกไม่เป็นอะไร แต่ฉันยังป่วย" />
+      <div class="d">
+        <span class="badge">หนังสือใหม่ · ฉบับ e-book PDF</span>
+        <h1>ตรวจทุกอย่างปกติ<br/>หมอบอกไม่เป็นอะไร<br/>แต่ฉันยังป่วย</h1>
+        <p class="sub">ทำความเข้าใจกับ Functional Neurological Disorder (FND)<br/>ฉบับสำหรับผู้ป่วยและครอบครัว</p>
+        <p class="author">โดย <b>ดร. นพ. สหรัฐ อังศุมาศ</b> · ประสาทแพทย์</p>
+        <div class="price">
+          <span class="n">99</span><span class="u">บาท</span>
+          <span class="meta">· 117 หน้า · 10 บท · ไฟล์ PDF</span>
+        </div>
+        <a class="cta" href="#buy">📥 สั่งซื้อหนังสือ</a>
+        <a class="cta secondary" href="#sample">ดูสารบัญ</a>
+      </div>
+    </div>
+
+    <!-- WHO -->
+    <section>
+      <h2><span class="e">📖</span>หนังสือเล่มนี้สำหรับใคร</h2>
+      <div class="who">
+        <div class="it"><b>ผู้ที่ตรวจแล้วปกติ</b> แต่ยังมีอาการ — มือสั่น เดินผิดปกติ ชาอ่อนแรง เวียนศีรษะ ชักที่ตรวจไม่พบสาเหตุ</div>
+        <div class="it"><b>ครอบครัวและคนใกล้ชิด</b> ที่อยากเข้าใจว่าอาการของคนที่รัก “เป็นเรื่องจริง” ไม่ใช่การแกล้งป่วย</div>
+        <div class="it"><b>ผู้ที่เพิ่งได้รับการวินิจฉัย FND</b> และอยากรู้ว่าจะฟื้นตัวได้อย่างไร</div>
+        <div class="it"><b>บุคลากรสุขภาพ</b> ที่อยากมีเครื่องมืออธิบายโรคนี้ให้ผู้ป่วยเข้าใจง่าย</div>
+      </div>
+    </section>
+
+    <!-- TOC -->
+    <section id="sample">
+      <h2><span class="e">📑</span>สารบัญ · 10 บท</h2>
+      <ol class="toc">
+        <li>โรคนี้คืออะไร: เมื่อร่างกายมีอาการจริง แต่ตรวจไม่พบ</li>
+        <li>สมองกำลังทำอะไรอยู่: ทำไมร่างกายจึงมีอาการ</li>
+        <li>ทำไมอาการถึงเริ่มขึ้น: จุดเริ่มต้นของ FND</li>
+        <li>แพทย์รู้ได้อย่างไรว่าเป็น FND: การวินิจฉัย</li>
+        <li>แบบจำลอง “Pressure Cooker”: เมื่อแรงกดดันล้นออกมา</li>
+        <li>การรักษาและการฟื้นตัว: เมื่อสมองสามารถเรียนรู้ใหม่</li>
+        <li>อาการของ FND ที่พบบ่อย</li>
+        <li>สิ่งที่ทำให้อาการคงอยู่</li>
+        <li>เส้นทางการฟื้นตัวในชีวิตจริง</li>
+        <li>คำถามที่ผู้ป่วยถามบ่อย</li>
+      </ol>
+    </section>
+
+    <!-- BIO -->
+    <section>
+      <h2><span class="e">👨‍⚕️</span>เกี่ยวกับผู้เขียน</h2>
+      <div class="bio">
+        <div class="t">
+          <h3>ดร. นพ. สหรัฐ อังศุมาศ</h3>
+          <p>ประสาทแพทย์ผู้ดูแลผู้ป่วยโรคทางระบบประสาทมาอย่างต่อเนื่อง โดยเฉพาะกลุ่มโรค Functional Neurological Disorder ที่มักถูกเข้าใจผิด</p>
+          <ul>
+            <li>ประจำโรงพยาบาลแพทย์รังสิต</li>
+            <li>แพทย์ประจำบ้านประสาทวิทยา สถาบันประสาทวิทยา</li>
+            <li>Ph.D. ด้านการประเมินสุขภาพและเทคโนโลยี (HTA) มหาวิทยาลัยมหิดล ปี 2568</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUY -->
+    <section id="buy">
+      <div class="buy">
+        <h2><span class="e">🛒</span>วิธีสั่งซื้อ · 99 บาท</h2>
+        <p style="color:var(--muted)">ชำระผ่าน PromptPay แล้วรับไฟล์ PDF ที่มีชื่อของคุณกำกับเฉพาะเล่ม (กันการเผยแพร่ซ้ำ)</p>
+
+        <ol class="steps">
+          <li>สแกน QR PromptPay ด้านล่าง โอน <b>99 บาท</b></li>
+          <li>ส่ง <b>สลิป + ชื่อ-นามสกุล + อีเมล</b> มาที่ช่องทางติดต่อด้านล่าง</li>
+          <li>รับไฟล์ PDF เฉพาะของคุณทางอีเมลภายใน 24 ชม.</li>
+        </ol>
+
+        <div class="pp">
+          <div class="qr">
+            <img src="/fnd-book/fnd_promptpay.png" alt="PromptPay QR 99 บาท · สหรัฐ อังศุมาศ" />
+          </div>
+          <div class="info">
+            <p><b>PromptPay:</b> 089-202-1765</p>
+            <p><b>ชื่อบัญชี:</b> สหรัฐ อังศุมาศ</p>
+            <p><b>จำนวน:</b> 99.00 บาท</p>
+            <p style="font-size:.82rem;color:#888;margin-top:.4rem">สแกนแล้วยอดจะขึ้น 99 บาทอัตโนมัติ</p>
+          </div>
+        </div>
+
+        <div class="contact" style="margin-top:1.2rem">
+          <p style="color:var(--muted);margin-bottom:.4rem">ส่งสลิป + ชื่อ-นามสกุล + อีเมล มาที่ LINE:</p>
+          <a href="https://line.me/ti/p/~202176" target="_blank">📱 เพิ่มเพื่อน LINE (ID: 202176)</a>
+          <a href="mailto:saharatau@gmail.com">✉️ saharatau@gmail.com</a>
+        </div>
+
+        <div class="note">
+          📌 ไฟล์ที่ได้รับเป็น PDF ส่วนบุคคล มีชื่อและเลขออเดอร์ของคุณกำกับทุกหน้า โปรดเก็บไว้สำหรับการอ่านส่วนตัว ไม่อนุญาตให้เผยแพร่หรือจำหน่ายต่อ
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>© ดร. นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์ · สงวนลิขสิทธิ์</p>
+    <p class="disc">เนื้อหาในหนังสือเล่มนี้จัดทำเพื่อการศึกษาและทำความเข้าใจโรคทั่วไป ไม่ใช่คำแนะนำทางการแพทย์เฉพาะบุคคล และไม่สามารถใช้แทนการตรวจวินิจฉัยหรือการรักษาโดยแพทย์ หากมีอาการผิดปกติ โปรดปรึกษาแพทย์</p>
+  </footer>
+</body>
+</html>
