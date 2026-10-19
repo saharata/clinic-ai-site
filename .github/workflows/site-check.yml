@@ -1,0 +1,51 @@
+# ตรวจเว็บอัตโนมัติทุก PR และทุกครั้งที่ main เปลี่ยน: lint · build · การเข้าถึง (axe) · จอแคบ/ตัวอักษรใหญ่ · ลิงก์ภายในเสีย
+# ผลสรุปดูได้ในแท็บ Actions → Summary ของแต่ละรอบ
+name: Site check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Install Chromium
+        run: npx playwright-core install --with-deps chromium
+
+      - name: Start site
+        run: |
+          npm start -- -p 3000 > next.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat next.log
+          exit 1
+
+      - name: Accessibility, reflow and link check
+        run: npm run check:site

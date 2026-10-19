@@ -2,6 +2,7 @@ export type Symptom = {
   slug: string;
   icon: string;
   title: string; // หัวข้อที่คนค้นหา
+  topic: string; // ชื่ออาการสั้น ๆ ใช้ในข้อความ LINE ที่พิมพ์ไว้ให้ ("สนใจนัดตรวจ เรื่อง…")
   videoId: string;
   videoTitle: string;
   blurb: string; // อธิบายสั้นแบบหมอ
@@ -36,6 +37,7 @@ export const shorts: ShortClip[] = [
 export const symptoms: Symptom[] = [
   {
     slug: "headache",
+    topic: "ปวดศีรษะ / ไมเกรน",
     icon: "🤕",
     title: "ปวดศีรษะ / ไมเกรน แบบไหนอันตราย",
     videoId: "rLfKxBrIbKY",
@@ -67,6 +69,7 @@ export const symptoms: Symptom[] = [
   },
   {
     slug: "dizziness",
+    topic: "เวียนศีรษะ บ้านหมุน",
     icon: "💫",
     title: "เวียนศีรษะ บ้านหมุน ใช่สโตรกไหม",
     videoId: "p9EKQyzbPgk",
@@ -98,6 +101,7 @@ export const symptoms: Symptom[] = [
   },
   {
     slug: "tinnitus",
+    topic: "หูอื้อ มีเสียงในหู",
     icon: "👂",
     title: "หูอื้อ มีเสียงในหู อันตรายไหม",
     videoId: "-prTjdS07Ac",
@@ -129,6 +133,7 @@ export const symptoms: Symptom[] = [
   },
   {
     slug: "numbness",
+    topic: "มือชา เท้าชา",
     icon: "✋",
     title: "มือชา เท้าชา เกิดจากอะไร",
     videoId: "SeqCDnJ_KCI",
@@ -160,6 +165,7 @@ export const symptoms: Symptom[] = [
   },
   {
     slug: "seizure",
+    topic: "เหม่อลอย เกร็งกระตุก",
     icon: "⚡",
     title: "เหม่อลอย เกร็งกระตุก ใช่ลมชักไหม",
     videoId: "Mgphb3XqlQo",
@@ -191,6 +197,7 @@ export const symptoms: Symptom[] = [
   },
   {
     slug: "twitching",
+    topic: "กล้ามเนื้อกระตุก",
     icon: "〰️",
     title: "กล้ามเนื้อกระตุก ใช่โรคกล้ามเนื้ออ่อนแรงไหม",
     videoId: "ZsioRwLOu7w",
@@ -222,6 +229,7 @@ export const symptoms: Symptom[] = [
   },
   {
     slug: "faint",
+    topic: "ลุกแล้วหน้ามืด วูบ",
     icon: "🩺",
     title: "ลุกแล้วหน้ามืด ใจสั่น วูบ",
     videoId: "YW_HhRl6L34",

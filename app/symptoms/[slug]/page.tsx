@@ -6,6 +6,7 @@ import PrepareChecklist from "../../PrepareChecklist";
 import { doctorPath } from "../../doctorData";
 import MobileMenu from "../../MobileMenu";
 import LiteYouTube from "../LiteYouTube";
+import LineLink from "../../LineLink";
 
 const siteUrl = "https://www.sahawanclinic.clinic";
 const lineUrl = "https://lin.ee/7Y8onWN";
@@ -213,9 +214,9 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
             </div>
 
             <div className="card-actions symptom-page-block">
-              <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line big">
+              <LineLink message={`สวัสดี สนใจนัดตรวจคลินิกประสาท เรื่อง${s.topic}`} className="btn btn-line big">
                 ปรึกษา / นัดตรวจผ่าน LINE
-              </a>
+              </LineLink>
               <a href={phoneTel} className="btn btn-call big">
                 โทร {phoneDisplay}
               </a>

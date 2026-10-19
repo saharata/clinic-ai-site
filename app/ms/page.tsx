@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import MobileMenu from "../MobileMenu";
+import LineLink from "../LineLink";
 
 // หน้าปลายทาง QR ของงานให้ความรู้ผู้ป่วย MS/NMOSD 9 พ.ย. 2569 — URL ต้องเป็น /ms ห้ามเปลี่ยน
 // ข้อมูลสิทธิ ณ ก.ย. 2569 (ที่มา: ms_talk_2026_11_09/BRIEFING_ประกันสังคม_MS.md)
@@ -488,12 +489,12 @@ export default function MsPage() {
               <p>นัดตรวจหรือสอบถามเวลาทำการ ทักผ่าน LINE หรือโทรได้เลย</p>
             </div>
             <div className="cta-actions">
-              <a href={lineUrl} target="_blank" rel="noreferrer" className="btn btn-line big">
+              <LineLink message="สวัสดี สนใจนัดตรวจคลินิกประสาท เรื่อง MS / NMOSD" className="btn btn-line big">
                 <span>
                   นัดตรวจผ่าน <span lang="en">LINE</span>
                 </span>
                 <span className="sr-only"> สหวรรณคลินิก (เปิดในแท็บใหม่)</span>
-              </a>
+              </LineLink>
               <a href={phoneTel} className="btn btn-call big">
                 โทร {phoneDisplay}
                 <span className="sr-only"> สหวรรณคลินิก</span>
