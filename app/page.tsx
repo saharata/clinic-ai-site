@@ -117,6 +117,7 @@ const faqs = [
 const introVideo = {
   src: "/video/sahawan-intro.mp4",
   poster: "/video/sahawan-intro.jpg",
+  captions: "/video/sahawan-intro.th.vtt", // คำบรรยาย ถอดจากเสียงในคลิป — แก้ไฟล์นี้ถ้าคำพูดในคลิปเปลี่ยน
 };
 const videoJsonLd = {
   "@context": "https://schema.org",
@@ -331,6 +332,7 @@ export default function HomePage() {
             aria-label="วิดีโอแนะนำสหวรรณคลินิก ความยาว 56 วินาที"
           >
             <source src={introVideo.src} type="video/mp4" />
+            <track kind="captions" src={introVideo.captions} srcLang="th" label="ไทย" default />
             <a href={introVideo.src}>ดาวน์โหลดวิดีโอแนะนำคลินิก</a>
           </video>
         </div>
