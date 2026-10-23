@@ -113,6 +113,25 @@ const faqs = [
   },
 ];
 
+// คลิปแนะนำคลินิก (เก็บใน public/video) — VideoObject ช่วยให้ขึ้นในผลค้นหาวิดีโอของ Google
+const introVideo = {
+  src: "/video/sahawan-intro.mp4",
+  poster: "/video/sahawan-intro.jpg",
+  captions: "/video/sahawan-intro.th.vtt", // คำบรรยาย ถอดจากเสียงในคลิป — แก้ไฟล์นี้ถ้าคำพูดในคลิปเปลี่ยน
+};
+const videoJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  name: "รู้จักสหวรรณคลินิก คลินิกเด็กและระบบประสาท นนทบุรี",
+  description:
+    "แนะนำสหวรรณคลินิก ประชานิเวศน์ 3 นนทบุรี แพทย์ บริการคลินิกเด็กและคลินิกระบบประสาท และเวลาทำการ",
+  thumbnailUrl: `https://www.sahawanclinic.clinic${introVideo.poster}`,
+  contentUrl: `https://www.sahawanclinic.clinic${introVideo.src}`,
+  uploadDate: "2026-10-23",
+  duration: "PT56S",
+  inLanguage: "th",
+};
+
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -137,6 +156,10 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
       />
       {publicationsJsonLd.map((pub, i) => (
         <script
@@ -287,6 +310,31 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="intro-video" className="section alt">
+        <div className="container intro-video">
+          <div className="section-head">
+            <p className="eyebrow">วิดีโอแนะนำ</p>
+            <h2>รู้จักสหวรรณคลินิกใน 1 นาที</h2>
+            <p>หน้าคลินิก แพทย์ทั้งสองท่าน บริการ และเวลาทำการ</p>
+          </div>
+          {/* preload="none": ไม่โหลดคลิปจนกว่าจะกดเล่น หน้าแรกจึงไม่ช้าลงบนเน็ตมือถือ */}
+          <video
+            className="intro-video-player"
+            controls
+            playsInline
+            preload="none"
+            poster={introVideo.poster}
+            width={1280}
+            height={720}
+            aria-label="วิดีโอแนะนำสหวรรณคลินิก ความยาว 56 วินาที"
+          >
+            <source src={introVideo.src} type="video/mp4" />
+            <track kind="captions" src={introVideo.captions} srcLang="th" label="ไทย" default />
+            <a href={introVideo.src}>ดาวน์โหลดวิดีโอแนะนำคลินิก</a>
+          </video>
         </div>
       </section>
 
