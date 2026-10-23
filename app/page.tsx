@@ -264,6 +264,9 @@ export default function HomePage() {
                 <LineLink message="สวัสดี สนใจนัดตรวจคลินิกเด็ก" className="btn btn-line">
                   นัดหมายผ่าน LINE
                 </LineLink>
+                <Link href="/pediatric" className="btn btn-outline">
+                  ข้อมูลคลินิกเด็ก
+                </Link>
               </div>
             </div>
 
@@ -491,6 +494,9 @@ export default function HomePage() {
                   ดูแลสุขภาพเด็กทั่วไป การเจริญเติบโต พัฒนาการ วัคซีน
                   และอาการเจ็บป่วยทั่วไปของเด็กในทุกช่วงวัย
                 </p>
+                <Link href="/pediatric" className="btn btn-outline">
+                  คลินิกเด็ก<span className="sr-only"> โดย พญ. วรรณวรา อังศุมาศ</span>
+                </Link>
               </div>
             </div>
           </div>
