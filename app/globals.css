@@ -308,6 +308,17 @@ main td a:not([class]) {
   line-height: 1.7;
 }
 
+/* วิดีโอแนะนำคลินิกในหน้าแรก */
+.intro-video-player {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  background: #0f172a;
+}
+
 .cards {
   display: grid;
   gap: 20px;
