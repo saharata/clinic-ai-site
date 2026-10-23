@@ -308,6 +308,19 @@ main td a:not([class]) {
   line-height: 1.7;
 }
 
+/* ปุ่มสลับภาษาในหน้าภาษาอังกฤษ */
+.nav-links .btn-lang {
+  border: 1px solid #94a3b8;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+@media (max-width: 720px) {
+  .nav-links .btn-lang {
+    padding: 0 10px;
+  }
+}
+
 /* วิดีโอแนะนำคลินิกในหน้าแรก */
 .intro-video-player {
   display: block;

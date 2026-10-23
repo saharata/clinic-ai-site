@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 // ลิงก์ทั้งหมดของเว็บสำหรับมือถือ (บนมือถือเมนูข้อความด้านบนถูกซ่อน)
 // ใช้ path เต็ม เพื่อให้ทำงานได้จากทุกหน้า
-const links: { href: string; label: string; static?: boolean }[] = [
+const links: { href: string; label: string; static?: boolean; lang?: string }[] = [
   { href: "/", label: "หน้าแรก" },
   { href: "/#hours", label: "เวลาทำการ" },
   { href: "/#services", label: "บริการของคลินิก" },
@@ -19,6 +19,7 @@ const links: { href: string; label: string; static?: boolean }[] = [
   { href: "/learn", label: "Body 101 สื่อการเรียนรู้" },
   { href: "/cyber", label: "Cyber 101", static: true },
   { href: "/ai", label: "AI Tools สำหรับแพทย์" },
+  { href: "/en", label: "English", lang: "en" },
 ];
 
 export default function MobileMenu() {
@@ -75,6 +76,8 @@ export default function MobileMenu() {
               ) : (
                 <Link
                   href={l.href}
+                  lang={l.lang}
+                  hrefLang={l.lang}
                   aria-current={l.href === pathname ? "page" : undefined}
                   onClick={() => close(false)}
                 >

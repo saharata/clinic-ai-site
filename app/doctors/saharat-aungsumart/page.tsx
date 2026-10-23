@@ -27,7 +27,10 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  alternates: { canonical: doctorUrl },
+  alternates: {
+    canonical: doctorUrl,
+    languages: { th: doctorUrl, en: `${siteUrl}/en/doctors/saharat-aungsumart`, "x-default": doctorUrl },
+  },
   openGraph: {
     type: "profile",
     locale: "th_TH",
