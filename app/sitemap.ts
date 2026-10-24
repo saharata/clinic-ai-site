@@ -11,6 +11,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 1,
+      alternates: { languages: { th: siteUrl, en: `${siteUrl}/en` } },
+    },
+    {
+      url: `${siteUrl}/en`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: { th: siteUrl, en: `${siteUrl}/en` } },
+    },
+    {
+      url: `${siteUrl}/en/doctors/saharat-aungsumart`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: {
+        languages: {
+          th: `${siteUrl}/doctors/saharat-aungsumart`,
+          en: `${siteUrl}/en/doctors/saharat-aungsumart`,
+        },
+      },
     },
     {
       url: `${siteUrl}/pediatric`,
@@ -35,6 +55,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,
+      alternates: {
+        languages: {
+          th: `${siteUrl}/doctors/saharat-aungsumart`,
+          en: `${siteUrl}/en/doctors/saharat-aungsumart`,
+        },
+      },
     },
     ...symptoms.map((sym) => ({
       url: `${siteUrl}/symptoms/${sym.slug}`,

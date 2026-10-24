@@ -143,7 +143,14 @@ const faqJsonLd = {
 };
 
 export const metadata: Metadata = {
-  alternates: { canonical: "https://www.sahawanclinic.clinic" },
+  alternates: {
+    canonical: "https://www.sahawanclinic.clinic",
+    languages: {
+      th: "https://www.sahawanclinic.clinic",
+      en: "https://www.sahawanclinic.clinic/en",
+      "x-default": "https://www.sahawanclinic.clinic",
+    },
+  },
 };
 
 export default function HomePage() {
