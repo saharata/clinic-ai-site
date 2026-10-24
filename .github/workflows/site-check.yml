@@ -16,7 +16,8 @@ concurrency:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    # ล็อก 24.04: ubuntu-latest ย้ายไป Ubuntu 26 แล้ว ซึ่ง playwright-core 1.56 ติดตั้ง Chromium (--with-deps) ไม่ได้
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
