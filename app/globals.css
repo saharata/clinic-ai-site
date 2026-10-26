@@ -2147,3 +2147,19 @@ ul.vaccine-items {
 @keyframes sl-slow { 0% { transform: translateX(0); opacity: 1; } 45% { transform: translateX(180px); opacity: 1; } 85% { transform: translateX(250px); opacity: 0.45; } 100% { transform: translateX(255px); opacity: 0; } }
 /* ตั้ง "ลดภาพเคลื่อนไหว" ไว้ = ภาพนิ่งเสมอ ซ่อนปุ่มเล่นที่กดแล้วไม่มีผล */
 @media (prefers-reduced-motion: reduce) { .sl-play { display: none; } }
+
+/* หน้าแรก: ความรู้พื้นฐานระบบประสาท */
+.kb-h3 { margin-top: 8px; }
+.sl-stroke.compact { gap: 8px; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); margin-top: 12px; }
+.sl-stroke.compact li { padding: 8px 8px 10px; }
+.sl-stroke.compact svg { max-width: 84px; }
+.sl-stroke.compact .sl-stroke-letter { font-size: 1.5rem; }
+.sl-stroke.compact .sl-stroke-title { font-size: 1rem; }
+.kb-grid { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.kb-card { display: flex; gap: 14px; align-items: center; height: 100%; padding: 14px 16px; border: 2px solid #191916; border-radius: 16px; background: #fff; color: #191916; text-decoration: none; min-width: 0; }
+.kb-card:hover { background: #f8fafc; }
+.kb-card:focus-visible { outline: 3px solid #0f766e; outline-offset: 2px; }
+.kb-card img { width: 72px; height: 72px; object-fit: contain; flex: 0 0 72px; }
+.kb-card > span { display: flex; flex-direction: column; gap: 4px; min-width: 0; line-height: 1.5; }
+.kb-card strong { font-size: 1.125rem; text-decoration: underline; text-underline-offset: 3px; }
+.kb-card span span { color: #475569; }
