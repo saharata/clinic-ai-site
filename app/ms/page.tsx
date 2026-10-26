@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import MobileMenu from "../MobileMenu";
 import LineLink from "../LineLink";
+import MyelinAnimation from "../stickline/MyelinAnimation";
 
 // หน้าปลายทาง QR ของงานให้ความรู้ผู้ป่วย MS/NMOSD 9 พ.ย. 2569 — URL ต้องเป็น /ms ห้ามเปลี่ยน
 // ข้อมูลสิทธิ ณ ก.ย. 2569 (ที่มา: ms_talk_2026_11_09/BRIEFING_ประกันสังคม_MS.md)
@@ -215,6 +216,15 @@ export default function MsPage() {
               <a href="#videos" className="btn btn-outline">คลิปเรียนรู้ต่อ</a>
               <a href="#appointment" className="btn btn-outline">นัดตรวจ</a>
             </nav>
+          </div>
+        </section>
+
+        <section id="myelin" className="section alt" aria-labelledby="myelin-h">
+          <div className="container">
+            <div className="section-head">
+              <h2 id="myelin-h">MS กับปลอกประสาท ในภาพเดียว</h2>
+            </div>
+            <MyelinAnimation />
           </div>
         </section>
 

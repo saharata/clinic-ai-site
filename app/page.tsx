@@ -380,6 +380,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section id="stickline-teaser" className="section">
+        <div className="container cta-box">
+          <div>
+            <p className="eyebrow">ประสาทแพทย์วาดเส้น</p>
+            <h2>สโตรก เป็นลมหรือชัก และอาการที่ต้องไปห้องฉุกเฉิน</h2>
+            <p>
+              ภาพวาดเส้นเข้าใจง่าย สัญญาณเตือนสโตรก BE FAST นาฬิกาจับเวลาตอนมีคนชัก
+              และเช็กว่าอาการแบบไหนไปห้องฉุกเฉิน
+            </p>
+          </div>
+          <div className="cta-actions">
+            <Link href="/stickline" className="btn btn-dark big">
+              เปิดประสาทแพทย์วาดเส้น
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section id="ms-teaser" className="section">
         <div className="container cta-box">
           <div>
