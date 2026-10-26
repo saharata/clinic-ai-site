@@ -2018,3 +2018,132 @@ ul.vaccine-items {
     flex: 1 1 calc(50% - 10px);
   }
 }
+
+/* ───────── ประสาทแพทย์วาดเส้น (/stickline) ─────────
+   ภาพนิ่ง = ท่าที่ "มีอาการ" (สื่อความหมายครบโดยไม่ต้องขยับ)
+   ภาพเคลื่อนไหวเล่นเฉพาะเมื่อกดเล่น และเครื่องไม่ได้ตั้งลดภาพเคลื่อนไหว · ไม่มีอะไรกะพริบ */
+.sl-page { --sl-ink: #191916; --sl-red: #b42318; --sl-red-line: #ec4338; --sl-blue: #1d4ed8; --sl-grey: #5b5f66; }
+
+.sl-toc { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 20px 0 0; }
+.sl-toc a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 2px solid var(--sl-ink); border-radius: 999px; color: var(--sl-ink); background: #fff; font-weight: 700; text-decoration: none; }
+.sl-toc a:hover { background: #f1f5f9; }
+
+.sl-emergency { margin: 20px 0 0; padding: 12px 16px; border: 3px solid var(--sl-red-line); border-radius: 14px; background: #fff; line-height: 1.6; }
+.sl-emergency strong { color: var(--sl-red); margin-right: 4px; }
+.sl-emergency a { color: var(--sl-red); font-weight: 700; }
+
+.sl-h3 { margin: 32px 0 12px; font-size: 1.375rem; }
+.sl-play { gap: 8px; }
+.sl-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; }
+
+/* ข้อ 1: สโตรก */
+.sl-stroke { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.sl-stroke li { border: 2px solid var(--sl-ink); border-radius: 16px; background: #fff; padding: 12px 12px 14px; text-align: center; color: var(--sl-ink); min-width: 0; }
+.sl-stroke svg { width: 100%; max-width: 150px; height: auto; display: block; margin: 0 auto; overflow: visible; }
+.sl-stroke-letter { margin: 6px 0 0; font-size: 2rem; font-weight: 800; line-height: 1; color: var(--sl-blue); }
+.sl-stroke-letter small { display: block; font-size: 0.875rem; font-weight: 700; color: var(--sl-grey); margin-top: 4px; }
+.sl-stroke-title { margin: 8px 0 0; font-weight: 700; font-size: 1.0625rem; line-height: 1.45; overflow-wrap: anywhere; }
+.sl-stroke-time { border-color: var(--sl-red-line) !important; }
+.sl-stroke-time .sl-stroke-letter, .sl-stroke-time .sl-stroke-title { color: var(--sl-red); }
+
+.sl-sway { transform-box: view-box; transform-origin: 60px 130px; transform: rotate(-9deg); }
+.sl-ghost { transform: translate(7px, 2px); }
+.sl-droop { transform-box: view-box; transform-origin: 60px 39px; transform: rotate(28deg); }
+.sl-lid { opacity: 1; }
+.sl-drift { transform-box: view-box; transform-origin: 60px 62px; transform: rotate(38deg); }
+.sl-talk text { font-weight: 700; }
+.sl-hand { transform-box: view-box; transform-origin: 60px 62px; transform: rotate(0deg); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sl-anim[data-playing="true"] .sl-sway { animation: sl-sway 3s ease-in-out infinite alternate; }
+  .sl-anim[data-playing="true"] .sl-ghost { animation: sl-ghost 3s ease-in-out infinite alternate; }
+  .sl-anim[data-playing="true"] .sl-droop { animation: sl-droop 3s ease-in-out infinite alternate; }
+  .sl-anim[data-playing="true"] .sl-drift { animation: sl-drift 3s ease-in-out infinite alternate; }
+  .sl-anim[data-playing="true"] .sl-talk { animation: sl-talk 3s ease-in-out infinite alternate; }
+  .sl-anim[data-playing="true"] .sl-hand { animation: sl-hand 6s linear infinite; }
+  .sl-anim[data-playing="true"] .sl-signal-fast { animation: sl-fast 2.4s steps(6, jump-none) infinite; }
+  .sl-anim[data-playing="true"] .sl-signal-slow { animation: sl-slow 4.8s ease-in infinite; }
+}
+@keyframes sl-sway { 0%, 25% { transform: rotate(0); } 100% { transform: rotate(-9deg); } }
+@keyframes sl-ghost { 0%, 25% { transform: translate(0, 0); } 100% { transform: translate(7px, 2px); } }
+@keyframes sl-droop { 0%, 25% { transform: rotate(0); } 100% { transform: rotate(28deg); } }
+@keyframes sl-drift { 0%, 25% { transform: rotate(0); } 100% { transform: rotate(38deg); } }
+@keyframes sl-talk { 0%, 25% { opacity: 1; } 100% { opacity: 0.45; } }
+@keyframes sl-hand { to { transform: rotate(360deg); } }
+
+/* ข้อ 2: เป็นลมหรือชัก */
+.sl-poster { margin: 0; }
+.sl-poster img { width: 100%; height: auto; border-radius: 16px; border: 2px solid var(--sl-ink); display: block; }
+.sl-poster figcaption { color: var(--sl-grey); font-size: 0.9375rem; margin-top: 8px; }
+.sl-phases { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.sl-phase { border: 2px solid var(--sl-ink); border-radius: 16px; padding: 16px; background: #fff; min-width: 0; }
+.sl-phase h4 { margin: 0 0 8px; color: var(--sl-blue); font-size: 1.125rem; }
+.sl-phase p { margin: 6px 0; line-height: 1.6; }
+.sl-note { color: var(--sl-red); font-weight: 700; }
+.sl-actions { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.sl-actions li { display: flex; gap: 14px; align-items: center; border: 2px solid var(--sl-ink); border-radius: 16px; padding: 12px 16px; background: #fff; min-width: 0; }
+.sl-actions img { width: 72px; height: 72px; object-fit: contain; flex: 0 0 72px; }
+.sl-actions div { display: flex; flex-direction: column; gap: 2px; min-width: 0; line-height: 1.5; }
+.sl-actions span { color: var(--sl-grey); }
+.sl-red { border: 3px solid var(--sl-red-line); border-radius: 16px; padding: 16px 20px; margin-top: 28px; background: #fff; }
+.sl-red h3 { margin: 0 0 8px; color: var(--sl-red); font-size: 1.25rem; }
+.sl-red ul { margin: 0; padding-left: 20px; line-height: 1.7; }
+.sl-transcript { margin-top: 16px; }
+.sl-transcript p { line-height: 1.8; }
+
+.sl-timer { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; border: 2px solid var(--sl-ink); border-radius: 16px; background: #fff; padding: 16px 20px; }
+.sl-timer-ring { width: 120px; height: 120px; flex: 0 0 120px; }
+.sl-timer-track { fill: none; stroke: #e2e8f0; stroke-width: 10; }
+.sl-timer-fill { fill: none; stroke: #0f766e; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.25s linear; }
+.sl-timer.over .sl-timer-fill { stroke: var(--sl-red); }
+.sl-timer-time { margin: 0; font-size: 3rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; color: var(--sl-ink); }
+.sl-timer.over .sl-timer-time { color: var(--sl-red); }
+.sl-timer-alert { flex-basis: 100%; }
+.sl-timer-alert p { margin: 0; padding: 12px 16px; border: 3px solid var(--sl-red-line); border-radius: 12px; color: var(--sl-red); font-size: 1.125rem; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.sl-timer-alert p:empty { display: none; }
+@media (prefers-reduced-motion: reduce) { .sl-timer-fill { transition: none; } }
+
+/* ข้อ 3: ไปห้องฉุกเฉินไหม */
+.sl-er-step { border: 2px solid var(--sl-ink); border-radius: 16px; background: #fff; padding: 16px 20px; margin: 0 0 16px; min-width: 0; }
+.sl-er-step legend { font-weight: 800; font-size: 1.125rem; padding: 0 6px; }
+.sl-er-step ul { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 6px; }
+.sl-er-step label { display: flex; gap: 12px; align-items: flex-start; min-height: 44px; padding: 8px 4px; line-height: 1.55; cursor: pointer; }
+.sl-er-step input[type="checkbox"] { width: 24px; height: 24px; flex: 0 0 24px; margin: 2px 0 0; accent-color: var(--sl-red); }
+.sl-er-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.sl-er-chip { display: inline-flex !important; align-items: center !important; gap: 6px !important; min-height: 44px; padding: 0 14px !important; border: 2px solid #94a3b8; border-radius: 999px; font-weight: 700; }
+.sl-er-chip.on { border-color: var(--sl-ink); background: #f1f5f9; }
+.sl-er-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.sl-er-chip:focus-within { outline: 3px solid #0f766e; outline-offset: 2px; }
+.sl-er-question { margin-top: 14px; padding-top: 12px; border-top: 1px dashed #94a3b8; }
+.sl-er-question p { margin: 0 0 6px; line-height: 1.6; }
+.sl-er-ask { font-weight: 700; }
+.sl-er-result { display: flex; gap: 16px; align-items: flex-start; border-radius: 16px; padding: 16px 20px; background: #fff; border: 3px solid var(--sl-ink); }
+.sl-er-result.er { border-color: var(--sl-red-line); }
+.sl-er-result img { width: 96px; height: 96px; object-fit: contain; flex: 0 0 96px; }
+.sl-er-result p { margin: 0 0 6px; line-height: 1.6; }
+.sl-er-headline { font-size: 1.375rem; font-weight: 800; }
+.sl-er-result.er .sl-er-headline { color: var(--sl-red); }
+@media (max-width: 520px) { .sl-er-result { flex-direction: column; } }
+@media (prefers-reduced-motion: no-preference) {
+  .sl-er-result { animation: sl-in 0.35s ease-out; }
+}
+@keyframes sl-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ข้อ 4: MS กับปลอกประสาท */
+.sl-myelin-fig { margin: 0; border: 2px solid var(--sl-ink, #191916); border-radius: 16px; background: #fff; padding: 16px 20px; }
+.sl-myelin-fig svg { width: 100%; height: auto; display: block; }
+.sl-myelin-fig figcaption { margin-top: 10px; line-height: 1.7; }
+.sl-svg-label { font-size: 15px; font-weight: 700; fill: #191916; }
+.sl-axon { stroke: #191916; stroke-width: 4; stroke-linecap: round; }
+.sl-myelin { fill: #dbeafe; stroke: #1d4ed8; stroke-width: 2.5; }
+.sl-myelin-lost { fill: none; stroke: #b42318; stroke-width: 2.5; stroke-dasharray: 6 6; }
+.sl-signal { fill: #f59e0b; stroke: #191916; stroke-width: 2; }
+.sl-signal-fast { transform: translateX(545px); }
+.sl-signal-slow { transform: translateX(250px); opacity: 0.45; }
+@media (prefers-reduced-motion: no-preference) {
+  .sl-anim[data-playing="true"] .sl-signal-fast, .sl-anim[data-playing="true"] .sl-signal-slow { opacity: 1; }
+}
+@keyframes sl-fast { from { transform: translateX(0); } to { transform: translateX(545px); } }
+@keyframes sl-slow { 0% { transform: translateX(0); opacity: 1; } 45% { transform: translateX(180px); opacity: 1; } 85% { transform: translateX(250px); opacity: 0.45; } 100% { transform: translateX(255px); opacity: 0; } }
+/* ตั้ง "ลดภาพเคลื่อนไหว" ไว้ = ภาพนิ่งเสมอ ซ่อนปุ่มเล่นที่กดแล้วไม่มีผล */
+@media (prefers-reduced-motion: reduce) { .sl-play { display: none; } }
