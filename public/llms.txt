@@ -40,6 +40,7 @@ Sahawan Clinic (สหวรรณคลินิก) is a pediatric and neurolo
 ## ความรู้เรื่องอาการทางระบบประสาท (อธิบายโดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์)
 แต่ละหน้ามีวิดีโอของแพทย์ คำอธิบาย และอาการที่ควรรีบพบแพทย์ — เพื่อความเข้าใจเบื้องต้น ไม่ใช่การวินิจฉัย
 - หน้ารวมอาการที่พบบ่อยและคลิปสั้น "ถามหมอประสาท": https://www.sahawanclinic.clinic/symptoms
+- ประสาทแพทย์วาดเส้น: สัญญาณเตือนสโตรก BE FAST, เป็นลมหรือชัก แยกอย่างไร (พร้อมนาฬิกาจับเวลาและสิ่งที่คนรอบข้างทำได้), อาการแบบไหนไปห้องฉุกเฉิน, MS กับปลอกประสาท: https://www.sahawanclinic.clinic/stickline
 - ปวดศีรษะ / ไมเกรน แบบไหนอันตราย: https://www.sahawanclinic.clinic/symptoms/headache
 - เวียนศีรษะ บ้านหมุน ใช่สโตรกไหม: https://www.sahawanclinic.clinic/symptoms/dizziness
 - หูอื้อ มีเสียงในหู อันตรายไหม: https://www.sahawanclinic.clinic/symptoms/tinnitus

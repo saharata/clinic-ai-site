@@ -234,6 +234,11 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
             <div className="section-head">
               <h2>อาการอื่นที่พบบ่อย</h2>
             </div>
+            <p>
+              <Link href="/stickline#er-check" className="btn btn-outline">
+                อาการแบบนี้ ไปห้องฉุกเฉิน หรือนัดหมอ
+              </Link>
+            </p>
             <ul className="symptom-related">
               {others.map((o) => (
                 <li key={o.slug}>
