@@ -5,6 +5,7 @@ import ClinicStatus from "./ClinicStatus";
 import { doctorPath, physicianJsonLd, publicationsJsonLd } from "./doctorData";
 import PrepareChecklist from "./PrepareChecklist";
 import MobileMenu from "./MobileMenu";
+import { StrokeCards } from "./stickline/strokeArt";
 import LineLink from "./LineLink";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
@@ -132,6 +133,34 @@ const videoJsonLd = {
   inLanguage: "th",
 };
 
+// ส่วน "ความรู้พื้นฐานระบบประสาท" ในหน้าแรก — ลิงก์ไปหน้าความรู้แต่ละหน้า
+const knowledge = [
+  {
+    href: "/stickline#faint-seizure",
+    icon: "/stickline/icons/prop_clock.png",
+    title: "เป็นลม หรือ ชัก",
+    text: "แยกจากสามช่วง สี่สิ่งที่คนรอบข้างทำได้ พร้อมนาฬิกาจับเวลา",
+  },
+  {
+    href: "/stickline#er-check",
+    icon: "/stickline/icons/prop_hospital.png",
+    title: "ไปห้องฉุกเฉิน หรือนัดหมอ",
+    text: "ตอบทีละขั้น ใช้เกณฑ์เดียวกับหน้าอาการของคลินิก",
+  },
+  {
+    href: "/symptoms",
+    icon: "/stickline/icons/pose_headache.png",
+    title: "อาการที่พบบ่อย",
+    text: "ปวดศีรษะ เวียนศีรษะ มือชา ลมชัก หูอื้อ กล้ามเนื้อกระตุก พร้อมวิดีโอ",
+  },
+  {
+    href: "/ms",
+    icon: "/stickline/icons/prop_brain.png",
+    title: "MS · NMOSD",
+    text: "ปลอกประสาทในภาพเดียว ดูแลตัวเอง และสิทธิประกันสังคม",
+  },
+];
+
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -190,7 +219,7 @@ export default function HomePage() {
             <a href="#services">บริการ</a>
             <a href="#hours">เวลาทำการ</a>
             <a href="#vaccine">ราคาวัคซีนเด็ก</a>
-            <Link href="/symptoms">อาการที่พบบ่อย</Link>
+            <a href="#knowledge">ความรู้ระบบประสาท</a>
             <Link href="/learn">Body 101</Link>
             <a href="/cyber">Cyber 101</a>
             <a href="#doctors">แพทย์</a>
@@ -320,7 +349,44 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="intro-video" className="section alt">
+      <section id="knowledge" className="section alt" aria-labelledby="knowledge-h">
+        <div className="container sl-page">
+          <div className="section-head">
+            <p className="eyebrow">ความรู้จากประสาทแพทย์</p>
+            <h2 id="knowledge-h">ความรู้พื้นฐานระบบประสาท</h2>
+            <p>อธิบายด้วยภาพวาดเส้นเข้าใจง่าย โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์</p>
+          </div>
+
+          <h3 className="sl-h3 kb-h3">สัญญาณเตือนสโตรก จำว่า BE FAST</h3>
+          <p>มีอาการเหล่านี้แบบเฉียบพลัน ควรไปห้องฉุกเฉินทันที</p>
+          <StrokeCards compact />
+          <div className="sl-controls">
+            <a href="tel:1669" className="btn btn-call">
+              โทร 1669
+            </a>
+            <Link href="/stickline#stroke" className="btn btn-outline">
+              ดูภาพเคลื่อนไหวและคำอธิบาย
+            </Link>
+          </div>
+
+          <ul className="kb-grid">
+            {knowledge.map((k) => (
+              <li key={k.href}>
+                <Link href={k.href} className="kb-card">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={k.icon} alt="" width={72} height={72} />
+                  <span>
+                    <strong>{k.title}</strong>
+                    <span>{k.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="intro-video" className="section">
         <div className="container intro-video">
           <div className="section-head">
             <p className="eyebrow">วิดีโอแนะนำ</p>
@@ -357,60 +423,6 @@ export default function HomePage() {
           <div className="cta-actions">
             <Link href="/vaccine" className="btn btn-dark big">
               ดูราคาวัคซีนทั้งหมด
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section id="symptoms-teaser" className="section">
-        <div className="container cta-box">
-          <div>
-            <p className="eyebrow">ความรู้จากประสาทแพทย์</p>
-            <h2>อาการทางระบบประสาทที่พบบ่อย</h2>
-            <p>
-              ปวดศีรษะ เวียนศีรษะบ้านหมุน มือชา ลมชัก หูอื้อ กล้ามเนื้อกระตุก —
-              อาการแบบไหนอันตราย ควรพบแพทย์เมื่อไร ดูวิดีโอที่ นพ. สหรัฐ อธิบายเอง
-            </p>
-          </div>
-          <div className="cta-actions">
-            <Link href="/symptoms" className="btn btn-dark big">
-              ดูอาการที่พบบ่อย
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section id="stickline-teaser" className="section">
-        <div className="container cta-box">
-          <div>
-            <p className="eyebrow">ประสาทแพทย์วาดเส้น</p>
-            <h2>สโตรก เป็นลมหรือชัก และอาการที่ต้องไปห้องฉุกเฉิน</h2>
-            <p>
-              ภาพวาดเส้นเข้าใจง่าย สัญญาณเตือนสโตรก BE FAST นาฬิกาจับเวลาตอนมีคนชัก
-              และเช็กว่าอาการแบบไหนไปห้องฉุกเฉิน
-            </p>
-          </div>
-          <div className="cta-actions">
-            <Link href="/stickline" className="btn btn-dark big">
-              เปิดประสาทแพทย์วาดเส้น
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section id="ms-teaser" className="section">
-        <div className="container cta-box">
-          <div>
-            <p className="eyebrow">สำหรับผู้ป่วย MS · NMOSD</p>
-            <h2>ดูแลตัวเองได้ รู้สิทธิไม่ให้ขาด</h2>
-            <p>
-              สิ่งที่ทำเองได้ทุกวัน สรุปสิทธิประกันสังคม ม.33 ม.39 ม.40 และคลิปเรียนรู้ต่อ
-              โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์
-            </p>
-          </div>
-          <div className="cta-actions">
-            <Link href="/ms" className="btn btn-dark big">
-              ดูหน้า MS · NMOSD
             </Link>
           </div>
         </div>
