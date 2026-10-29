@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import AnalyticsEvents from "./AnalyticsEvents";
+import TextSize from "./TextSize";
+import { textSizeKey } from "./textSizeKey";
 
 const siteUrl = "https://www.sahawanclinic.clinic";
 
@@ -61,12 +63,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th">
+    // suppressHydrationWarning: สคริปต์ด้านล่างใส่ data-text-size ที่ <html> ก่อน React โหลด
+    <html lang="th" suppressHydrationWarning>
       <body>
+        {/* ใช้ขนาดตัวอักษรที่ผู้ใช้เคยเลือก ก่อนหน้าแสดงผล (กันหน้ากระตุกเปลี่ยนขนาด) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var s=localStorage.getItem(${JSON.stringify(textSizeKey)});if(s==="lg"||s==="xl")document.documentElement.dataset.textSize=s}catch(e){}`,
+          }}
+        />
         {/* a11y (keyboard): ลิงก์ข้ามเมนู — ปุ่มแรกที่ Tab ถึง */}
         <a href="#main-content" className="skip-link">
           ข้ามไปยังเนื้อหาหลัก
         </a>
+        <TextSize />
         {children}
         <Analytics />
         <AnalyticsEvents />
