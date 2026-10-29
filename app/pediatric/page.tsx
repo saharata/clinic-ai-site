@@ -6,6 +6,7 @@ import LineLink from "../LineLink";
 import { clinics, hhmm, thaiDays } from "../clinicHours";
 import { siteUrl } from "../doctorData";
 import { vaccineSchedule } from "../vaccine/vaccineData";
+import VaccinePath from "../vaccine/VaccinePath";
 
 // หน้าคลินิกเด็ก — ข้อความทั้งหมดมาจากที่มีอยู่แล้วในหน้าแรก (การ์ดบริการ การ์ดแพทย์ FAQ) ไม่ได้เขียนเนื้อหาทางการแพทย์ใหม่
 const pageUrl = `${siteUrl}/pediatric`;
@@ -185,6 +186,8 @@ export default function PediatricPage() {
               <p>ดูรายการวัคซีนและราคาของแต่ละช่วงอายุได้ในตารางวัคซีน</p>
             </div>
             <p className="profile-hours">มีวัคซีนสำหรับช่วงอายุ {vaccineAges}</p>
+            <h3 className="vp-h2">ลูกอยู่ช่วงอายุไหนในตาราง</h3>
+            <VaccinePath tableHref="/vaccine" />
             <p>
               <Link href="/vaccine" className="btn btn-dark">
                 ดูตารางราคาวัคซีนทั้งหมด

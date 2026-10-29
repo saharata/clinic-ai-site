@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import ClinicStatus from "./ClinicStatus";
 import { doctorPath, physicianJsonLd, publicationsJsonLd } from "./doctorData";
 import PrepareChecklist from "./PrepareChecklist";
+import VisitJourney from "./VisitJourney";
 import MobileMenu from "./MobileMenu";
 import { StrokeCards } from "./stickline/strokeArt";
 import LineLink from "./LineLink";
@@ -526,7 +527,12 @@ export default function HomePage() {
 
       <section id="prepare" className="section">
         <div className="container">
-          <PrepareChecklist />
+          <div className="section-head">
+            <p className="eyebrow">มาครั้งแรก</p>
+            <h2>มาพบหมอ ทำอย่างไร</h2>
+          </div>
+          <VisitJourney />
+          <PrepareChecklist headingLevel={3} />
         </div>
       </section>
 

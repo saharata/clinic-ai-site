@@ -2163,3 +2163,60 @@ ul.vaccine-items {
 .kb-card > span { display: flex; flex-direction: column; gap: 4px; min-width: 0; line-height: 1.5; }
 .kb-card strong { font-size: 1.125rem; text-decoration: underline; text-underline-offset: 3px; }
 .kb-card span span { color: #475569; }
+
+/* ขนาดตัวอักษรที่ผู้ใช้เลือก (TextSize.tsx) — ฟอนต์ทั้งเว็บเป็น rem จึงขยายตามทั้งหมด */
+html[data-text-size="lg"] { font-size: 112.5%; }
+html[data-text-size="xl"] { font-size: 125%; }
+.textsize-bar { background: #f1f5f9; border-bottom: 1px solid #e2e8f0; }
+.textsize-inner { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px; padding: 4px 0; }
+.textsize-inner > span { font-size: 14px; color: #334155; margin-right: 4px; }
+.textsize-btn { min-height: 32px; min-width: 44px; padding: 0 10px; border: 1px solid #94a3b8; border-radius: 999px; background: #fff; color: #0f172a; font: inherit; font-weight: 700; cursor: pointer; }
+/* px คงที่: แถบปุ่มไม่ขยายตามขนาดที่เลือก จึงไม่ดันเนื้อหาลง */
+.textsize-btn.size-normal { font-size: 14px; }
+.textsize-btn.size-lg { font-size: 16px; }
+.textsize-btn.size-xl { font-size: 18px; }
+@media (max-width: 360px) { .ts-long { display: none; } .textsize-btn { padding: 0 8px; } }
+.textsize-btn[aria-pressed="true"] { background: #0f172a; border-color: #0f172a; color: #fff; }
+.textsize-btn:focus-visible { outline: 3px solid #0f766e; outline-offset: 2px; }
+
+/* ขั้นตอนมาพบหมอ (VisitJourney.tsx) */
+.vj { margin-bottom: 32px; }
+.vj-steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.vj-steps .vj-link { position: relative; display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 14px; border: 2px solid #191916; border-radius: 16px; background: #fff; color: #191916; text-decoration: none; line-height: 1.5; min-width: 0; }
+.vj-steps .vj-link:hover { background: #f8fafc; }
+.vj-steps .vj-link:focus-visible { outline: 3px solid #0f766e; outline-offset: 2px; }
+.vj-steps img { width: 72px; height: 72px; object-fit: contain; }
+.vj-steps strong { font-size: 1.125rem; text-decoration: underline; text-underline-offset: 3px; }
+.vj-steps span:not(.vj-num) { color: #475569; }
+.vj-num { position: absolute; top: 10px; right: 12px; width: 32px; height: 32px; border-radius: 50%; background: #0f766e; color: #fff; font-weight: 800; display: grid; place-items: center; }
+.vj-road { position: relative; height: 60px; margin-top: 8px; border-bottom: 3px dashed #94a3b8; }
+.vj-walker { position: absolute; bottom: 2px; left: 0; width: 56px; height: 56px; }
+@media (prefers-reduced-motion: no-preference) {
+  .vj[data-playing="true"] .vj-walker { animation: vj-walk 10s linear infinite; }
+  .vj[data-playing="true"] .vj-steps .vj-link { animation: vj-step 10s linear infinite; animation-delay: calc(var(--i) * 2s); }
+}
+/* ไฮไลต์ทีละขั้น (ขอบเปลี่ยนสีช้า ๆ ไม่กะพริบ) */
+@keyframes vj-walk { from { left: 0; } to { left: calc(100% - 56px); } }
+@keyframes vj-step { 0%, 20% { border-color: #0f766e; box-shadow: 0 0 0 3px #0f766e inset; } 21%, 100% { border-color: #191916; box-shadow: none; } }
+
+/* เส้นทางวัคซีน (VaccinePath.tsx) */
+.vp-h2 { margin: 0 0 12px; font-size: 1.375rem; }
+.vp { border: 2px solid #191916; border-radius: 16px; background: #fff; padding: 16px 20px; margin-bottom: 28px; }
+.vp-input { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.vp-input label { font-weight: 800; }
+.vp-input input { min-height: 44px; padding: 0 12px; border: 2px solid #94a3b8; border-radius: 12px; font: inherit; }
+.vp-input input:focus-visible { outline: 3px solid #0f766e; outline-offset: 2px; }
+.vp-privacy { flex-basis: 100%; margin: 0; color: #475569; font-size: 0.875rem; }
+.vp-track { height: 8px; margin: 18px 0 10px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
+.vp-fill { height: 100%; background: #0f766e; border-radius: 999px; transition: width 0.6s ease; }
+@media (prefers-reduced-motion: reduce) { .vp-fill { transition: none; } }
+.vp-stops { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.vp-stops .vp-stop { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid #94a3b8; border-radius: 999px; color: #0f172a; text-decoration: none; font-weight: 600; }
+.vp-stops li.done .vp-stop { background: #f1f5f9; color: #475569; text-decoration: line-through; }
+.vp-stops li.next .vp-stop { background: #0f766e; border-color: #0f766e; color: #fff; }
+.vp-result { margin-top: 16px; padding-top: 12px; border-top: 1px dashed #94a3b8; line-height: 1.6; }
+.vp-result p { margin: 0 0 6px; }
+.vp-age { font-size: 1.125rem; }
+.vp-result ul { margin: 4px 0 0; padding-left: 20px; }
+.vp-tag { margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 0.8125rem; font-weight: 700; }
+.vp-note { color: #475569; font-size: 0.9375rem; margin-top: 10px !important; }

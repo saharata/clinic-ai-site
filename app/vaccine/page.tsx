@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { vaccineSchedule } from "./vaccineData";
+import VaccinePath from "./VaccinePath";
 import MobileMenu from "../MobileMenu";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
@@ -88,6 +89,9 @@ export default function VaccinePage() {
 
       <section className="section vaccine-section">
         <div className="container">
+          <h2 className="vp-h2">ลูกอยู่ช่วงอายุไหนในตาราง</h2>
+          <VaccinePath />
+
           {/* a11y (screen reader): ช่วงอายุเป็นหัวข้อ (กระโดดทีละช่วงอายุได้) และรายการวัคซีนเป็น list
               แถวหัวตารางเป็นป้ายสำหรับตาเท่านั้น จึงซ่อนจาก screen reader แล้วอ่าน "ราคา … บาท" ในแต่ละบรรทัดแทน */}
           <div className="vaccine-table">
