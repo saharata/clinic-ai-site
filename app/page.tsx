@@ -160,6 +160,18 @@ const knowledge = [
     title: "MS · NMOSD",
     text: "ปลอกประสาทในภาพเดียว ดูแลตัวเอง และสิทธิประกันสังคม",
   },
+  {
+    href: "/brain60",
+    icon: "/stickline/icons/pose_doctor.png",
+    title: "สมองใน 60 วินาที",
+    text: "ประสาทแพทย์ตอบ 1 คำถาม ทุกสัปดาห์ อ่านจบในหนึ่งนาที",
+  },
+  {
+    href: "/stickline/quiz",
+    icon: "/stickline/icons/pose_think.png",
+    title: "แบบฝึก: คนนี้เป็นลมหรือชัก",
+    text: "ทาย 6 ข้อ พร้อมคำอธิบายทุกข้อ แชร์คะแนนให้คนในบ้านลองได้",
+  },
 ];
 
 const faqJsonLd = {
@@ -367,6 +379,9 @@ export default function HomePage() {
             </a>
             <Link href="/stickline#stroke" className="btn btn-outline">
               ดูภาพเคลื่อนไหวและคำอธิบาย
+            </Link>
+            <Link href="/stickline/card" className="btn btn-outline">
+              พิมพ์บัตรติดตู้เย็น
             </Link>
           </div>
 

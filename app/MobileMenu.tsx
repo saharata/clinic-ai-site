@@ -12,6 +12,7 @@ const links: { href: string; label: string; static?: boolean; lang?: string }[] 
   { href: "/#services", label: "บริการของคลินิก" },
   { href: "/symptoms", label: "อาการทางระบบประสาทที่พบบ่อย" },
   { href: "/stickline", label: "ประสาทแพทย์วาดเส้น · สโตรก ชัก ห้องฉุกเฉิน" },
+  { href: "/brain60", label: "สมองใน 60 วินาที" },
   { href: "/vaccine", label: "ราคาวัคซีนเด็ก" },
   { href: "/ms", label: "MS · NMOSD ดูแลตัวเองและสิทธิ" },
   { href: "/#doctors", label: "ทีมแพทย์" },
