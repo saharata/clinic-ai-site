@@ -150,6 +150,11 @@ export default function StickLinePage() {
               <p>มีอาการเหล่านี้แบบเฉียบพลัน ควรไปห้องฉุกเฉินทันที</p>
             </div>
             <StrokeSigns />
+            <p className="sl-controls">
+              <Link href="/stickline/card" className="btn btn-outline">
+                พิมพ์บัตร BE FAST ติดตู้เย็น / แชร์เป็นรูป
+              </Link>
+            </p>
           </div>
         </section>
 
@@ -199,6 +204,12 @@ export default function StickLinePage() {
                 </li>
               ))}
             </ol>
+
+            <p className="sl-controls">
+              <Link href="/stickline/quiz" className="btn btn-dark">
+                ลองแบบฝึก: คนนี้เป็นลมหรือชัก
+              </Link>
+            </p>
 
             <h3 className="sl-h3">นาฬิกาจับเวลา</h3>
             <p>กดเริ่มทันทีที่เห็นคนชักหรือหมดสติ แล้ววางโทรศัพท์ไว้ใกล้ ๆ</p>

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { symptoms } from "./symptoms/symptomsData";
+import { publishedPosts } from "./brain60/posts";
 
 const siteUrl = "https://www.sahawanclinic.clinic";
 
@@ -74,6 +75,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    { url: `${siteUrl}/stickline/card`, lastModified: now, changeFrequency: "yearly", priority: 0.7 },
+    { url: `${siteUrl}/stickline/quiz`, lastModified: now, changeFrequency: "yearly", priority: 0.7 },
+    { url: `${siteUrl}/brain60`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    ...publishedPosts.map((p) => ({
+      url: `${siteUrl}/brain60/${p.slug}`,
+      lastModified: new Date(p.reviewed ?? p.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    { url: `${siteUrl}/learn/teachers`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     {
       url: `${siteUrl}/ms`,
       lastModified: now,
