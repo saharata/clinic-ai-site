@@ -3,6 +3,7 @@
 //   ปากเบี้ยว / แขนขาอ่อนแรงครึ่งซีก / พูดไม่ชัด / ไปห้องฉุกเฉินทันที  ← FAQ หน้าแรก
 //   เดินเซมาก / เห็นภาพซ้อน                                        ← หน้าอาการเวียนศีรษะ
 //   โทร 1669                                                        ← แพ็ก EP01 ของแพทย์
+// check = วิธีสังเกตด้านหลังการ์ดพลิก (StrokeFlipCards) — ข้อความใหม่ รอแพทย์ตรวจทาน
 // ภาพนิ่ง = ท่าที่ "มีอาการ" อยู่แล้ว จึงสื่อความหมายครบโดยไม่ต้องขยับ (ท่าขยับอยู่ใน globals.css)
 
 const ink = { stroke: "currentColor", strokeWidth: 3.5, strokeLinecap: "round" as const, fill: "none" };
@@ -37,6 +38,7 @@ function Head({ mouth = "M52 38 Q60 44 68 38" }: { mouth?: string }) {
 export const signs = [
   {
     letter: "B",
+    check: "ยืนหรือเดินแล้วเซ ทรงตัวไม่อยู่ ทั้งที่ปกติเดินได้",
     word: "Balance",
     title: "เดินเซมาก",
     art: (
@@ -55,6 +57,7 @@ export const signs = [
   },
   {
     letter: "E",
+    check: "เห็นภาพซ้อน หรือตามัวข้างหนึ่งขึ้นมาทันที",
     word: "Eyes",
     title: "เห็นภาพซ้อน",
     art: (
@@ -69,6 +72,7 @@ export const signs = [
   },
   {
     letter: "F",
+    check: "ให้ลองยิ้ม มุมปากข้างหนึ่งตกหรือเบี้ยวไหม",
     word: "Face",
     title: "ปากเบี้ยว",
     art: (
@@ -86,6 +90,7 @@ export const signs = [
   },
   {
     letter: "A",
+    check: "ให้ยกแขนสองข้างค้างไว้ ข้างหนึ่งตกลงไหม",
     word: "Arm",
     title: "แขนขาอ่อนแรงครึ่งซีก",
     art: (
@@ -101,6 +106,7 @@ export const signs = [
   },
   {
     letter: "S",
+    check: "ให้พูดประโยคง่าย ๆ ตาม พูดไม่ชัดหรือพูดไม่ออกไหม",
     word: "Speech",
     title: "พูดไม่ชัด",
     art: (
@@ -118,6 +124,7 @@ export const signs = [
   },
   {
     letter: "T",
+    check: "จดเวลาที่เริ่มมีอาการ แล้วโทร 1669 ทันที ยิ่งเร็วยิ่งรักษาได้ผล",
     word: "Time",
     title: "ไปห้องฉุกเฉินทันที โทร 1669",
     art: (

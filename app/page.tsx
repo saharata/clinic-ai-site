@@ -6,7 +6,8 @@ import { doctorPath, physicianJsonLd, publicationsJsonLd } from "./doctorData";
 import PrepareChecklist from "./PrepareChecklist";
 import VisitJourney from "./VisitJourney";
 import MobileMenu from "./MobileMenu";
-import { StrokeCards } from "./stickline/strokeArt";
+import StrokeFlipCards from "./stickline/StrokeFlipCards";
+import Tilt3D from "./Tilt3D";
 import LineLink from "./LineLink";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
@@ -287,16 +288,18 @@ export default function HomePage() {
           </div>
 
           <div className="hero-side">
+            <Tilt3D>
             <div className="doctor-photo-card">
-              <Image
-                src="/doctor1.jpg"
-                alt="คุณหมอ สหรัฐ อังศุมาศ"
-                width={700}
-                height={900}
-                className="doctor-photo"
-                priority
-              />
-            </div>
+                <Image
+                  src="/doctor1.jpg"
+                  alt="คุณหมอ สหรัฐ อังศุมาศ"
+                  width={700}
+                  height={900}
+                  className="doctor-photo"
+                  priority
+                />
+              </div>
+            </Tilt3D>
 
             <div className="hero-card">
               <h2 className="hero-card-title">จุดเด่นของคลินิก</h2>
@@ -372,7 +375,7 @@ export default function HomePage() {
 
           <h3 className="sl-h3 kb-h3">สัญญาณเตือนสโตรก จำว่า BE FAST</h3>
           <p>มีอาการเหล่านี้แบบเฉียบพลัน ควรไปห้องฉุกเฉินทันที</p>
-          <StrokeCards compact />
+          <StrokeFlipCards compact />
           <div className="sl-controls">
             <a href="tel:1669" className="btn btn-call">
               โทร 1669
