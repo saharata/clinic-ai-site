@@ -236,6 +236,28 @@ export default function LearnPage() {
         </div>
       </section>
 
+      <section className="section alt" aria-labelledby="brain3d-title">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow lp-eyebrow">แบบจำลองสามมิติ · ทุกวัย</p>
+            <h2 id="brain3d-title">สมองสามมิติ หมุนดูได้รอบทิศ</h2>
+            <p>
+              ลากหมุนและซูมสมองทั้งก้อน กดแยกกลีบหน้า กลีบข้าง กลีบขมับ กลีบท้ายทอย สมองน้อย และก้านสมองออกจากกัน
+              เปิดโหมดมองทะลุเพื่อเห็นโพรงสมอง ทาลามัส และฮิปโปแคมปัส ดูสัญญาณประสาทวิ่งตามทางเดินสั่งการและทางเดินการมองเห็น
+              และดูตำแหน่งรอยโรคปลอกประสาทอักเสบ (MS) ที่พบบ่อย แตะส่วนไหนก็มีคำอธิบายภาษาไทย
+            </p>
+          </div>
+          <div className="lp-hero-actions">
+            <a href="/learn/brain-3d" className="btn big btn-dark">
+              เปิดสมองสามมิติ
+            </a>
+            <a href="/learn/brain" className="btn big btn-outline">
+              อ่านบทสมองและระบบประสาท
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="section" aria-labelledby="go-title">
         <div className="container">
           <div className="section-head">
