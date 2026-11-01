@@ -1,14 +1,14 @@
 "use client";
 
 import { usePlaying } from "./usePlaying";
-import { StrokeCards } from "./strokeArt";
+import StrokeFlipCards from "./StrokeFlipCards";
 
 // สัญญาณเตือนสโตรก BE FAST แบบกดเล่นภาพเคลื่อนไหวได้ (ภาพและข้อความอยู่ใน strokeArt.tsx)
 export default function StrokeSigns() {
   const { playing, button, label } = usePlaying();
   return (
     <div className="sl-anim" data-playing={playing}>
-      <StrokeCards />
+      <StrokeFlipCards />
       <div className="sl-controls">
         <button {...button}>
           <span aria-hidden="true">{playing ? "⏸" : "▶"}</span> {label}

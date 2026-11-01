@@ -7,7 +7,7 @@ import pack from "./pack.json";
 import StrokeSigns from "./StrokeSigns";
 import SeizureTimer from "./SeizureTimer";
 import ErCheck from "./ErCheck";
-import MyelinAnimation from "./MyelinAnimation";
+import NerveFiber3D from "./NerveFiber3D";
 import EpisodeVideo from "./EpisodeVideo";
 
 // "ประสาทแพทย์วาดเส้น" — เนื้อหาตอน EP01 มาจากแพ็กที่แพทย์เรียบเรียง (pack.json)
@@ -263,7 +263,7 @@ export default function StickLinePage() {
                 อ่านต่อเรื่องการดูแลตัวเองและสิทธิประกันสังคมที่ <Link href="/ms">คู่มือ MS · NMOSD</Link>
               </p>
             </div>
-            <MyelinAnimation />
+            <NerveFiber3D />
           </div>
         </section>
 
