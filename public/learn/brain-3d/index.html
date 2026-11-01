@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>สมองสามมิติ | สหวรรณคลินิก</title>
+<meta name="description" content="แบบจำลองสมองสามมิติ หมุน แยกกลีบ มองทะลุเห็นโครงสร้างด้านใน ดูทางเดินประสาทสั่งการและการมองเห็น และตำแหน่งรอยโรค MS ที่พบบ่อย ใช้ฟรีในเบราว์เซอร์ โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/learn/brain-3d">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="th_TH">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/learn/brain-3d">
+<meta property="og:title" content="สมองสามมิติ | สหวรรณคลินิก">
+<meta property="og:description" content="แบบจำลองสมองสามมิติ หมุน แยกกลีบ มองทะลุเห็นโครงสร้างด้านใน ดูทางเดินประสาทสั่งการและการมองเห็น และตำแหน่งรอยโรค MS ที่พบบ่อย ใช้ฟรีในเบราว์เซอร์ โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;700&family=Sarabun:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed 3D stage, small instrument panels floating at the corners */
+:root {
+  --bg: #e6ebf0;
+  --bg2: #f7f9fb;
+  --ink: #18202b;
+  --muted: #566273;
+  --panel: rgba(250, 251, 252, .84);
+  --line: rgba(24, 32, 43, .13);
+  --accent: #23677d;
+  --on-accent: #ffffff;
+  --lobe-f: #6f9bd6; --lobe-p: #d9b84e; --lobe-t: #6fb57d; --lobe-o: #d4809c; --lobe-c: #a58bd3;
+  --display: "Anuphan", "Sarabun", system-ui, sans-serif;
+  --body: "Sarabun", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1117; --bg2: #1a2431; --ink: #e6ebf1; --muted: #98a4b4;
+    --panel: rgba(17, 23, 31, .82); --line: rgba(230, 235, 241, .13);
+    --accent: #7cc3d5; --on-accent: #0c1117; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1117; --bg2: #1a2431; --ink: #e6ebf1; --muted: #98a4b4;
+  --panel: rgba(17, 23, 31, .82); --line: rgba(230, 235, 241, .13);
+  --accent: #7cc3d5; --on-accent: #0c1117; color-scheme: dark;
+}
+html, body { height: 100%; }
+[hidden] { display: none !important; }
+body {
+  margin: 0; overflow: hidden;
+  background-color: var(--bg);
+  background-image: radial-gradient(120% 90% at 62% 38%, var(--bg2), var(--bg) 68%);
+  color: var(--ink); font-family: var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+#stage { position: fixed; inset: 0; }
+#stage canvas { display: block; touch-action: none; outline: none; }
+.hud { position: fixed; z-index: 3; }
+.top {
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: max(16px, env(safe-area-inset-left, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-wrap: wrap; gap: 12px 24px;
+  align-items: flex-start; justify-content: space-between;
+  pointer-events: none;
+}
+.top > * { pointer-events: auto; min-width: 0; }
+.back { display: inline-block; margin-bottom: .35rem; font-size: .85rem; color: var(--accent); text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.brand h1 {
+  font-family: var(--display); font-weight: 700; margin: 0;
+  font-size: clamp(1.55rem, 3vw, 2.2rem); line-height: 1.1; letter-spacing: -.01em;
+}
+.brand p { margin: .25rem 0 0; color: var(--muted); font-size: .9rem; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: .55rem; font-size: .82rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; max-width: 600px; }
+.controls button {
+  font: 500 .92rem/1 var(--body); padding: .6rem .9rem; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer;
+}
+.controls button:hover { border-color: var(--accent); }
+.controls button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.info {
+  left: max(16px, env(safe-area-inset-left, 0px));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  width: min(440px, calc(100vw - 32px)); box-sizing: border-box;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 16px 15px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.kicker { font: 500 .7rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.info h2 { font-family: var(--display); font-weight: 700; font-size: 1.18rem; margin: .4rem 0 0; text-wrap: balance; }
+.info .en { font: 400 .78rem var(--mono); color: var(--muted); margin-top: .15rem; min-height: 1em; }
+.info p { margin: .4rem 0 0; line-height: 1.6; font-size: .95rem; }
+.note {
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  margin: 0; max-width: 230px; text-align: right; font-size: .76rem; line-height: 1.5; color: var(--muted);
+}
+#labels { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+.tag {
+  position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; transition: opacity .25s;
+  font: 600 .78rem/1.15 var(--body); color: var(--ink);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px;
+}
+.tag small { display: block; font: 400 .62rem/1.2 var(--mono); color: var(--muted); }
+#fallback { position: fixed; inset: 0; display: grid; place-items: center; font-size: 1rem; color: var(--muted); }
+@media (max-width: 720px) {
+  .note { display: none; }
+  .controls { justify-content: flex-start; }
+  .controls button { font-size: .86rem; padding: .5rem .75rem; }
+  .info { right: max(16px, env(safe-area-inset-right, 0px)); width: auto; }
+  .info p { font-size: .9rem; }
+}
+</style>
+
+</head>
+<body>
+<div id="stage" aria-label="แบบจำลองสมองสามมิติ หมุนและซูมได้"></div>
+<div id="labels" aria-hidden="true"></div>
+
+<header class="hud top">
+  <div class="brand">
+    <a class="back" href="/learn">← Body 101 · สหวรรณคลินิก</a>
+    <h1>สมองสามมิติ</h1>
+    <p>แบบจำลองสอนกายวิภาค · นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+    <div class="legend" id="legend" hidden>
+      <span><i style="background:var(--lobe-f)"></i>กลีบหน้า</span>
+      <span><i style="background:var(--lobe-p)"></i>กลีบข้าง</span>
+      <span><i style="background:var(--lobe-t)"></i>กลีบขมับ</span>
+      <span><i style="background:var(--lobe-o)"></i>กลีบท้ายทอย</span>
+      <span><i style="background:var(--lobe-c)"></i>สมองน้อย</span>
+    </div>
+  </div>
+  <div class="controls" role="toolbar" aria-label="ตัวเลือกการแสดงผล">
+    <button id="bExplode" type="button" aria-pressed="false">แยกส่วน</button>
+    <button id="bXray" type="button" aria-pressed="false">มองทะลุ</button>
+    <button id="bColor" type="button" aria-pressed="false">สีตามกลีบ</button>
+    <button id="bPath" type="button" aria-pressed="false">สัญญาณประสาท</button>
+    <button id="bMS" type="button" aria-pressed="false">รอยโรค MS</button>
+    <button id="bHome" type="button">มุมเริ่มต้น</button>
+  </div>
+</header>
+
+<aside class="hud info" aria-live="polite">
+  <div class="kicker" id="infoKicker">วิธีใช้</div>
+  <h2 id="infoName">ลากเพื่อหมุน · เลื่อนหรือถ่างนิ้วเพื่อซูม</h2>
+  <div class="en" id="infoEn"></div>
+  <p id="infoDesc">ชี้หรือแตะส่วนใดก็ได้เพื่อดูชื่อและหน้าที่ กด "แยกส่วน" เพื่อดึงกลีบสมองออกจากกัน แล้วจะเห็นโครงสร้างด้านใน</p>
+</aside>
+<p class="hud note">สื่อการเรียนรู้ ไม่ใช่การวินิจฉัย<br>รูปทรงเป็นแบบจำลองโดยประมาณ</p>
+<div id="fallback" hidden>เบราว์เซอร์นี้เปิดภาพสามมิติ (WebGL) ไม่ได้</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  if (!window.THREE) { document.getElementById('fallback').hidden = false; return; }
+  if (THREE.ColorManagement) THREE.ColorManagement.legacyMode = false; // hex colors are sRGB
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+  // ---------- noise ----------
+  const perm = new Uint8Array(512);
+  (function () {
+    const p = Array.from({ length: 256 }, (_, i) => i); let s = 1337;
+    for (let i = 255; i > 0; i--) { s = (s * 16807) % 2147483647; const j = s % (i + 1); [p[i], p[j]] = [p[j], p[i]]; }
+    for (let i = 0; i < 512; i++) perm[i] = p[i & 255];
+  })();
+  const fade = t => t * t * t * (t * (t * 6 - 15) + 10);
+  const lerp = (t, a, b) => a + t * (b - a);
+  function grad(h, x, y, z) { h &= 15; const u = h < 8 ? x : y, v = h < 4 ? y : (h === 12 || h === 14 ? x : z); return ((h & 1) ? -u : u) + ((h & 2) ? -v : v); }
+  function noise3(x, y, z) {
+    const X = Math.floor(x) & 255, Y = Math.floor(y) & 255, Z = Math.floor(z) & 255;
+    x -= Math.floor(x); y -= Math.floor(y); z -= Math.floor(z);
+    const u = fade(x), v = fade(y), w = fade(z);
+    const A = perm[X] + Y, AA = perm[A] + Z, AB = perm[A + 1] + Z, B = perm[X + 1] + Y, BA = perm[B] + Z, BB = perm[B + 1] + Z;
+    return lerp(w,
+      lerp(v, lerp(u, grad(perm[AA], x, y, z), grad(perm[BA], x - 1, y, z)), lerp(u, grad(perm[AB], x, y - 1, z), grad(perm[BB], x - 1, y - 1, z))),
+      lerp(v, lerp(u, grad(perm[AA + 1], x, y, z - 1), grad(perm[BA + 1], x - 1, y, z - 1)), lerp(u, grad(perm[AB + 1], x, y - 1, z - 1), grad(perm[BB + 1], x - 1, y - 1, z - 1))));
+  }
+  const sstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+  // ---------- renderer ----------
+  const stage = document.getElementById('stage');
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); }
+  catch (e) { document.getElementById('fallback').hidden = false; return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  stage.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(36, innerWidth / innerHeight, 0.05, 60);
+  const TARGET = V(0, -0.2, 0);
+  const HOME_DIR = V(2.7, 0.95, 1.9).normalize();
+  function homeDistance() {
+    const a = innerWidth / innerHeight, t = Math.tan(THREE.MathUtils.degToRad(18));
+    return Math.max(4.0, 1.0 / (t * a), 1.25 / t);
+  }
+  camera.position.copy(TARGET).addScaledVector(HOME_DIR, homeDistance());
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.copy(TARGET);
+  controls.enableDamping = true; controls.dampingFactor = 0.08;
+  controls.minDistance = 1.2; controls.maxDistance = 9;
+  controls.autoRotate = !reduceMotion; controls.autoRotateSpeed = 0.6;
+  controls.update();
+
+  scene.add(new THREE.HemisphereLight(0xfff3ea, 0x39414f, 0.8));
+  const key = new THREE.DirectionalLight(0xffffff, 1.15); key.position.set(3, 4, 3); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x9fc6ff, 0.6); rim.position.set(-3, 1.5, -3.5); scene.add(rim);
+  const under = new THREE.DirectionalLight(0xffe0cc, 0.35); under.position.set(-1.5, -3, 2); scene.add(under);
+
+  // ---------- registry ----------
+  const parts = [];
+  function addPart(mesh, info) {
+    const p = Object.assign({ mesh, base: mesh.position.clone(), explode: null, label: null }, info);
+    mesh.userData.part = p;
+    if (mesh.geometry) { mesh.geometry.computeBoundingSphere(); p.anchor = mesh.geometry.boundingSphere.center.clone(); }
+    parts.push(p);
+    return p;
+  }
+  const REAL = { cortex: 0xe2b6aa, cbl: 0xd8a69c, stem: 0xe3c3b3 };
+  const LOBE_TINT = [0x6f9bd6, 0xd9b84e, 0x6fb57d, 0xd4809c];
+  const shellMat = (hex, vc) => new THREE.MeshPhysicalMaterial({
+    color: hex, vertexColors: !!vc, roughness: 0.62, metalness: 0, clearcoat: 0.35, clearcoatRoughness: 0.5,
+    side: THREE.DoubleSide, emissive: 0x000000
+  });
+  const deepMat = hex => new THREE.MeshPhysicalMaterial({ color: hex, roughness: 0.45, clearcoat: 0.4, emissive: 0x000000 });
+
+  // ---------- cerebral hemispheres ----------
+  // axes: +x = patient's left, +y = up, +z = front
+  const centralZ = y => 0.17 - 0.34 * Math.max(0, y);
+  const sylvY = z => -0.03 - 0.13 * z;
+  function classify(dx, y, z) {
+    if (z < -0.5 + 0.12 * y) return 3;
+    const latOk = z > 0.25 ? dx > 0.35 : dx > -0.15;
+    if (y < sylvY(z) && z > -0.56 && z < 0.56 && latOk) return 2;
+    if (z > centralZ(y)) return 0;
+    return 1;
+  }
+  function splitByClass(geo, cls, n) {
+    const pos = geo.attributes.position.array, nor = geo.attributes.normal.array, col = geo.attributes.color.array, idx = geo.index.array;
+    const B = Array.from({ length: n }, () => ({ p: [], n: [], c: [] }));
+    for (let i = 0; i < idx.length; i += 3) {
+      const a = idx[i], b = idx[i + 1], c = idx[i + 2];
+      const k = cls[b] === cls[c] ? cls[b] : cls[a];
+      const t = B[k];
+      for (const v of [a, b, c]) {
+        t.p.push(pos[3 * v], pos[3 * v + 1], pos[3 * v + 2]);
+        t.n.push(nor[3 * v], nor[3 * v + 1], nor[3 * v + 2]);
+        t.c.push(col[3 * v], col[3 * v + 1], col[3 * v + 2]);
+      }
+    }
+    return B.map(t => {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.Float32BufferAttribute(t.p, 3));
+      g.setAttribute('normal', new THREE.Float32BufferAttribute(t.n, 3));
+      g.setAttribute('color', new THREE.Float32BufferAttribute(t.c, 3));
+      return g;
+    });
+  }
+  function buildHemisphere(s) {
+    const g = new THREE.SphereGeometry(1, 256, 192);
+    if (s < 0) g.rotateY(Math.PI); // keep the UV seam on the medial face
+    const P = g.attributes.position, n = P.count;
+    const cls = new Uint8Array(n), col = new Float32Array(n * 3), v = new THREE.Vector3();
+    for (let i = 0; i < n; i++) {
+      v.fromBufferAttribute(P, i).normalize();
+      const lat = v.x * s, dy = v.y, dz = v.z;
+      let px = lat * 0.52, py = dy * 0.56, pz = dz * 0.86;
+      if (dz < 0) { const k = dz * dz; py *= 1 - 0.2 * k; px *= 1 - 0.14 * k; } else { py *= 1 - 0.08 * dz * dz; }
+      if (px < 0) px *= 0.32;
+      if (py < 0) py *= 0.62;
+      const tm = Math.exp(-Math.pow((dz - 0.08) / 0.4, 2)) * sstep(0.05, 0.6, lat) * sstep(0.25, -0.35, dy);
+      py -= 0.2 * tm; px += 0.05 * tm;
+      cls[i] = classify(lat, py, pz);
+      const q = 4.3;
+      const w = noise3(px * 1.6 + 11, py * 1.6, pz * 1.6) * 0.55;
+      let nv = noise3(px * q + w, py * q - w, pz * q + 0.7 * w) + 0.32 * noise3(px * q * 2.1, py * q * 2.1 + 5, pz * q * 2.1);
+      const a = Math.abs(nv);
+      let disp = 0.022 * sstep(0.05, 0.35, a) - 0.03 * (1 - sstep(0.0, 0.1, a));
+      const sy = sylvY(pz);
+      const dC = pz - centralZ(py);
+      disp -= 0.045 * Math.exp(-dC * dC / 0.0005) * sstep(sy, sy + 0.1, py);
+      const dS = py - sy;
+      disp -= 0.07 * Math.exp(-dS * dS / 0.0011) * sstep(0.05, 0.3, lat) * sstep(-0.56, -0.38, pz) * sstep(0.62, 0.45, pz);
+      const dO = pz - (-0.5 + 0.12 * py);
+      disp -= 0.03 * Math.exp(-dO * dO / 0.0006);
+      if (px < 0) disp *= 0.45;
+      const nx = px / 0.27, ny = py / 0.31, nz = pz / 0.74, L = Math.hypot(nx, ny, nz) || 1;
+      px += nx / L * disp; py += ny / L * disp; pz += nz / L * disp;
+      P.setXYZ(i, s * (0.19 + px), py, pz);
+      const ao = 0.56 + 0.44 * sstep(-0.05, 0.016, disp);
+      col[3 * i] = col[3 * i + 1] = col[3 * i + 2] = ao;
+    }
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    g.computeVertexNormals();
+    return splitByClass(g, cls, 4);
+  }
+
+  const SIDE = { 1: 'ซ้าย', '-1': 'ขวา' };
+  const LOBES = [
+    { th: 'กลีบหน้า', en: 'Frontal lobe' },
+    { th: 'กลีบข้าง', en: 'Parietal lobe' },
+    { th: 'กลีบขมับ', en: 'Temporal lobe' },
+    { th: 'กลีบท้ายทอย', en: 'Occipital lobe' }
+  ];
+  const LOBE_DESC = {
+    '1': [
+      'วางแผน ตัดสินใจ และสั่งการเคลื่อนไหวของร่างกายซีกขวา ในคนส่วนใหญ่มีศูนย์การพูด (Broca) อยู่ที่ซีกนี้',
+      'รับความรู้สึกสัมผัสจากร่างกายซีกขวา และเกี่ยวกับการอ่าน การเขียน การคำนวณ',
+      'การได้ยิน ความจำ และการเข้าใจภาษา (Wernicke) ในคนส่วนใหญ่',
+      'ประมวลผลภาพครึ่งขวาของลานสายตา'
+    ],
+    '-1': [
+      'วางแผน ยับยั้งพฤติกรรม และสั่งการเคลื่อนไหวของร่างกายซีกซ้าย',
+      'รับความรู้สึกสัมผัสจากร่างกายซีกซ้าย และรับรู้พื้นที่รอบตัว ถ้าเสียหายอาจไม่สนใจสิ่งที่อยู่ทางซ้าย (neglect)',
+      'การได้ยิน ความจำ การจดจำใบหน้าและน้ำเสียง',
+      'ประมวลผลภาพครึ่งซ้ายของลานสายตา'
+    ]
+  };
+  const lobeMeshes = { 1: [], '-1': [] };
+  const shellParts = [];
+  for (const s of [1, -1]) {
+    const geos = buildHemisphere(s);
+    geos.forEach((g, k) => {
+      const m = new THREE.Mesh(g, shellMat(REAL.cortex, true));
+      scene.add(m);
+      const p = addPart(m, {
+        group: 'cortex', kicker: 'เปลือกสมอง · ซีก' + SIDE[s],
+        name: LOBES[k].th + 'ซีก' + SIDE[s], en: LOBES[k].en + (s > 0 ? ', left' : ', right'),
+        desc: LOBE_DESC[String(s)][k], tint: LOBE_TINT[k], real: REAL.cortex, tag: true
+      });
+      const c = p.anchor.clone(), d = c.clone().sub(V(0, 0.0, 0)).normalize();
+      p.explode = V(d.x * 0.2 + s * 0.16, d.y * 0.22, d.z * 0.22);
+      p.anchor = c.clone().add(V(s * 0.25, 0.08, 0)).multiplyScalar(1); // pull label toward the outer face
+      lobeMeshes[s][k] = m; shellParts.push(p);
+    });
+  }
+
+  // ---------- cerebellum ----------
+  (function () {
+    const g = new THREE.SphereGeometry(1, 200, 140);
+    const P = g.attributes.position, n = P.count, col = new Float32Array(n * 3), v = new THREE.Vector3();
+    for (let i = 0; i < n; i++) {
+      v.fromBufferAttribute(P, i).normalize();
+      let px = v.x * 0.5, py = v.y * 0.21, pz = v.z * 0.3;
+      if (v.z > 0.2) pz *= 1 - 0.35 * (v.z - 0.2);
+      const mid = Math.exp(-(v.x * v.x) / 0.012);
+      if (v.z < 0) pz += 0.04 * mid * (-v.z);
+      const ang = Math.atan2(v.y, -v.z);
+      const f = Math.sin(ang * 30 + 1.6 * noise3(v.x * 3, v.y * 3, v.z * 3)) * Math.sqrt(Math.max(0, 1 - v.x * v.x));
+      const disp = 0.009 * f - 0.006 * mid;
+      const nx = px / 0.25, ny = py / 0.044, nz = pz / 0.09, L = Math.hypot(nx, ny, nz) || 1;
+      px += nx / L * disp; py += ny / L * disp; pz += nz / L * disp;
+      P.setXYZ(i, px, py - 0.47, pz - 0.6);
+      const ao = 0.6 + 0.4 * (0.5 + 0.5 * f);
+      col[3 * i] = col[3 * i + 1] = col[3 * i + 2] = ao;
+    }
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    g.computeVertexNormals();
+    const m = new THREE.Mesh(g, shellMat(REAL.cbl, true));
+    scene.add(m);
+    const p = addPart(m, {
+      group: 'cbl', kicker: 'สมองน้อย', name: 'สมองน้อย', en: 'Cerebellum',
+      desc: 'ประสานการเคลื่อนไหว การทรงตัว และความแม่นยำของมือและเท้า ถ้าผิดปกติจะเดินเซ มือสั่นเวลาจะหยิบของ',
+      tint: 0xa58bd3, real: REAL.cbl, tag: true
+    });
+    p.explode = V(0, -0.18, -0.3);
+    shellParts.push(p);
+    window.__cbl = m;
+  })();
+
+  // ---------- brainstem + spinal cord (tilted group) ----------
+  const PIVOT = V(0, -0.2, -0.1), TILT = 0.2, XAXIS = V(1, 0, 0);
+  const tilt = (x, y, z) => V(x, y, z).sub(PIVOT).applyAxisAngle(XAXIS, TILT).add(PIVOT);
+  const stem = new THREE.Group(); stem.position.copy(PIVOT); stem.rotation.x = TILT; scene.add(stem);
+  const stemParts = {};
+  function stemPart(geo, localPos, info, explode) {
+    const m = new THREE.Mesh(geo, shellMat(REAL.stem, false));
+    m.position.copy(localPos); stem.add(m);
+    const p = addPart(m, Object.assign({ group: 'stem', kicker: 'ก้านสมองและไขสันหลัง', tint: 0xc9a27c, real: REAL.stem, tag: true }, info));
+    p.explode = explode; shellParts.push(p);
+    return m;
+  }
+  stemParts.mid = stemPart(new THREE.CylinderGeometry(0.105, 0.12, 0.24, 48), V(0, -0.04, 0),
+    { name: 'สมองส่วนกลาง', en: 'Midbrain', desc: 'ควบคุมการกลอกตาและรูม่านตา และเป็นทางผ่านของสัญญาณสั่งการจากสมองลงไปข้างล่าง' }, V(0, -0.06, 0.22));
+  const ponsGeo = new THREE.SphereGeometry(1, 64, 48); ponsGeo.scale(0.165, 0.14, 0.15);
+  stemParts.pons = stemPart(ponsGeo, V(0, -0.22, 0.03),
+    { name: 'พอนส์', en: 'Pons', desc: 'สะพานเชื่อมสมองใหญ่กับสมองน้อย คุมการเคี้ยว การกลอกตาไปด้านข้าง และกล้ามเนื้อใบหน้า' }, V(0, -0.14, 0.25));
+  const medProfile = [[0.001, 0], [0.1, 0], [0.098, -0.08], [0.085, -0.17], [0.068, -0.26], [0.058, -0.32], [0.001, -0.32]].map(a => new THREE.Vector2(a[0], a[1]));
+  stemParts.med = stemPart(new THREE.LatheGeometry(medProfile, 48), V(0, -0.33, 0),
+    { name: 'ก้านสมองส่วนท้าย', en: 'Medulla oblongata', desc: 'คุมการหายใจ การเต้นของหัวใจ ความดัน และการกลืน ทางเดินประสาทสั่งการไขว้ข้างกันที่ตรงนี้' }, V(0, -0.24, 0.25));
+  stemParts.cord = stemPart(new THREE.CylinderGeometry(0.055, 0.052, 0.55, 40), V(0, -0.925, 0),
+    { name: 'ไขสันหลัง', en: 'Spinal cord', desc: 'ทางด่วนส่งสัญญาณระหว่างสมองกับแขนขาและลำตัว ทั้งขาไป (สั่งการ) และขากลับ (รับความรู้สึก)' }, V(0, -0.34, 0.25));
+  stemParts.med.userData.part.anchor = V(0, -0.16, 0);
+  stemParts.cord.userData.part.anchor = V(0, -0.1, 0);
+
+  // ---------- deep structures ----------
+  const deepParts = [];
+  function tube(points, r, mat, closed) {
+    const curve = new THREE.CatmullRomCurve3(points, !!closed, 'centripetal');
+    return { mesh: new THREE.Mesh(new THREE.TubeGeometry(curve, 96, r, 14, !!closed), mat), curve };
+  }
+  function ellipsoid(c, r, mat) {
+    const g = new THREE.SphereGeometry(1, 40, 28); g.scale(r[0], r[1], r[2]);
+    const m = new THREE.Mesh(g, mat); m.position.copy(c); return m;
+  }
+  function deep(meshes, info, tagIndex) {
+    meshes.forEach((m, i) => {
+      scene.add(m);
+      const p = addPart(m, Object.assign({ group: 'deep', kicker: 'โครงสร้างส่วนลึก', tag: i === (tagIndex || 0) }, info));
+      deepParts.push(p);
+    });
+  }
+  const DEEP = { vent: 0x4f9fe0, cc: 0xefe6d6, thal: 0xb48ad9, bg: 0xe0995a, hip: 0xe6c75a, optic: 0xf1e2ae };
+  {
+    const ms = [];
+    for (const s of [1, -1]) {
+      const mat = deepMat(DEEP.vent);
+      ms.push(tube([V(s * .08, .05, .38), V(s * .1, .16, .22), V(s * .12, .2, 0), V(s * .15, .17, -.2), V(s * .22, .08, -.32), V(s * .3, -.06, -.22), V(s * .32, -.16, -.02), V(s * .3, -.2, .12)], 0.034, mat).mesh);
+      ms.push(tube([V(s * .22, .08, -.32), V(s * .19, .07, -.44), V(s * .15, .06, -.52)], 0.024, mat).mesh);
+    }
+    const third = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.15, 0.2), deepMat(DEEP.vent)); third.position.set(0, -0.02, -0.02); ms.push(third);
+    deep(ms, { name: 'โพรงสมอง', en: 'Ventricles', desc: 'ช่องภายในสมองที่มีน้ำหล่อสมองและไขสันหลัง (CSF) ไหลเวียน ใน MS รอยโรคมักเกาะอยู่รอบผนังโพรงนี้' });
+  }
+  {
+    const t = tube([V(0, -.02, .3), V(0, .12, .42), V(0, .27, .2), V(0, .3, -.08), V(0, .2, -.33), V(0, .1, -.31)], 0.034, deepMat(DEEP.cc));
+    t.mesh.scale.set(4.2, 1, 1);
+    deep([t.mesh], { name: 'คอร์ปัสแคลโลซัม', en: 'Corpus callosum', desc: 'มัดใยประสาทขนาดใหญ่ที่เชื่อมสมองซีกซ้ายกับซีกขวาให้ทำงานร่วมกัน' });
+  }
+  deep([ellipsoid(V(.09, .02, -.1), [.08, .08, .13], deepMat(DEEP.thal)), ellipsoid(V(-.09, .02, -.1), [.08, .08, .13], deepMat(DEEP.thal))],
+    { name: 'ทาลามัส', en: 'Thalamus', desc: 'สถานีถ่ายทอดสัญญาณรับความรู้สึกเกือบทุกชนิด ก่อนส่งขึ้นไปที่เปลือกสมอง' });
+  {
+    const ms = [];
+    for (const s of [1, -1]) {
+      const mat = deepMat(DEEP.bg);
+      ms.push(ellipsoid(V(s * .24, 0, .08), [.06, .11, .16], mat));
+      ms.push(tube([V(s * .16, .08, .34), V(s * .18, .18, .15), V(s * .19, .21, -.05), V(s * .21, .16, -.22), V(s * .27, .03, -.3)], 0.03, mat).mesh);
+    }
+    deep(ms, { name: 'ปมประสาทฐาน', en: 'Basal ganglia', desc: 'ช่วยเริ่มการเคลื่อนไหวและทำให้ราบรื่น ระบบนี้เกี่ยวข้องกับโรคพาร์กินสัน' });
+  }
+  deep([1, -1].map(s => tube([V(s * .29, -.21, .1), V(s * .27, -.17, -.05), V(s * .24, -.08, -.22), V(s * .2, .02, -.3)], 0.034, deepMat(DEEP.hip)).mesh),
+    { name: 'ฮิปโปแคมปัส', en: 'Hippocampus', desc: 'สร้างความจำใหม่ อยู่ด้านในของกลีบขมับ เป็นส่วนที่ได้รับผลกระทบเร็วในโรคอัลไซเมอร์' });
+  {
+    const ms = [], mat = deepMat(DEEP.optic);
+    for (const s of [1, -1]) {
+      ms.push(tube([V(s * .16, -.37, .82), V(s * .1, -.37, .62), V(s * .04, -.37, .4)], 0.022, mat).mesh);
+      ms.push(tube([V(s * .04, -.37, .34), V(s * .12, -.3, .2), V(s * .18, -.22, 0), V(s * .2, -.13, -.17)], 0.018, mat).mesh);
+    }
+    ms.push(ellipsoid(V(0, -.37, .36), [.07, .018, .04], mat));
+    deep(ms, { name: 'เส้นประสาทตา', en: 'Optic nerve · chiasm · tract', desc: 'สัญญาณภาพจากตาวิ่งผ่านจุดไขว้ (chiasm) ใยครึ่งด้านจมูกข้ามไปอีกซีก แล้วไปต่อที่ทาลามัส' });
+  }
+
+  // ---------- pathways with travelling pulses ----------
+  const pathGroup = new THREE.Group(); pathGroup.visible = false; scene.add(pathGroup);
+  const pathCurves = [];
+  function pathway(points, hex, info) {
+    const mat = new THREE.MeshBasicMaterial({ color: hex, transparent: true, opacity: 0.85 });
+    const t = tube(points, 0.009, mat);
+    pathGroup.add(t.mesh);
+    addPart(t.mesh, Object.assign({ group: 'path', kicker: 'ทางเดินประสาท' }, info));
+    pathCurves.push({ curve: t.curve, color: new THREE.Color(hex), len: t.curve.getLength() });
+  }
+  const motorInfo = { name: 'ทางเดินประสาทสั่งการ', en: 'Corticospinal tract', desc: 'จากเปลือกสมองส่วนสั่งการ ผ่านแคปซูลภายในและก้านสมอง แล้วไขว้ข้างที่ก้านสมองส่วนท้าย สมองซีกซ้ายจึงสั่งร่างกายซีกขวา' };
+  const visInfo = { name: 'ทางเดินการมองเห็น', en: 'Visual pathway', desc: 'จากตา ผ่านจุดไขว้ ไปทาลามัส (LGN) แล้วแผ่เป็นพัดไปที่กลีบท้ายทอย ภาพซีกซ้ายของโลกจึงไปที่สมองซีกขวา' };
+  for (const s of [1, -1]) {
+    pathway([V(s * .32, .5, .07), V(s * .26, .32, .04), V(s * .18, .1, 0), V(s * .15, -.04, -.04),
+      tilt(s * .08, -.2, -.05), tilt(s * .06, -.4, 0), tilt(s * .045, -.58, -.02), tilt(-s * .02, -.68, -.04),
+      tilt(-s * .035, -.8, -.07), tilt(-s * .035, -1.35, -.08)], 0xff8a3d, motorInfo);
+    const rad = q => [V(q * .2, -.13, -.17), V(q * .29, -.05, -.36), V(q * .2, 0, -.62), V(q * .07, 0, -.8)];
+    pathway([V(s * .16, -.37, .82), V(s * .08, -.37, .5), V(s * .07, -.37, .38), V(s * .12, -.3, .2), V(s * .18, -.22, 0)].concat(rad(s)), 0x45cfe6, visInfo);
+    pathway([V(s * .16, -.37, .82), V(s * .06, -.37, .45), V(0, -.37, .36), V(-s * .06, -.36, .33), V(-s * .12, -.3, .2), V(-s * .18, -.22, 0)].concat(rad(-s)), 0x8f7cf0, visInfo);
+  }
+  const PULSES = 7, pulseCount = pathCurves.length * PULSES;
+  const pulseGeo = new THREE.BufferGeometry();
+  const pulsePos = new Float32Array(pulseCount * 3), pulseCol = new Float32Array(pulseCount * 3);
+  pathCurves.forEach((c, i) => { for (let j = 0; j < PULSES; j++) { const k = (i * PULSES + j) * 3; pulseCol[k] = c.color.r; pulseCol[k + 1] = c.color.g; pulseCol[k + 2] = c.color.b; } });
+  pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePos, 3));
+  pulseGeo.setAttribute('color', new THREE.BufferAttribute(pulseCol, 3));
+  const dot = document.createElement('canvas'); dot.width = dot.height = 64;
+  { const x = dot.getContext('2d'), gr = x.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.35, 'rgba(255,255,255,.75)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = gr; x.fillRect(0, 0, 64, 64); }
+  const pulses = new THREE.Points(pulseGeo, new THREE.PointsMaterial({ size: 0.07, map: new THREE.CanvasTexture(dot), vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+  pathGroup.add(pulses);
+
+  // ---------- MS lesions ----------
+  const lesionMat = () => new THREE.MeshStandardMaterial({ color: 0xfff4d2, emissive: 0xffe39a, emissiveIntensity: 0.85, roughness: 0.4 });
+  const lesions = [];
+  const UP = V(0, 1, 0);
+  function lesion(parent, pos, size, dir, info) {
+    const g = new THREE.SphereGeometry(1, 24, 16); g.scale(size[0], size[1], size[2]);
+    const m = new THREE.Mesh(g, lesionMat());
+    m.position.copy(pos);
+    if (dir) m.quaternion.setFromUnitVectors(UP, dir.clone().normalize());
+    m.visible = false;
+    (parent || scene).add(m);
+    const p = addPart(m, Object.assign({ group: 'lesion', kicker: 'รอยโรค MS (ตัวอย่าง)', baseEmissive: 0.85 }, info));
+    p.anchor = V(0, 0, 0);
+    lesions.push(m);
+  }
+  const periInfo = { name: 'รอยโรครอบโพรงสมอง', en: 'Periventricular lesion', desc: 'รูปไข่ วางตัวตั้งฉากกับผนังโพรงสมอง (Dawson\'s fingers) เป็นตำแหน่งที่พบบ่อยและค่อนข้างจำเพาะต่อ MS' };
+  [[1, .25], [1, .08], [1, -.08], [1, -.22], [-1, .18], [-1, 0], [-1, -.16]].forEach(([s, z]) => {
+    const dir = V(s * .7, .7, 0);
+    lesion(null, V(s * .17, .25, z), [.018, .046, .018], dir, periInfo);
+  });
+  const jxInfo = { name: 'รอยโรคชิดเปลือกสมอง', en: 'Juxtacortical lesion', desc: 'อยู่ติดกับเปลือกสมอง เป็นหนึ่งในตำแหน่งที่ใช้นับตามเกณฑ์ McDonald' };
+  lesion(lobeMeshes['-1'][0], V(-.55, .18, .38), [.03, .022, .026], null, jxInfo);
+  lesion(lobeMeshes['1'][1], V(.58, .24, -.2), [.03, .024, .026], null, jxInfo);
+  const infraInfo = { name: 'รอยโรคใต้เต็นท์', en: 'Infratentorial lesion', desc: 'อยู่ในก้านสมองหรือสมองน้อย อาจทำให้เวียนศีรษะ เดินเซ หรือเห็นภาพซ้อน' };
+  lesion(stemParts.pons, V(.08, .02, .05), [.026, .022, .024], null, infraInfo);
+  lesion(window.__cbl, V(-.2, -.4, -.38), [.028, .022, .024], null, infraInfo);
+  lesion(stemParts.cord, V(.022, .06, 0), [.022, .055, .02], null,
+    { name: 'รอยโรคในไขสันหลัง', en: 'Spinal cord lesion', desc: 'ใน MS มักยาวไม่เกิน 2 ปล้องกระดูกสันหลัง ต่างจาก NMOSD ที่มักยาวตั้งแต่ 3 ปล้องขึ้นไป' });
+  lesion(null, V(-.11, -.37, .66), [.03, .03, .07], V(.25, 0, 1),
+    { name: 'เส้นประสาทตาอักเสบ', en: 'Optic neuritis', desc: 'ตามัวลงและปวดเวลากลอกตา พบได้ทั้งใน MS และ NMOSD เกณฑ์ McDonald ฉบับปรับปรุงปี 2024 นับเส้นประสาทตาเป็นตำแหน่งหนึ่งด้วย' });
+
+  // ---------- labels ----------
+  const labelLayer = document.getElementById('labels');
+  parts.forEach(p => {
+    if (!p.tag) return;
+    const el = document.createElement('div'); el.className = 'tag';
+    el.innerHTML = p.name.replace(/ซีก(ซ้าย|ขวา)$/, '<span> $1</span>') + '<small>' + p.en.replace(/, (left|right)$/, '') + '</small>';
+    labelLayer.appendChild(el); p.label = el;
+  });
+
+  // ---------- state ----------
+  const state = { explode: 0, explodeGoal: 0, xray: false, color: false, path: false, ms: false };
+  const btn = id => document.getElementById(id);
+  function press(b, on) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  function applyXray() {
+    for (const p of shellParts) {
+      const m = p.mesh.material;
+      m.transparent = state.xray; m.opacity = state.xray ? 0.12 : 1; m.depthWrite = !state.xray; m.needsUpdate = true;
+    }
+    press(btn('bXray'), state.xray);
+  }
+  function applyColor() {
+    for (const p of shellParts) p.mesh.material.color.setHex(state.color ? p.tint : p.real);
+    btn('legend').hidden = !state.color; press(btn('bColor'), state.color);
+  }
+  btn('bExplode').onclick = () => { state.explodeGoal = state.explodeGoal ? 0 : 1; press(btn('bExplode'), !!state.explodeGoal); };
+  btn('bXray').onclick = () => { state.xray = !state.xray; applyXray(); };
+  btn('bColor').onclick = () => { state.color = !state.color; applyColor(); };
+  btn('bPath').onclick = () => {
+    state.path = !state.path; press(btn('bPath'), state.path);
+    if (state.path) { state.xray = true; applyXray(); if (state.explodeGoal) { state.explodeGoal = 0; press(btn('bExplode'), false); } }
+  };
+  btn('bMS').onclick = () => {
+    state.ms = !state.ms; press(btn('bMS'), state.ms);
+    lesions.forEach(m => { m.visible = state.ms; });
+    if (state.ms) { state.xray = true; applyXray(); }
+  };
+  btn('bHome').onclick = () => {
+    controls.target.copy(TARGET);
+    camera.position.copy(TARGET).addScaledVector(HOME_DIR, homeDistance());
+    controls.update();
+  };
+
+  // ---------- picking ----------
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  const infoK = btn('infoKicker'), infoN = btn('infoName'), infoE = btn('infoEn'), infoD = btn('infoDesc');
+  const HINT = { k: infoK.textContent, n: infoN.textContent, e: '', d: infoD.textContent };
+  let hovered = null, selected = null, mouseDirty = false, mouseIn = false;
+  function shown(o) { for (let x = o; x; x = x.parent) if (!x.visible) return false; return true; }
+  function pickAt(cx, cy) {
+    const r = renderer.domElement.getBoundingClientRect();
+    ndc.set(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const list = parts.filter(p => shown(p.mesh) && !(state.xray && (p.group === 'cortex' || p.group === 'cbl' || p.group === 'stem'))).map(p => p.mesh);
+    const hit = ray.intersectObjects(list, false)[0];
+    return hit ? hit.object.userData.part : null;
+  }
+  function glow(p, on) {
+    if (!p) return;
+    const m = p.mesh.material;
+    if (p.group === 'path') { m.opacity = on ? 1 : 0.85; return; }
+    if (p.group === 'lesion') { m.emissiveIntensity = on ? 1.6 : p.baseEmissive; return; }
+    m.emissive.setHex(on ? 0x5a3a2a : 0x000000);
+    if (on) m.emissiveIntensity = 0.55;
+  }
+  function showInfo(p) {
+    if (!p) { infoK.textContent = HINT.k; infoN.textContent = HINT.n; infoE.textContent = ''; infoD.textContent = HINT.d; return; }
+    infoK.textContent = p.kicker; infoN.textContent = p.name; infoE.textContent = p.en; infoD.textContent = p.desc;
+  }
+  function setHover(p) {
+    if (p === hovered) return;
+    if (hovered && hovered !== selected) glow(hovered, false);
+    hovered = p;
+    if (p) glow(p, true);
+    showInfo(p || selected);
+    renderer.domElement.style.cursor = p ? 'pointer' : 'grab';
+  }
+  let downAt = null, lastMouse = { x: 0, y: 0 };
+  const el = renderer.domElement;
+  el.addEventListener('pointerdown', e => { downAt = { x: e.clientX, y: e.clientY }; controls.autoRotate = false; });
+  el.addEventListener('pointerup', e => {
+    if (!downAt) return;
+    const moved = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y); downAt = null;
+    if (moved > 6) return;
+    const p = pickAt(e.clientX, e.clientY);
+    if (selected && selected !== p) glow(selected, false);
+    selected = p; if (p) glow(p, true);
+    if (e.pointerType !== 'mouse') { hovered = null; }
+    showInfo(p);
+  });
+  el.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { lastMouse = { x: e.clientX, y: e.clientY }; mouseDirty = true; mouseIn = true; } });
+  el.addEventListener('pointerleave', () => { mouseIn = false; setHover(null); });
+
+  // ---------- loop ----------
+  addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+  const clock = new THREE.Clock(), tmp = new THREE.Vector3();
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  let phase = 0;
+  function frame() {
+    const dt = Math.min(clock.getDelta(), 0.05);
+    state.explode += (state.explodeGoal - state.explode) * Math.min(1, dt * 3.2);
+    const e = ease(Math.min(1, Math.max(0, state.explode)));
+    for (const p of parts) if (p.explode) p.mesh.position.copy(p.base).addScaledVector(p.explode, e);
+    pathGroup.visible = state.path && e < 0.02;
+    if (pathGroup.visible) {
+      phase += dt * (reduceMotion ? 0.05 : 0.22);
+      pathCurves.forEach((c, i) => {
+        for (let j = 0; j < PULSES; j++) {
+          const t = (phase * (1.6 / c.len) + j / PULSES) % 1;
+          c.curve.getPointAt(t, tmp); pulsePos.set([tmp.x, tmp.y, tmp.z], (i * PULSES + j) * 3);
+        }
+      });
+      pulseGeo.attributes.position.needsUpdate = true;
+    }
+    controls.update();
+    if (mouseIn && mouseDirty) { mouseDirty = false; setHover(pickAt(lastMouse.x, lastMouse.y)); }
+    renderer.render(scene, camera);
+    // labels
+    const W = innerWidth, H = innerHeight;
+    for (const p of parts) {
+      if (!p.label) continue;
+      const vis = shown(p.mesh) && (
+        ((p.group === 'cortex' || p.group === 'cbl' || p.group === 'stem') && e > 0.6) ||
+        (p.group === 'deep' && e > 0.6));
+      if (!vis) { p.label.style.opacity = 0; continue; }
+      p.mesh.updateWorldMatrix(true, false);
+      tmp.copy(p.anchor).applyMatrix4(p.mesh.matrixWorld).project(camera);
+      if (tmp.z > 1) { p.label.style.opacity = 0; continue; }
+      p.label.style.opacity = 1;
+      p.label.style.transform = 'translate(-50%,-50%) translate(' + ((tmp.x + 1) / 2 * W).toFixed(1) + 'px,' + ((1 - tmp.y) / 2 * H).toFixed(1) + 'px)';
+    }
+    requestAnimationFrame(frame);
+  }
+  renderer.domElement.style.cursor = 'grab';
+  frame();
+})();
+</script>
+</body>
+</html>
