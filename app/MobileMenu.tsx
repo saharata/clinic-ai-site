@@ -3,14 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { diseases3d } from "./understand/diseases3d";
 
 // ลิงก์ทั้งหมดของเว็บสำหรับมือถือ (บนมือถือเมนูข้อความด้านบนถูกซ่อน)
 // ใช้ path เต็ม เพื่อให้ทำงานได้จากทุกหน้า
-const links: { href: string; label: string; static?: boolean; lang?: string }[] = [
+const links: { href: string; label: string; static?: boolean; lang?: string; sub?: boolean }[] = [
   { href: "/", label: "หน้าแรก" },
   { href: "/#hours", label: "เวลาทำการ" },
   { href: "/#services", label: "บริการของคลินิก" },
   { href: "/symptoms", label: "อาการทางระบบประสาทที่พบบ่อย" },
+  { href: "/understand", label: "เข้าใจโรคด้วยภาพสามมิติ" },
+  ...diseases3d.map((d) => ({ href: `/understand#${d.id}`, label: d.menu, sub: true })),
   { href: "/stickline", label: "ประสาทแพทย์วาดเส้น · สโตรก ชัก ห้องฉุกเฉิน" },
   { href: "/brain60", label: "สมองใน 60 วินาที" },
   { href: "/vaccine", label: "ราคาวัคซีนเด็ก" },
@@ -78,7 +81,7 @@ export default function MobileMenu() {
         </form>
         <ul>
           {links.map((l) => (
-            <li key={l.href}>
+            <li key={l.href} className={l.sub ? "mm-sub" : undefined}>
               {l.static ? (
                 // หน้า static ใน public/ (ไม่ใช่ route ของ Next) ใช้ลิงก์ธรรมดา
                 <a href={l.href} onClick={() => close(false)}>

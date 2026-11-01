@@ -2394,3 +2394,44 @@ html[data-text-size="xl"] { font-size: 125%; }
 .kb-dd .kb-dd-close, .kb-dd[open] .kb-dd-open { display: none; }
 .kb-dd[open] .kb-dd-close { display: inline; }
 .kb-dd[open] > summary { margin-bottom: 20px; }
+
+/* ---------- /understand เข้าใจโรคด้วยภาพสามมิติ + เมนู "เข้าใจโรค" หน้าแรก ---------- */
+.nav-dd { position: relative; }
+.nav-dd > summary {
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  min-height: 44px; padding: 0 4px; color: inherit; font-weight: inherit;
+}
+.nav-dd > summary::-webkit-details-marker { display: none; }
+.nav-dd > summary::after { content: "▾"; font-size: 0.8em; }
+.nav-dd[open] > summary::after { content: "▴"; }
+.nav-dd > summary:focus-visible { outline: 2px solid #0f766e; outline-offset: 2px; border-radius: 6px; }
+.nav-dd ul {
+  position: absolute; top: 100%; left: 0; z-index: 30; margin: 4px 0 0; padding: 6px; list-style: none;
+  min-width: 220px; background: white; border: 1px solid #e2e8f0; border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+.nav-links .nav-dd li a { display: flex; min-height: 44px; align-items: center; padding: 0 12px; border-radius: 10px; }
+.nav-links .nav-dd li a:hover { background: #eef2ff; }
+@media (max-width: 720px) { .nav-dd { display: none; } }
+.nav-links .mobile-menu li.mm-sub a:not(.btn) { padding-left: 28px; font-size: 0.95em; }
+.ud-home { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 24px; }
+.ud-home-links { display: inline-flex; flex-wrap: wrap; gap: 6px 14px; }
+.ud-home-links a { display: inline-flex; align-items: center; min-height: 44px; color: #0f766e; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.ud-lead { max-width: 760px; color: #334155; line-height: 1.75; font-size: 1.1rem; margin: 14px 0 0; }
+.ud-sub { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.ud-sub a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px;
+  background: white; border: 1px solid #cbd5e1; color: #0f172a; font-weight: 600; text-decoration: none;
+}
+.ud-sub a:hover { border-color: #0f766e; color: #0f766e; }
+.ud-page section[id] { scroll-margin-top: 16px; }
+.ud-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.ud-shot { display: block; border-radius: 20px; overflow: hidden; background: #0f172a; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12); }
+.ud-shot img { display: block; width: 100%; height: auto; transition: transform 0.3s; }
+.ud-shot:hover img { transform: scale(1.03); }
+.ud-text { min-width: 0; }
+.ud-text h2 { margin: 0 0 10px; font-size: 1.9rem; }
+.ud-text > p { color: #475569; line-height: 1.75; margin: 0 0 12px; }
+.ud-points { margin: 0 0 20px; padding-left: 1.2em; color: #334155; line-height: 1.75; }
+@media (max-width: 820px) { .ud-row { grid-template-columns: 1fr; gap: 20px; } .ud-text h2 { font-size: 1.6rem; } }
+@media (prefers-reduced-motion: reduce) { .ud-shot img { transition: none; } .ud-shot:hover img { transform: none; } }
