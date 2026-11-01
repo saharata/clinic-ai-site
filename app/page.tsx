@@ -6,6 +6,7 @@ import { doctorPath, physicianJsonLd, publicationsJsonLd } from "./doctorData";
 import PrepareChecklist from "./PrepareChecklist";
 import VisitJourney from "./VisitJourney";
 import MobileMenu from "./MobileMenu";
+import { diseases3d } from "./understand/diseases3d";
 import StrokeFlipCards from "./stickline/StrokeFlipCards";
 import Tilt3D from "./Tilt3D";
 import HotQuestions from "./HotQuestions";
@@ -253,6 +254,19 @@ export default function HomePage() {
             <a href="#hours">เวลาทำการ</a>
             <a href="#vaccine">ราคาวัคซีนเด็ก</a>
             <a href="#knowledge">ความรู้ระบบประสาท</a>
+            <details className="nav-dd">
+              <summary>เข้าใจโรค</summary>
+              <ul>
+                <li>
+                  <Link href="/understand">ทั้งหมด · ภาพสามมิติ</Link>
+                </li>
+                {diseases3d.map((d) => (
+                  <li key={d.id}>
+                    <Link href={`/understand#${d.id}`}>{d.menu}</Link>
+                  </li>
+                ))}
+              </ul>
+            </details>
             <Link href="/learn">Body 101</Link>
             <a href="/cyber">Cyber 101</a>
             <a href="#doctors">แพทย์</a>
@@ -391,6 +405,18 @@ export default function HomePage() {
             <p className="eyebrow">ความรู้จากประสาทแพทย์</p>
             <h2 id="knowledge-h">ความรู้พื้นฐานระบบประสาท</h2>
             <p>อธิบายด้วยภาพวาดเส้นเข้าใจง่าย โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์</p>
+          </div>
+          <div className="ud-home">
+            <Link href="/understand" className="btn btn-dark big">
+              เข้าใจโรคด้วยภาพสามมิติ
+            </Link>
+            <span className="ud-home-links">
+              {diseases3d.map((d) => (
+                <Link key={d.id} href={`/understand#${d.id}`}>
+                  {d.menu}
+                </Link>
+              ))}
+            </span>
           </div>
           <form action="/search" method="get" role="search" className="srch-inline">
             <label htmlFor="home-q" className="sr-only">
