@@ -2386,3 +2386,11 @@ html[data-text-size="xl"] { font-size: 125%; }
 .hotq-ctl .btn { min-height: 36px; padding: 0 12px; font-size: 0.875rem; }
 .hotq-more { margin: 8px 0 0; font-size: 0.9375rem; color: #475569; }
 @media (prefers-reduced-motion: no-preference) { .hotq-link { animation: sl-in 0.35s ease-out; } }
+
+/* ความรู้พื้นฐานระบบประสาท: กดกางออก (หน้าแรก) */
+.kb-dd > summary { list-style: none; display: inline-flex; cursor: pointer; }
+.kb-dd > summary::-webkit-details-marker { display: none; }
+.kb-dd > summary:focus-visible { outline: 3px solid #0f766e; outline-offset: 3px; }
+.kb-dd .kb-dd-close, .kb-dd[open] .kb-dd-open { display: none; }
+.kb-dd[open] .kb-dd-close { display: inline; }
+.kb-dd[open] > summary { margin-bottom: 20px; }
