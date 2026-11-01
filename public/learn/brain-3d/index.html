@@ -142,6 +142,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     <button id="bColor" type="button" aria-pressed="false">สีตามกลีบ</button>
     <button id="bPath" type="button" aria-pressed="false">สัญญาณประสาท</button>
     <button id="bMS" type="button" aria-pressed="false">รอยโรค MS</button>
+    <button id="bNM" type="button" aria-pressed="false">รอยโรค NMOSD</button>
     <button id="bHome" type="button">มุมเริ่มต้น</button>
   </div>
 </header>
@@ -491,20 +492,29 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   const pulses = new THREE.Points(pulseGeo, new THREE.PointsMaterial({ size: 0.07, map: new THREE.CanvasTexture(dot), vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
   pathGroup.add(pulses);
 
-  // ---------- MS lesions ----------
+  // ---------- MS and NMOSD lesions ----------
   const lesionMat = () => new THREE.MeshStandardMaterial({ color: 0xfff4d2, emissive: 0xffe39a, emissiveIntensity: 0.85, roughness: 0.4 });
-  const lesions = [];
+  const lesions = { ms: [], nmosd: [] };
+  const LESION_KICKER = { ms: 'รอยโรค MS (ตัวอย่าง)', nmosd: 'รอยโรค NMOSD (ตัวอย่าง)' };
   const UP = V(0, 1, 0);
-  function lesion(parent, pos, size, dir, info) {
+  function addLesion(m, parent, info, kind) {
+    m.visible = false;
+    (parent || scene).add(m);
+    const p = addPart(m, Object.assign({ group: 'lesion', kicker: LESION_KICKER[kind], baseEmissive: 0.85 }, info));
+    p.anchor = V(0, 0, 0);
+    lesions[kind].push(m);
+  }
+  function lesionTube(points, r, info, scaleX) {
+    const m = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points, false, 'centripetal'), 48, r, 12, false), lesionMat());
+    if (scaleX) m.scale.x = scaleX;
+    addLesion(m, null, info, 'nmosd');
+  }
+  function lesion(parent, pos, size, dir, info, kind) {
     const g = new THREE.SphereGeometry(1, 24, 16); g.scale(size[0], size[1], size[2]);
     const m = new THREE.Mesh(g, lesionMat());
     m.position.copy(pos);
     if (dir) m.quaternion.setFromUnitVectors(UP, dir.clone().normalize());
-    m.visible = false;
-    (parent || scene).add(m);
-    const p = addPart(m, Object.assign({ group: 'lesion', kicker: 'รอยโรค MS (ตัวอย่าง)', baseEmissive: 0.85 }, info));
-    p.anchor = V(0, 0, 0);
-    lesions.push(m);
+    addLesion(m, parent, info, kind || 'ms');
   }
   const periInfo = { name: 'รอยโรครอบโพรงสมอง', en: 'Periventricular lesion', desc: 'รูปไข่ วางตัวตั้งฉากกับผนังโพรงสมอง (Dawson\'s fingers) เป็นตำแหน่งที่พบบ่อยและค่อนข้างจำเพาะต่อ MS' };
   [[1, .25], [1, .08], [1, -.08], [1, -.22], [-1, .18], [-1, 0], [-1, -.16]].forEach(([s, z]) => {
@@ -522,6 +532,25 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   lesion(null, V(-.11, -.37, .66), [.03, .03, .07], V(.25, 0, 1),
     { name: 'เส้นประสาทตาอักเสบ', en: 'Optic neuritis', desc: 'ตามัวลงและปวดเวลากลอกตา พบได้ทั้งใน MS และ NMOSD เกณฑ์ McDonald ฉบับปรับปรุงปี 2024 นับเส้นประสาทตาเป็นตำแหน่งหนึ่งด้วย' });
 
+  // NMOSD: regions rich in aquaporin-4 (optic nerve, spinal cord grey matter, tissue around the ventricles)
+  lesion(stemParts.cord, V(0, .08, 0), [.032, .2, .032], null,
+    { name: 'ไขสันหลังอักเสบแบบยาว', en: 'Longitudinally extensive myelitis (LETM)', desc: 'ยาวตั้งแต่ 3 ปล้องกระดูกสันหลังขึ้นไป และมักอยู่ตรงกลางไขสันหลัง เป็นลักษณะเด่นของ NMOSD ต่างจาก MS ที่รอยโรคมักสั้นและค่อนไปด้านข้าง' }, 'nmosd');
+  const onInfo = { name: 'เส้นประสาทตาอักเสบแบบยาว', en: 'Longitudinally extensive optic neuritis', desc: 'รอยโรคยาว มักลามไปด้านหลังจนถึงจุดไขว้ และอาจเป็นสองข้าง ตามัวมักรุนแรงกว่าใน MS' };
+  for (const s of [1, -1]) lesionTube([V(s * .13, -.37, .74), V(s * .08, -.37, .55), V(s * .04, -.37, .4)], .03, onInfo);
+  lesion(null, V(0, -.37, .36), [.08, .026, .05], null, onInfo, 'nmosd');
+  lesion(stemParts.med, V(0, -.08, -.085), [.035, .03, .022], null,
+    { name: 'รอยโรคที่ area postrema', en: 'Area postrema lesion', desc: 'อยู่ด้านหลังของก้านสมองส่วนท้าย ทำให้สะอึกหรือคลื่นไส้อาเจียนไม่หยุดหลายวัน บางครั้งเป็นอาการแรกของโรค' }, 'nmosd');
+  lesion(stemParts.pons, V(0, .03, -.12), [.07, .03, .03], null,
+    { name: 'รอยโรครอบโพรงสมองที่สี่', en: 'Periependymal brainstem lesion', desc: 'อยู่รอบพื้นโพรงสมองที่สี่ในก้านสมอง อาจทำให้เวียนศีรษะ เห็นภาพซ้อน หรือกลืนลำบาก' }, 'nmosd');
+  lesion(null, V(0, -.07, -.02), [.055, .06, .08], null,
+    { name: 'รอยโรครอบโพรงสมองที่สาม', en: 'Diencephalic lesion', desc: 'อยู่รอบไฮโปทาลามัสและทาลามัส พบไม่บ่อย อาจทำให้ง่วงผิดปกติหรือฮอร์โมนผิดปกติ' }, 'nmosd');
+  const pepInfo = { name: 'รอยโรคตามผนังโพรงสมอง', en: 'Periependymal lesion', desc: 'เกาะเป็นแนวบางตามผนังโพรงสมอง ต่างจาก MS ที่มักเป็นรูปไข่วางตั้งฉากกับโพรงสมอง' };
+  for (const s of [1, -1]) lesionTube([V(s * .1, .16, .22), V(s * .12, .2, 0), V(s * .15, .17, -.2)], .046, pepInfo);
+  lesionTube([V(0, .235, .2), V(0, .255, 0), V(0, .21, -.22)], .04,
+    { name: 'รอยโรคในคอร์ปัสแคลโลซัม', en: 'Corpus callosum lesion', desc: 'ยาวไปตามคอร์ปัสแคลโลซัมด้านที่ติดโพรงสมอง' }, 3);
+  lesion(null, V(-.34, .14, .05), [.1, .08, .13], null,
+    { name: 'รอยโรคขนาดใหญ่ในเนื้อสมองขาว', en: 'Large hemispheric lesion', desc: 'รอยโรคใหญ่หรือรวมกันเป็นแผ่นในเนื้อสมองขาว พบได้น้อยกว่าตำแหน่งอื่น' }, 'nmosd');
+
   // ---------- labels ----------
   const labelLayer = document.getElementById('labels');
   parts.forEach(p => {
@@ -532,7 +561,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   });
 
   // ---------- state ----------
-  const state = { explode: 0, explodeGoal: 0, xray: false, color: false, path: false, ms: false };
+  const state = { explode: 0, explodeGoal: 0, xray: false, color: false, path: false, lesion: null };
   const btn = id => document.getElementById(id);
   function press(b, on) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
   function applyXray() {
@@ -553,12 +582,16 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     state.path = !state.path; press(btn('bPath'), state.path);
     if (state.path) { state.xray = true; applyXray(); if (state.explodeGoal) { state.explodeGoal = 0; press(btn('bExplode'), false); } }
   };
-  btn('bMS').onclick = () => {
-    state.ms = !state.ms; press(btn('bMS'), state.ms);
-    lesions.forEach(m => { m.visible = state.ms; });
-    if (state.ms) { state.xray = true; applyXray(); }
+  function setLesion(kind) {
+    state.lesion = state.lesion === kind ? null : kind;
+    press(btn('bMS'), state.lesion === 'ms'); press(btn('bNM'), state.lesion === 'nmosd');
+    for (const k in lesions) lesions[k].forEach(m => { m.visible = state.lesion === k; });
+    if (state.lesion) { state.xray = true; applyXray(); }
+    if (selected && selected.group === 'lesion') { glow(selected, false); selected = null; }
     if (!selected) showInfo(null);
-  };
+  }
+  btn('bMS').onclick = () => setLesion('ms');
+  btn('bNM').onclick = () => setLesion('nmosd');
   btn('bHome').onclick = () => {
     controls.target.copy(TARGET);
     camera.position.copy(TARGET).addScaledVector(HOME_DIR, homeDistance());
@@ -588,8 +621,9 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     if (on) m.emissiveIntensity = 0.55;
   }
   const MS_HINT = { k: 'รอยโรค MS (ตัวอย่าง)', n: 'ตำแหน่งที่รอยโรค MS พบบ่อย', d: 'จุดสีขาวคือตัวอย่างตำแหน่ง (บน MRI รอยโรคก็เห็นเป็นสีขาวเช่นกัน) รอบโพรงสมอง ชิดเปลือกสมอง ก้านสมองและสมองน้อย ไขสันหลัง และเส้นประสาทตา ชี้หรือแตะแต่ละจุดเพื่อดูคำอธิบาย' };
+  const NM_HINT = { k: 'รอยโรค NMOSD (ตัวอย่าง)', n: 'ตำแหน่งที่รอยโรค NMOSD พบบ่อย', d: 'NMOSD มักเกิดในบริเวณที่มีโปรตีนอควาพอริน 4 (AQP4) มาก จุดสีขาวคือตัวอย่าง เส้นประสาทตาแบบยาว ไขสันหลังแบบยาว area postrema และรอบโพรงสมอง ชี้หรือแตะแต่ละจุดเพื่อดูคำอธิบาย' };
   function showInfo(p) {
-    if (!p) { const h = state.ms ? MS_HINT : HINT; infoK.textContent = h.k; infoN.textContent = h.n; infoE.textContent = ''; infoD.textContent = h.d; return; }
+    if (!p) { const h = state.lesion === 'ms' ? MS_HINT : state.lesion === 'nmosd' ? NM_HINT : HINT; infoK.textContent = h.k; infoN.textContent = h.n; infoE.textContent = ''; infoD.textContent = h.d; return; }
     infoK.textContent = p.kicker; infoN.textContent = p.name; infoE.textContent = p.en; infoD.textContent = p.desc;
   }
   function setHover(p) {
@@ -619,6 +653,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   // open a view from the link: #ms, #explode, #pathways
   const hk = (location.hash || '').slice(1);
   if (hk === 'ms') btn('bMS').onclick();
+  if (hk === 'nmosd') btn('bNM').onclick();
   if (hk === 'explode') btn('bExplode').onclick();
   if (hk === 'pathways') btn('bPath').onclick();
 
