@@ -401,36 +401,42 @@ export default function HomePage() {
               ค้นหา
             </button>
           </form>
+          <details className="kb-dd">
+            <summary className="btn btn-dark big">
+              <span className="kb-dd-open">แสดงความรู้ทั้งหมด</span>
+              <span className="kb-dd-close">ซ่อน</span>
+            </summary>
 
-          <h3 className="sl-h3 kb-h3">สัญญาณเตือนสโตรก จำว่า BE FAST</h3>
-          <p>มีอาการเหล่านี้แบบเฉียบพลัน ควรไปห้องฉุกเฉินทันที</p>
-          <StrokeFlipCards compact />
-          <div className="sl-controls">
-            <a href="tel:1669" className="btn btn-call">
-              โทร 1669
-            </a>
-            <Link href="/stickline#stroke" className="btn btn-outline">
-              ดูภาพเคลื่อนไหวและคำอธิบาย
-            </Link>
-            <Link href="/stickline/card" className="btn btn-outline">
-              พิมพ์บัตรติดตู้เย็น
-            </Link>
-          </div>
+            <h3 className="sl-h3 kb-h3">สัญญาณเตือนสโตรก จำว่า BE FAST</h3>
+            <p>มีอาการเหล่านี้แบบเฉียบพลัน ควรไปห้องฉุกเฉินทันที</p>
+            <StrokeFlipCards compact />
+            <div className="sl-controls">
+              <a href="tel:1669" className="btn btn-call">
+                โทร 1669
+              </a>
+              <Link href="/stickline#stroke" className="btn btn-outline">
+                ดูภาพเคลื่อนไหวและคำอธิบาย
+              </Link>
+              <Link href="/stickline/card" className="btn btn-outline">
+                พิมพ์บัตรติดตู้เย็น
+              </Link>
+            </div>
 
-          <ul className="kb-grid">
-            {knowledge.map((k) => (
-              <li key={k.href}>
-                <Link href={k.href} className="kb-card">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={k.icon} alt="" width={72} height={72} />
-                  <span>
-                    <strong>{k.title}</strong>
-                    <span>{k.text}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+            <ul className="kb-grid">
+              {knowledge.map((k) => (
+                <li key={k.href}>
+                  <Link href={k.href} className="kb-card">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={k.icon} alt="" width={72} height={72} />
+                    <span>
+                      <strong>{k.title}</strong>
+                      <span>{k.text}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
         </div>
       </section>
 
@@ -472,52 +478,6 @@ export default function HomePage() {
             <Link href="/vaccine" className="btn btn-dark big">
               ดูราคาวัคซีนทั้งหมด
             </Link>
-          </div>
-        </div>
-      </section>
-
-      <section id="learn-teaser" className="section">
-        <div className="container cta-box">
-          <div>
-            <p className="eyebrow">สื่อการเรียนรู้สำหรับเด็กประถม</p>
-            <h2>Body 101 รู้จักร่างกายตั้งแต่เซลล์จนถึงอวัยวะ</h2>
-            <p>
-              ส่องกล้องจุลทรรศน์ ดูข้างในเซลล์ ทดลองจำลอง แล้วสำรวจร่างกายทีละชั้น
-              มีทั้งภาษาไทยและอังกฤษ ใช้ฟรี ไม่ต้องสมัคร เรียบเรียงโดยประสาทแพทย์
-            </p>
-          </div>
-          <div className="cta-actions">
-            <Link href="/learn" className="btn btn-dark big">
-              เปิด Body 101
-            </Link>
-            <a href="/learn/go" className="btn big">
-              เล่นหมากล้อม
-            </a>
-            <a href="/learn/makruk" className="btn big">
-              เล่นหมากรุกไทย
-            </a>
-            <a href="/learn/chess" className="btn big">
-              หมากรุกสากล 3 มิติ
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section id="cyber-teaser" className="section">
-        <div className="container cta-box">
-          <div>
-            <p className="eyebrow">สื่อการเรียนรู้สำหรับวัยรุ่นและผู้ใหญ่</p>
-            <h2>Cyber 101 เส้นทางแฮกเกอร์สายขาว</h2>
-            <p>
-              เรียนความมั่นคงปลอดภัยไซเบอร์ 10 บท ตั้งแต่พื้นฐานจนถึงระดับลงสนาม CTF
-              เข้าใจการโจมตีเพื่อป้องกันตัว ฝึกเฉพาะในแล็บของตัวเอง และรู้ขอบเขตทางกฎหมาย
-              ใช้ฟรี ไม่ต้องสมัคร
-            </p>
-          </div>
-          <div className="cta-actions">
-            <a href="/cyber" className="btn btn-dark big">
-              เปิด Cyber 101
-            </a>
           </div>
         </div>
       </section>
