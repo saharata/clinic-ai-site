@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ไมเกรน เกิดอะไรขึ้นในสมอง | สหวรรณคลินิก</title>
+<meta name="description" content="ไมเกรนเกิดอะไรขึ้นในสมอง แบบจำลองสามมิติทีละระยะ ระยะบอกเหตุ คลื่นออร่าบนเปลือกสมอง ระบบประสาทไทรเจมินัลและสาร CGRP จนถึงระยะฟื้นตัว พร้อมตำแหน่งออกฤทธิ์ของยาแต่ละกลุ่ม โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/learn/migraine-3d">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="th_TH">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/learn/migraine-3d">
+<meta property="og:title" content="ไมเกรน เกิดอะไรขึ้นในสมอง | สหวรรณคลินิก">
+<meta property="og:description" content="ไมเกรนเกิดอะไรขึ้นในสมอง แบบจำลองสามมิติทีละระยะ ระยะบอกเหตุ คลื่นออร่าบนเปลือกสมอง ระบบประสาทไทรเจมินัลและสาร CGRP จนถึงระยะฟื้นตัว พร้อมตำแหน่งออกฤทธิ์ของยาแต่ละกลุ่ม โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;700&family=Sarabun:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed 3D stage; story controls stacked at the bottom like a scrubber, title and toggles at the top */
+:root {
+  --bg: #e7eaf0;
+  --bg2: #f8f9fb;
+  --ink: #19202b;
+  --muted: #5a6475;
+  --panel: rgba(250, 251, 253, .86);
+  --line: rgba(25, 32, 43, .13);
+  --accent: #23677d;
+  --on-accent: #ffffff;
+  --aura: #1f8fb0;
+  --pain: #c8641c;
+  --track: rgba(25, 32, 43, .08);
+  --display: "Anuphan", "Sarabun", system-ui, sans-serif;
+  --body: "Sarabun", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1118; --bg2: #1b2230; --ink: #e7ebf1; --muted: #9aa5b5;
+    --panel: rgba(17, 22, 31, .84); --line: rgba(231, 235, 241, .13);
+    --accent: #7cc3d5; --on-accent: #0d1118; --aura: #6fd3ee; --pain: #f0a35c;
+    --track: rgba(231, 235, 241, .08); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1118; --bg2: #1b2230; --ink: #e7ebf1; --muted: #9aa5b5;
+  --panel: rgba(17, 22, 31, .84); --line: rgba(231, 235, 241, .13);
+  --accent: #7cc3d5; --on-accent: #0d1118; --aura: #6fd3ee; --pain: #f0a35c;
+  --track: rgba(231, 235, 241, .08); color-scheme: dark;
+}
+html, body { height: 100%; }
+[hidden] { display: none !important; }
+body {
+  margin: 0; overflow: hidden;
+  background-color: var(--bg);
+  background-image: radial-gradient(120% 90% at 60% 30%, var(--bg2), var(--bg) 70%);
+  color: var(--ink); font-family: var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+#stage { position: fixed; inset: 0; }
+#stage canvas { display: block; touch-action: none; outline: none; }
+#labels { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+.tag {
+  position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; transition: opacity .35s;
+  font: 600 .78rem/1.2 var(--body); color: var(--ink);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px;
+}
+.tag.num { width: 22px; height: 22px; padding: 0; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); border: 0; font: 600 .78rem/1 var(--mono); }
+.hud { position: fixed; z-index: 3; }
+.top {
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: max(16px, env(safe-area-inset-left, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: flex-start; justify-content: space-between;
+  pointer-events: none;
+}
+.top > * { pointer-events: auto; min-width: 0; }
+.back { display: inline-block; margin-bottom: .35rem; font-size: .85rem; color: var(--accent); text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.brand h1 { font-family: var(--display); font-weight: 700; margin: 0; font-size: clamp(1.45rem, 3vw, 2.1rem); line-height: 1.12; text-wrap: balance; }
+.brand p { margin: .25rem 0 0; color: var(--muted); font-size: .9rem; }
+.controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.controls button, .seg {
+  font: 500 .92rem/1 var(--body); color: var(--ink); cursor: pointer;
+  background: var(--panel); border: 1px solid var(--line);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.controls button { padding: .6rem .9rem; border-radius: 999px; }
+.controls button:hover { border-color: var(--accent); }
+.controls button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+#bPlay { min-width: 6.2em; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.bottom {
+  left: max(16px, env(safe-area-inset-left, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+}
+.bottom > * { pointer-events: auto; }
+.panels { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.card {
+  flex: 1 1 340px; max-width: 560px; min-width: 0; box-sizing: border-box;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 16px 15px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  max-height: 42vh; overflow: auto;
+}
+#drugCard { max-height: 54vh; }
+.kicker { font: 500 .7rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.card h2 { font-family: var(--display); font-weight: 700; font-size: 1.2rem; margin: .4rem 0 0; text-wrap: balance; }
+.meta { font: 400 .8rem/1.4 var(--mono); color: var(--muted); margin-top: .2rem; font-variant-numeric: tabular-nums; }
+.card p { margin: .45rem 0 0; line-height: 1.62; font-size: .95rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: .6rem; padding: 0; list-style: none; }
+.chips li { font-size: .82rem; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--track); }
+.note { margin-top: .55rem; font-size: .86rem; color: var(--muted); line-height: 1.5; }
+.drug-list { list-style: none; padding: 0; margin: .6rem 0 0; display: grid; gap: 9px; }
+.drug-list li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: .92rem; line-height: 1.5; }
+.drug-list b { font-weight: 600; }
+.drug-list .n { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font: 600 .75rem/1 var(--mono); }
+.warn { margin-top: .7rem; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--track); font-size: .86rem; line-height: 1.5; }
+.vf {
+  flex: 0 0 auto; background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 10px 12px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-align: center;
+}
+.vf canvas { display: block; width: 168px; height: 168px; margin: 0 auto; }
+.vf .cap { font-size: .78rem; color: var(--muted); margin-top: 6px; line-height: 1.4; max-width: 170px; }
+.timeline { display: flex; gap: 4px; }
+.seg {
+  position: relative; overflow: hidden; border-radius: 10px; padding: 9px 10px 8px; text-align: left;
+  min-width: 0; flex-basis: 0;
+}
+.seg .t { display: block; font-weight: 600; font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seg .d { display: block; font: 400 .7rem/1.3 var(--mono); color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seg .fill { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--accent); }
+.seg[data-key="aura"] .fill { background: var(--aura); }
+.seg[data-key="headache"] .fill { background: var(--pain); }
+.seg[aria-current="step"] { border-color: var(--accent); }
+.refs { font-size: .74rem; color: var(--muted); line-height: 1.5; }
+.refs a { color: inherit; }
+#fallback { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); }
+@media (max-width: 720px) {
+  .controls { justify-content: flex-start; }
+  .controls button { font-size: .86rem; padding: .5rem .72rem; }
+  .card { flex-basis: 100%; max-height: 34vh; padding: 12px 14px; }
+  .card p { font-size: .9rem; }
+  .vf { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); top: calc(env(safe-area-inset-top, 0px) + 150px); padding: 8px; }
+  .vf canvas { width: 110px; height: 110px; }
+  .vf .cap { max-width: 110px; font-size: .7rem; }
+  .seg { padding: 7px 7px 6px; }
+  .seg .t { font-size: .8rem; }
+  .seg .d { display: none; }
+  .refs { font-size: .68rem; }
+}
+</style>
+
+</head>
+<body>
+<div id="stage" aria-label="แบบจำลองสามมิติแสดงสิ่งที่เกิดขึ้นในสมองระหว่างไมเกรน"></div>
+<div id="labels" aria-hidden="true"></div>
+
+<header class="hud top">
+  <div class="brand">
+    <a class="back" href="/symptoms/headache">← ปวดศีรษะ / ไมเกรน · สหวรรณคลินิก</a>
+    <h1>ไมเกรน เกิดอะไรขึ้นในสมอง</h1>
+    <p>สื่อความรู้ · นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+  </div>
+  <div class="controls" role="toolbar" aria-label="ควบคุมการเล่น">
+    <button id="bPlay" type="button">หยุด</button>
+    <button id="bAura" type="button" aria-pressed="true">มีออร่า</button>
+    <button id="bDrugs" type="button" aria-pressed="false">ยาออกฤทธิ์ที่ไหน</button>
+    <button id="bHome" type="button">มุมเริ่มต้น</button>
+  </div>
+</header>
+
+<section class="hud bottom" aria-label="ลำดับเหตุการณ์">
+  <div class="panels">
+    <article class="card" id="phaseCard" aria-live="polite">
+      <div class="kicker" id="pKicker"></div>
+      <h2 id="pTitle"></h2>
+      <div class="meta" id="pMeta"></div>
+      <p id="pText"></p>
+      <ul class="chips" id="pChips"></ul>
+      <div class="note" id="pNote" hidden></div>
+    </article>
+    <article class="card" id="drugCard" hidden>
+      <div class="kicker">ชื่อกลุ่มยาเท่านั้น · ไม่ใช่คำแนะนำการรักษา</div>
+      <h2>ยาแต่ละกลุ่มออกฤทธิ์ที่ไหน</h2>
+      <ul class="drug-list">
+        <li><span class="n">1</span><span><b>ปลายประสาทรอบหลอดเลือดเยื่อหุ้มสมอง</b> · ยากลุ่มทริปแทน (triptans) · ยาต้านตัวรับ CGRP แบบเม็ด (gepants) · แอนติบอดีต่อ CGRP แบบฉีดเพื่อป้องกัน · โบทูลินัมท็อกซินสำหรับไมเกรนเรื้อรัง</span></li>
+        <li><span class="n">2</span><span><b>ก้านสมองส่วนท้าย (สถานีรับปวด)</b> · ทริปแทนออกฤทธิ์ที่นี่ด้วยส่วนหนึ่ง · ยากลุ่มดิแทน (ditans) ซึ่งไม่ทำให้หลอดเลือดหดตัว</span></li>
+        <li><span class="n">3</span><span><b>การอักเสบและสัญญาณปวด</b> · ยาต้านการอักเสบที่ไม่ใช่สเตียรอยด์ (NSAIDs) · พาราเซตามอล</span></li>
+        <li><span class="n">4</span><span><b>ทั้งสมอง ลดความไวต่อการเกิดซ้ำ</b> · ยาป้องกันชนิดกินหลายกลุ่ม เช่น ยาต้านเบต้า ยากันชักบางชนิด ยาต้านเศร้ากลุ่มไตรไซคลิก ยาต้านแคลเซียม (กลไกบางส่วนยังไม่ชัดเจน)</span></li>
+      </ul>
+      <div class="warn">ถ้าใช้ยาแก้ปวดบ่อยเกินราว 10 ถึง 15 วันต่อเดือน อาจทำให้ปวดถี่ขึ้น เรียกว่าปวดศีรษะจากการใช้ยาเกิน ควรเลือกยาและขนาดยาร่วมกับแพทย์</div>
+    </article>
+    <aside class="vf" id="vf" hidden aria-label="ภาพจำลองออร่าในลานสายตา">
+      <canvas id="vfCanvas" width="336" height="336"></canvas>
+      <div class="cap">ลานสายตาเมื่อมองด้วยสองตา · แสงซิกแซกอยู่ครึ่งขวา เพราะคลื่นอยู่สมองซีกซ้าย</div>
+    </aside>
+  </div>
+  <nav class="timeline" id="timeline" aria-label="ระยะของไมเกรน"></nav>
+  <div class="refs">สื่อการเรียนรู้ ไม่ใช่การวินิจฉัยหรือคำแนะนำการรักษา · รูปทรงเป็นแบบจำลองโดยประมาณ · อ้างอิง:
+    <a href="https://doi.org/10.1056/NEJMra1915327" target="_blank" rel="noopener">Ashina, N Engl J Med 2020</a> ·
+    <a href="https://doi.org/10.1152/physrev.00034.2015" target="_blank" rel="noopener">Goadsby et al., Physiol Rev 2017</a> ·
+    <a href="https://doi.org/10.1177/0333102417738202" target="_blank" rel="noopener">ICHD-3, Cephalalgia 2018</a>
+  </div>
+</section>
+<div id="fallback" hidden>เบราว์เซอร์นี้เปิดภาพสามมิติ (WebGL) ไม่ได้</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  if (!window.THREE) { document.getElementById('fallback').hidden = false; return; }
+  if (THREE.ColorManagement) THREE.ColorManagement.legacyMode = false;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  const $ = id => document.getElementById(id);
+
+  // ---------- noise ----------
+  const perm = new Uint8Array(512);
+  (function () {
+    const p = Array.from({ length: 256 }, (_, i) => i); let s = 1337;
+    for (let i = 255; i > 0; i--) { s = (s * 16807) % 2147483647; const j = s % (i + 1); [p[i], p[j]] = [p[j], p[i]]; }
+    for (let i = 0; i < 512; i++) perm[i] = p[i & 255];
+  })();
+  const fade = t => t * t * t * (t * (t * 6 - 15) + 10);
+  const lerp = (t, a, b) => a + t * (b - a);
+  function grad(h, x, y, z) { h &= 15; const u = h < 8 ? x : y, v = h < 4 ? y : (h === 12 || h === 14 ? x : z); return ((h & 1) ? -u : u) + ((h & 2) ? -v : v); }
+  function noise3(x, y, z) {
+    const X = Math.floor(x) & 255, Y = Math.floor(y) & 255, Z = Math.floor(z) & 255;
+    x -= Math.floor(x); y -= Math.floor(y); z -= Math.floor(z);
+    const u = fade(x), v = fade(y), w = fade(z);
+    const A = perm[X] + Y, AA = perm[A] + Z, AB = perm[A + 1] + Z, B = perm[X + 1] + Y, BA = perm[B] + Z, BB = perm[B + 1] + Z;
+    return lerp(w,
+      lerp(v, lerp(u, grad(perm[AA], x, y, z), grad(perm[BA], x - 1, y, z)), lerp(u, grad(perm[AB], x, y - 1, z), grad(perm[BB], x - 1, y - 1, z))),
+      lerp(v, lerp(u, grad(perm[AA + 1], x, y, z - 1), grad(perm[BA + 1], x - 1, y, z - 1)), lerp(u, grad(perm[AB + 1], x, y - 1, z - 1), grad(perm[BB + 1], x - 1, y - 1, z - 1))));
+  }
+  const sstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const clamp01 = x => Math.min(1, Math.max(0, x));
+
+  // ---------- renderer ----------
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); }
+  catch (e) { $('fallback').hidden = false; return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+  $('stage').appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(34, innerWidth / innerHeight, 0.05, 60);
+  const TARGET = V(0, -0.42, -0.05);
+  const HOME_DIR = V(1, 0.24, 0.1).normalize();
+  function homeDistance() {
+    const a = innerWidth / innerHeight, t = Math.tan(THREE.MathUtils.degToRad(17));
+    return Math.max(4.6, 1.3 / (t * a), 1.45 / t);
+  }
+  function goHome() { controls.target.copy(TARGET); camera.position.copy(TARGET).addScaledVector(HOME_DIR, homeDistance()); controls.update(); }
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true; controls.dampingFactor = 0.08;
+  controls.minDistance = 1.2; controls.maxDistance = 10;
+  goHome();
+
+  scene.add(new THREE.HemisphereLight(0xfff3ea, 0x39414f, 0.8));
+  const key = new THREE.DirectionalLight(0xffffff, 1.1); key.position.set(3.5, 3.5, 2); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x9fc6ff, 0.6); rim.position.set(-3, 1.5, -3.5); scene.add(rim);
+  const under = new THREE.DirectionalLight(0xffe0cc, 0.3); under.position.set(1.5, -3, 2); scene.add(under);
+
+  // ---------- brain surfaces (+x = patient's left, +y up, +z front) ----------
+  const centralZ = y => 0.17 - 0.34 * Math.max(0, y);
+  const sylvY = z => -0.03 - 0.13 * z;
+  function buildHemisphere(s) {
+    const g = new THREE.SphereGeometry(1, 256, 192);
+    if (s < 0) g.rotateY(Math.PI);
+    const P = g.attributes.position, n = P.count, ao = new Float32Array(n), v = new THREE.Vector3();
+    for (let i = 0; i < n; i++) {
+      v.fromBufferAttribute(P, i).normalize();
+      const lat = v.x * s, dy = v.y, dz = v.z;
+      let px = lat * 0.52, py = dy * 0.56, pz = dz * 0.86;
+      if (dz < 0) { const k = dz * dz; py *= 1 - 0.2 * k; px *= 1 - 0.14 * k; } else { py *= 1 - 0.08 * dz * dz; }
+      if (px < 0) px *= 0.32;
+      if (py < 0) py *= 0.62;
+      const tm = Math.exp(-Math.pow((dz - 0.08) / 0.4, 2)) * sstep(0.05, 0.6, lat) * sstep(0.25, -0.35, dy);
+      py -= 0.2 * tm; px += 0.05 * tm;
+      const q = 4.3, w = noise3(px * 1.6 + 11, py * 1.6, pz * 1.6) * 0.55;
+      const a = Math.abs(noise3(px * q + w, py * q - w, pz * q + 0.7 * w) + 0.32 * noise3(px * q * 2.1, py * q * 2.1 + 5, pz * q * 2.1));
+      let disp = 0.022 * sstep(0.05, 0.35, a) - 0.03 * (1 - sstep(0.0, 0.1, a));
+      const sy = sylvY(pz), dC = pz - centralZ(py), dS = py - sy, dO = pz - (-0.5 + 0.12 * py);
+      disp -= 0.045 * Math.exp(-dC * dC / 0.0005) * sstep(sy, sy + 0.1, py);
+      disp -= 0.07 * Math.exp(-dS * dS / 0.0011) * sstep(0.05, 0.3, lat) * sstep(-0.56, -0.38, pz) * sstep(0.62, 0.45, pz);
+      disp -= 0.03 * Math.exp(-dO * dO / 0.0006);
+      if (px < 0) disp *= 0.45;
+      const nx = px / 0.27, ny = py / 0.31, nz = pz / 0.74, L = Math.hypot(nx, ny, nz) || 1;
+      px += nx / L * disp; py += ny / L * disp; pz += nz / L * disp;
+      P.setXYZ(i, s * (0.19 + px), py, pz);
+      ao[i] = 0.56 + 0.44 * sstep(-0.05, 0.016, disp);
+    }
+    g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
+    g.computeVertexNormals();
+    return { g, ao };
+  }
+  const shellMat = (hex, vc) => new THREE.MeshPhysicalMaterial({
+    color: hex, vertexColors: !!vc, roughness: 0.62, clearcoat: 0.35, clearcoatRoughness: 0.5, side: THREE.DoubleSide
+  });
+  const BASE = new THREE.Color(0xe2b6aa), DEP = new THREE.Color(0x3f5cb8), GLOW = new THREE.Color(0x8ff3ff);
+  const hemi = {};
+  for (const s of [1, -1]) {
+    const { g, ao } = buildHemisphere(s);
+    const m = new THREE.Mesh(g, shellMat(0xffffff, true));
+    scene.add(m);
+    hemi[s] = { mesh: m, ao, col: g.attributes.color };
+  }
+  // distance of every left-hemisphere vertex from the occipital pole, where the wave starts
+  const WAVE_START = V(0.25, 0.0, -0.83);
+  const distL = (function () {
+    const P = hemi[1].mesh.geometry.attributes.position, d = new Float32Array(P.count);
+    for (let i = 0; i < P.count; i++) d[i] = Math.hypot(P.getX(i) - WAVE_START.x, P.getY(i) - WAVE_START.y, P.getZ(i) - WAVE_START.z);
+    return d;
+  })();
+  function paint(h, fn) {
+    const a = h.col.array, ao = h.ao;
+    for (let i = 0; i < ao.length; i++) {
+      let r = BASE.r, g = BASE.g, b = BASE.b;
+      if (fn) { const c = fn(i); if (c) { r = c[0]; g = c[1]; b = c[2]; } }
+      a[3 * i] = r * ao[i]; a[3 * i + 1] = g * ao[i]; a[3 * i + 2] = b * ao[i];
+    }
+    h.col.needsUpdate = true;
+  }
+  paint(hemi[1]); paint(hemi[-1]);
+  const mix3 = (r, g, b, c, m) => [r + (c.r - r) * m, g + (c.g - g) * m, b + (c.b - b) * m];
+  const tmpC = [0, 0, 0];
+  function paintWave(R, strength, dull) {
+    paint(hemi[1], i => {
+      let c = [BASE.r, BASE.g, BASE.b];
+      if (dull > 0) c = mix3(c[0], c[1], c[2], DEP, 0.22 * dull);
+      if (strength > 0) {
+        const d = distL[i];
+        const behind = d < R ? Math.exp(-(R - d) / 0.55) : 0;
+        c = mix3(c[0], c[1], c[2], DEP, 0.72 * behind * strength);
+        const f = Math.exp(-((d - R) * (d - R)) / 0.0022) * strength;
+        c = mix3(c[0], c[1], c[2], GLOW, f);
+      }
+      return c;
+    });
+  }
+
+  // cerebellum
+  const cbl = (function () {
+    const g = new THREE.SphereGeometry(1, 180, 120);
+    const P = g.attributes.position, n = P.count, col = new Float32Array(n * 3), v = new THREE.Vector3();
+    for (let i = 0; i < n; i++) {
+      v.fromBufferAttribute(P, i).normalize();
+      let px = v.x * 0.5, py = v.y * 0.21, pz = v.z * 0.3;
+      if (v.z > 0.2) pz *= 1 - 0.35 * (v.z - 0.2);
+      const mid = Math.exp(-(v.x * v.x) / 0.012);
+      if (v.z < 0) pz += 0.04 * mid * (-v.z);
+      const f = Math.sin(Math.atan2(v.y, -v.z) * 30 + 1.6 * noise3(v.x * 3, v.y * 3, v.z * 3)) * Math.sqrt(Math.max(0, 1 - v.x * v.x));
+      const disp = 0.009 * f - 0.006 * mid;
+      const nx = px / 0.25, ny = py / 0.044, nz = pz / 0.09, L = Math.hypot(nx, ny, nz) || 1;
+      px += nx / L * disp; py += ny / L * disp; pz += nz / L * disp;
+      P.setXYZ(i, px, py - 0.47, pz - 0.6);
+      col[3 * i] = col[3 * i + 1] = col[3 * i + 2] = 0.6 + 0.4 * (0.5 + 0.5 * f);
+    }
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    g.computeVertexNormals();
+    const m = new THREE.Mesh(g, shellMat(0xd8a69c, true)); scene.add(m); return m;
+  })();
+
+  // brainstem and upper spinal cord
+  const stemMeshes = [];
+  function stemPiece(geo, pos, rotX) {
+    const m = new THREE.Mesh(geo, shellMat(0xe3c3b3, false));
+    m.position.copy(pos); if (rotX) m.rotation.x = rotX; scene.add(m); stemMeshes.push(m); return m;
+  }
+  stemPiece(new THREE.CylinderGeometry(0.105, 0.12, 0.22, 40), V(0, -0.26, -0.1), 0.15);
+  { const g = new THREE.SphereGeometry(1, 48, 36); g.scale(0.165, 0.14, 0.15); stemPiece(g, V(0, -0.43, -0.09)); }
+  stemPiece(new THREE.CylinderGeometry(0.095, 0.062, 0.32, 40), V(0, -0.67, -0.15), 0.18);
+  stemPiece(new THREE.CylinderGeometry(0.056, 0.052, 0.55, 32), V(0, -1.08, -0.21), 0.1);
+  const shells = [hemi[1].mesh, hemi[-1].mesh, cbl].concat(stemMeshes);
+
+  // ---------- deep structures that light up ----------
+  function blob(c, r, hex) {
+    const g = new THREE.SphereGeometry(1, 32, 24); g.scale(r[0], r[1], r[2]);
+    const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: hex, roughness: 0.45, emissive: hex, emissiveIntensity: 0 }));
+    m.position.copy(c); scene.add(m); return m;
+  }
+  const hypo = blob(V(0, -0.17, 0.08), [0.08, 0.06, 0.08], 0x5fd0ff);
+  const pontine = blob(V(0, -0.4, -0.16), [0.06, 0.05, 0.05], 0x5fd0ff);
+  const thalR = blob(V(-0.09, 0.02, -0.1), [0.08, 0.08, 0.13], 0xc9a0e6);
+  const thalL = blob(V(0.09, 0.02, -0.1), [0.08, 0.08, 0.13], 0xc9a0e6);
+  const haloGeo = new THREE.BufferGeometry();
+  haloGeo.setAttribute('position', new THREE.Float32BufferAttribute([0, -0.17, 0.08, 0, -0.4, -0.16], 3));
+  const haloMat = new THREE.PointsMaterial({ size: 0.55, color: 0x6fe0ff, transparent: true, opacity: 0, depthWrite: false, depthTest: false });
+  const halo = new THREE.Points(haloGeo, haloMat); halo.renderOrder = 5; scene.add(halo);
+  const TGG = V(0.17, -0.4, 0.0), TCC = V(0.04, -0.8, -0.2);
+  const ganglion = blob(TGG, [0.045, 0.026, 0.055], 0xf2c14e);
+  const tcc = blob(TCC, [0.04, 0.05, 0.04], 0xf08a3c);
+
+  // ---------- meningeal vessels, draped over the left hemisphere ----------
+  const caster = new THREE.Raycaster();
+  function onSurface(y, z) {
+    caster.set(V(0.2, y, z), V(1, 0, 0));
+    const hits = caster.intersectObject(hemi[1].mesh, false);
+    if (!hits.length) return null;
+    return hits[hits.length - 1].point.add(V(0.02, 0, 0));
+  }
+  const BRANCHES = [
+    [[-0.34, 0.06], [-0.2, 0.08], [-0.06, 0.1]],
+    [[-0.06, 0.1], [0.08, 0.2], [0.26, 0.22], [0.42, 0.12]],
+    [[-0.06, 0.1], [0.0, -0.08], [0.1, -0.28], [0.18, -0.48]],
+    [[0.08, 0.2], [0.2, 0.36], [0.3, 0.5]],
+    [[0.0, -0.08], [0.2, -0.05], [0.4, -0.02]],
+    [[0.1, -0.28], [-0.05, -0.42], [-0.12, -0.56]]
+  ];
+  const vessels = [], vesselCurves = [];
+  const vesselMat = new THREE.MeshStandardMaterial({ color: 0xb8352c, roughness: 0.45, emissive: 0xff3b2f, emissiveIntensity: 0, transparent: true, opacity: 0.75 });
+  for (const br of BRANCHES) {
+    const pts = [];
+    for (let k = 0; k < br.length - 1; k++) {
+      const [y0, z0] = br[k], [y1, z1] = br[k + 1];
+      for (let j = 0; j < 10; j++) { const t = j / 10, p = onSurface(y0 + (y1 - y0) * t, z0 + (z1 - z0) * t); if (p) pts.push(p); }
+    }
+    const last = br[br.length - 1], pl = onSurface(last[0], last[1]); if (pl) pts.push(pl);
+    if (pts.length < 4) continue;
+    const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
+    const TS = 90, RS = 8, geo = new THREE.TubeGeometry(curve, TS, 0.011, RS, false);
+    const base = geo.attributes.position.array.slice(), centers = new Float32Array(base.length);
+    for (let i = 0; i <= TS; i++) {
+      const c = curve.getPointAt(i / TS);
+      for (let j = 0; j <= RS; j++) { const k = (i * (RS + 1) + j) * 3; centers[k] = c.x; centers[k + 1] = c.y; centers[k + 2] = c.z; }
+    }
+    const m = new THREE.Mesh(geo, vesselMat); scene.add(m);
+    vessels.push({ m, base, centers }); vesselCurves.push(curve);
+  }
+  function dilate(s) {
+    for (const v of vessels) {
+      const a = v.m.geometry.attributes.position.array;
+      for (let k = 0; k < a.length; k++) a[k] = v.centers[k] + (v.base[k] - v.centers[k]) * s;
+      v.m.geometry.attributes.position.needsUpdate = true;
+    }
+  }
+  const vesselMid = vesselCurves.length ? vesselCurves[0].getPointAt(0.6) : V(0.7, -0.15, 0.08);
+  const vesselBack = vesselCurves.length > 2 ? vesselCurves[2].getPointAt(0.55) : V(0.7, 0.05, -0.2);
+
+  // ---------- pain pathway with travelling pulses ----------
+  const painGroup = new THREE.Group(); scene.add(painGroup);
+  const painMat = new THREE.MeshBasicMaterial({ color: 0xff9a3c, transparent: true, opacity: 0 });
+  const affCurve = new THREE.CatmullRomCurve3([vesselMid.clone(), V(0.4, -0.3, 0.06), TGG.clone(), V(0.12, -0.45, -0.08), V(0.07, -0.62, -0.15), TCC.clone()], false, 'centripetal');
+  const ascCurve = new THREE.CatmullRomCurve3([TCC.clone(), V(0.0, -0.66, -0.15), V(-0.05, -0.38, -0.1), V(-0.09, 0.02, -0.1), V(-0.3, 0.28, 0.0), V(-0.48, 0.36, 0.02)], false, 'centripetal');
+  painGroup.add(new THREE.Mesh(new THREE.TubeGeometry(affCurve, 120, 0.009, 10, false), painMat));
+  painGroup.add(new THREE.Mesh(new THREE.TubeGeometry(ascCurve, 120, 0.009, 10, false), painMat));
+  const dotTex = (function () {
+    const c = document.createElement('canvas'); c.width = c.height = 64;
+    const x = c.getContext('2d'), gr = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.35, 'rgba(255,255,255,.7)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = gr; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
+  })();
+  haloMat.map = dotTex; haloMat.needsUpdate = true;
+  const PULSES = 6;
+  const pulseGeo = new THREE.BufferGeometry();
+  const pulsePos = new Float32Array(PULSES * 2 * 3);
+  pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePos, 3));
+  const pulseMat = new THREE.PointsMaterial({ size: 0.11, map: dotTex, color: 0xfff1c9, transparent: true, opacity: 0, depthWrite: false, depthTest: false });
+  const pulsePts = new THREE.Points(pulseGeo, pulseMat); pulsePts.renderOrder = 5; painGroup.add(pulsePts);
+
+  // CGRP released around the vessels
+  const NC = 260;
+  const cgrpGeo = new THREE.BufferGeometry();
+  const cPos = new Float32Array(NC * 3), cVel = new Float32Array(NC * 3), cLife = new Float32Array(NC);
+  cgrpGeo.setAttribute('position', new THREE.BufferAttribute(cPos, 3));
+  const cgrpMat = new THREE.PointsMaterial({ size: 0.05, map: dotTex, color: 0xe8ff3a, transparent: true, opacity: 0, depthWrite: false });
+  scene.add(new THREE.Points(cgrpGeo, cgrpMat));
+  const tv = new THREE.Vector3();
+  function spawn(i) {
+    if (!vesselCurves.length) return;
+    vesselCurves[(Math.random() * vesselCurves.length) | 0].getPointAt(Math.random(), tv);
+    cPos[3 * i] = tv.x; cPos[3 * i + 1] = tv.y; cPos[3 * i + 2] = tv.z;
+    cVel[3 * i] = 0.02 + Math.random() * 0.04; cVel[3 * i + 1] = (Math.random() - 0.5) * 0.06; cVel[3 * i + 2] = (Math.random() - 0.5) * 0.06;
+    cLife[i] = Math.random() * 1.6;
+  }
+  for (let i = 0; i < NC; i++) spawn(i);
+
+  // ---------- drug-site markers ----------
+  const DRUG_SITES = [vesselMid.clone().add(V(0.03, 0.05, 0)), TCC.clone().add(V(0.09, 0, 0.04)), vesselBack.clone().add(V(0.03, 0, 0)), V(0.36, 0.46, 0.02)];
+  const drugDots = DRUG_SITES.map(p => blob(p, [0.026, 0.026, 0.026], 0x2fb3c9));
+  drugDots.forEach(m => { m.visible = false; m.material.emissiveIntensity = 0.9; });
+
+  // ---------- labels ----------
+  const labelLayer = $('labels');
+  const labels = [];
+  function label(text, pos, when, cls, dx, dy) {
+    const el = document.createElement('div'); el.className = 'tag' + (cls ? ' ' + cls : ''); el.textContent = text;
+    labelLayer.appendChild(el); labels.push({ el, pos, when, dx: dx || 0, dy: dy || 0 });
+  }
+  label('ไฮโปทาลามัส', V(0, -0.17, 0.08), s => s.phase === 'prodrome' && !s.drugs, '', -92, 26);
+  label('ก้านสมอง', V(0, -0.4, -0.16), s => s.phase === 'prodrome' && !s.drugs, '', 78, 6);
+  label('คลื่นเริ่มที่กลีบท้ายทอย', WAVE_START.clone().add(V(0.08, 0.08, 0)), s => s.phase === 'aura' && !s.drugs);
+  label('หลอดเลือดเยื่อหุ้มสมอง', vesselCurves.length > 3 ? vesselCurves[3].getPointAt(0.8) : V(0.6, 0.2, 0.2), s => s.phase === 'headache' && !s.drugs);
+  label('ปมประสาทไทรเจมินัล', TGG, s => s.phase === 'headache' && !s.drugs);
+  label('ก้านสมองส่วนท้าย · สถานีรับปวด', TCC, s => s.phase === 'headache' && !s.drugs);
+  label('ทาลามัส', V(-0.09, 0.02, -0.1), s => s.phase === 'headache' && !s.drugs, '', 0, -34);
+  DRUG_SITES.forEach((p, i) => label(String(i + 1), p, s => s.drugs, 'num'));
+
+  // ---------- story ----------
+  const PHASES = [
+    { key: 'prodrome', dur: 12, t: 'ระยะบอกเหตุ', d: 'หลายชั่วโมงถึง 2 วันก่อนปวด',
+      title: 'ระยะบอกเหตุ สมองเริ่มเปลี่ยนก่อนปวด',
+      text: 'ไฮโปทาลามัสและก้านสมองเริ่มทำงานผิดจังหวะตั้งแต่ยังไม่ปวด หลายคนจึงมีสัญญาณเตือนล่วงหน้า บางอาการถูกเข้าใจผิดว่าเป็นตัวกระตุ้น เช่น อยากกินของหวานแล้วก็ปวดตามมา ทั้งที่ความอยากนั้นเป็นอาการแรกของไมเกรนเอง',
+      chips: ['หาวบ่อย', 'อยากกินของหวาน', 'ตึงคอ', 'อ่อนเพลีย', 'อารมณ์เปลี่ยน', 'ไวต่อแสง'] },
+    { key: 'aura', dur: 22, t: 'ออร่า', d: '5 ถึง 60 นาที',
+      title: 'ออร่า คลื่นไฟฟ้าที่ค่อยๆ แผ่บนเปลือกสมอง',
+      text: 'คลื่นที่เรียกว่า cortical spreading depolarization เคลื่อนช้าๆ ราว 3 มิลลิเมตรต่อนาที มักเริ่มที่กลีบท้ายทอยซึ่งดูแลการมองเห็น จึงเห็นแสงซิกแซกระยิบระยับที่ค่อยๆ ขยายออก ตามด้วยบริเวณที่มองไม่ชัด ภาพนี้เห็นทั้งสองตาในครึ่งลานสายตาเดียวกัน ด้านหลังคลื่นสมองจะทำงานลดลงชั่วคราว',
+      chips: ['พบราวหนึ่งในสามของผู้ป่วยไมเกรน', 'ออร่าแต่ละอาการนาน 5 ถึง 60 นาที'] },
+    { key: 'headache', dur: 22, t: 'ปวดศีรษะ', d: '4 ถึง 72 ชั่วโมงถ้าไม่รักษา',
+      title: 'ระยะปวด ระบบประสาทไทรเจมินัลถูกกระตุ้น',
+      text: 'ปลายประสาทไทรเจมินัลรอบหลอดเลือดเยื่อหุ้มสมองหลั่งสาร CGRP หลอดเลือดขยายและเกิดการอักเสบรอบเส้นประสาท สัญญาณปวดวิ่งผ่านปมประสาทไทรเจมินัล ลงไปที่ก้านสมองส่วนท้าย แล้วข้ามขึ้นไปทาลามัสและเปลือกสมอง หลอดเลือดขยายเป็นผลที่ตามมา ไม่ใช่ต้นเหตุหลักอย่างที่เคยเชื่อกัน',
+      chips: ['ปวดตุบๆ มักข้างเดียว', 'ขยับตัวแล้วปวดมากขึ้น', 'แพ้แสง แพ้เสียง', 'คลื่นไส้'],
+      note: 'ถ้าปวดนาน สมองจะไวขึ้น (central sensitization) แค่หวีผมหรือใส่แว่นก็รู้สึกเจ็บ การรักษาตั้งแต่เริ่มปวดจึงได้ผลดีกว่า' },
+    { key: 'postdrome', dur: 10, t: 'ระยะฟื้นตัว', d: 'ราว 1 ถึง 2 วัน',
+      title: 'ระยะฟื้นตัว หายปวดแล้วแต่ยังไม่สุดตัว',
+      text: 'หลังหายปวด สมองยังไม่กลับเป็นปกติทันที หลายคนรู้สึกเหมือนเมาค้าง อ่อนเพลีย สมาธิไม่ดี และยังไวต่อการขยับศีรษะ อาการเหล่านี้ค่อยๆ หายไปเอง',
+      chips: ['อ่อนเพลีย', 'สมาธิไม่ดี', 'รู้สึกเหมือนเมาค้าง', 'ตึงคอ'] }
+  ];
+  const state = { t: 0, playing: !reduceMotion, aura: true, drugs: false, phase: 'prodrome', ended: false };
+  const list = () => PHASES.filter(p => state.aura || p.key !== 'aura');
+  const total = () => list().reduce((a, p) => a + p.dur, 0);
+  function locate(t) {
+    let acc = 0; const L = list();
+    for (let i = 0; i < L.length; i++) { if (t < acc + L[i].dur || i === L.length - 1) return { p: L[i], i, start: acc, rel: clamp01((t - acc) / L[i].dur) }; acc += L[i].dur; }
+  }
+  const startOf = key => { let acc = 0; for (const p of list()) { if (p.key === key) return acc; acc += p.dur; } return 0; };
+
+  const tl = $('timeline');
+  let segEls = {};
+  function buildTimeline() {
+    tl.innerHTML = ''; segEls = {};
+    list().forEach((p, i) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'seg'; b.dataset.key = p.key;
+      b.style.flexGrow = p.dur;
+      b.innerHTML = '<span class="t">' + (i + 1) + '. ' + p.t + '</span><span class="d">' + p.d + '</span><span class="fill"></span>';
+      b.onclick = () => { state.t = startOf(p.key) + 0.02; state.ended = false; renderCard(true); };
+      tl.appendChild(b); segEls[p.key] = b;
+    });
+  }
+  buildTimeline();
+
+  let shownKey = null;
+  function renderCard(force) {
+    const loc = locate(state.t), p = loc.p;
+    state.phase = p.key;
+    if (p.key !== shownKey || force) {
+      shownKey = p.key;
+      $('pKicker').textContent = 'ระยะที่ ' + (loc.i + 1) + ' จาก ' + list().length;
+      $('pTitle').textContent = p.title;
+      $('pText').textContent = p.text;
+      $('pChips').innerHTML = p.chips.map(c => '<li>' + c + '</li>').join('');
+      $('pNote').hidden = !p.note; $('pNote').textContent = p.note || '';
+      for (const k in segEls) segEls[k].toggleAttribute('aria-current', false);
+      if (segEls[p.key]) segEls[p.key].setAttribute('aria-current', 'step');
+    }
+    $('vf').hidden = !(p.key === 'aura' && !state.drugs);
+    const meta = $('pMeta');
+    if (p.key === 'aura') {
+      const min = loc.rel * 30;
+      meta.textContent = 'นาทีที่ ' + Math.round(min) + ' · คลื่นเดินทางแล้วราว ' + (min * 0.3).toFixed(1) + ' ซม.';
+      const sens = min > 21;
+      $('pNote').hidden = !sens;
+      if (sens) $('pNote').textContent = 'ถ้าคลื่นไปถึงสมองส่วนรับสัมผัส อาจชาที่มือและรอบปากร่วมด้วย';
+    } else meta.textContent = p.d;
+    for (const k in segEls) {
+      const L = list(); let acc = 0, fill = 0;
+      for (const q of L) { if (q.key === k) { fill = clamp01((state.t - acc) / q.dur); break; } acc += q.dur; }
+      segEls[k].querySelector('.fill').style.width = (fill * 100).toFixed(1) + '%';
+    }
+  }
+
+  // ---------- controls ----------
+  function setPlayLabel() { $('bPlay').textContent = state.ended ? 'เล่นอีกครั้ง' : (state.playing ? 'หยุด' : 'เล่น'); }
+  $('bPlay').onclick = () => {
+    if (state.ended) { state.t = 0; state.ended = false; state.playing = true; }
+    else state.playing = !state.playing;
+    setPlayLabel();
+  };
+  $('bAura').onclick = () => {
+    const cur = state.phase;
+    state.aura = !state.aura; $('bAura').setAttribute('aria-pressed', String(state.aura));
+    $('bAura').textContent = state.aura ? 'มีออร่า' : 'ไม่มีออร่า';
+    buildTimeline();
+    state.t = startOf(cur === 'aura' ? 'headache' : cur) + 0.02;
+    renderCard(true);
+  };
+  $('bDrugs').onclick = () => {
+    state.drugs = !state.drugs; $('bDrugs').setAttribute('aria-pressed', String(state.drugs));
+    $('drugCard').hidden = !state.drugs; $('phaseCard').hidden = state.drugs;
+    drugDots.forEach(m => { m.visible = state.drugs; });
+    renderCard(true);
+  };
+  $('bHome').onclick = goHome;
+  addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+
+  // open a phase from the link, e.g. #aura
+  const hk = (location.hash || '').slice(1);
+  if (PHASES.some(p => p.key === hk)) { state.t = startOf(hk) + PHASES.find(p => p.key === hk).dur * 0.62; state.playing = false; }
+  if (hk === 'drugs') { state.t = startOf('headache') + 10; state.playing = false; $('bDrugs').onclick(); }
+  setPlayLabel(); renderCard(true);
+
+  // ---------- visual-field aura ----------
+  const vfc = $('vfCanvas'), vx = vfc.getContext('2d');
+  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function drawField(rel, time) {
+    const W = vfc.width, c = W / 2, R = W * 0.46;
+    vx.clearRect(0, 0, W, W);
+    vx.save(); vx.beginPath(); vx.arc(c, c, R, 0, Math.PI * 2); vx.clip();
+    vx.fillStyle = css('--track'); vx.fillRect(0, 0, W, W);
+    const rf = R * (0.08 + 0.92 * rel);
+    // scotoma trailing behind the edge, right hemifield only
+    vx.beginPath(); vx.arc(c, c, rf, -Math.PI * 0.46, Math.PI * 0.46); vx.arc(c, c, Math.max(0, rf - R * 0.22), Math.PI * 0.46, -Math.PI * 0.46, true); vx.closePath();
+    vx.fillStyle = 'rgba(120,128,140,.45)'; vx.fill();
+    // fortification spectrum
+    vx.lineWidth = Math.max(2, W * 0.012); vx.lineJoin = 'miter';
+    for (let band = 0; band < 2; band++) {
+      vx.beginPath();
+      const steps = 46;
+      for (let k = 0; k <= steps; k++) {
+        const a = -Math.PI * 0.46 + (Math.PI * 0.92) * k / steps;
+        const rr = rf + (k % 2 ? 1 : -1) * W * 0.022 - band * W * 0.03;
+        const x = c + Math.cos(a) * rr, y = c + Math.sin(a) * rr;
+        k ? vx.lineTo(x, y) : vx.moveTo(x, y);
+      }
+      const hue = (time * 160 + band * 120) % 360;
+      vx.strokeStyle = 'hsla(' + hue + ',85%,62%,' + (0.95 - band * 0.35) + ')';
+      vx.stroke();
+    }
+    vx.restore();
+    vx.strokeStyle = css('--line'); vx.lineWidth = 2; vx.beginPath(); vx.arc(c, c, R, 0, Math.PI * 2); vx.stroke();
+    vx.setLineDash([6, 6]); vx.beginPath(); vx.moveTo(c, c - R); vx.lineTo(c, c + R); vx.stroke(); vx.setLineDash([]);
+    vx.fillStyle = css('--ink'); vx.beginPath(); vx.arc(c, c, W * 0.014, 0, Math.PI * 2); vx.fill();
+  }
+
+  // ---------- loop ----------
+  const clock = new THREE.Clock();
+  let shellOpacity = 1, lastWaveKey = '';
+  function setShellOpacity(o) {
+    const transparent = o < 0.995;
+    for (const m of shells) {
+      const mat = m.material;
+      if (mat.transparent !== transparent) { mat.transparent = transparent; mat.depthWrite = !transparent; mat.needsUpdate = true; }
+      mat.opacity = o;
+    }
+  }
+  const tmp = new THREE.Vector3();
+  function frame() {
+    const dt = Math.min(clock.getDelta(), 0.05), now = clock.elapsedTime;
+    if (state.playing && !state.ended) {
+      state.t += dt;
+      if (state.t >= total()) { state.t = total() - 0.001; state.ended = true; state.playing = false; setPlayLabel(); }
+    }
+    const loc = locate(state.t), ph = loc.p.key, rel = loc.rel;
+    renderCard(false);
+
+    // cortex see-through where the action is deep
+    let targetOp = 1;
+    if (ph === 'prodrome') targetOp = 0.3;
+    if (ph === 'headache') targetOp = 0.42;
+    if (state.drugs) targetOp = 0.42;
+    shellOpacity += (targetOp - shellOpacity) * Math.min(1, dt * 3);
+    setShellOpacity(shellOpacity);
+
+    // cortex colours: the spreading wave and its after-effects
+    let waveR = 0, waveS = 0, dull = 0;
+    if (ph === 'aura') { waveR = 0.02 + 0.9 * rel; waveS = sstep(0, 0.06, rel); }
+    if (ph === 'headache' && state.aura) { waveR = 0.92; waveS = 1 - sstep(0, 0.3, rel); }
+    if (ph === 'postdrome') dull = 1 - sstep(0.4, 1, rel);
+    const wk = waveR.toFixed(3) + '|' + waveS.toFixed(2) + '|' + dull.toFixed(2);
+    if (wk !== lastWaveKey) { lastWaveKey = wk; paintWave(waveR, waveS, dull); }
+
+    // prodrome glow
+    const pro = ph === 'prodrome' ? sstep(0, 0.15, rel) : 0;
+    const beat = 0.5 + 0.5 * Math.sin(now * 3.0);
+    hypo.material.emissiveIntensity = pro * (0.9 + 1.2 * beat);
+    pontine.material.emissiveIntensity = pro * (0.8 + 1.0 * beat);
+    haloMat.opacity = pro * (0.5 + 0.4 * beat);
+
+    // headache: vessels, CGRP, pain signals
+    const pain = ph === 'headache' ? sstep(0, 0.12, rel) * (1 - 0.0 * rel) : 0;
+    const throb = 0.5 + 0.5 * Math.sin(now * Math.PI * 2 * 1.1);
+    dilate(1 + 0.55 * pain * throb);
+    vesselMat.emissiveIntensity = pain * (0.25 + 0.6 * throb);
+    vesselMat.opacity = 0.35 + 0.6 * pain;
+    cgrpMat.opacity = pain * 0.9;
+    if (pain > 0) {
+      for (let i = 0; i < NC; i++) {
+        cLife[i] += dt; if (cLife[i] > 1.6) spawn(i);
+        cPos[3 * i] += cVel[3 * i] * dt; cPos[3 * i + 1] += cVel[3 * i + 1] * dt; cPos[3 * i + 2] += cVel[3 * i + 2] * dt;
+      }
+      cgrpGeo.attributes.position.needsUpdate = true;
+    }
+    const sig = ph === 'headache' ? sstep(0.08, 0.22, rel) : 0;
+    painMat.opacity = 0.85 * sig; pulseMat.opacity = sig;
+    if (sig > 0) {
+      const speed = reduceMotion ? 0.05 : 0.35;
+      for (let j = 0; j < PULSES; j++) {
+        const u = (now * speed + j / PULSES) % 1;
+        affCurve.getPointAt(u, tmp); pulsePos.set([tmp.x, tmp.y, tmp.z], j * 3);
+        ascCurve.getPointAt((u + 0.5 / PULSES) % 1, tmp); pulsePos.set([tmp.x, tmp.y, tmp.z], (PULSES + j) * 3);
+      }
+      pulseGeo.attributes.position.needsUpdate = true;
+    }
+    ganglion.visible = tcc.visible = ph === 'headache' || state.drugs;
+    ganglion.material.emissiveIntensity = sig * (0.4 + 0.5 * throb);
+    tcc.material.emissiveIntensity = sig * (0.5 + 0.6 * throb);
+    thalR.material.emissiveIntensity = sig * 0.55;
+    thalL.material.emissiveIntensity = 0;
+
+    if (ph === 'aura' && !state.drugs) drawField(rel, now);
+
+    controls.update();
+    renderer.render(scene, camera);
+
+    const W = innerWidth, H = innerHeight;
+    for (const L of labels) {
+      if (!L.when(state)) { L.el.style.opacity = 0; continue; }
+      tmp.copy(L.pos).project(camera);
+      if (tmp.z > 1) { L.el.style.opacity = 0; continue; }
+      L.el.style.opacity = 1;
+      L.el.style.transform = 'translate(-50%,-50%) translate(' + ((tmp.x + 1) / 2 * W).toFixed(1) + 'px,' + ((1 - tmp.y) / 2 * H).toFixed(1) + 'px) translate(' + L.dx + 'px,' + L.dy + 'px)';
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>

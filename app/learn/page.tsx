@@ -251,6 +251,9 @@ export default function LearnPage() {
             <a href="/learn/brain-3d" className="btn big btn-dark">
               เปิดสมองสามมิติ
             </a>
+            <a href="/learn/migraine-3d" className="btn big btn-dark">
+              ไมเกรน เกิดอะไรขึ้นในสมอง
+            </a>
             <a href="/learn/brain" className="btn big btn-outline">
               อ่านบทสมองและระบบประสาท
             </a>
