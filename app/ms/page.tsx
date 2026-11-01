@@ -225,6 +225,15 @@ export default function MsPage() {
               <h2 id="myelin-h">MS กับปลอกประสาท ในภาพเดียว</h2>
             </div>
             <NerveFiber3D />
+            <p>
+              อยากเห็นว่ารอยโรค MS มักอยู่ตรงไหนในสมองและไขสันหลัง ลองเปิดแบบจำลองสมองสามมิติ หมุนดูได้รอบทิศ
+              แตะแต่ละจุดเพื่ออ่านคำอธิบาย
+            </p>
+            <div className="card-actions">
+              <a href="/learn/brain-3d#ms" className="btn btn-dark big">
+                ดูรอยโรค MS ในสมองสามมิติ
+              </a>
+            </div>
           </div>
         </section>
 
