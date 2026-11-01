@@ -226,12 +226,15 @@ export default function MsPage() {
             </div>
             <NerveFiber3D />
             <p>
-              อยากเห็นว่ารอยโรค MS มักอยู่ตรงไหนในสมองและไขสันหลัง ลองเปิดแบบจำลองสมองสามมิติ หมุนดูได้รอบทิศ
-              แตะแต่ละจุดเพื่ออ่านคำอธิบาย
+              อยากเห็นว่ารอยโรค MS และ NMOSD มักอยู่ตรงไหนในสมองและไขสันหลัง และต่างกันอย่างไร
+              ลองเปิดแบบจำลองสมองสามมิติ หมุนดูได้รอบทิศ แตะแต่ละจุดเพื่ออ่านคำอธิบาย
             </p>
             <div className="card-actions">
               <a href="/learn/brain-3d#ms" className="btn btn-dark big">
                 ดูรอยโรค MS ในสมองสามมิติ
+              </a>
+              <a href="/learn/brain-3d#nmosd" className="btn btn-dark big">
+                ดูรอยโรค NMOSD ในสมองสามมิติ
               </a>
             </div>
           </div>
