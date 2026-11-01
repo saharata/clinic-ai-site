@@ -186,6 +186,15 @@ export default async function SymptomPage(props: PageProps<"/symptoms/[slug]">) 
               <strong>ควรพบแพทย์เมื่อไร:</strong> {s.redFlag}
             </p>
 
+            {s.model3d ? (
+              <div className="symptom-page-block">
+                <p>{s.model3d.text}</p>
+                <a href={s.model3d.href} className="btn btn-outline big">
+                  {s.model3d.label}
+                </a>
+              </div>
+            ) : null}
+
             {details?.length ? (
               <div className="symptom-details symptom-page-block">
                 <h2>คำอธิบายจากแพทย์</h2>
