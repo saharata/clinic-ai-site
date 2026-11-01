@@ -557,6 +557,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     state.ms = !state.ms; press(btn('bMS'), state.ms);
     lesions.forEach(m => { m.visible = state.ms; });
     if (state.ms) { state.xray = true; applyXray(); }
+    if (!selected) showInfo(null);
   };
   btn('bHome').onclick = () => {
     controls.target.copy(TARGET);
@@ -586,8 +587,9 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     m.emissive.setHex(on ? 0x5a3a2a : 0x000000);
     if (on) m.emissiveIntensity = 0.55;
   }
+  const MS_HINT = { k: 'รอยโรค MS (ตัวอย่าง)', n: 'ตำแหน่งที่รอยโรค MS พบบ่อย', d: 'จุดสีขาวคือตัวอย่างตำแหน่ง (บน MRI รอยโรคก็เห็นเป็นสีขาวเช่นกัน) รอบโพรงสมอง ชิดเปลือกสมอง ก้านสมองและสมองน้อย ไขสันหลัง และเส้นประสาทตา ชี้หรือแตะแต่ละจุดเพื่อดูคำอธิบาย' };
   function showInfo(p) {
-    if (!p) { infoK.textContent = HINT.k; infoN.textContent = HINT.n; infoE.textContent = ''; infoD.textContent = HINT.d; return; }
+    if (!p) { const h = state.ms ? MS_HINT : HINT; infoK.textContent = h.k; infoN.textContent = h.n; infoE.textContent = ''; infoD.textContent = h.d; return; }
     infoK.textContent = p.kicker; infoN.textContent = p.name; infoE.textContent = p.en; infoD.textContent = p.desc;
   }
   function setHover(p) {
@@ -613,6 +615,12 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   });
   el.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { lastMouse = { x: e.clientX, y: e.clientY }; mouseDirty = true; mouseIn = true; } });
   el.addEventListener('pointerleave', () => { mouseIn = false; setHover(null); });
+
+  // open a view from the link: #ms, #explode, #pathways
+  const hk = (location.hash || '').slice(1);
+  if (hk === 'ms') btn('bMS').onclick();
+  if (hk === 'explode') btn('bExplode').onclick();
+  if (hk === 'pathways') btn('bPath').onclick();
 
   // ---------- loop ----------
   addEventListener('resize', () => {
