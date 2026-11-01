@@ -67,6 +67,15 @@ export default function MobileMenu() {
         className="mobile-menu"
         hidden={!open}
       >
+        <form action="/search" method="get" role="search" className="srch-inline mm-search">
+          <label htmlFor="mm-q" className="sr-only">
+            ค้นหาในเว็บ
+          </label>
+          <input id="mm-q" name="q" type="search" placeholder="ค้นหาในเว็บ" />
+          <button type="submit" className="btn btn-dark">
+            ค้นหา
+          </button>
+        </form>
         <ul>
           {links.map((l) => (
             <li key={l.href}>

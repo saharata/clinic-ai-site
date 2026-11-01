@@ -8,6 +8,7 @@ import VisitJourney from "./VisitJourney";
 import MobileMenu from "./MobileMenu";
 import StrokeFlipCards from "./stickline/StrokeFlipCards";
 import Tilt3D from "./Tilt3D";
+import HotQuestions from "./HotQuestions";
 import LineLink from "./LineLink";
 
 const lineUrl = "https://lin.ee/7Y8onWN";
@@ -175,6 +176,20 @@ const knowledge = [
   },
 ];
 
+// ให้ Google รู้ว่าเว็บมีช่องค้นหา (sitelinks search box)
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "สหวรรณคลินิก",
+  url: "https://www.sahawanclinic.clinic",
+  inLanguage: "th",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: { "@type": "EntryPoint", urlTemplate: "https://www.sahawanclinic.clinic/search?q={search_term_string}" },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -202,6 +217,10 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
       <script
         type="application/ld+json"
@@ -285,6 +304,7 @@ export default function HomePage() {
                 ดูบริการคลินิก
               </a>
             </div>
+            <HotQuestions />
           </div>
 
           <div className="hero-side">
@@ -372,6 +392,15 @@ export default function HomePage() {
             <h2 id="knowledge-h">ความรู้พื้นฐานระบบประสาท</h2>
             <p>อธิบายด้วยภาพวาดเส้นเข้าใจง่าย โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์</p>
           </div>
+          <form action="/search" method="get" role="search" className="srch-inline">
+            <label htmlFor="home-q" className="sr-only">
+              ค้นหาในเว็บ
+            </label>
+            <input id="home-q" name="q" type="search" placeholder="ค้นหา เช่น ปวดหัว วัคซีน 4 เดือน เป็นลม" />
+            <button type="submit" className="btn btn-dark">
+              ค้นหา
+            </button>
+          </form>
 
           <h3 className="sl-h3 kb-h3">สัญญาณเตือนสโตรก จำว่า BE FAST</h3>
           <p>มีอาการเหล่านี้แบบเฉียบพลัน ควรไปห้องฉุกเฉินทันที</p>

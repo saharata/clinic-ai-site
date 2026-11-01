@@ -2357,3 +2357,32 @@ html[data-text-size="xl"] { font-size: 125%; }
 /* จอเล็ก: ป้ายในฉากเล็กเกินอ่าน ซ่อนไว้ (คำบรรยายใต้ภาพบอก "ภาพบน/ภาพล่าง" อยู่แล้ว) */
 @media (max-width: 520px) { .nf-stage { --nf-scale: 0.6; } .nf-fig { padding: 12px; } .nf-label { display: none; } }
 @media (max-width: 380px) { .nf-stage { --nf-scale: 0.5; } }
+
+/* ค้นหาในเว็บ (/search, ช่องค้นหาในหน้าแรกและเมนู) */
+.srch-inline { display: flex; gap: 8px; margin: 0 0 20px; max-width: 560px; }
+.srch-inline input, .srch-row input { flex: 1; min-width: 0; min-height: 44px; padding: 0 14px; border: 2px solid #94a3b8; border-radius: 999px; font: inherit; background: #fff; }
+.srch-inline input:focus-visible, .srch-row input:focus-visible { outline: 3px solid #0f766e; outline-offset: 2px; }
+.mm-search { margin: 0 0 8px; max-width: none; }
+.srch-page { max-width: 760px; }
+.srch-page h1 { margin: 0 0 12px; }
+.srch label { display: block; font-weight: 800; margin-bottom: 6px; }
+.srch-row { display: flex; gap: 8px; }
+.srch-count { margin: 10px 0 0; color: #475569; }
+.srch-empty { margin-top: 12px; }
+.srch-list { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 10px; }
+.srch-list a { display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; border: 2px solid #191916; border-radius: 14px; background: #fff; color: #191916; text-decoration: none; line-height: 1.5; min-width: 0; }
+.srch-list a:hover { background: #f8fafc; }
+.srch-list a:focus-visible { outline: 3px solid #0f766e; outline-offset: 2px; }
+.srch-group { font-size: 0.8125rem; font-weight: 700; color: #0f766e; }
+.srch-list strong { text-decoration: underline; text-underline-offset: 3px; }
+.srch-text { color: #475569; font-size: 0.9375rem; overflow-wrap: anywhere; }
+
+/* คำถามที่คนถามบ่อย (HotQuestions.tsx) */
+.hotq { margin-top: 24px; padding: 14px 16px; border: 2px solid #191916; border-radius: 16px; background: #fff; max-width: 640px; }
+.hotq-label { margin: 0 0 6px; font-weight: 800; color: #0f766e; font-size: 0.9375rem; }
+.hotq-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.hotq-link { font-size: 1.125rem; font-weight: 700; color: #0f172a; min-width: 0; overflow-wrap: anywhere; }
+.hotq-ctl { display: flex; gap: 6px; }
+.hotq-ctl .btn { min-height: 36px; padding: 0 12px; font-size: 0.875rem; }
+.hotq-more { margin: 8px 0 0; font-size: 0.9375rem; color: #475569; }
+@media (prefers-reduced-motion: no-preference) { .hotq-link { animation: sl-in 0.35s ease-out; } }
