@@ -75,6 +75,7 @@ Sahawan Clinic (สหวรรณคลินิก) is a pediatric and neurolo
 - บทที่ 8 สมองและระบบประสาท ฉบับเจาะลึก (อายุ 11-12 ปี) — https://www.sahawanclinic.clinic/learn/brain
 - เข้าใจโรคด้วยภาพสามมิติ (หน้ารวม ไมเกรน MS NMOSD สมองพื้นฐาน) — https://www.sahawanclinic.clinic/understand
 - สมองสามมิติ: แบบจำลองหมุนได้ แยกกลีบ มองทะลุเห็นโครงสร้างด้านใน ทางเดินประสาทสั่งการและการมองเห็น และตำแหน่งรอยโรค MS — https://www.sahawanclinic.clinic/learn/brain-3d
+- เวียนบ้านหมุนจากหินปูนในหู (BPPV): หูชั้นในสามมิติ ตะกอนไหลตามแรงโน้มถ่วงระหว่างทำท่า Epley ทีละขั้น พร้อมข้อควรระวัง — https://www.sahawanclinic.clinic/learn/bppv-3d
 - ไมเกรน เกิดอะไรขึ้นในสมอง: แบบจำลองสามมิติทีละระยะ ระยะบอกเหตุ ออร่า ระบบไทรเจมินัลและ CGRP ระยะฟื้นตัว และตำแหน่งออกฤทธิ์ของยาแต่ละกลุ่ม — https://www.sahawanclinic.clinic/learn/migraine-3d
 - บทที่ 9 หัวใจ เลือด และปอด ฉบับเจาะลึก (อายุ 11-12 ปี) — https://www.sahawanclinic.clinic/learn/heart
 - บทที่ 10 ดีเอ็นเอ พันธุกรรม และการแบ่งเซลล์ (อายุ 11-12 ปี) — https://www.sahawanclinic.clinic/learn/dna

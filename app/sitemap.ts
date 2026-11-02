@@ -224,6 +224,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
+      url: `${siteUrl}/learn/bppv-3d`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
       url: `${siteUrl}/learn/heart`,
       lastModified: now,
       changeFrequency: "monthly",
