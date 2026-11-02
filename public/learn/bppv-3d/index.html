@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>เวียนบ้านหมุนจากหินปูนในหู ท่า Epley | สหวรรณคลินิก</title>
+<meta name="description" content="เวียนบ้านหมุนจากหินปูนในหู (BPPV) ดูหูชั้นในสามมิติ ตะกอนหินปูนไหลตามแรงโน้มถ่วงจริงระหว่างทำท่า Epley ทีละขั้น พร้อมท่าของผู้ป่วยและข้อควรระวังก่อนทำเอง โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์">
+<link rel="canonical" href="https://www.sahawanclinic.clinic/learn/bppv-3d">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="th_TH">
+<meta property="og:site_name" content="สหวรรณคลินิก">
+<meta property="og:url" content="https://www.sahawanclinic.clinic/learn/bppv-3d">
+<meta property="og:title" content="เวียนบ้านหมุนจากหินปูนในหู ท่า Epley | สหวรรณคลินิก">
+<meta property="og:description" content="เวียนบ้านหมุนจากหินปูนในหู (BPPV) ดูหูชั้นในสามมิติ ตะกอนหินปูนไหลตามแรงโน้มถ่วงจริงระหว่างทำท่า Epley ทีละขั้น พร้อมท่าของผู้ป่วยและข้อควรระวังก่อนทำเอง โดย นพ. สหรัฐ อังศุมาศ ประสาทแพทย์">
+<meta property="og:image" content="https://www.sahawanclinic.clinic/understand/bppv.jpg">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;700&family=Sarabun:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 3D inner ear fills the stage; patient-position panel floats top-right; step card and step bar stacked at the bottom */
+:root {
+  --bg: #e8ebf0;
+  --bg2: #f8f9fb;
+  --ink: #19202b;
+  --muted: #5a6475;
+  --panel: rgba(250, 251, 253, .88);
+  --line: rgba(25, 32, 43, .13);
+  --accent: #23677d;
+  --on-accent: #ffffff;
+  --warn: #a34b12;
+  --track: rgba(25, 32, 43, .07);
+  --figure: #1f2733;
+  --bed: #c9d3df;
+  --display: "Anuphan", "Sarabun", system-ui, sans-serif;
+  --body: "Sarabun", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1118; --bg2: #1b2230; --ink: #e7ebf1; --muted: #9aa5b5;
+    --panel: rgba(17, 22, 31, .86); --line: rgba(231, 235, 241, .13);
+    --accent: #7cc3d5; --on-accent: #0d1118; --warn: #f0a35c; --track: rgba(231, 235, 241, .07);
+    --figure: #e7ebf1; --bed: #3a4657; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1118; --bg2: #1b2230; --ink: #e7ebf1; --muted: #9aa5b5;
+  --panel: rgba(17, 22, 31, .86); --line: rgba(231, 235, 241, .13);
+  --accent: #7cc3d5; --on-accent: #0d1118; --warn: #f0a35c; --track: rgba(231, 235, 241, .07);
+  --figure: #e7ebf1; --bed: #3a4657; color-scheme: dark;
+}
+html, body { height: 100%; }
+[hidden] { display: none !important; }
+body {
+  margin: 0; overflow: hidden;
+  background-color: var(--bg);
+  background-image: radial-gradient(120% 90% at 45% 35%, var(--bg2), var(--bg) 70%);
+  color: var(--ink); font-family: var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+#stage { position: fixed; inset: 0; }
+#stage canvas { display: block; touch-action: none; outline: none; }
+#labels { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+.tag {
+  position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; transition: opacity .3s;
+  font: 600 .76rem/1.2 var(--body); color: var(--ink);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px;
+}
+.tag small { display: block; font: 400 .62rem/1.2 var(--mono); color: var(--muted); }
+.tag.hot { border-color: var(--accent); }
+.hud { position: fixed; z-index: 3; }
+.top {
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: max(16px, env(safe-area-inset-left, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: flex-start; justify-content: space-between;
+  pointer-events: none;
+}
+.top > * { pointer-events: auto; min-width: 0; }
+.back { display: inline-block; margin-bottom: .35rem; font-size: .85rem; color: var(--accent); text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.brand h1 { font-family: var(--display); font-weight: 700; margin: 0; font-size: clamp(1.4rem, 3vw, 2.05rem); line-height: 1.15; text-wrap: balance; }
+.brand p { margin: .25rem 0 0; color: var(--muted); font-size: .9rem; }
+.right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.controls button, .seg {
+  font: 500 .92rem/1 var(--body); color: var(--ink); cursor: pointer;
+  background: var(--panel); border: 1px solid var(--line);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.controls button { padding: .6rem .9rem; border-radius: 999px; }
+.controls button:hover { border-color: var(--accent); }
+.controls button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+#bPlay { min-width: 6.2em; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pose {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px 12px;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); width: 260px; box-sizing: border-box;
+}
+.pose canvas { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1.25; }
+.pose .cap { font-size: .84rem; line-height: 1.45; margin-top: 4px; text-wrap: balance; }
+.pose .kick { font: 500 .66rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+#spin {
+  position: fixed; z-index: 3; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 120px); transform: translateX(-50%);
+  font: 600 .88rem/1 var(--body); color: var(--warn); background: var(--panel); border: 1px solid var(--warn);
+  border-radius: 999px; padding: .5rem .9rem; transition: opacity .3s; opacity: 0; pointer-events: none; white-space: nowrap;
+}
+.bottom {
+  left: max(16px, env(safe-area-inset-left, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+}
+.bottom > * { pointer-events: auto; }
+.panels { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.card {
+  flex: 1 1 340px; max-width: 560px; min-width: 0; box-sizing: border-box;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 16px 15px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  max-height: 40vh; overflow: auto;
+}
+.kicker { font: 500 .7rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.card h2 { font-family: var(--display); font-weight: 700; font-size: 1.2rem; margin: .4rem 0 0; text-wrap: balance; }
+.meta { font: 400 .8rem/1.4 var(--mono); color: var(--muted); margin-top: .2rem; }
+.card p { margin: .45rem 0 0; line-height: 1.62; font-size: .95rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: .6rem; padding: 0; list-style: none; }
+.chips li { font-size: .82rem; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--track); }
+.safety {
+  flex: 0 1 300px; min-width: 0; box-sizing: border-box; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 14px; padding: 12px 14px; font-size: .84rem; line-height: 1.55;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.safety b { color: var(--warn); }
+.safety ul { margin: .35rem 0 0; padding-left: 1.1em; }
+.timeline { display: flex; gap: 4px; }
+.seg { position: relative; overflow: hidden; border-radius: 10px; padding: 9px 9px 8px; text-align: left; min-width: 0; flex: 1 1 0; }
+.seg .t { display: block; font-weight: 600; font-size: .86rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seg .fill { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--accent); }
+.seg[aria-current="step"] { border-color: var(--accent); }
+.refs { font-size: .74rem; color: var(--muted); line-height: 1.5; }
+.refs a { color: inherit; }
+#fallback { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); }
+@media (max-width: 900px) { .safety { display: none; } }
+@media (max-width: 720px) {
+  .controls { justify-content: flex-start; }
+  .controls button { font-size: .86rem; padding: .5rem .72rem; }
+  .right { align-items: flex-start; }
+  .pose { width: 200px; padding: 8px 10px; }
+  .pose .cap { font-size: .76rem; }
+  .card { flex-basis: 100%; max-height: 30vh; padding: 12px 14px; }
+  .card p { font-size: .9rem; }
+  .seg { padding: 7px 6px 6px; }
+  .seg .t { font-size: .74rem; }
+  .refs { font-size: .66rem; }
+  #spin { top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 46vh); }
+}
+</style>
+
+</head>
+<body>
+<div id="stage" aria-label="แบบจำลองสามมิติของหูชั้นใน แสดงตะกอนหินปูนเคลื่อนที่ระหว่างทำท่า Epley"></div>
+<div id="labels" aria-hidden="true"></div>
+<div id="spin" role="status">ตะกอนกำลังไหล · ช่วงนี้จะเวียน</div>
+
+<header class="hud top">
+  <div class="brand">
+    <a class="back" href="/understand">← เข้าใจโรค · สหวรรณคลินิก</a>
+    <h1>เวียนบ้านหมุนจากหินปูนในหู</h1>
+    <p>BPPV และท่า Epley · นพ. สหรัฐ อังศุมาศ · ประสาทแพทย์</p>
+  </div>
+  <div class="right">
+    <div class="controls" role="toolbar" aria-label="ควบคุมการเล่น">
+      <button id="bPlay" type="button">หยุด</button>
+      <button id="bSide" type="button">หูขวา</button>
+      <button id="bHome" type="button">มุมเริ่มต้น</button>
+    </div>
+    <figure class="pose" aria-label="ท่าของผู้ป่วยในขั้นนี้">
+      <div class="kick">ท่าของผู้ป่วย (มองจากข้างเตียง)</div>
+      <canvas id="poseCanvas" width="520" height="325"></canvas>
+      <figcaption class="cap" id="poseCap"></figcaption>
+    </figure>
+  </div>
+</header>
+
+<section class="hud bottom" aria-label="ขั้นตอน">
+  <div class="panels">
+    <article class="card" aria-live="polite">
+      <div class="kicker" id="pKicker"></div>
+      <h2 id="pTitle"></h2>
+      <div class="meta" id="pMeta"></div>
+      <p id="pText"></p>
+      <ul class="chips" id="pChips"></ul>
+    </article>
+    <aside class="safety">
+      <b>ก่อนทำเองที่บ้าน</b>
+      <ul>
+        <li>ให้แพทย์ยืนยันก่อนว่าเป็น BPPV และเป็นหูข้างไหน</li>
+        <li>มีปัญหากระดูกคอหรือหลัง ปรึกษาแพทย์ก่อน</li>
+        <li>ควรมีคนอยู่ด้วย เพราะจะเวียนมากระหว่างทำ</li>
+        <li><b>ไปห้องฉุกเฉินทันที</b> ถ้าเวียนพร้อมพูดไม่ชัด ปากเบี้ยว แขนขาอ่อนแรง เห็นภาพซ้อน เดินไม่ได้ หรือปวดศีรษะรุนแรง</li>
+      </ul>
+    </aside>
+  </div>
+  <nav class="timeline" id="timeline" aria-label="ขั้นตอน"></nav>
+  <div class="refs">สื่อการเรียนรู้ ไม่ใช่การวินิจฉัยหรือคำแนะนำการรักษา · รูปทรงหูชั้นในเป็นแบบจำลองโดยประมาณ แต่การไหลของตะกอนคำนวณตามแรงโน้มถ่วงในแต่ละท่า · อ้างอิง:
+    <a href="https://doi.org/10.1177/0194599816689667" target="_blank" rel="noopener">AAO-HNS Clinical Practice Guideline: BPPV, 2017</a> ·
+    <a href="https://doi.org/10.1056/NEJMcp1309481" target="_blank" rel="noopener">Kim &amp; Zee, N Engl J Med 2014</a>
+  </div>
+</section>
+<div id="fallback" hidden>เบราว์เซอร์นี้เปิดภาพสามมิติ (WebGL) ไม่ได้</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  if (!window.THREE) { document.getElementById('fallback').hidden = false; return; }
+  if (THREE.ColorManagement) THREE.ColorManagement.legacyMode = false;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  const D2R = Math.PI / 180;
+  const clamp01 = x => Math.min(1, Math.max(0, x));
+
+  // ---------- head frame of a RIGHT ear: +x patient's right (lateral), +y up, +z nose ----------
+  const headQ = (pitch, yaw) => new THREE.Quaternion().setFromAxisAngle(V(1, 0, 0), pitch * D2R)
+    .multiply(new THREE.Quaternion().setFromAxisAngle(V(0, 1, 0), yaw * D2R));
+  const R = 0.62;
+  function ring(uRaw, nRaw) {
+    const u = uRaw.clone().normalize(), n = nRaw.clone().normalize(), v = new THREE.Vector3().crossVectors(n, u);
+    const C = u.clone().multiplyScalar(-1.15 * R);
+    const P = th => C.clone().addScaledVector(u, R * Math.cos(th * D2R)).addScaledVector(v, R * Math.sin(th * D2R));
+    const radial = th => u.clone().multiplyScalar(Math.cos(th * D2R)).addScaledVector(v, Math.sin(th * D2R));
+    return { u, v, n, C, P, radial };
+  }
+  const POST = ring(V(-0.4, -1, 0.4), V(1, 0, 1));   // posterior canal (LARP plane)
+  const ANT = ring(V(-0.4, -1, -0.4), V(1, 0, -1));  // anterior canal (RALP plane)
+  const LAT = ring(V(-1, 0, 0.4), V(0, 1, 0));       // lateral (horizontal) canal
+  const TH_AMP = 30, TH_CRUS = 330;
+
+  // ---------- renderer ----------
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); }
+  catch (e) { $('fallback').hidden = false; return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  $('stage').appendChild(renderer.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(34, innerWidth / innerHeight, 0.05, 60);
+  const TARGET = V(0.15, -0.05, -0.05);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true; controls.dampingFactor = 0.08; controls.minDistance = 1.2; controls.maxDistance = 9;
+  scene.add(new THREE.HemisphereLight(0xfff3ea, 0x39414f, 0.85));
+  const key = new THREE.DirectionalLight(0xffffff, 1.0); key.position.set(3, 4, 3); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x9fc6ff, 0.55); rim.position.set(-3, 1, -3); scene.add(rim);
+
+  const ear = new THREE.Group(); scene.add(ear);
+  const boneMat = () => new THREE.MeshPhysicalMaterial({ color: 0xf0e4cc, roughness: 0.4, clearcoat: 0.4, transparent: true, opacity: 0.42, depthWrite: false, side: THREE.DoubleSide, emissive: 0x2fb3c9, emissiveIntensity: 0 });
+  const mats = { bone: boneMat(), post: boneMat() };
+  mats.post.opacity = 0.55; mats.post.color.setHex(0xf6dfb8);
+  const tube = (pts, r, mat) => new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, false, 'centripetal'), Math.max(24, pts.length * 4), r, 16, false), mat);
+  const arcPts = (rg, a, b) => { const p = []; for (let t = a; t <= b + 0.01; t += 6) p.push(rg.P(t)); return p; };
+  function blob(c, r, mat) { const g = new THREE.SphereGeometry(1, 32, 24); g.scale(r[0], r[1], r[2]); const m = new THREE.Mesh(g, mat); m.position.copy(c); return m; }
+
+  const UTR = V(0, 0, 0);
+  ear.add(blob(UTR, [0.3, 0.19, 0.23], mats.bone));
+  const SAC = V(-0.04, -0.27, 0.2);
+  ear.add(blob(SAC, [0.13, 0.11, 0.12], mats.bone));
+  ear.add(tube([UTR.clone().add(V(-0.02, -0.12, 0.1)), SAC], 0.05, mats.bone));
+  // canals with ampullae
+  const canalTube = (rg, mat) => ear.add(tube(arcPts(rg, TH_AMP, TH_CRUS), 0.045, mat));
+  canalTube(POST, mats.post); canalTube(ANT, mats.bone); canalTube(LAT, mats.bone);
+  const postAmp = POST.P(TH_AMP), postCrus = POST.P(TH_CRUS);
+  // anterior: the end nearer the posterior crus joins it (common crus)
+  const aEnds = [ANT.P(TH_AMP), ANT.P(TH_CRUS)];
+  const antCrus = aEnds[0].distanceTo(postCrus) < aEnds[1].distanceTo(postCrus) ? aEnds[0] : aEnds[1];
+  const antAmp = antCrus === aEnds[0] ? aEnds[1] : aEnds[0];
+  const lEnds = [LAT.P(TH_AMP), LAT.P(TH_CRUS)];
+  const latAmp = lEnds[0].z > lEnds[1].z ? lEnds[0] : lEnds[1], latEnd = latAmp === lEnds[0] ? lEnds[1] : lEnds[0];
+  const CRUS = postCrus.clone().add(antCrus).multiplyScalar(0.5).add(V(0, 0.04, 0));
+  const UTR_TOP = V(-0.08, 0.12, -0.02);
+  ear.add(tube([postCrus, CRUS, UTR_TOP], 0.05, mats.post));
+  ear.add(tube([antCrus, CRUS], 0.05, mats.bone));
+  const toUtr = (p, mat) => ear.add(tube([p, p.clone().lerp(UTR, 0.55), UTR.clone().lerp(p, 0.3)], 0.05, mat));
+  toUtr(postAmp, mats.post); toUtr(antAmp, mats.bone); toUtr(latAmp, mats.bone); toUtr(latEnd, mats.bone);
+  ear.add(blob(postAmp, [0.085, 0.085, 0.085], mats.post));
+  ear.add(blob(antAmp, [0.085, 0.085, 0.085], mats.bone));
+  ear.add(blob(latAmp, [0.085, 0.085, 0.085], mats.bone));
+  // cochlea
+  {
+    const K = V(-0.12, -0.42, 0.5), axis = V(-0.45, 0.25, 0.85).normalize();
+    const e1 = new THREE.Vector3().crossVectors(axis, V(0, 1, 0)).normalize(), e2 = new THREE.Vector3().crossVectors(axis, e1);
+    const pts = [SAC.clone()];
+    for (let i = 0; i <= 60; i++) {
+      const t = i / 60, a = t * 2.6 * Math.PI * 2, r = 0.32 * (1 - 0.72 * t);
+      pts.push(K.clone().addScaledVector(e1, r * Math.cos(a)).addScaledVector(e2, r * Math.sin(a)).addScaledVector(axis, 0.24 * t));
+    }
+    ear.add(tube(pts, 0.055, mats.bone));
+  }
+
+  // ---------- crystals (otoconia) ----------
+  const NC = 12;
+  const crystalMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff0c0, emissiveIntensity: 0.6, roughness: 0.3 });
+  const crystals = [];
+  const cg = new THREE.IcosahedronGeometry(0.03, 0);
+  const homeSpots = [];
+  for (let i = 0; i < NC; i++) {
+    const m = new THREE.Mesh(cg, crystalMat); ear.add(m);
+    const a = i * 2.39996, r = 0.06 + 0.1 * ((i * 37) % 11) / 11;
+    homeSpots.push(V(0.05 + Math.cos(a) * r, -0.11 + 0.02 * Math.sin(i), Math.sin(a) * r * 0.9));
+    crystals.push({ m, jr: (((i * 53) % 9) / 9 - 0.5) * 0.04, jn: (((i * 29) % 7) / 7 - 0.5) * 0.04, k: 0.8 + 0.4 * ((i * 17) % 10) / 10 });
+  }
+  function placeCrystal(c) {
+    if (c.home >= 0) {
+      // travel down the common crus into the utricle, then rest on its floor
+      const h = Math.min(1, c.home);
+      const a = h < 0.5 ? postCrus.clone().lerp(CRUS, h * 2) : (h < 0.8 ? CRUS.clone().lerp(UTR_TOP, (h - 0.5) / 0.3) : UTR_TOP.clone().lerp(c.spot, (h - 0.8) / 0.2));
+      c.m.position.copy(a);
+    } else {
+      c.m.position.copy(POST.P(c.th)).addScaledVector(POST.radial(c.th), c.jr).addScaledVector(POST.n, c.jn);
+    }
+  }
+
+  // ---------- gravity arrow (in the ear's frame) ----------
+  const ARROW_AT = V(0.95, 0.5, 1.0);
+  const arrow = new THREE.ArrowHelper(V(0, -1, 0), ARROW_AT, 0.55, 0xe0892f, 0.14, 0.09);
+  ear.add(arrow);
+
+  // ---------- labels ----------
+  const labelLayer = $('labels'), labels = [];
+  function label(text, sub, pos, hotFn) {
+    const el = document.createElement('div'); el.className = 'tag';
+    el.innerHTML = text + (sub ? '<small>' + sub + '</small>' : '');
+    labelLayer.appendChild(el); labels.push({ el, pos, hotFn });
+  }
+  label('ถุงยูทริเคิล', 'ที่อยู่เดิมของตะกอน', V(0.1, -0.05, 0.26));
+  label('ท่อครึ่งวงกลมด้านหลัง', 'ตะกอนหลุดเข้าท่อนี้บ่อยที่สุด', POST.P(180), () => true);
+  label('ท่อด้านหน้า', '', ANT.P(180));
+  label('ท่อด้านข้าง', '', LAT.P(180));
+  label('แอมพูลลา', 'ตัวรับการหมุน', postAmp.clone().add(V(0.05, -0.07, 0)));
+  label('คอเคลีย', 'การได้ยิน', V(-0.12, -0.48, 0.62));
+  label('ทิศลงพื้น', 'เปลี่ยนตามท่า', ARROW_AT.clone().add(V(0.1, 0.0, 0.12)));
+
+  // ---------- story ----------
+  const STEPS = [
+    { key: 'cause', dur: 9, pose: [0, 0], body: 0, t: 'ทำไมเวียน',
+      title: 'ตะกอนหินปูนหลุดเข้าท่อครึ่งวงกลม',
+      text: 'ในหูชั้นในมีถุงเล็กๆ ที่มีตะกอนหินปูนขนาดจิ๋ว (otoconia) ช่วยรับรู้แรงโน้มถ่วง ถ้าตะกอนหลุดเข้าไปในท่อครึ่งวงกลม ทุกครั้งที่ขยับศีรษะ ตะกอนจะไหลตามแรงโน้มถ่วงและดันของเหลวในท่อ สมองจึงรับรู้ว่ากำลังหมุนทั้งที่อยู่นิ่ง',
+      chips: ['เวียนบ้านหมุนแต่ละครั้งไม่ถึง 1 นาที', 'เกิดตอนล้มตัวนอน พลิกตัว เงยหรือก้มหน้า', 'ส่วนใหญ่เกิดที่ท่อด้านหลัง'],
+      meta: 'สาเหตุของเวียนบ้านหมุนจากหูชั้นในที่พบบ่อยที่สุด', cap: 'นั่งตามปกติ ตะกอนตกค้างอยู่ปลายท่อด้านล่าง' },
+    { key: 'start', dur: 6, pose: [0, 45], body: 0, t: '1. เริ่ม',
+      title: 'ขั้นที่ 1 นั่งบนเตียง หันหน้าไปทาง{S} 45 องศา',
+      text: 'วางหมอนไว้ให้พอนอนลงแล้วหมอนอยู่ใต้ไหล่ ศีรษะจะได้แหงนไปด้านหลังเล็กน้อย การหันหน้าไปทาง{S} 45 องศาทำให้ท่อด้านหลังของหู{S}อยู่ในแนวเดียวกับทิศที่จะล้มตัวลงนอน',
+      chips: ['หันหน้าไปทางหูข้างที่เป็น'], meta: 'เตรียมท่า', cap: 'นั่ง หันหน้าไปทาง{S} 45°' },
+    { key: 'hang', dur: 9, pose: [-115, 45], body: -90, t: '2. นอนหงาย',
+      title: 'ขั้นที่ 2 นอนหงายเร็วๆ ศีรษะห้อยลงเล็กน้อย',
+      text: 'ล้มตัวลงนอนหงายเร็วๆ โดยยังหันหน้าไปทาง{S}อยู่ ศีรษะห้อยต่ำกว่าระดับเตียงเล็กน้อย ตะกอนจะไหลออกจากปลายท่อไปตามแรงโน้มถ่วง ช่วงนี้จะเวียนมาก ตากระตุก เป็นสัญญาณว่าตะกอนกำลังเคลื่อน',
+      chips: ['ค้างไว้ราว 30 วินาที หรือจนหายเวียน'], meta: 'ท่าเดียวกับที่แพทย์ใช้ตรวจ (Dix-Hallpike)', cap: 'นอนหงาย ศีรษะห้อย ยังหัน{S} 45°' },
+    { key: 'turn', dur: 8, pose: [-115, -45], body: -90, t: '3. หันศีรษะ',
+      title: 'ขั้นที่ 3 หันศีรษะไปทาง{O} 90 องศา',
+      text: 'ยังนอนหงายและศีรษะห้อยอยู่ ค่อยๆ หันศีรษะไปทาง{O} 90 องศา ตอนนี้จะหันหน้าไปทาง{O} 45 องศา ตะกอนไหลต่อไปจนผ่านจุดสูงสุดของท่อ',
+      chips: ['ค้างไว้ราว 30 วินาที'], meta: 'ศีรษะยังห้อยต่ำกว่าเตียง', cap: 'นอนหงาย ศีรษะห้อย หัน{O} 45°' },
+    { key: 'roll', dur: 8, pose: [-115, -135], body: -90, t: '4. ตะแคง',
+      title: 'ขั้นที่ 4 พลิกตัวนอนตะแคง{O} หน้าคว่ำลงพื้น',
+      text: 'พลิกทั้งตัวไปนอนตะแคง{O} พร้อมหมุนศีรษะต่ออีก 90 องศา จนหน้าคว่ำมองพื้นเฉียงๆ ตะกอนไหลเข้าใกล้ทางออกของท่อ',
+      chips: ['ค้างไว้ราว 30 วินาที'], meta: 'ศีรษะหมุนไปพร้อมลำตัว', cap: 'นอนตะแคง{O} หน้าคว่ำลงพื้น' },
+    { key: 'sit', dur: 7, pose: [20, -45], body: 0, t: '5. ลุกนั่ง',
+      title: 'ขั้นที่ 5 ค่อยๆ ลุกนั่งทางด้าน{O}ของเตียง',
+      text: 'ลุกขึ้นนั่งช้าๆ ทางด้าน{O}ของเตียง ก้มคางลงเล็กน้อย ตะกอนจะไหลผ่านทางออกกลับเข้าไปในถุงยูทริเคิล ซึ่งเป็นที่ที่มันอยู่แล้วไม่ทำให้เวียน',
+      chips: ['ลุกช้าๆ อาจเวียนหรือเซได้สักพัก'], meta: 'ตะกอนกลับเข้าถุง', cap: 'ลุกนั่ง ก้มคางเล็กน้อย' },
+    { key: 'done', dur: 9, pose: [0, 0], body: 0, t: 'หลังทำ',
+      title: 'หลังทำ ตะกอนกลับเข้าที่',
+      text: 'หลายคนอาการดีขึ้นหลังทำ บางคนต้องทำซ้ำ ตามแนวทางเวชปฏิบัติปัจจุบัน หลังทำไม่จำเป็นต้องนอนหัวสูงหรือห้ามขยับศีรษะ ถ้าตะกอนอยู่ท่ออื่น เช่น ท่อด้านข้าง จะใช้ท่ารักษาต่างออกไป แพทย์จะตรวจและเลือกท่าให้',
+      chips: ['ทำซ้ำได้ถ้ายังเวียนตอนเปลี่ยนท่า', 'ท่อด้านข้างใช้ท่าอื่น'], meta: 'ท่านี้สำหรับท่อด้านหลัง', cap: 'นั่งตามปกติ' }
+  ];
+  const state = { t: 0, playing: !reduceMotion, side: 'right', ended: false };
+  const total = STEPS.reduce((a, s) => a + s.dur, 0);
+  const startOf = i => STEPS.slice(0, i).reduce((a, s) => a + s.dur, 0);
+  function locate(t) {
+    let acc = 0;
+    for (let i = 0; i < STEPS.length; i++) { if (t < acc + STEPS[i].dur || i === STEPS.length - 1) return { i, s: STEPS[i], rel: clamp01((t - acc) / STEPS[i].dur), local: t - acc }; acc += STEPS[i].dur; }
+  }
+  const sideWords = () => state.side === 'right' ? { S: 'ขวา', O: 'ซ้าย' } : { S: 'ซ้าย', O: 'ขวา' };
+  const fill = s => { const w = sideWords(); return s.replace(/\{S\}/g, w.S).replace(/\{O\}/g, w.O); };
+
+  // head orientation over time: each step eases from the previous pose
+  const TRANS = 1.6;
+  const poseQ = STEPS.map(s => headQ(s.pose[0], s.pose[1]));
+  function headAt(t) {
+    const L = locate(t), prev = L.i ? L.i - 1 : 0;
+    const k = Math.min(1, L.local / TRANS), e = k * k * (3 - 2 * k);
+    const q = poseQ[prev].clone().slerp(poseQ[L.i], e);
+    const body = STEPS[prev].body + (STEPS[L.i].body - STEPS[prev].body) * e;
+    return { q, body };
+  }
+
+  // ---------- physics: over-damped sliding along the posterior canal ----------
+  const SIM_DT = 1 / 60, K = 140;
+  let simT = 0, lastRate = 0;
+  function resetSim() {
+    simT = 0;
+    crystals.forEach((c, i) => { c.th = 32 + i * 0.8; c.home = -1; c.spot = homeSpots[i]; });
+  }
+  const gTmp = new THREE.Vector3(), qInv = new THREE.Quaternion();
+  function stepSim(dt) {
+    const { q } = headAt(simT);
+    qInv.copy(q).invert(); gTmp.set(0, -1, 0).applyQuaternion(qInv);
+    const gu = gTmp.dot(POST.u), gv = gTmp.dot(POST.v);
+    let rates = 0, n = 0;
+    for (const c of crystals) {
+      if (c.home >= 0) { c.home = Math.min(1, c.home + dt * 0.9); continue; }
+      const rate = K * c.k * (-Math.sin(c.th * D2R) * gu + Math.cos(c.th * D2R) * gv);
+      c.th = Math.max(TH_AMP + 2, c.th + rate * dt);
+      if (c.th >= TH_CRUS) { c.th = TH_CRUS; c.home = 0; }
+      rates += Math.abs(rate); n++;
+    }
+    lastRate = n ? rates / n : 0;
+    simT += dt;
+  }
+  function simTo(t) {
+    if (t < simT - 1e-6) resetSim();
+    while (simT + SIM_DT <= t) stepSim(SIM_DT);
+  }
+  resetSim();
+
+  // ---------- UI ----------
+  const tl = $('timeline'), segs = [];
+  STEPS.forEach((s, i) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'seg';
+    b.innerHTML = '<span class="t">' + s.t + '</span><span class="fill"></span>';
+    b.onclick = () => { state.t = startOf(i) + 0.01; state.ended = false; renderCard(true); };
+    tl.appendChild(b); segs.push(b);
+  });
+  let shown = -1;
+  function renderCard(force) {
+    const L = locate(state.t), s = L.s;
+    if (L.i !== shown || force) {
+      shown = L.i;
+      $('pKicker').textContent = L.i === 0 ? 'เข้าใจก่อนทำ' : (L.i === STEPS.length - 1 ? 'หลังทำ' : 'ท่า Epley · หู' + sideWords().S);
+      $('pTitle').textContent = fill(s.title);
+      $('pText').textContent = fill(s.text);
+      $('pMeta').textContent = s.meta;
+      $('pChips').innerHTML = s.chips.map(c => '<li>' + fill(c) + '</li>').join('');
+      $('poseCap').textContent = fill(s.cap);
+      segs.forEach((b, i) => b.toggleAttribute('aria-current', false));
+      segs[L.i].setAttribute('aria-current', 'step');
+    }
+    segs.forEach((b, i) => { b.querySelector('.fill').style.width = (i < L.i ? 100 : i === L.i ? L.rel * 100 : 0).toFixed(1) + '%'; });
+  }
+  function setPlayLabel() { $('bPlay').textContent = state.ended ? 'เล่นอีกครั้ง' : (state.playing ? 'หยุด' : 'เล่น'); }
+  $('bPlay').onclick = () => {
+    if (state.ended) { state.t = 0; state.ended = false; state.playing = true; } else state.playing = !state.playing;
+    setPlayLabel();
+  };
+  function camDir() { return V(state.side === 'right' ? 2.7 : -2.7, 1.0, 1.9).normalize(); }
+  function homeDistance() { const a = innerWidth / innerHeight, t = Math.tan(17 * D2R); return Math.max(5.4, 1.5 / (t * a)); }
+  function goHome() { controls.target.copy(TARGET); camera.position.copy(TARGET).addScaledVector(camDir(), homeDistance()); controls.update(); }
+  $('bHome').onclick = goHome;
+  $('bSide').onclick = () => {
+    state.side = state.side === 'right' ? 'left' : 'right';
+    $('bSide').textContent = state.side === 'right' ? 'หูขวา' : 'หูซ้าย';
+    ear.scale.x = state.side === 'right' ? 1 : -1;
+    goHome(); renderCard(true);
+  };
+  addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+  goHome();
+  const hk = (location.hash || '').slice(1);
+  const hi = STEPS.findIndex(s => s.key === hk);
+  if (hi >= 0) { state.t = startOf(hi) + STEPS[hi].dur * 0.85; state.playing = false; }
+  setPlayLabel(); renderCard(true);
+
+  // ---------- patient position panel ----------
+  const pc = $('poseCanvas'), px = pc.getContext('2d');
+  const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  function drawPose(q, body) {
+    const W = pc.width, H = pc.height;
+    px.clearRect(0, 0, W, H);
+    const fig = cssVar('--figure'), bed = cssVar('--bed'), acc = cssVar('--accent');
+    // canvas x = toward the feet (+z), canvas y = up. We look from the patient's right side.
+    const bedTop = H * 0.62, bedL = W * 0.33, bedR = W * 0.96;
+    px.fillStyle = bed; px.fillRect(bedL, bedTop, bedR - bedL, H * 0.08);
+    px.fillRect(bedL + 6, bedTop + H * 0.08, 8, H * 0.22); px.fillRect(bedR - 14, bedTop + H * 0.08, 8, H * 0.22);
+    const Lt = W * 0.23, hip = { x: W * 0.64, y: bedTop - 6 };
+    const bp = body * D2R;
+    const sh = { x: hip.x + Math.sin(bp) * Lt, y: hip.y - Math.cos(bp) * Lt };
+    // pillow under the shoulders when lying
+    const lying = Math.min(1, Math.abs(body) / 90);
+    if (lying > 0.5) { px.fillStyle = cssVar('--track'); px.strokeStyle = bed; px.lineWidth = 3; px.beginPath(); px.ellipse(sh.x + 18, bedTop - 8, 34, 9, 0, 0, Math.PI * 2); px.fill(); px.stroke(); }
+    px.strokeStyle = fig; px.lineWidth = 7; px.lineCap = 'round'; px.lineJoin = 'round';
+    px.beginPath(); px.moveTo(hip.x + W * 0.28, hip.y); px.lineTo(hip.x, hip.y); px.lineTo(sh.x, sh.y); px.stroke();
+    // head from the head quaternion: up = q*(0,1,0), nose = q*(0,0,1)
+    const up = V(0, 1, 0).applyQuaternion(q), nose = V(0, 0, 1).applyQuaternion(q);
+    const neck = Lt * 0.3, hr = Lt * 0.3;
+    const nk = { x: sh.x + up.z * neck, y: sh.y - up.y * neck };
+    const hc = { x: sh.x + up.z * (neck + hr), y: sh.y - up.y * (neck + hr) };
+    px.beginPath(); px.moveTo(sh.x, sh.y); px.lineTo(nk.x, nk.y); px.stroke();
+    px.lineWidth = 6; px.beginPath(); px.arc(hc.x, hc.y, hr, 0, Math.PI * 2); px.stroke();
+    // face: nose projected on the side view; a filled eye when the face turns toward the viewer (patient's right)
+    const side = state.side === 'right' ? 1 : -1;
+    const toward = nose.x * side; // this panel is drawn as if seen from the affected side
+    const pl = Math.hypot(nose.z, nose.y) || 1;
+    const nx = hc.x + (nose.z / pl) * hr * 0.95, ny = hc.y - (nose.y / pl) * hr * 0.95;
+    px.fillStyle = acc; px.beginPath(); px.arc(nx, ny, 6, 0, Math.PI * 2); px.fill();
+    const ex = hc.x + (nose.z / pl) * hr * 0.45, ey = hc.y - (nose.y / pl) * hr * 0.45;
+    px.globalAlpha = clamp01(0.25 + toward); px.fillStyle = fig; px.beginPath(); px.arc(ex, ey, 5, 0, Math.PI * 2); px.fill(); px.globalAlpha = 1;
+    // arm
+    px.lineWidth = 6; px.strokeStyle = fig;
+    const ar = { x: sh.x + (hip.x - sh.x) * 0.25, y: sh.y + (hip.y - sh.y) * 0.25 };
+    px.beginPath(); px.moveTo(ar.x, ar.y); px.lineTo(ar.x + (hip.x - sh.x) * 0.55 + 10, ar.y + (hip.y - sh.y) * 0.55 + (lying > 0.5 ? 0 : 14)); px.stroke();
+  }
+
+  // ---------- loop ----------
+  const clock = new THREE.Clock(), tmp = new THREE.Vector3(), g = new THREE.Vector3();
+  function frame() {
+    const dt = Math.min(clock.getDelta(), 0.05), now = clock.elapsedTime;
+    if (state.playing && !state.ended) {
+      state.t += dt;
+      if (state.t >= total) { state.t = total - 0.001; state.ended = true; state.playing = false; setPlayLabel(); }
+    }
+    simTo(state.t);
+    crystals.forEach(placeCrystal);
+    const { q, body } = headAt(state.t);
+    g.set(0, -1, 0).applyQuaternion(qInv.copy(q).invert());
+    arrow.setDirection(g);
+    const L = locate(state.t);
+    renderCard(false);
+    const active = L.i > 0 && L.i < STEPS.length - 1;
+    mats.post.emissiveIntensity = active ? 0.45 + 0.25 * Math.sin(now * 3) : 0.18;
+    $('spin').style.opacity = lastRate > 18 ? 1 : 0;
+    drawPose(q, body);
+    controls.update();
+    renderer.render(scene, camera);
+    const W = innerWidth, H = innerHeight;
+    ear.updateMatrixWorld();
+    for (const lb of labels) {
+      tmp.copy(lb.pos).applyMatrix4(ear.matrixWorld).project(camera);
+      if (tmp.z > 1) { lb.el.style.opacity = 0; continue; }
+      lb.el.style.opacity = 1;
+      lb.el.classList.toggle('hot', !!(lb.hotFn && active));
+      lb.el.style.transform = 'translate(-50%,-50%) translate(' + ((tmp.x + 1) / 2 * W).toFixed(1) + 'px,' + ((1 - tmp.y) / 2 * H).toFixed(1) + 'px)';
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>

@@ -45,6 +45,7 @@ const nextConfig: NextConfig = {
       { source: "/learn/brain", destination: "/learn/brain/th.html" },
       { source: "/learn/brain-3d", destination: "/learn/brain-3d/index.html" },
       { source: "/learn/migraine-3d", destination: "/learn/migraine-3d/index.html" },
+      { source: "/learn/bppv-3d", destination: "/learn/bppv-3d/index.html" },
       { source: "/learn/heart", destination: "/learn/heart/th.html" },
       { source: "/learn/dna", destination: "/learn/dna/th.html" },
       { source: "/learn/hormones", destination: "/learn/hormones/th.html" },
