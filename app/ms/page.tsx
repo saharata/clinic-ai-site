@@ -239,6 +239,9 @@ export default function MsPage() {
               <a href="/learn/brain-3d#mcd" className="btn btn-outline big">
                 เกณฑ์วินิจฉัย McDonald 2024 ทีละข้อ
               </a>
+              <a href="/learn/brain-3d#nmc" className="btn btn-outline big">
+                เกณฑ์วินิจฉัย NMOSD 2015 ทีละข้อ
+              </a>
             </div>
           </div>
         </section>
