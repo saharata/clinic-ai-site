@@ -101,6 +101,30 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
   margin: 0; max-width: 230px; text-align: right; font-size: .76rem; line-height: 1.5; color: var(--muted);
 }
+.mcd {
+  left: max(16px, env(safe-area-inset-left, 0px));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  width: min(470px, calc(100vw - 32px)); box-sizing: border-box; max-height: 58vh; overflow: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 16px 14px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.mcd h2 { font-family: var(--display); font-weight: 700; font-size: 1.18rem; margin: .4rem 0 0; text-wrap: balance; }
+.mcd p { margin: .45rem 0 0; line-height: 1.62; font-size: .95rem; }
+.mcd .chips { display: flex; flex-wrap: wrap; gap: 5px; margin: .6rem 0 0; padding: 0; list-style: none; }
+.mcd .chips li { font-size: .8rem; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); }
+.mcd-nav { display: flex; align-items: center; gap: 8px; margin-top: .75rem; flex-wrap: wrap; }
+.mcd-nav button {
+  font: 500 .9rem/1 var(--body); padding: .55rem .9rem; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: transparent; color: var(--ink);
+}
+.mcd-nav button.primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.mcd-nav button:disabled { opacity: .35; cursor: default; }
+.mcd-dots { display: flex; gap: 4px; flex-wrap: wrap; flex: 1 1 auto; justify-content: flex-end; }
+.mcd-dots button { width: 9px; height: 9px; padding: 0; border-radius: 50%; border: 0; background: var(--line); }
+.mcd-dots button[aria-current="step"] { background: var(--accent); }
+.mcd .src { margin-top: .6rem; font-size: .74rem; color: var(--muted); line-height: 1.5; }
+.mcd .src a { color: inherit; }
+.tag.loc { border-color: var(--accent); }
 #labels { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
 .tag {
   position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; transition: opacity .25s;
@@ -110,6 +134,8 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .tag small { display: block; font: 400 .62rem/1.2 var(--mono); color: var(--muted); }
 #fallback { position: fixed; inset: 0; display: grid; place-items: center; font-size: 1rem; color: var(--muted); }
 @media (max-width: 720px) {
+  .mcd { right: max(16px, env(safe-area-inset-right, 0px)); width: auto; max-height: 46vh; }
+  .mcd p { font-size: .9rem; }
   .note { display: none; }
   .controls { justify-content: flex-start; }
   .controls button { font-size: .86rem; padding: .5rem .75rem; }
@@ -143,6 +169,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     <button id="bPath" type="button" aria-pressed="false">สัญญาณประสาท</button>
     <button id="bMS" type="button" aria-pressed="false">รอยโรค MS</button>
     <button id="bNM" type="button" aria-pressed="false">รอยโรค NMOSD</button>
+    <button id="bMcd" type="button" aria-pressed="false">เกณฑ์ McDonald 2024</button>
     <button id="bHome" type="button">มุมเริ่มต้น</button>
   </div>
 </header>
@@ -152,6 +179,19 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   <h2 id="infoName">ลากเพื่อหมุน · เลื่อนหรือถ่างนิ้วเพื่อซูม</h2>
   <div class="en" id="infoEn"></div>
   <p id="infoDesc">ชี้หรือแตะส่วนใดก็ได้เพื่อดูชื่อและหน้าที่ กด "แยกส่วน" เพื่อดึงกลีบสมองออกจากกัน แล้วจะเห็นโครงสร้างด้านใน</p>
+</aside>
+<aside class="hud mcd" id="mcd" hidden aria-live="polite">
+  <div class="kicker" id="mcdKick"></div>
+  <h2 id="mcdTitle"></h2>
+  <p id="mcdText"></p>
+  <ul class="chips" id="mcdChips"></ul>
+  <div class="mcd-nav">
+    <button type="button" id="mcdPrev">ก่อนหน้า</button>
+    <button type="button" id="mcdNext" class="primary">ข้อถัดไป</button>
+    <button type="button" id="mcdNm" hidden>เปิดรอยโรค NMOSD เทียบ</button>
+    <div class="mcd-dots" id="mcdDots" aria-label="เลือกข้อ"></div>
+  </div>
+  <div class="src">สรุปเพื่อการเรียนรู้ ไม่ใช่เครื่องมือวินิจฉัย · อ้างอิง <a href="https://doi.org/10.1016/S1474-4422(25)00270-4" target="_blank" rel="noopener">Montalban et al., Lancet Neurol 2025</a> · <a href="https://doi.org/10.3390/biomedicines13112590" target="_blank" rel="noopener">บทความทบทวน Biomedicines 2025</a></div>
 </aside>
 <p class="hud note">สื่อการเรียนรู้ ไม่ใช่การวินิจฉัย<br>รูปทรงเป็นแบบจำลองโดยประมาณ</p>
 <div id="fallback" hidden>เบราว์เซอร์นี้เปิดภาพสามมิติ (WebGL) ไม่ได้</div>
@@ -516,21 +556,21 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     if (dir) m.quaternion.setFromUnitVectors(UP, dir.clone().normalize());
     addLesion(m, parent, info, kind || 'ms');
   }
-  const periInfo = { name: 'รอยโรครอบโพรงสมอง', en: 'Periventricular lesion', desc: 'รูปไข่ วางตัวตั้งฉากกับผนังโพรงสมอง (Dawson\'s fingers) เป็นตำแหน่งที่พบบ่อยและค่อนข้างจำเพาะต่อ MS' };
+  const periInfo = { loc: 'pv', name: 'รอยโรครอบโพรงสมอง', en: 'Periventricular lesion', desc: 'รูปไข่ วางตัวตั้งฉากกับผนังโพรงสมอง (Dawson\'s fingers) เป็นตำแหน่งที่พบบ่อยและค่อนข้างจำเพาะต่อ MS' };
   [[1, .25], [1, .08], [1, -.08], [1, -.22], [-1, .18], [-1, 0], [-1, -.16]].forEach(([s, z]) => {
     const dir = V(s * .7, .7, 0);
     lesion(null, V(s * .17, .25, z), [.018, .046, .018], dir, periInfo);
   });
-  const jxInfo = { name: 'รอยโรคชิดเปลือกสมอง', en: 'Juxtacortical lesion', desc: 'อยู่ติดกับเปลือกสมอง เป็นหนึ่งในตำแหน่งที่ใช้นับตามเกณฑ์ McDonald' };
+  const jxInfo = { loc: 'jc', name: 'รอยโรคชิดเปลือกสมอง', en: 'Juxtacortical lesion', desc: 'อยู่ติดกับเปลือกสมอง เป็นหนึ่งในตำแหน่งที่ใช้นับตามเกณฑ์ McDonald' };
   lesion(lobeMeshes['-1'][0], V(-.55, .18, .38), [.03, .022, .026], null, jxInfo);
   lesion(lobeMeshes['1'][1], V(.58, .24, -.2), [.03, .024, .026], null, jxInfo);
-  const infraInfo = { name: 'รอยโรคใต้เต็นท์', en: 'Infratentorial lesion', desc: 'อยู่ในก้านสมองหรือสมองน้อย อาจทำให้เวียนศีรษะ เดินเซ หรือเห็นภาพซ้อน' };
+  const infraInfo = { loc: 'it', name: 'รอยโรคใต้เต็นท์', en: 'Infratentorial lesion', desc: 'อยู่ในก้านสมองหรือสมองน้อย อาจทำให้เวียนศีรษะ เดินเซ หรือเห็นภาพซ้อน' };
   lesion(stemParts.pons, V(.08, .02, .05), [.026, .022, .024], null, infraInfo);
   lesion(window.__cbl, V(-.2, -.4, -.38), [.028, .022, .024], null, infraInfo);
   lesion(stemParts.cord, V(.022, .06, 0), [.022, .055, .02], null,
-    { name: 'รอยโรคในไขสันหลัง', en: 'Spinal cord lesion', desc: 'ใน MS มักยาวไม่เกิน 2 ปล้องกระดูกสันหลัง ต่างจาก NMOSD ที่มักยาวตั้งแต่ 3 ปล้องขึ้นไป' });
+    { loc: 'sc', name: 'รอยโรคในไขสันหลัง', en: 'Spinal cord lesion', desc: 'ใน MS มักยาวไม่เกิน 2 ปล้องกระดูกสันหลัง ต่างจาก NMOSD ที่มักยาวตั้งแต่ 3 ปล้องขึ้นไป' });
   lesion(null, V(-.11, -.37, .66), [.03, .03, .07], V(.25, 0, 1),
-    { name: 'เส้นประสาทตาอักเสบ', en: 'Optic neuritis', desc: 'ตามัวลงและปวดเวลากลอกตา พบได้ทั้งใน MS และ NMOSD เกณฑ์ McDonald ฉบับปรับปรุงปี 2024 นับเส้นประสาทตาเป็นตำแหน่งหนึ่งด้วย' });
+    { loc: 'on', name: 'เส้นประสาทตาอักเสบ', en: 'Optic neuritis', desc: 'ตามัวลงและปวดเวลากลอกตา พบได้ทั้งใน MS และ NMOSD เกณฑ์ McDonald ฉบับปรับปรุงปี 2024 นับเส้นประสาทตาเป็นตำแหน่งหนึ่งด้วย' });
 
   // NMOSD: regions rich in aquaporin-4 (optic nerve, spinal cord grey matter, tissue around the ventricles)
   lesion(stemParts.cord, V(0, .08, 0), [.032, .2, .032], null,
@@ -550,6 +590,23 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     { name: 'รอยโรคในคอร์ปัสแคลโลซัม', en: 'Corpus callosum lesion', desc: 'ยาวไปตามคอร์ปัสแคลโลซัมด้านที่ติดโพรงสมอง' }, 3);
   lesion(null, V(-.34, .14, .05), [.1, .08, .13], null,
     { name: 'รอยโรคขนาดใหญ่ในเนื้อสมองขาว', en: 'Large hemispheric lesion', desc: 'รอยโรคใหญ่หรือรวมกันเป็นแผ่นในเนื้อสมองขาว พบได้น้อยกว่าตำแหน่งอื่น' }, 'nmosd');
+
+
+  // ---------- McDonald 2024 teaching extras ----------
+  const pvLesions = lesions.ms.filter(m => m.userData.part.loc === 'pv');
+  const veinMat = new THREE.MeshBasicMaterial({ color: 0x1b2433 });
+  const prlHost = pvLesions[2];
+  const veins = pvLesions.filter(m => m !== prlHost).slice(0, 6).map(m => {
+    const v = new THREE.Mesh(new THREE.CylinderGeometry(0.0045, 0.0045, 0.105, 8), veinMat);
+    v.visible = false; m.add(v); return v;
+  });
+  const prlRim = new THREE.Mesh(prlHost.geometry, new THREE.MeshBasicMaterial({ color: 0xc0662b, side: THREE.BackSide }));
+  prlRim.scale.setScalar(1.7); prlRim.visible = false; prlHost.add(prlRim);
+  const ditMat = new THREE.MeshStandardMaterial({ color: 0xe8fbff, emissive: 0x6fe3ff, emissiveIntensity: 1, roughness: 0.3 });
+  const ditGeo = new THREE.SphereGeometry(1, 24, 16); ditGeo.scale(.026, .032, .026);
+  const ditLesion = new THREE.Mesh(ditGeo, ditMat); ditLesion.position.set(.3, .1, .3); ditLesion.visible = false; scene.add(ditLesion);
+  const cord2Geo = new THREE.SphereGeometry(1, 24, 16); cord2Geo.scale(.022, .05, .02);
+  const cord2 = new THREE.Mesh(cord2Geo, lesionMat()); cord2.position.set(-.02, -.14, 0); cord2.visible = false; stemParts.cord.add(cord2);
 
   // ---------- labels ----------
   const labelLayer = document.getElementById('labels');
@@ -583,6 +640,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     if (state.path) { state.xray = true; applyXray(); if (state.explodeGoal) { state.explodeGoal = 0; press(btn('bExplode'), false); } }
   };
   function setLesion(kind) {
+    if (typeof mcd !== 'undefined' && mcd.on) setMcd(false);
     state.lesion = state.lesion === kind ? null : kind;
     press(btn('bMS'), state.lesion === 'ms'); press(btn('bNM'), state.lesion === 'nmosd');
     for (const k in lesions) lesions[k].forEach(m => { m.visible = state.lesion === k; });
@@ -650,12 +708,143 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   el.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { lastMouse = { x: e.clientX, y: e.clientY }; mouseDirty = true; mouseIn = true; } });
   el.addEventListener('pointerleave', () => { mouseIn = false; setHover(null); });
 
-  // open a view from the link: #ms, #explode, #pathways
+
+  // ---------- McDonald 2024, one rule at a time ----------
+  const ALL5 = ['pv', 'jc', 'it', 'sc', 'on'];
+  const MCD = [
+    { locs: ALL5, tags: ALL5, title: 'เกณฑ์ McDonald ฉบับปรับปรุง 2024',
+      text: 'ตีพิมพ์ใน Lancet Neurology ปี 2025 ใช้วินิจฉัย MS แบบเดียวกันทั้งชนิดกำเริบเป็นพักและชนิดค่อยๆ แย่ลง ตั้งแต่เด็กจนถึงผู้สูงอายุ หัวใจของเกณฑ์ยังเหมือนเดิม คือรอยโรคต้องกระจายหลายตำแหน่ง และต้องไม่มีโรคอื่นอธิบายได้ดีกว่า กดข้อถัดไปเพื่อดูทีละข้อ',
+      chips: ['ตำแหน่งเพิ่มเป็น 5', 'ไม่ต้องพิสูจน์ว่าเกิดต่างเวลาทุกราย', 'เพิ่มตัวช่วย CVS · PRL · kFLC'] },
+    { locs: ['pv'], tags: ['pv'], title: 'ตำแหน่งที่ 1 รอบโพรงสมอง',
+      text: 'รอยโรครูปไข่ชิดผนังโพรงสมอง มักวางตัวตั้งฉากกับโพรง เป็นตำแหน่งที่พบบ่อยที่สุด', chips: ['periventricular'] },
+    { locs: ['jc'], tags: ['jc'], title: 'ตำแหน่งที่ 2 ที่เปลือกสมองหรือชิดเปลือกสมอง',
+      text: 'รอยโรคในเปลือกสมองเอง หรือในเนื้อสมองขาวที่ติดกับเปลือกสมอง', chips: ['cortical / juxtacortical'] },
+    { locs: ['it'], tags: ['it'], title: 'ตำแหน่งที่ 3 ใต้เต็นท์',
+      text: 'รอยโรคในก้านสมองหรือสมองน้อย', chips: ['infratentorial'] },
+    { locs: ['sc'], tags: ['sc'], title: 'ตำแหน่งที่ 4 ไขสันหลัง',
+      text: 'รอยโรคในไขสันหลัง ใน MS มักสั้นและค่อนไปด้านข้างของไขสันหลัง', chips: ['spinal cord'] },
+    { locs: ['on'], tags: ['on'], title: 'ตำแหน่งที่ 5 เส้นประสาทตา (ใหม่ในฉบับนี้)',
+      text: 'ยืนยันได้ 3 ทาง คือ MRI ของเส้นประสาทตา, OCT ที่ความหนาชั้นใยประสาทจอตาสองข้างต่างกันตั้งแต่ 6 ไมครอน (pRNFL) หรือชั้นเซลล์ปมประสาทต่างกันตั้งแต่ 4 ไมครอน (GCIPL), หรือ VEP ที่ช้าผิดปกติ ทุกวิธีต้องทำตามมาตรฐานคุณภาพ และไม่มีโรคอื่นอธิบายได้ดีกว่า',
+      chips: ['ราว 1 ใน 4 ถึง 1 ใน 3 เริ่มด้วยเส้นประสาทตาอักเสบ'] },
+    { locs: ALL5, tags: ALL5, title: 'มีรอยโรค 4 หรือ 5 ตำแหน่ง',
+      text: 'ในผู้ที่มีอาการกำเริบแบบฉบับของ MS หรืออาการค่อยๆ แย่ลง ถ้าพบรอยโรคตั้งแต่ 4 ใน 5 ตำแหน่ง วินิจฉัยได้เลย ไม่ต้องรอพิสูจน์ว่ารอยโรคเกิดต่างเวลา และไม่ต้องอาศัยน้ำไขสันหลัง',
+      chips: ['4 หรือ 5 ตำแหน่ง = พอ'] },
+    { locs: ['pv', 'sc'], tags: ['pv', 'sc'], dit: true, veins: true, title: 'มีรอยโรค 2 หรือ 3 ตำแหน่ง',
+      text: 'ต้องมีหลักฐานเพิ่มอย่างใดอย่างหนึ่ง: รอยโรคเกิดต่างเวลาบน MRI (มีรอยโรคใหม่เมื่อตรวจซ้ำ หรือมีทั้งรอยโรคที่จับและไม่จับสารทึบรังสีในภาพเดียวกัน จุดสีฟ้าที่กะพริบ) หรือน้ำไขสันหลังบวก หรือ CVS แบบ select six (เส้นสีเข้มกลางรอยโรค)',
+      chips: ['เกิดต่างเวลาบน MRI', 'หรือ น้ำไขสันหลังบวก', 'หรือ CVS select six'] },
+    { locs: ['pv'], tags: ['pv'], veins: true, title: 'CVS · หลอดเลือดดำกลางรอยโรค',
+      text: 'บน MRI แบบ SWI หรือ T2* จะเห็นหลอดเลือดดำเส้นเล็กวิ่งผ่านกลางรอยโรค สะท้อนการอักเสบรอบหลอดเลือดดำซึ่งเป็นลักษณะของ MS นับว่าบวกแบบ select six เมื่อมีรอยโรคแบบนี้ตั้งแต่ 6 จุด หรือถ้ามีรอยโรครวมไม่ถึง 10 จุด ต้องเป็นส่วนใหญ่',
+      chips: ['ช่วยแยกจากจุดขาวจากไมเกรนและหลอดเลือดเล็ก', 'ไม่บังคับ ใช้เมื่อมีเครื่องตรวจ'] },
+    { locs: ['pv'], tags: ['pv'], dit: true, prl: true, title: 'มีรอยโรคตำแหน่งเดียว',
+      text: 'ต้องมีครบสองชั้น ชั้นแรก รอยโรคเกิดต่างเวลาบน MRI หรือน้ำไขสันหลังบวก และชั้นที่สอง CVS แบบ select six หรือ PRL อย่างน้อย 1 จุด',
+      chips: ['(ต่างเวลา หรือ น้ำไขสันหลัง)', 'และ (CVS select six หรือ PRL)'] },
+    { locs: ['pv'], tags: ['pv'], prl: true, title: 'PRL · รอยโรคที่มีขอบเข้ม',
+      text: 'บน MRI ที่ดูค่าเฟสจะเห็นขอบสีเข้มรอบรอยโรค (ในภาพนี้ระบายเป็นสีสนิมให้เห็นชัด) หมายถึงรอยโรคที่ยังอักเสบเรื้อรังอยู่ที่ขอบ (chronic active lesion) พบน้อยในโรคอื่น จึงจำเพาะต่อ MS สูง แม้ไม่ได้พบในผู้ป่วยทุกคน',
+      chips: ['จำเพาะสูง', 'ไม่บังคับ ใช้เมื่อมีเครื่องตรวจ'] },
+    { locs: ALL5, tags: [], dim: true, title: 'น้ำไขสันหลังบวก',
+      text: 'หมายถึงพบ oligoclonal bands เฉพาะในน้ำไขสันหลัง หรือค่า kappa free light chain index สูง ฉบับนี้ให้ใช้สองค่านี้แทนกันได้ แต่ IgG index ใช้แทนไม่ได้ และต้องแปลผลในบริบททางคลินิก เพราะโรคอักเสบอื่นก็ให้ผลบวกได้',
+      chips: ['OCB หรือ kFLC index', 'IgG index ใช้แทนไม่ได้'] },
+    { locs: ['pv', 'jc'], tags: ['pv', 'jc'], title: 'ไม่มีอาการ หรืออาการไม่จำเพาะ',
+      text: 'พบรอยโรคบน MRI โดยบังเอิญ (RIS) หรือมีอาการที่ไม่ใช่การกำเริบแบบฉบับ เช่น ปวดศีรษะหรืออ่อนเพลีย ฉบับนี้วินิจฉัย MS ได้เมื่อมีรอยโรคตั้งแต่ 2 ตำแหน่ง ร่วมกับอย่างใดอย่างหนึ่ง: เกิดต่างเวลาบน MRI น้ำไขสันหลังบวก หรือ CVS select six',
+      chips: ['ใหม่: ไม่ต้องรออาการกำเริบ'] },
+    { locs: ['sc'], tags: ['sc'], cord2: true, title: 'ชนิดค่อยๆ แย่ลงตั้งแต่ต้น',
+      text: 'ต้องมีอาการแย่ลงต่อเนื่องอย่างน้อย 12 เดือน เกณฑ์ข้ออื่นใช้แบบเดียวกับชนิดกำเริบ ข้อต่างคือรอยโรคในไขสันหลังตั้งแต่ 2 จุด นับเป็นการกระจายตำแหน่งได้เลย เพราะบางคนมีรอยโรคในสมองน้อย',
+      chips: ['อย่างน้อย 12 เดือน', 'ไขสันหลัง 2 จุดขึ้นไป'] },
+    { locs: ['pv', 'sc'], tags: ['pv', 'sc'], veins: true, title: 'อายุ 50 ปีขึ้นไป หรือมีปัจจัยเสี่ยง',
+      text: 'ผู้สูงอายุ คนที่มีโรคหลอดเลือด หรือเป็นไมเกรน มีจุดขาวในสมองจากสาเหตุอื่นได้บ่อย ฉบับนี้แนะนำให้หาหลักฐานเพิ่ม เช่น รอยโรคในไขสันหลัง น้ำไขสันหลังบวก หรือ CVS select six เพื่อลดการวินิจฉัยผิด',
+      chips: ['ไมเกรนทำให้มีจุดขาวได้', 'ไขสันหลัง · น้ำไขสันหลัง · CVS'] },
+    { locs: ALL5, tags: [], dim: true, nmosd: true, title: 'เด็ก และการแยกโรคเสมอ',
+      text: 'ไม่ใช้เกณฑ์นี้กับเด็กที่มาครั้งแรกด้วยภาวะ ADEM เด็กอายุน้อยกว่า 12 ปีแนะนำให้ตรวจแอนติบอดีต่อ MOG ทุกวัยต้องแยกโรคที่คล้ายกัน เช่น NMOSD และ MOGAD ก่อนเสมอ กดปุ่มด้านล่างเพื่อเปิดรอยโรค NMOSD มาเทียบ',
+      chips: ['ADEM ไม่ใช้เกณฑ์นี้', 'แยก NMOSD · MOGAD'] }
+  ];
+  const mcd = { on: false, i: 0 };
+  const LOC_NAME = { pv: '1 รอบโพรงสมอง', jc: '2 เปลือกสมอง / ชิดเปลือกสมอง', it: '3 ใต้เต็นท์', sc: '4 ไขสันหลัง', on: '5 เส้นประสาทตา · ใหม่' };
+  const locRep = {};
+  lesions.ms.forEach(m => { const l = m.userData.part.loc; if (l && !locRep[l]) locRep[l] = m; });
+  const locTags = {};
+  for (const l of ALL5) { const el = document.createElement('div'); el.className = 'tag loc'; el.textContent = LOC_NAME[l]; labelLayer.appendChild(el); locTags[l] = el; }
+  const extraTags = [
+    { el: null, text: 'รอยโรคใหม่ · จับสารทึบรังสี', obj: ditLesion, when: s => s.dit },
+    { el: null, text: 'ขอบเข้ม · PRL', obj: prlHost, when: s => s.prl },
+    { el: null, text: 'หลอดเลือดดำกลางรอยโรค · CVS', obj: pvLesions[0], when: s => s.veins },
+    { el: null, text: 'ไขสันหลังจุดที่ 2', obj: cord2, when: s => s.cord2 }
+  ];
+  extraTags.forEach(t => { t.el = document.createElement('div'); t.el.className = 'tag'; t.el.textContent = t.text; labelLayer.appendChild(t.el); });
+  const dots = btn('mcdDots');
+  MCD.forEach((s, i) => {
+    const d = document.createElement('button'); d.type = 'button'; d.setAttribute('aria-label', 'ข้อ ' + (i + 1) + ' ' + s.title);
+    d.onclick = () => { mcd.i = i; renderMcd(); }; dots.appendChild(d);
+  });
+  function renderMcd() {
+    const s = MCD[mcd.i];
+    btn('mcdKick').textContent = 'เกณฑ์ McDonald 2024 · ข้อ ' + (mcd.i + 1) + ' จาก ' + MCD.length;
+    btn('mcdTitle').textContent = s.title;
+    btn('mcdText').textContent = s.text;
+    btn('mcdChips').innerHTML = s.chips.map(c => '<li>' + c + '</li>').join('');
+    btn('mcdPrev').disabled = mcd.i === 0;
+    btn('mcdNext').disabled = mcd.i === MCD.length - 1;
+    btn('mcdNm').hidden = !s.nmosd;
+    [...dots.children].forEach((d, i) => d.toggleAttribute('aria-current', false) || (i === mcd.i && d.setAttribute('aria-current', 'step')));
+    for (const m of lesions.ms) {
+      const p = m.userData.part, inStep = s.locs.includes(p.loc);
+      m.visible = mcd.on && inStep;
+      const see = s.veins && p.loc === 'pv';
+      m.material.transparent = see; m.material.opacity = see ? 0.5 : 1; m.material.depthWrite = !see; m.material.needsUpdate = true;
+      m.material.emissiveIntensity = s.dim ? 0.35 : 0.95;
+    }
+    veins.forEach(v => { v.visible = mcd.on && !!s.veins; });
+    prlRim.visible = mcd.on && !!s.prl;
+    ditLesion.visible = mcd.on && !!s.dit;
+    cord2.visible = mcd.on && !!s.cord2;
+  }
+  function setMcd(on) {
+    mcd.on = on; press(btn('bMcd'), on);
+    btn('mcd').hidden = !on; document.querySelector('.info').hidden = on;
+    if (on) {
+      if (state.lesion) { state.lesion = null; press(btn('bMS'), false); press(btn('bNM'), false); lesions.nmosd.forEach(m => { m.visible = false; }); }
+      state.xray = true; applyXray(); mcd.i = 0;
+      // slide the brain right so the panel on the left does not cover it
+      if (innerWidth > 900) { const r = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0); controls.target.copy(TARGET).addScaledVector(r, -0.42); camera.position.addScaledVector(r, -0.42); controls.update(); }
+    } else {
+      for (const m of lesions.ms) { m.material.transparent = false; m.material.opacity = 1; m.material.depthWrite = true; m.material.needsUpdate = true; m.material.emissiveIntensity = 0.85; }
+    }
+    renderMcd();
+    if (!on) lesions.ms.forEach(m => { m.visible = state.lesion === 'ms'; });
+  }
+  btn('bMcd').onclick = () => setMcd(!mcd.on);
+  btn('mcdPrev').onclick = () => { if (mcd.i > 0) { mcd.i--; renderMcd(); } };
+  btn('mcdNext').onclick = () => { if (mcd.i < MCD.length - 1) { mcd.i++; renderMcd(); } };
+  btn('mcdNm').onclick = () => { setMcd(false); setLesion('nmosd'); };
+  const wp = new THREE.Vector3();
+  function placeTag(el, obj, show, W, H, dy) {
+    if (!show) { el.style.opacity = 0; return; }
+    obj.getWorldPosition(wp).project(camera);
+    if (wp.z > 1) { el.style.opacity = 0; return; }
+    el.style.opacity = 1;
+    el.style.transform = 'translate(-50%,-50%) translate(' + ((wp.x + 1) / 2 * W).toFixed(1) + 'px,' + ((1 - wp.y) / 2 * H + dy).toFixed(1) + 'px)';
+  }
+  function mcdFrame(now) {
+    if (!mcd.on) return;
+    const s = MCD[mcd.i];
+    if (s.dit) {
+      const k = (now % 2.4) / 2.4;
+      ditLesion.scale.setScalar(Math.min(1, k * 3));
+      ditMat.emissiveIntensity = 0.6 + 0.8 * (0.5 + 0.5 * Math.sin(now * 6));
+    }
+  }
+  function mcdLabels(W, H) {
+    const s = MCD[mcd.i];
+    for (const l of ALL5) placeTag(locTags[l], locRep[l], mcd.on && s.tags.includes(l), W, H, -24);
+    for (const t of extraTags) placeTag(t.el, t.obj, mcd.on && t.when(s), W, H, 28);
+  }
+
+  // open a view from the link: #ms, #nmosd, #mcd, #explode, #pathways
   const hk = (location.hash || '').slice(1);
   if (hk === 'ms') btn('bMS').onclick();
   if (hk === 'nmosd') btn('bNM').onclick();
   if (hk === 'explode') btn('bExplode').onclick();
   if (hk === 'pathways') btn('bPath').onclick();
+  if (hk.split('-')[0] === 'mcd') { setMcd(true); const n = parseInt(hk.split('-')[1], 10); if (n >= 1 && n <= MCD.length) { mcd.i = n - 1; renderMcd(); } }
 
   // ---------- loop ----------
   addEventListener('resize', () => {
@@ -667,6 +856,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   let phase = 0;
   function frame() {
     const dt = Math.min(clock.getDelta(), 0.05);
+    mcdFrame(clock.elapsedTime);
     state.explode += (state.explodeGoal - state.explode) * Math.min(1, dt * 3.2);
     const e = ease(Math.min(1, Math.max(0, state.explode)));
     for (const p of parts) if (p.explode) p.mesh.position.copy(p.base).addScaledVector(p.explode, e);
@@ -698,6 +888,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
       p.label.style.opacity = 1;
       p.label.style.transform = 'translate(-50%,-50%) translate(' + ((tmp.x + 1) / 2 * W).toFixed(1) + 'px,' + ((1 - tmp.y) / 2 * H).toFixed(1) + 'px)';
     }
+    mcdLabels(W, H);
     requestAnimationFrame(frame);
   }
   renderer.domElement.style.cursor = 'grab';
