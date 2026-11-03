@@ -236,6 +236,9 @@ export default function MsPage() {
               <a href="/learn/brain-3d#nmosd" className="btn btn-dark big">
                 ดูรอยโรค NMOSD ในสมองสามมิติ
               </a>
+              <a href="/learn/brain-3d#mcd" className="btn btn-outline big">
+                เกณฑ์วินิจฉัย McDonald 2024 ทีละข้อ
+              </a>
             </div>
           </div>
         </section>
